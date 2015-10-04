@@ -1,0 +1,71 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: gregor
+ * Date: 21.06.15
+ * Time: 18:42
+ */
+
+namespace siestaphp\driver;
+
+use siestaphp\runtime\DateTime;
+
+/**
+ * Interface ResultSet
+ * @package siestaphp\driver
+ */
+interface ResultSet
+{
+
+    /**
+     * checks if there are more ResultSets
+     * @return boolean
+     */
+    public function hasNext();
+
+    /**
+     * gets the next ResultSet
+     * @return ResultSet
+     */
+    public function getNext();
+
+    /**
+     * closes the database connection
+     */
+    public function close();
+
+    /**
+     * @param $key
+     *
+     * @return boolean
+     */
+    public function getBooleanValue($key);
+
+    /**
+     * @param $key
+     *
+     * @return integer
+     */
+    public function getIntegerValue($key);
+
+    /**
+     * @param $key
+     *
+     * @return float
+     */
+    public function getFloatValue($key);
+
+    /**
+     * @param $key
+     *
+     * @return string
+     */
+    public function getStringValue($key);
+
+    /**
+     * @param $key
+     *
+     * @return DateTime
+     */
+    public function getDateTime($key);
+}

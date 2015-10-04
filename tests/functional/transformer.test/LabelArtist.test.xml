@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="ArtistEntity" namespace="tests\gen\gen" constructClass="Artist" constructNamespace="tests\gen" table="ARTIST" delimit="false" targetPath="tests/gen">
+        <entity-mysql engine="InnoDB" charset="utf8" collate="utf8_unicode_ci"/>
+        <attributeList>
+            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" addIndex="true" defaultValue="" autoValue="autoincrement"/>
+            <attribute name="bool" type="bool" dbName="D_BOOLEAN" dbType="SMALLINT" primaryKey="false" required="false" addIndex="false" defaultValue="true" autoValue=""/>
+            <attribute name="int" type="int" dbName="D_INTEGER" dbType="INT" primaryKey="true" required="false" addIndex="false" defaultValue="42" autoValue="autoincrement"/>
+            <attribute name="float" type="float" dbName="D_FLOAT" dbType="FLOAT" primaryKey="false" required="false" addIndex="false" defaultValue="42.42" autoValue=""/>
+            <attribute name="string" type="string" dbName="D_STRING" dbType="VARCHAR(100)" primaryKey="false" required="false" addIndex="true" defaultValue="'Traveling Salesman'" autoValue=""/>
+            <attribute name="dateTime" type="DateTime" dbName="D_DATETIME" dbType="DATETIME" primaryKey="false" required="false" addIndex="false" defaultValue="" autoValue=""/>
+        </attributeList>
+
+        <referenceList>
+            <reference name="label" foreignClass="LabelEntity" required="false" onDelete="setnull" onUpdate="setnull" relationName="_label_artist_"/>
+        </referenceList>
+
+        <collectorList>
+            <collector name="name" type="type" foreignClass="LabelEntity" referenceName="referenceName"/>
+        </collectorList>
+
+        <storedProcedureList>
+            <storedProcedure name="XYZ" modifies="true" resultType="single">
+                <parameterList>
+                    <parameter name="test" spName="P_TEST" type="string" dbType="VARCHAR(100)"/>
+                    <parameter name="test2" spName="P_TEST2" type="int" dbType="INT"/>
+                </parameterList>
+                <sql>
+                    SELECT * FROM __TABLE__ WHERE D_STRING = P_TEST;
+                </sql>
+                <sql-mysql>
+                    SELECT * FROM MYSQL WHERE D_STRING = P_TEST;
+                </sql-mysql>
+            </storedProcedure>
+        </storedProcedureList>
+
+        <indexList>
+            <index name="indexName" unique="true" type="btree">
+                <indexPart name="bool" sortOrder="ASC" length="123"/>
+                <indexPart name="int" sortOrder="ASC" length="123"/>
+            </index>
+            <index name="indexName2" unique="false" type="hash">
+                <indexPart name="float" sortOrder="DESC" length="1"/>
+                <indexPart name="string" sortOrder="DESC" length="2"/>
+            </index>
+        </indexList>
+
+    </entity>
+
+    <entity name="LabelEntity" constructClass="Label" constructNamespace="tests" table="LABEL" delimit="false" targetPath="tests/gen" namespace="tests\gen">
+        <entity-mysql engine="InnoDB" charset="utf8" collate="utf8_unicode_ci"/>
+        <attributeList>
+            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" addIndex="true" defaultValue="" autoValue="autoincrement"/>
+            <attribute name="bool" type="bool" dbName="D_BOOLEAN" dbType="SMALLINT" primaryKey="true" required="false" autoValue="autoincrement" defaultValue="true"/>
+            <attribute name="int" type="int" dbName="D_INTEGER" dbType="VARCHAR(100)" primaryKey="false" required="false" addIndex="false" defaultValue="42" autoValue=""/>
+            <attribute name="float" type="float" dbName="D_FLOAT" dbType="VARCHAR(100)" primaryKey="false" required="false" addIndex="false" defaultValue="42.42" autoValue=""/>
+            <attribute name="string" type="string" dbName="D_STRING" dbType="VARCHAR(100)" primaryKey="false" required="false" addIndex="false" defaultValue="'Traveling Salesman'" autoValue=""/>
+            <attribute name="dateTime" type="DateTime" dbName="D_DATETIME" dbType="DATETIME" primaryKey="false" required="false" addIndex="false" defaultValue="new DateTime()" autoValue=""/>
+        </attributeList>
+
+        <referenceList>
+            <reference name="referenceName" foreignClass="ArtistEntity" required="false" onDelete="setnull" onUpdate="setnull" relationName="_label_artist_"/>
+        </referenceList>
+    </entity>
+
+</entityList>

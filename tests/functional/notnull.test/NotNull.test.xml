@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="ArtistEntity" namespace="gen\notnull" table="ARTIST" targetPath="gen/notnull">
+        <attributeList>
+            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+            <attribute name="bool" type="bool" dbName="D_BOOLEAN" dbType="SMALLINT" required="true" defaultValue="true"/>
+            <attribute name="int" type="int" dbName="D_INTEGER" dbType="INT" required="true" defaultValue="42"/>
+            <attribute name="float" type="float" dbName="D_FLOAT" dbType="FLOAT" required="true" defaultValue="42.42"/>
+            <attribute name="string" type="string" dbName="D_STRING" dbType="VARCHAR(100)" required="true" defaultValue="'Traveling Salesman'"/>
+            <attribute name="dateTime" type="DateTime" dbName="D_DATETIME" dbType="DATETIME" required="true" defaultValue="Factory::newDateTime('19-08-1977 10:10:10')"/>
+            <attribute name="pDate" type="DateTime" dbName="D_DATE" dbType="DATE" required="true" defaultValue="Factory::newDateTime('19-08-1977 10:10:10')"/>
+            <attribute name="pTime" type="DateTime" dbName="D_TIME" dbType="TIME" required="true" defaultValue="Factory::newDateTime('19-08-1977 10:10:10')"/>
+        </attributeList>
+    </entity>
+
+</entityList>

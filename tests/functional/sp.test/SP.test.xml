@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="ArtistEntity" namespace="gen\sp" table="ARTIST" delimit="false" targetPath="gen/sp">
+        <entity-mysql engine="InnoDB" charset="utf8" collate="utf8_unicode_ci"/>
+        <storedProcedureList>
+
+            <storedProcedure name="getFirstArtistByCity" modifies="false" resultType="single">
+                <parameterList>
+                    <parameter name="test" spName="P_CITY" type="string" dbType="VARCHAR(100)"/>
+                </parameterList>
+                <sql>
+                    SELECT !TABLE!.* FROM !TABLE! WHERE CITY = P_CITY LIMIT 1;
+                </sql>
+            </storedProcedure>
+
+            <storedProcedure name="getArtistByCity" modifies="false" resultType="list">
+                <parameterList>
+                    <parameter name="test" spName="P_CITY" type="string" dbType="VARCHAR(100)"/>
+                </parameterList>
+                <sql>
+                    SELECT !TABLE!.* FROM !TABLE! WHERE CITY = P_CITY;
+                </sql>
+            </storedProcedure>
+
+            <storedProcedure name="countArtistInCity" modifies="false" resultType="ResultSet">
+                <parameterList>
+                    <parameter name="test" spName="P_CITY" type="string" dbType="VARCHAR(100)"/>
+                </parameterList>
+                <sql>
+                    SELECT COUNT(ID) FROM !TABLE! WHERE CITY = P_CITY;
+                </sql>
+            </storedProcedure>
+
+        </storedProcedureList>
+        <attributeList>
+            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="uuid"/>
+            <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>
+            <attribute name="city" type="string" dbName="CITY" dbType="VARCHAR(100)"/>
+        </attributeList>
+   </entity>
+
+    <entity name="LabelEntity" namespace="gen\sp" table="LABEL" targetPath="gen/sp">
+
+        <storedProcedureList>
+            <storedProcedure name="getFirstArtistByCity" modifies="false" resultType="single">
+                <parameterList>
+                    <parameter name="test" spName="P_CITY" type="string" dbType="VARCHAR(100)"/>
+                </parameterList>
+                <sql>
+                    SELECT !TABLE!.* FROM !TABLE! WHERE CITY = P_CITY LIMIT 1;
+                </sql>
+            </storedProcedure>
+        </storedProcedureList>
+
+        <attributeList>
+            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+            <attribute name="int" type="int" dbName="D_INTEGER" dbType="VARCHAR(100)"/>
+            <attribute name="float" type="float" dbName="D_FLOAT" dbType="VARCHAR(100)"/>
+            <attribute name="string" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
+            <attribute name="dateTime" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"/>
+        </attributeList>
+    </entity>
+</entityList>

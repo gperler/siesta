@@ -1,0 +1,21 @@
+{
+  "name": "K7",
+  "city": "Berlin",
+  "topSeller" : {
+    "name" : "Kruder and Dorfmeister"
+  },
+  "artistList": [
+    {
+      "name": "Erlend \u00d8ye",
+      "dob": null
+    },
+    {
+      "name": "Tosca",
+      "dob": null
+    },
+    {
+      "name": "Herbalizer",
+      "dob": null
+    }
+  ]
+}

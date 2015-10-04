@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="ArtistEntity" namespace="gen\json" table="ARTIST" targetPath="gen/json">
+
+        <attributeList>
+            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+            <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
+            <attribute name="dob" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"/>
+        </attributeList>
+        <referenceList>
+            <reference name="label" foreignClass="LabelEntity" required="false"/>
+        </referenceList>
+    </entity>
+
+    <entity name="LabelEntity" namespace="gen\json" table="LABEL" targetPath="gen/json">
+        <attributeList>
+            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+            <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>
+            <attribute name="city" type="string" dbName="CITY" dbType="VARCHAR(100)"/>
+        </attributeList>
+
+        <collectorList>
+            <collector name="artistList" type="1n" foreignClass="ArtistEntity" referenceName="label"/>
+        </collectorList>
+    </entity>
+</entityList>
