@@ -4,3 +4,4 @@ composer.lock
 **/gen/**
 tests/xml/*
 vendor
+!**/.gitkeep
