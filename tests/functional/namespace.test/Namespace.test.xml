@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
 
-    <entity name="ArtistEntity" namespace="gen\ns1" constructClass="Artist" constructNamespace="gen\ns2" table="ARTIST" targetPath="gen/ns1">
+    <entity name="ArtistEntity" namespace="gen\ns1" constructClass="Artist" constructNamespace="base\ns2" table="ARTIST" targetPath="gen/ns1">
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
             <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
@@ -12,7 +12,7 @@
         </referenceList>
     </entity>
 
-    <entity name="LabelEntity" namespace="gen\ns3" constructClass="Label" constructNamespace="gen\ns4" table="LABEL" targetPath="gen/ns3" >
+    <entity name="LabelEntity" namespace="gen\ns3" constructClass="Label" constructNamespace="base\ns4" table="LABEL" targetPath="gen/ns3" >
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
             <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>

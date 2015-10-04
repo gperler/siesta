@@ -21,9 +21,9 @@ class NamespaceTest extends \SiestaTester
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array(
             "/gen/ns1/ArtistEntity.php",
-            "/gen/ns2/Artist.php",
+            "/base/ns2/Artist.php",
             "/gen/ns3/LabelEntity.php",
-            "/gen/ns4/Label.php"
+            "/base/ns4/Label.php"
         ));
     }
 
@@ -35,10 +35,10 @@ class NamespaceTest extends \SiestaTester
 
     public function testNamespaces()
     {
-        $label = new \gen\ns4\Label();
+        $label = new \base\ns4\Label();
         $label->getArtistList(true);
 
-        $artist = new \gen\ns2\Artist();
+        $artist = new \base\ns2\Artist();
         $artist->getLabel();
 
     }
