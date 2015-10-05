@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 30.06.15
- * Time: 13:30
- */
+
 
 namespace siestaphp\datamodel\attribute;
 

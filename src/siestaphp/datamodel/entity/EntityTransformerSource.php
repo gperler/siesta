@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 28.06.15
- * Time: 22:27
- */
+
 
 namespace siestaphp\datamodel\entity;
 use siestaphp\datamodel\attribute\AttributeTransformerSource;

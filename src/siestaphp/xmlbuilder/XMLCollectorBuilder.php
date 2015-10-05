@@ -1,14 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 27.09.15
- * Time: 12:39
- */
+
 
 namespace siestaphp\xmlbuilder;
-
-
 
 use siestaphp\datamodel\collector\CollectorSource;
 use siestaphp\datamodel\collector\CollectorTransformerSource;
@@ -18,8 +11,8 @@ use siestaphp\naming\XMLCollector;
  * Class XMLCollectorBuilder
  * @package siestaphp\xmlbuilder
  */
-class XMLCollectorBuilder extends XMLBuilder {
-
+class XMLCollectorBuilder extends XMLBuilder
+{
 
     /**
      * @var CollectorSource
@@ -45,25 +38,26 @@ class XMLCollectorBuilder extends XMLBuilder {
             $this->addCollectorTransformerData($collectorSource);
         }
 
-
     }
 
     /**
      * adds the standard information to the xml
      */
-    private function addCollectorData() {
+    private function addCollectorData()
+    {
         $this->setAttribute(XMLCollector::ATTRIBUTE_NAME, $this->collectorSource->getName());
         $this->setAttribute(XMLCollector::ATTRIBUTE_TYPE, $this->collectorSource->getType());
         $this->setAttribute(XMLCollector::ATTRIBUTE_FOREIGN_CLASS, $this->collectorSource->getForeignClass());
         $this->setAttribute(XMLCollector::ATTRIBUTE_REFERENCE_NAME, $this->collectorSource->getReferenceName());
     }
 
-
     /**
      * adds additional information for transformation
+     *
      * @param CollectorTransformerSource $transformerSource
      */
-    private function addCollectorTransformerData(CollectorTransformerSource $transformerSource) {
+    private function addCollectorTransformerData(CollectorTransformerSource $transformerSource)
+    {
         $this->setAttribute(XMLCollector::ATTRIBUTE_METHOD_NAME, $transformerSource->getMethodName());
         $this->setAttribute(XMLCollector::ATTRIBUTE_FOREIGN_CONSTRUCT_CLASS, $transformerSource->getForeignConstructClass());
         $this->setAttribute(XMLCollector::ATTRIBUTE_REFERENCE_METHOD_NAME, $transformerSource->getReferenceMethodName());

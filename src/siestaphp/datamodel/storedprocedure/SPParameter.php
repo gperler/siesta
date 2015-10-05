@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 01.07.15
- * Time: 00:31
- */
+
 
 namespace siestaphp\datamodel\storedprocedure;
 

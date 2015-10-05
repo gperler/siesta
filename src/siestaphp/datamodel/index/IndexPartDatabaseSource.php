@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 29.09.15
- * Time: 15:35
- */
+
 
 namespace siestaphp\datamodel\index;
 

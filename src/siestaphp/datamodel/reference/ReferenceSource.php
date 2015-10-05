@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 22.06.15
- * Time: 18:37
- */
+
 
 namespace siestaphp\datamodel\reference;
 
 use siestaphp\generator\GeneratorLog;
 use siestaphp\runtime\ServiceLocator;
-
 
 /**
  * Class Reference
@@ -18,7 +12,6 @@ use siestaphp\runtime\ServiceLocator;
  */
 interface ReferenceSource
 {
-
 
     /**
      * @return mixed
@@ -40,7 +33,6 @@ interface ReferenceSource
      */
     public function isRequired();
 
-
     /**
      * @return string
      */
@@ -50,6 +42,5 @@ interface ReferenceSource
      * @return string
      */
     public function getOnUpdate();
-
 
 }

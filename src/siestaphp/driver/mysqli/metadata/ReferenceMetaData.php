@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 05.10.15
- * Time: 12:37
- */
+
 
 namespace siestaphp\driver\mysqli\metadata;
 

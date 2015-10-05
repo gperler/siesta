@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 24.06.15
- * Time: 22:27
- */
 
 namespace siestaphp\xmlreader;
 
@@ -29,7 +23,6 @@ class DirectoryScanner
      */
     protected $generatorLog;
 
-
     /**
      * @var EntitySource[]
      */
@@ -43,10 +36,10 @@ class DirectoryScanner
         $this->entitySourceList = array();
     }
 
-
     /**
      * @param GeneratorLog $log
      * @param $baseDir
+     *
      * @return EntitySource[]
      */
     public function scan(GeneratorLog $log, $baseDir)
@@ -69,7 +62,6 @@ class DirectoryScanner
 
         return $this->entitySourceList;
     }
-
 
     /**
      * @param File $directory
@@ -99,7 +91,6 @@ class DirectoryScanner
             $this->handleEntityFile($file);
         }
     }
-
 
     /**
      * @param File $file

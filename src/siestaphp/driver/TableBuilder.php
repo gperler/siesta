@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 21.06.15
- * Time: 15:38
- */
+
 
 namespace siestaphp\driver;
 

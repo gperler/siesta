@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 22.08.15
- * Time: 15:48
- */
 
 namespace siestaphp\datamodel\reference;
 

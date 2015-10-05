@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 23.06.15
- * Time: 20:38
- */
+
 
 
 namespace siestaphp\runtime;
@@ -24,7 +19,6 @@ class ServiceLocator
 
     private static $instance;
 
-
     /**
      * @return static
      */
@@ -38,6 +32,7 @@ class ServiceLocator
 
     /**
      * @param array $config
+     *
      * @return Driver
      */
     public static function getDriver($config = null)
@@ -53,14 +48,13 @@ class ServiceLocator
         return self::getInstance()->getHttpRequestImpl();
     }
 
-
     /**
      * @return UUIDGenerator
      */
-    public static function getUUIDGenerator() {
+    public static function getUUIDGenerator()
+    {
         return self::getInstance()->getUUIDGeneratorImpl();
     }
-
 
     /**
      * @var HttpRequest
@@ -72,12 +66,10 @@ class ServiceLocator
      */
     protected $driver;
 
-
     /**
      * @var UUIDGenerator
      */
     protected $uuidGenerator;
-
 
     /**
      *
@@ -104,6 +96,7 @@ class ServiceLocator
 
     /**
      * @param $config
+     *
      * @return Driver
      */
     public function getDriverImpl($config)
@@ -117,7 +110,8 @@ class ServiceLocator
     /**
      * @return UUIDGenerator
      */
-    public function getUUIDGeneratorImpl() {
+    public function getUUIDGeneratorImpl()
+    {
         return $this->uuidGenerator;
     }
 

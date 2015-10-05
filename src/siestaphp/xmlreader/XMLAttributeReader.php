@@ -1,30 +1,23 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 27.06.15
- * Time: 20:11
- */
 
 namespace siestaphp\xmlreader;
+
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\naming\XMLAttribute;
-
 
 /**
  * Class XMLAttribute
  * @package siestaphp\datamodel\xml
  */
-class XMLAttributeReader extends XMLAccess implements AttributeSource {
-
-
+class XMLAttributeReader extends XMLAccess implements AttributeSource
+{
 
     /**
      * @return string
      */
     public function getName()
     {
-       return $this->getAttribute(XMLAttribute::ATTRIBUTE_NAME);
+        return $this->getAttribute(XMLAttribute::ATTRIBUTE_NAME);
     }
 
     /**

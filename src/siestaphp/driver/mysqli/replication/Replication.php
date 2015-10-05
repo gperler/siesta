@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 30.06.15
- * Time: 18:46
- */
+
 
 namespace siestaphp\driver\mysqli\replication;
 

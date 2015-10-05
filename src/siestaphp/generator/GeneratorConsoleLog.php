@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 23.06.15
- * Time: 20:56
- */
+
 
 namespace siestaphp\generator;
 
@@ -28,7 +23,6 @@ class GeneratorConsoleLog implements GeneratorLog
      * @var int
      */
     protected $warningCount;
-
 
     /**
      *
@@ -90,7 +84,6 @@ class GeneratorConsoleLog implements GeneratorLog
         $this->println("[ERROR] " . $text);
     }
 
-
     /**
      * @param string $needle
      * @param string $attributeName
@@ -103,7 +96,6 @@ class GeneratorConsoleLog implements GeneratorLog
 
         }
     }
-
 
     /**
      * @param string $needle
@@ -118,6 +110,5 @@ class GeneratorConsoleLog implements GeneratorLog
             $this->error("Attribute '$attributeName' in element <$elementName> has an invalid value ('$needle'). Allowed values are: $allowedValues");
         }
     }
-
 
 }

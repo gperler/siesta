@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 25.09.15
- * Time: 16:46
- */
+
 
 namespace siestaphp\driver\mysqli\installer;
 

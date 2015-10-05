@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 01.07.15
- * Time: 00:06
- */
+
 
 namespace siestaphp\naming;
 
@@ -12,7 +7,8 @@ namespace siestaphp\naming;
  * Class XMLStoredProcedure
  * @package siestaphp\naming
  */
-class XMLStoredProcedure {
+class XMLStoredProcedure
+{
 
     const ELEMENT_STORED_PROCEDURE_LIST = "storedProcedureList";
 
@@ -42,9 +38,7 @@ class XMLStoredProcedure {
 
     const ATTRIBUTE_PARAMETER_DATABASE_TYPE = "dbType";
 
-
     // SQL Statement
     const ELEMENT_SQL = "sql";
-
 
 }

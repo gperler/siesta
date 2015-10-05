@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 27.06.15
- * Time: 19:57
- */
 
 namespace siestaphp\datamodel\entity;
 

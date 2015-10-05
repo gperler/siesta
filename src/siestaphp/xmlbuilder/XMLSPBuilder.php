@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 01.10.15
- * Time: 23:07
- */
+
 
 namespace siestaphp\xmlbuilder;
 

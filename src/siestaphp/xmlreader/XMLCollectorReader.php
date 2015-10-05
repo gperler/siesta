@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 27.09.15
- * Time: 11:41
- */
 
 namespace siestaphp\xmlreader;
-
 
 use siestaphp\datamodel\collector\CollectorSource;
 use siestaphp\naming\XMLCollector;
@@ -23,9 +16,8 @@ class XMLCollectorReader extends XMLAccess implements CollectorSource
      */
     public function getName()
     {
-       return $this->getAttribute(XMLCollector::ATTRIBUTE_NAME);
+        return $this->getAttribute(XMLCollector::ATTRIBUTE_NAME);
     }
-
 
     /**
      * @return string
@@ -34,7 +26,6 @@ class XMLCollectorReader extends XMLAccess implements CollectorSource
     {
         return $this->getAttribute(XMLCollector::ATTRIBUTE_TYPE);
     }
-
 
     /**
      * @return string

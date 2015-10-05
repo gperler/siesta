@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 24.06.15
- * Time: 22:51
- */
 
 namespace siestaphp\generator;
 
@@ -15,7 +9,8 @@ use siestaphp\datamodel\entity\EntityTransformerSource;
  * Interface Transformer
  * @package siestaphp\generator
  */
-interface Transformer {
+interface Transformer
+{
 
     /**
      * @param EntityTransformerSource $entity

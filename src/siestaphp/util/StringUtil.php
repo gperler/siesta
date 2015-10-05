@@ -2,13 +2,6 @@
 
 namespace siestaphp\util;
 
-    /**
-     * Created by PhpStorm.
-     * User: gregor
-     * Date: 21.06.15
-     * Time: 14:11
-     */
-
 /**
  * Class StringUtil
  * @package siestaphp\util

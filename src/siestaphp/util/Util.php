@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 21.06.15
- * Time: 16:01
- */
+
 namespace siestaphp\util;
 
 use siestaphp\driver\Driver;

@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 23.06.15
- * Time: 20:41
- */
+
 
 namespace siestaphp\runtime\impl;
 

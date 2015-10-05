@@ -1,16 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 28.06.15
- * Time: 11:20
- */
 
 namespace siestaphp\xmlreader;
 
-
 use siestaphp\datamodel\DatabaseSpecificSource;
-
 
 /**
  * Class XMLDatabaseSpecific
@@ -39,6 +31,5 @@ class XMLDatabaseSpecific extends XMLAccess implements DatabaseSpecificSource
     {
         $this->databaseName = $db;
     }
-
 
 }

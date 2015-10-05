@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 23.06.15
- * Time: 22:10
- */
+
 namespace siestaphp\generator;
 
 /**

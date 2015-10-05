@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 01.07.15
- * Time: 00:00
- */
 
 namespace siestaphp\datamodel\storedprocedure;
 
@@ -21,9 +15,7 @@ use siestaphp\naming\XMLStoredProcedure;
 class StoredProcedure implements Processable, StoredProcedureSource
 {
 
-    private static $ALLOWED_RESULT_TYPES = array(
-        "single", "list", "resultset"
-    );
+    private static $ALLOWED_RESULT_TYPES = array("single", "list", "resultset");
 
     /**
      * @var Entity

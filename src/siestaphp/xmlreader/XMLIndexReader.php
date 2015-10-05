@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 28.09.15
- * Time: 21:56
- */
 
 namespace siestaphp\xmlreader;
 

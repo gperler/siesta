@@ -1,24 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 21.06.15
- * Time: 19:02
- */
+
 
 namespace siestaphp\runtime;
-
 
 /**
  * Class DateTime
  * @package siestaphp\runtime
  */
-interface DateTime {
+interface DateTime
+{
 
     /**
      * @return string
      */
     public function getSQLDateTime();
+
     /**
      * @return string
      */
@@ -29,23 +25,21 @@ interface DateTime {
      */
     public function getSQLTime();
 
-
     /**
      * @param string $dateString
      */
     public function stringToTime($dateString);
-
 
     /**
      * @return int
      */
     public function getTime();
 
-
     /**
      * @param DateTime $dateTime
+     *
      * @return bool
      */
-    public function equals( $dateTime);
+    public function equals($dateTime);
 
 }

@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 29.06.15
- * Time: 14:56
- */
+
 
 namespace siestaphp\datamodel\reference;
 
@@ -30,18 +25,15 @@ interface ReferenceTransformerSource extends ReferenceSource
      */
     public function getReferencedConstructClass();
 
-
     /**
      * @return ReferencedColumnSource[]
      */
     public function getReferenceColumnList();
 
-
     /**
      * @return string
      */
     public function getStoredProcedureFinderName();
-
 
     /**
      * @return string

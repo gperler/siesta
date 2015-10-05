@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 27.09.15
- * Time: 11:38
- */
+
 
 namespace siestaphp\datamodel\collector;
 
@@ -14,7 +9,6 @@ use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\Processable;
 use siestaphp\datamodel\reference\Reference;
 use siestaphp\generator\GeneratorLog;
-
 
 /**
  * Class Collector
@@ -28,12 +22,10 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
      */
     protected $collectorSource;
 
-
     /**
      * @var Entity
      */
     protected $foreignClassEntity;
-
 
     /**
      * @var Reference
@@ -41,7 +33,6 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
     protected $reference;
 
     /**
-     *
      * @param CollectorSource $source
      */
     public function setSource(CollectorSource $source)
@@ -59,7 +50,6 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
         if ($this->foreignClassEntity) {
             $this->reference = $this->foreignClassEntity->getReferenceByName($this->getReferenceName());
         }
-
 
     }
 
@@ -130,7 +120,6 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
         return ucfirst($this->collectorSource->getName());
     }
 
-
     /**
      * @return string
      */
@@ -138,7 +127,6 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
     {
         return $this->foreignClassEntity->getConstructorClass();
     }
-
 
     /**
      * @return string

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 28.06.15
- * Time: 18:12
- */
 
 namespace siestaphp\naming;
-
 
 /**
  * Class XMLReference
@@ -35,7 +28,6 @@ class XMLReference
     const ATTRIBUTE_ON_UPDATE = "onUpdate";
 
     /* derived data here */
-
 
     // derived values here
     const ATTRIBUTE_METHOD_NAME = "methodName";

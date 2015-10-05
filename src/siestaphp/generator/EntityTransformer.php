@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 22.06.15
- * Time: 22:07
- */
 
 namespace siestaphp\generator;
-
 
 use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntityTransformerSource;
@@ -23,7 +16,6 @@ class EntityTransformer implements Transformer
 
     const ENTITY_XSL = "/xslt/Entity.xsl";
 
-
     /**
      * @var \XSLTProcessor
      */
@@ -38,7 +30,6 @@ class EntityTransformer implements Transformer
 
         $this->xsltProcessor = $xslFile->loadAsXSLTProcessor();
     }
-
 
     /**
      * transforms the entity to the main php persistence class
@@ -72,6 +63,5 @@ class EntityTransformer implements Transformer
         // transform xml to php class
         $this->xsltProcessor->transformToUri($domDocument, $targetFilePath->getAbsoluteFileName());
     }
-
 
 }

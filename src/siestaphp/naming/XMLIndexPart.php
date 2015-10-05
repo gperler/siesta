@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 28.09.15
- * Time: 22:09
- */
+
 
 namespace siestaphp\naming;
 

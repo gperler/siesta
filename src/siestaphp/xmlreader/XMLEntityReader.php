@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 27.06.15
- * Time: 11:38
- */
 
 namespace siestaphp\xmlreader;
 
@@ -168,7 +162,8 @@ class XMLEntityReader extends XMLAccess implements EntitySource
     /**
      * @return IndexSource[]
      */
-    public function getIndexSourceList() {
+    public function getIndexSourceList()
+    {
         if ($this->indexList === null) {
             $this->readIndexSourceList();
         }
@@ -176,10 +171,11 @@ class XMLEntityReader extends XMLAccess implements EntitySource
         return $this->indexList;
     }
 
-    private function readIndexSourceList() {
+    private function readIndexSourceList()
+    {
         $this->indexList = array();
         $indexXMLList = $this->getXMLChildElementListByName(XMLIndex::ELEMENT_INDEX_NAME);
-        foreach($indexXMLList as $indexXML) {
+        foreach ($indexXMLList as $indexXML) {
             $indexReader = new XMLIndexReader();
             $indexReader->setSource($indexXML);
             $this->indexList[] = $indexReader;

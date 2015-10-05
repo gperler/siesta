@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 01.07.15
- * Time: 01:35
- */
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 

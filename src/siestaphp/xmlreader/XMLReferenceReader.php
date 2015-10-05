@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 27.06.15
- * Time: 20:11
- */
 
 namespace siestaphp\xmlreader;
 
@@ -29,7 +23,8 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
     /**
      * @return string
      */
-    public function getRelationName() {
+    public function getRelationName()
+    {
         return $this->getAttribute(XMLReference::ATTRIBUTE_RELATION_NAME);
     }
 
