@@ -22,7 +22,6 @@ class DateTimeImpl implements DateTime
      */
     protected $timestamp;
 
-
     /**
      *
      */
@@ -60,30 +59,28 @@ class DateTimeImpl implements DateTime
      */
     public function stringToTime($dateString)
     {
-
         $this->timestamp = strtotime($dateString);
-
-        echo $this->timestamp;
     }
 
     /**
      * @return int
      */
-    public function getTime() {
+    public function getTime()
+    {
         return $this->timestamp;
     }
 
     /**
      * @param DateTime $dateTime
+     *
      * @return bool
      */
-    public function equals( $dateTime) {
+    public function equals($dateTime)
+    {
         if (!$dateTime) {
             return false;
         }
         return $this->timestamp === $dateTime->getTime();
     }
-
-
 
 }

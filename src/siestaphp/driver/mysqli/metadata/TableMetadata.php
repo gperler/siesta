@@ -22,13 +22,23 @@ use siestaphp\driver\mysqli\MySQLDriver;
  */
 class TableMetadata implements EntitySource
 {
-
-    const FIND_COLUMNS = "SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME='%s';";
+    const SP_GET_COLUMN_DETAILS = "CALL `SIESTA_GET_COLUMN_DETAILS` ('%s','%s')";
+    const SP_GET_FK_DETAILS = "CALL `SIESTA_GET_FOREIGN_KEY_DETAILS` ('%s','%s')";
 
     /**
      * @var string
      */
     protected $tableName;
+
+    /**
+     * @var string
+     */
+    protected $targetPath;
+
+    /**
+     * @var string
+     */
+    protected $targetNamespace;
 
     /**
      * @var MySQLDriver
@@ -38,35 +48,85 @@ class TableMetadata implements EntitySource
     /**
      * @var AttributeMetaData[]
      */
-    protected $attributeMetaData;
+    protected $attributeMetaDataList;
+
+    /**
+     * @var ReferenceMetaData[]
+     */
+    protected $referenceMetaDataList;
 
     /**
      * @param MySQLDriver $driver
-     * @param string $tableName
+     * @param $tableName
+     * @param $targetPath
+     * @param $targetNamespace
      */
-    public function __construct(MySQLDriver $driver, $tableName)
+    public function __construct(MySQLDriver $driver, $tableName, $targetPath, $targetNamespace)
     {
         $this->tableName = $tableName;
         $this->driver = $driver;
 
-        $this->attributeMetaData = array();
+        $this->attributeMetaDataList = array();
+        $this->referenceMetaDataList = array();
+
+        $this->extractReferenceData();
+
         $this->extractColumns();
+
     }
 
+    /**
+     * extracts columns from table and create AttributeMetaData or ReferenceMetaData objects
+     */
     protected function extractColumns()
     {
 
-        $sql = sprintf(self::FIND_COLUMNS, $this->driver->getDatabase(), $this->tableName);
+        $sql = sprintf(self::SP_GET_COLUMN_DETAILS, $this->driver->getDatabase(), $this->tableName);
 
-        $resultSet = $this->driver->query($sql);
+        $resultSet = $this->driver->executeStoredProcedure($sql);
 
         while ($resultSet->hasNext()) {
-            $columnKey = $resultSet->getStringValue(AttributeMetaData::COLUMN_KEY) . PHP_EOL;
-            if ($columnKey !== AttributeMetaData::COLUMN_KEY_FOREIGN_KEY) {
-                $this->attributeMetaData[] = new AttributeMetaData($resultSet);
+            $columnName = $resultSet->getStringValue(AttributeMetaData::COLUMN_NAME);
+            $reference = $this->getReferenceByColumnName($columnName);
+            if ($reference !== null) {
+                $reference->updateReferenceInformation($resultSet);
+            } else {
+                $this->attributeMetaDataList[] = new AttributeMetaData($resultSet);
             }
         }
 
+        $resultSet->close();
+    }
+
+    /**
+     * reads foreign key constraints and enriches ReferenceMetaData objects
+     */
+    protected function extractReferenceData()
+    {
+        $sql = sprintf(self::SP_GET_FK_DETAILS, $this->driver->getDatabase(), $this->tableName);
+        $resultSet = $this->driver->executeStoredProcedure($sql);
+
+        while ($resultSet->hasNext()) {
+            $this->referenceMetaDataList[] = new ReferenceMetaData($resultSet);
+        }
+
+        $resultSet->close();
+    }
+
+    /**
+     * retrieves a ReferenceMetaData by column name
+     * @param string $columnName
+     *
+     * @return ReferenceMetaData
+     */
+    protected function getReferenceByColumnName($columnName)
+    {
+        foreach ($this->referenceMetaDataList as $referenceMetaData) {
+            if ($referenceMetaData->getName() === $columnName) {
+                return $referenceMetaData;
+            }
+        }
+        return null;
     }
 
     /**
@@ -74,7 +134,7 @@ class TableMetadata implements EntitySource
      */
     public function getAttributeSourceList()
     {
-        // TODO: Implement getAttributeSourceList() method.
+        return $this->attributeMetaDataList;
     }
 
     /**
@@ -82,7 +142,7 @@ class TableMetadata implements EntitySource
      */
     public function getReferenceSourceList()
     {
-        // TODO: Implement getReferenceSourceList() method.
+        return $this->referenceMetaDataList;
     }
 
     /**
@@ -114,7 +174,7 @@ class TableMetadata implements EntitySource
      */
     public function getClassName()
     {
-        // TODO: Implement getClassName() method.
+        return ucfirst(strtolower($this->tableName));
     }
 
     /**
@@ -122,7 +182,6 @@ class TableMetadata implements EntitySource
      */
     public function getClassNamespace()
     {
-        // TODO: Implement getClassNamespace() method.
     }
 
     /**
@@ -130,7 +189,7 @@ class TableMetadata implements EntitySource
      */
     public function getConstructorClass()
     {
-        // TODO: Implement getConstructorClass() method.
+        return "";
     }
 
     /**
@@ -138,7 +197,7 @@ class TableMetadata implements EntitySource
      */
     public function getConstructorNamespace()
     {
-        // TODO: Implement getConstructorNamespace() method.
+        return "";
     }
 
     /**
@@ -146,7 +205,7 @@ class TableMetadata implements EntitySource
      */
     public function getTable()
     {
-        // TODO: Implement getTable() method.
+        return $this->tableName;
     }
 
     /**

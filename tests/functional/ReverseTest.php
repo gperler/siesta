@@ -25,7 +25,7 @@ class ReverseTest extends \SiestaTester
 
     protected function tearDown()
     {
-        $this->dropDatabase();
+        //$this->dropDatabase();
 
     }
 
@@ -34,7 +34,6 @@ class ReverseTest extends \SiestaTester
      */
     public function testCreateEntity()
     {
-        echo "hello";
     }
 
  }

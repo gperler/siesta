@@ -21,6 +21,8 @@ use siestaphp\naming\StoredProcedureNaming;
 class InsertStoredProcedure extends StoredProcedureBase
 {
 
+    const INSERT_STATEMENT = "INSERT INTO %s ( %s ) VALUES ( %s );";
+
 
     /**
      * @param EntityDatabaseSource $eds
@@ -128,7 +130,7 @@ class InsertStoredProcedure extends StoredProcedureBase
         $valueList = rtrim($valueList, ",");
 
         // done
-        return "INSERT INTO $tableName ( $columnList ) VALUES ( $valueList );";
+        return sprintf(self::INSERT_STATEMENT, $tableName, $columnList, $valueList);
     }
 
 

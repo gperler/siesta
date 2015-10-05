@@ -88,7 +88,6 @@ class GeneratorConsoleLog implements GeneratorLog
     {
         $this->errorCount++;
         $this->println("[ERROR] " . $text);
-        Debug::debug($text);
     }
 
 

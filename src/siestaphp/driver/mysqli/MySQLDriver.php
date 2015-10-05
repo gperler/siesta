@@ -16,7 +16,7 @@ use siestaphp\driver\exceptions\SQLException;
 use siestaphp\driver\exceptions\TableAlreadyExistsException;
 use siestaphp\driver\exceptions\TableDoesNotExistException;
 use siestaphp\driver\exceptions\UniqueConstraintViolationException;
-use siestaphp\driver\mysqli\sequencer\SequencerCreator;
+use siestaphp\driver\mysqli\installer\Installer;
 use siestaphp\driver\ResultSet;
 use siestaphp\driver\TableBuilder;
 
@@ -75,8 +75,6 @@ class MySQLDriver implements Driver
 
         // check for errors
         if ($this->connection->connect_errno) {
-            echo $this->connection->connect_error;
-            echo $this->connection->connect_error;
             throw new ConnectException ("Can't connect to " . $host . " : " . $this->connection->connect_error, $this->connection->connect_errno);
         }
 
@@ -138,7 +136,6 @@ class MySQLDriver implements Driver
         $result = $this->connection->query($query);
 
         if (!$result) {
-            echo $query;
             $this->handleQueryError($this->connection->errno, $this->connection->error, $query);
         }
 
@@ -163,7 +160,6 @@ class MySQLDriver implements Driver
         $result = $this->connection->multi_query($query);
 
         if (!$result) {
-            echo $query;
             $this->handleQueryError($this->connection->errno, $this->connection->error, $query);
         }
 
@@ -217,11 +213,11 @@ class MySQLDriver implements Driver
     }
 
     /**
-     * installs the sequencer
+     * installs the installer
      */
     public function install()
     {
-        SequencerCreator::install($this);
+        Installer::install($this);
     }
 
     /**

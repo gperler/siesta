@@ -116,7 +116,6 @@ class Generator
         $this->dataModelContainer->validate();
 
         if ($this->generatorLog->hasErrors()) {
-            Debug::debug("ERRORS!");
             return;
         }
 
