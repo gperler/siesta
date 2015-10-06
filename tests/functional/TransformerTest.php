@@ -1,8 +1,6 @@
 <?php
 
-use \transfomertest\LabelArtistXML;
-
-require_once 'transformer.test/LabelArtistXML.php';
+require_once 'transformer/TransformerXML.php';
 
 /**
  * Class TransformerTest
@@ -10,7 +8,7 @@ require_once 'transformer.test/LabelArtistXML.php';
 class TransformerTest extends \PHPUnit_Framework_TestCase
 {
 
-    const ASSET_PATH = "/transformer.test";
+    const ASSET_PATH = "/transformer";
 
     /**
      * @return \siestaphp\datamodel\entity\Entity
@@ -18,7 +16,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     private function loadEntitySource()
     {
         // read file
-        $file = new \siestaphp\util\File(__DIR__ . self::ASSET_PATH . "/LabelArtist.test.xml");
+        $file = new \siestaphp\util\File(__DIR__ . self::ASSET_PATH . "/Transformer.test.xml");
         $xmlReader = new \siestaphp\xmlreader\XMLReader($file);
 
         // get entities
@@ -42,7 +40,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     public function testEntity()
     {
         $entity = $this->loadEntitySource();
-        $definition = LabelArtistXML::getEntityTransformerDefinition();
+        $definition = TransformerXML::getEntityTransformerDefinition();
 
         $this->assertSame($entity->getClassName(), $definition["name"], "name is not correct");
         $this->assertSame($entity->getClassNamespace(), $definition["namespace"], "namespace is not correct");
@@ -78,7 +76,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $attributeName = $ats->getName();
 
         // get definition
-        $definitionList = LabelArtistXML::getAttributeTransformerDefinition();
+        $definitionList = TransformerXML::getAttributeTransformerDefinition();
         $definition = \siestaphp\util\Util::getFromIndex($definitionList, $attributeName);
         $this->assertNotNull($definition, "Attribute " . $attributeName . " not in definition list");
 
@@ -117,7 +115,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $referenceName = $referenceSource->getName();
 
         // get definition
-        $definitionList = LabelArtistXML::getReferenceTransformerDefinition();
+        $definitionList = TransformerXML::getReferenceTransformerDefinition();
         $definition = \siestaphp\util\Util::getFromIndex($definitionList, $referenceName);
 
         // check that reference exists
@@ -180,7 +178,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $name = $collectorSource->getName();
 
         // find definition
-        $definitionList = LabelArtistXML::getCollectorTransformerDefinition();
+        $definitionList = TransformerXML::getCollectorTransformerDefinition();
         $definition = \siestaphp\util\Util::getFromIndex($definitionList, $name);
         $this->assertNotNull($definition, "Collector " . $name . " not in definition list");
 
@@ -211,7 +209,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     {
         $indexName = $index->getName();
 
-        $definitionList = LabelArtistXML::getIndexDefinition();
+        $definitionList = TransformerXML::getIndexDefinition();
         $definition = \siestaphp\util\Util::getFromIndex($definitionList, $indexName);
         $this->assertNotNull($definition, "Index " . $indexName . " not in definition list");
 
@@ -233,7 +231,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     {
         $indexPartName = $indexPart->getName();
 
-        $definitionList = LabelArtistXML::getIndexPartDefinition();
+        $definitionList = TransformerXML::getIndexPartDefinition();
         $indexPartListDefinition = \siestaphp\util\Util::getFromIndex($definitionList, $indexName);
         $this->assertNotNull($indexPartListDefinition, "Definition for " . $indexName . " not in definition list");
 
@@ -261,7 +259,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
      */
     private function testStoredProcedure(\siestaphp\datamodel\storedprocedure\StoredProcedureSource $spSource)
     {
-        $spDefinition = LabelArtistXML::getSPDefinition();
+        $spDefinition = TransformerXML::getSPDefinition();
         $this->assertSame($spSource->getName(), $spDefinition["name"]);
         $this->assertSame($spSource->modifies(), $spDefinition["modifies"]);
         $this->assertSame($spSource->getSql(), $spDefinition["sql"]);
@@ -280,7 +278,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
      */
     private function testSPParameter(\siestaphp\datamodel\storedprocedure\SPParameterSource $spParameterSource)
     {
-        $definitionList = LabelArtistXML::getSPParameterDefinition();
+        $definitionList = TransformerXML::getSPParameterDefinition();
 
         // find definition
         $definition = \siestaphp\util\Util::getFromIndex($definitionList, $spParameterSource->getName());

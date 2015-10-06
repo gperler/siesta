@@ -11,7 +11,7 @@ class UUIDTest extends \SiestaTester
 
     const DATABASE_NAME = "UUID_TEST";
 
-    const ASSET_PATH = "/uuid.test";
+    const ASSET_PATH = "/uuid";
 
     const SRC_XML = "/UUID.test.xml";
 

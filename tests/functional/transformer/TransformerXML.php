@@ -1,21 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 13.09.15
- * Time: 16:46
- */
-/*
- * this class contains the data that is also available in LabelArtist.test.xml
- */
-
-namespace transfomertest;
 
 /**
  * Class LabelArtistXML
  * @package xmlreadertest
  */
-class LabelArtistXML
+class TransformerXML
 {
 
 
@@ -156,8 +145,8 @@ class LabelArtistXML
                 "name" => "label",
                 "foreignClass" => "LabelEntity",
                 "required" => false,
-                "onDelete" => "setnull",
-                "onUpdate" => "setnull",
+                "onDelete" => "set null",
+                "onUpdate" => "set null",
                 "relationName" => "_label_artist_"
             )
         );

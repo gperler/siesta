@@ -19,16 +19,16 @@ use siestaphp\naming\XMLReference;
 class Reference implements Processable, ReferenceSource, ReferenceTransformerSource, ReferenceDatabaseSource
 {
 
-    private static $ALLOWED_ON_X = array("restrict", "cascade", "setnull", "none");
+    private static $ALLOWED_ON_X = array("restrict", "cascade", "set null", "no action");
 
     const PARAMETER_PREFIX = "P_";
 
     const ON_X_RESTRICT = "restrict";
     const ON_X_CASCADE = "cascade";
 
-    const ON_X_SETNULL = "setnull";
+    const ON_X_SET_NULL = "set null";
 
-    const ON_X_NONE = "none";
+    const ON_X_NONE = "no action";
 
     /**
      * @var ReferenceSource
@@ -182,7 +182,7 @@ class Reference implements Processable, ReferenceSource, ReferenceTransformerSou
 
         $log->errorIfNotInList($this->onUpdate, self::$ALLOWED_ON_X, XMLReference::ATTRIBUTE_ON_UPDATE, XMLReference::ELEMENT_REFERENCE_NAME);
 
-        if ($this->onDelete === self::ON_X_SETNULL and $this->required) {
+        if ($this->onDelete === self::ON_X_SET_NULL and $this->required) {
             $log->error("Reference '" . $this->name . "' has required='true' but onDelete='setnull'. Either change onDelete or required");
         }
 

@@ -248,6 +248,7 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
         if (!in_array($fqClassName, $this->usedFQNClassNameList)) {
             $this->usedFQNClassNameList[] = $fqClassName;
         }
+
     }
 
     /**

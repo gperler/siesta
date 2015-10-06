@@ -3,7 +3,6 @@
 
 namespace siestaphp\driver\mysqli\metadata;
 
-
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\driver\ResultSet;
 
@@ -11,7 +10,8 @@ use siestaphp\driver\ResultSet;
  * Class ReferenceMetaData
  * @package siestaphp\driver\mysqli\metadata
  */
-class ReferenceMetaData implements ReferenceSource {
+class ReferenceMetaData implements ReferenceSource
+{
 
     const REFERENCED_TABLE_NAME = "REFERENCED_TABLE_NAME";
     const REFERENCED_COLUMN_NAME = "REFERENCED_COLUMN_NAME";
@@ -39,7 +39,8 @@ class ReferenceMetaData implements ReferenceSource {
     /**
      * @param ResultSet $resultSet
      */
-    public function __construct(ResultSet $resultSet) {
+    public function __construct(ResultSet $resultSet)
+    {
         $this->referenceName = $resultSet->getStringValue(AttributeMetaData::COLUMN_NAME);
         $this->foreignTable = $resultSet->getStringValue(self::REFERENCED_TABLE_NAME);
         $this->foreignColumn = $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME);
@@ -50,7 +51,8 @@ class ReferenceMetaData implements ReferenceSource {
     /**
      * @param ResultSet $resultSet
      */
-    public function updateReferenceInformation(ResultSet $resultSet) {
+    public function updateReferenceInformation(ResultSet $resultSet)
+    {
         $this->isNullAble = $resultSet->getStringValue(AttributeMetaData::COLUMN_IS_NULLABLE) === AttributeMetaData::COLUMN_IS_NULLABLE_YES;
     }
 
@@ -67,7 +69,7 @@ class ReferenceMetaData implements ReferenceSource {
      */
     public function getRelationName()
     {
-        // TODO: Implement getRelationName() method.
+        return "";
     }
 
     /**
@@ -91,7 +93,7 @@ class ReferenceMetaData implements ReferenceSource {
      */
     public function getOnDelete()
     {
-        $this->onDelete;
+        return strtoupper($this->onDelete);
     }
 
     /**
@@ -99,7 +101,7 @@ class ReferenceMetaData implements ReferenceSource {
      */
     public function getOnUpdate()
     {
-        $this->onUpdate;
+        return strtoupper($this->onUpdate);
     }
 
 }

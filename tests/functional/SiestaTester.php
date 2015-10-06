@@ -24,17 +24,22 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
      */
     protected $startTime;
 
+
+
     /**
      * @param string $database
      */
     protected function connectAndInstall($database)
     {
+        $d =  $database;
+        $d = SIESTA_DATABASE;
+
         $this->driver = \siestaphp\runtime\ServiceLocator::getDriver();
-        $this->driver->query("DROP DATABASE IF EXISTS " . SIESTA_DATABASE);
-        $this->driver->query("CREATE DATABASE " . SIESTA_DATABASE);
-        $this->driver->useDatabase(SIESTA_DATABASE);
+        $this->driver->query("DROP DATABASE IF EXISTS " . $d);
+        $this->driver->query("CREATE DATABASE " . $d);
+        $this->driver->useDatabase($d);
         $this->driver->install();
-        $this->databaseName = SIESTA_DATABASE;
+        $this->databaseName = $d;
     }
 
     protected function dropDatabase()

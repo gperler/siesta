@@ -48,6 +48,9 @@ class XMLReferenceBuilder extends XMLBuilder
         $this->setAttribute(XMLReference::ATTRIBUTE_NAME, $this->referenceSource->getName());
         $this->setAttribute(XMLReference::ATTRIBUTE_FOREIGN_CLASS, $this->referenceSource->getForeignClass());
         $this->setAttributeAsBool(XMLReference::ATTRIBUTE_REQUIRED, $this->referenceSource->isRequired());
+        $this->setAttribute(XMLReference::ATTRIBUTE_ON_DELETE, $this->referenceSource->getOnDelete());
+        $this->setAttribute(XMLReference::ATTRIBUTE_ON_UPDATE, $this->referenceSource->getOnUpdate());
+
     }
 
     /**

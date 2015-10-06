@@ -14,7 +14,6 @@ use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\entity\EntityDatabaseSource;
 use siestaphp\datamodel\index\IndexDatabaseSource;
 use siestaphp\datamodel\index\IndexPartDatabaseSource;
-use siestaphp\datamodel\index\IndexPartSource;
 use siestaphp\datamodel\reference\Reference;
 use siestaphp\datamodel\reference\ReferenceDatabaseSource;
 use siestaphp\driver\DriverFactory;
@@ -26,13 +25,19 @@ use siestaphp\driver\DriverFactory;
 class TableCreator
 {
 
+    const CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
+
+    const FOREIGN_KEY_CONSTRAINT = ",CONSTRAINT %s FOREIGN KEY %s (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s";
+
     const REPLICATION = "replication";
 
-    const MYSQL_ENGINE = "engine";
+    const MYSQL_ENGINE_ATTRIBUTE = "engine";
 
-    const MYSQL_COLLATE = "collate";
+    const MYSQL_ENGINE = " ENGINE = ";
 
-    const MYSQL_CHARSET = "charset";
+    const MYSQL_COLLATE_ATTRIBUTE = "collate";
+
+    const MYSQL_CHARSET_ATTRIBUTE = "charset";
 
     const REFERENCE_OPTION_CASCADE = "CASCADE";
 
@@ -42,6 +47,14 @@ class TableCreator
 
     const REFERENCE_OPTION_NO_ACTION = "NO ACTION";
 
+    const UNIQUE_SUFFIX = "_UNIQUE";
+
+    const INDEX_SUFFIX = "_INDEX";
+
+    const FOREIGN_KEY_SUFFIX = "_FOREIGN_KEY";
+
+    const FOREIGN_KEY_INDEX_SUFFIX = "_FK_INDEX";
+
     /**
      * @param $columnName
      *
@@ -49,7 +62,7 @@ class TableCreator
      */
     public static function getUniqueIndexName($columnName)
     {
-        return $columnName . "_UNIQUE";
+        return $columnName . self::UNIQUE_SUFFIX;
     }
 
     /**
@@ -59,7 +72,7 @@ class TableCreator
      */
     public static function getIndexName($columnName)
     {
-        return $columnName . "_INDEX";
+        return $columnName . self::INDEX_SUFFIX;
     }
 
     /**
@@ -69,7 +82,17 @@ class TableCreator
      */
     public static function getForeignKeyConstraintName($columnName)
     {
-        return strtoupper($columnName) . "_REFERENCE";
+        return strtoupper($columnName) . self::FOREIGN_KEY_SUFFIX;
+    }
+
+    /**
+     * @param string $columnName
+     *
+     * @return string
+     */
+    public static function getForeignKeyConstraintIndexName($columnName)
+    {
+        return strtoupper($columnName) . self::FOREIGN_KEY_INDEX_SUFFIX;
     }
 
     /**
@@ -93,11 +116,12 @@ class TableCreator
     public function setupTable(EntityDatabaseSource $eds)
     {
         $this->entityDatabaseSource = $eds;
+
         $this->databaseSpecific = $eds->getDatabaseSpecific(MySQLDriver::NAME);
 
         $this->replication = $this->getDatabaseSpecificAsBool(self::REPLICATION);
 
-        $sql = $this->createTable($eds->getTable(), $this->getDatabaseSpecific(self::MYSQL_ENGINE)) . PHP_EOL . PHP_EOL;
+        $sql = $this->buildTableCreateStatement($eds->getTable());
 
         DriverFactory::getDriver()->query($sql);
 
@@ -105,15 +129,14 @@ class TableCreator
 
     /**
      * @param string $tableName
-     * @param string $engine
      *
      * @return string
      */
-    private function createTable($tableName, $engine)
+    private function buildTableCreateStatement($tableName)
     {
-        $sql = "CREATE TABLE IF NOT EXISTS " . $this->quote($tableName);
+        $sql = self::CREATE_TABLE . $this->quote($tableName);
 
-        $sql .= "(" . $this->createColumnSQL();
+        $sql .= "(" . $this->buildColumnSQL();
 
         $sql .= $this->buildPrimaryKeySnippet();
 
@@ -121,7 +144,7 @@ class TableCreator
 
         $sql .= $this->buildAllForeignKeyConstraint() . ")";
 
-        $sql .= $this->buildEngineSQL($engine);
+        $sql .= $this->buildEngineSQL();
 
         $sql .= $this->buildCollateSQL();
 
@@ -133,14 +156,14 @@ class TableCreator
     /**
      * @return string
      */
-    private function createColumnSQL()
+    private function buildColumnSQL()
     {
         $sql = "";
         foreach ($this->entityDatabaseSource->getAttributeSourceList() as $attribute) {
-            $sql .= $this->buildAttributeSQL($attribute) . ",";
+            $sql .= $this->buildAttributeColumnSQL($attribute) . ",";
         }
         foreach ($this->entityDatabaseSource->getReferenceSourceList() as $reference) {
-            $sql .= $this->buildReferenceSQL($reference) . ",";
+            $sql .= $this->buildReferenceColumnSQL($reference) . ",";
         }
         return rtrim($sql, ",");
     }
@@ -150,9 +173,9 @@ class TableCreator
      *
      * @return string
      */
-    private function buildAttributeSQL(AttributeDatabaseSource $attribute)
+    private function buildAttributeColumnSQL(AttributeDatabaseSource $attribute)
     {
-        return $this->buildColumnSQL($attribute->getDatabaseName(), $attribute->getDatabaseType(), $attribute->isRequired());
+        return $this->buildColumnSQLSnippet($attribute->getDatabaseName(), $attribute->getDatabaseType(), $attribute->isRequired());
     }
 
     /**
@@ -160,14 +183,14 @@ class TableCreator
      *
      * @return string
      */
-    private function buildReferenceSQL(ReferenceDatabaseSource $reference)
+    private function buildReferenceColumnSQL(ReferenceDatabaseSource $reference)
     {
         $referenceSQL = "";
 
         $columnList = $reference->getReferenceColumnList();
 
         foreach ($columnList as $column) {
-            $referenceSQL .= $this->buildColumnSQL($column->getDatabaseName(), $column->getDatabaseType(), $reference->isRequired()) . ",";
+            $referenceSQL .= $this->buildColumnSQLSnippet($column->getDatabaseName(), $column->getDatabaseType(), $reference->isRequired()) . ",";
         }
 
         return rtrim($referenceSQL, ",");
@@ -180,7 +203,7 @@ class TableCreator
      *
      * @return string
      */
-    private function buildColumnSQL($name, $type, $required)
+    private function buildColumnSQLSnippet($name, $type, $required)
     {
         $sql = $this->quote($name) . " " . $type;
         if ($required) {
@@ -241,7 +264,7 @@ class TableCreator
         }
 
         // open columns
-        $sql .=" ( ";
+        $sql .= " ( ";
 
         foreach ($indexSource->getIndexPartSourceList() as $indexPartSource) {
             $sql .= $this->buildIndexPart($indexPartSource) . ",";
@@ -279,7 +302,7 @@ class TableCreator
     {
         $sql = "";
         foreach ($this->entityDatabaseSource->getReferenceSourceList() as $reference) {
-            $sql .= $this->buildForeignKeyConstraint($reference);
+            $sql .= $this->buildForeignKeyConstraintSQL($reference);
         }
         return $sql;
     }
@@ -289,29 +312,48 @@ class TableCreator
      *
      * @return string
      */
-    private function buildForeignKeyConstraint(ReferenceDatabaseSource $rds)
+    private function buildForeignKeyConstraintSQL(ReferenceDatabaseSource $rds)
     {
 
         $columnNames = "";
-        $referencedNames = "";
+        $referencedColumnNames = "";
 
         $columnList = $rds->getReferenceColumnList();
         foreach ($columnList as $column) {
             $columnNames .= $this->quote($column->getDatabaseName()) . ",";
-            $referencedNames .= $this->quote($column->getReferencedColumnName()) . ",";
+            $referencedColumnNames .= $this->quote($column->getReferencedColumnName()) . ",";
         }
 
         $columnNames = rtrim($columnNames, ",");
-        $referencedNames = rtrim($referencedNames, ",");
-        $constraintName = self::getForeignKeyConstraintName($rds->getName());
+        $referencedColumnNames = rtrim($referencedColumnNames, ",");
 
-        $sql = ",FOREIGN KEY " . $this->quote($constraintName) . " (" . $columnNames . ")";
-        $sql .= " REFERENCES ";
-        $sql .= $rds->getReferencedTableName() . "(" . $referencedNames . ")";
-        $sql .= " ON DELETE " . $this->getReferenceOption($rds->getOnDelete()) . " ";
-        $sql .= " ON UPDATE " . $this->getReferenceOption($rds->getOnUpdate()) . " ";
+        $constraintName = self::getForeignKeyConstraintName($rds->getName());
+        $constraintIndexName = self::getForeignKeyConstraintIndexName($rds->getName());
+        $onDelete = $this->getReferenceOption($rds->getOnDelete());
+        $onSetNull = $this->getReferenceOption($rds->getOnUpdate());
+
+        $sql = $this->buildConstraintSnippet($constraintName, $constraintIndexName, $columnNames, $rds->getReferencedTableName(), $referencedColumnNames, $onDelete, $onSetNull);
 
         return $sql;
+    }
+
+    /**
+     * @param string $constraintName
+     * @param string $constraintIndexName
+     * @param string $columnNames
+     * @param string $tableName
+     * @param string $referencedNames
+     * @param string $onDelete
+     * @param string $onSetNull
+     *
+     * @return string
+     */
+    private function buildConstraintSnippet($constraintName, $constraintIndexName, $columnNames, $tableName, $referencedNames, $onDelete, $onSetNull)
+    {
+        $constraintName = $this->quote($constraintName);
+        $constraintIndexName = $this->quote($constraintIndexName);
+        $tableName = $this->quote($tableName);
+        return sprintf(self::FOREIGN_KEY_CONSTRAINT, $constraintName, $constraintIndexName, $columnNames, $tableName, $referencedNames, $onDelete, $onSetNull);
     }
 
     /**
@@ -328,20 +370,19 @@ class TableCreator
                 return self::REFERENCE_OPTION_NO_ACTION;
             case Reference::ON_X_RESTRICT:
                 return self::REFERENCE_OPTION_RESTRICT;
-            case Reference::ON_X_SETNULL:
+            case Reference::ON_X_SET_NULL:
                 return self::REFERENCE_OPTION_SET_NULL;
         }
     }
 
     /**
-     * @param string $engine
-     *
      * @return string
      */
-    private function buildEngineSQL($engine = null)
+    private function buildEngineSQL()
     {
+        $engine = $this->getDatabaseSpecific(self::MYSQL_ENGINE_ATTRIBUTE);
         if ($engine) {
-            return " ENGINE = $engine";
+            return self::MYSQL_ENGINE . $engine;
         }
         return "";
     }
@@ -351,7 +392,7 @@ class TableCreator
      */
     private function buildCollateSQL()
     {
-        $collate = $this->getDatabaseSpecific(self::MYSQL_COLLATE);
+        $collate = $this->getDatabaseSpecific(self::MYSQL_COLLATE_ATTRIBUTE);
         if ($collate) {
             return " COLLATE " . $collate;
         }
@@ -363,7 +404,7 @@ class TableCreator
      */
     private function buildCharsetSQL()
     {
-        $charset = $this->getDatabaseSpecific(self::MYSQL_CHARSET);
+        $charset = $this->getDatabaseSpecific(self::MYSQL_CHARSET_ATTRIBUTE);
         if ($charset) {
             return " DEFAULT CHARACTER SET " . $charset;
         }

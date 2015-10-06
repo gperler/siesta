@@ -1,7 +1,5 @@
 <?php
 
-use \gen\attribute\ArtistEntity;
-
 require_once "SiestaTester.php";
 
 /**
@@ -12,7 +10,7 @@ class ReverseTest extends \SiestaTester
 
     const DATABASE_NAME = "REVERSE_TEST";
 
-    const ASSET_PATH = "/reverse.test";
+    const ASSET_PATH = "/reverse";
 
     const SRC_XML = "/Reverse.test.xml";
 
@@ -25,7 +23,7 @@ class ReverseTest extends \SiestaTester
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
 
     }
 

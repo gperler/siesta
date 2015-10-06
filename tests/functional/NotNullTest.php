@@ -10,7 +10,7 @@ class NotNullTest extends \SiestaTester
 
     const DATABASE_NAME = "NOTNULL_TEST";
 
-    const ASSET_PATH = "/notnull.test";
+    const ASSET_PATH = "/notnull";
 
     const SRC_XML = "/NotNull.test.xml";
 

@@ -12,7 +12,7 @@ class AttributeTest extends \SiestaTester
 
     const DATABASE_NAME = "ATTRIBUTE_TEST";
 
-    const ASSET_PATH = "/attribute.test";
+    const ASSET_PATH = "/attribute";
 
     const SRC_XML = "/Attribute.test.xml";
 
@@ -20,16 +20,12 @@ class AttributeTest extends \SiestaTester
     {
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array(
-            '/gen/attribute/ArtistEntity.php',
-            '/LabelArtistXML.php',
-            '/AttributeXML.php'
-        ));
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array('/gen/attribute/ArtistEntity.php', '/AttributeXML.php'));
     }
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
 
     }
 

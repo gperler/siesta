@@ -11,11 +11,11 @@ class LinkRelation extends \SiestaTester
 
     const DATABASE_NAME = "LINK_RELATION_TEST";
 
-    const ASSET_PATH = "/link.relation.test";
+    const ASSET_PATH = "/linkrelation";
 
     const SRC_XML = "/Link.relation.test.xml";
 
-    const TEST_JSON = "/link.relation.test/link.relation.test.json";
+    const TEST_JSON = "/linkrelation/source.json";
 
     protected function setUp()
     {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="ArtistEntity" namespace="gen\attribute" table="ARTIST" targetPath="gen/attribute">
+    <entity name="ArtistEntity" namespace="gen\reverse" table="ARTIST" targetPath="gen/reverse">
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
             <attribute name="bit" dbType="BIT" type="bool"/>

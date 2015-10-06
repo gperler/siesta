@@ -11,7 +11,7 @@ class NamespaceTest extends \SiestaTester
 
     const DATABASE_NAME = "NAMESPACE_TEST";
 
-    const ASSET_PATH = "/namespace.test";
+    const ASSET_PATH = "/namespace";
 
     const SRC_XML = "/Namespace.test.xml";
 

@@ -1,17 +1,11 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: gregor
- * Date: 13.09.15
- * Time: 16:46
+ * Class LabelArtistXML
+ * @package xmlreadertest
  */
-/*
- * this class contains the data that is also available in LabelArtist.test.xml
- */
-
-class LabelArtistXML
+class XMLReaderXML
 {
-
 
     /**
      * @return array
@@ -32,7 +26,8 @@ class LabelArtistXML
     /**
      * @return array
      */
-    public static function getEntityTransformerDefinition() {
+    public static function getEntityTransformerDefinition()
+    {
         return array_merge(
             self::getEntityDefinition(),
             array(
@@ -44,8 +39,6 @@ class LabelArtistXML
             )
         );
     }
-
-
 
     /**
      * @return array
@@ -116,11 +109,11 @@ class LabelArtistXML
         );
     }
 
-
     /**
      * @return array
      */
-    public static function getAttributeTransformerDefinition() {
+    public static function getAttributeTransformerDefinition()
+    {
         $attributeTransformerData = self::getAttributeDefinition();
 
         $attributeTransformerData["id"]["methodName"] = "Id";
@@ -144,8 +137,9 @@ class LabelArtistXML
                 "name" => "label",
                 "foreignClass" => "LabelEntity",
                 "required" => false,
-                "onDelete" => "setnull",
-                "onUpdate" => "setnull"
+                "onDelete" => "set null",
+                "onUpdate" => "set null",
+                "relationName" => "relationName"
             )
         );
     }
@@ -153,7 +147,22 @@ class LabelArtistXML
     /**
      * @return array
      */
-    public static function getReferenceTransformerDefinition() {
+    public static function getCollectorDefinition()
+    {
+        return array(
+            "name" => array(
+                "type" => "type",
+                "foreignClass" => "foreignClass",
+                "referenceName" => "referenceName",
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public static function getReferenceTransformerDefinition()
+    {
 
         $referenceData = self::getReferenceDefinition();
         $referenceData["label"]["foreignConstructClass"] = "Label";
@@ -172,4 +181,84 @@ class LabelArtistXML
         );
         return $referenceData;
     }
+
+    /**
+     * @return array
+     */
+    public static function getIndexDefinition()
+    {
+        return array(
+            "indexName" => array(
+                "unique" => true,
+                "type" => "btree",
+            ),
+            "indexName2" => array(
+                "unique" => false,
+                "type" => "hash",
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public static function getIndexPartDefinition()
+    {
+        return array(
+            "indexName" => array(
+                "bool" => array(
+                    "sortOrder" => "ASC",
+                    "length" => "123"
+                ),
+                "int" => array(
+                    "sortOrder" => "ASC",
+                    "length" => "123"
+                )
+            ),
+            "indexName2" => array(
+                "float" => array(
+                    "sortOrder" => "DESC",
+                    "length" => "1"
+                ),
+                "string" => array(
+                    "sortOrder" => "DESC",
+                    "length" => "2"
+                )
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public static function getSPDefinition()
+    {
+        return array(
+            "name" => "XYZ",
+            "modifies" => true,
+            "sql" => "SELECT * FROM __TABLE__ WHERE D_STRING = P_TEST;",
+            "mysql-sql" => "SELECT * FROM MYSQL WHERE D_STRING = P_TEST;",
+            "resultType" => "single"
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public static function getSPParameterDefinition()
+    {
+        return array(
+            "test" => array(
+                "spName" => "P_TEST",
+                "type" => "string",
+                "dbType" => "VARCHAR(100)"
+            ),
+            "test2" => array(
+                "spName" => "P_TEST2",
+                "type" => "int",
+                "dbType" => "INT"
+            )
+        );
+    }
+
 }

@@ -11,11 +11,11 @@ class JSONTest extends \SiestaTester
 
     const DATABASE_NAME = "JSON_TEST";
 
-    const ASSET_PATH = "/json.test";
+    const ASSET_PATH = "/json";
 
     const SRC_XML = "/JSON.test.xml";
 
-    const TEST_JSON = "/json.test/json.test.json";
+    const TEST_JSON = "/json/source.json";
 
     protected function setUp()
     {

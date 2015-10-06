@@ -96,4 +96,8 @@ interface Driver
 
     public function rollback();
 
+    public function enableForeignKeyChecks();
+
+    public function disableForeignKeyChecks();
+
 }

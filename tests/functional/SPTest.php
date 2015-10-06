@@ -11,7 +11,7 @@ class SPTest extends \SiestaTester
 
     const DATABASE_NAME = "SP_TEST";
 
-    const ASSET_PATH = "/sp.test";
+    const ASSET_PATH = "/storedprocedure";
 
     const SRC_XML = "/SP.test.xml";
 
@@ -64,6 +64,7 @@ class SPTest extends \SiestaTester
 
         foreach ($artistList as $artist) {
             $this->assertInstanceOf("\gen\sp\ArtistEntity", $artist, "Not instance of ArtistEntity");
+
         }
     }
 

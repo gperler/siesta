@@ -6,6 +6,7 @@ use Codeception\Util\Debug;
 use siestaphp\driver\Driver;
 use siestaphp\driver\exceptions\CannotBeNullException;
 use siestaphp\driver\exceptions\ConnectException;
+use siestaphp\driver\exceptions\ForeignKeyConstraintFailedException;
 use siestaphp\driver\exceptions\SQLException;
 use siestaphp\driver\exceptions\TableAlreadyExistsException;
 use siestaphp\driver\exceptions\TableDoesNotExistException;
@@ -166,6 +167,7 @@ class MySQLDriver implements Driver
      * @param $sql
      *
      * @throws CannotBeNullException
+     * @throws ForeignKeyConstraintFailedException
      * @throws SQLException
      * @throws TableAlreadyExistsException
      * @throws TableDoesNotExistException
@@ -173,6 +175,9 @@ class MySQLDriver implements Driver
      */
     private function handleQueryError($errorNumber, $error, $sql)
     {
+        Debug::debug("MYSQL DRIVER");
+
+        Debug::debug($errorNumber);
         switch ($errorNumber) {
             case 1048:
                 throw new CannotBeNullException($error, $errorNumber);
@@ -182,6 +187,8 @@ class MySQLDriver implements Driver
                 throw new UniqueConstraintViolationException($error, $errorNumber);
             case 1146:
                 throw new TableDoesNotExistException($error, $errorNumber);
+            case 1451:
+                throw new ForeignKeyConstraintFailedException($error, $errorNumber);
             default:
                 throw new SQLException($error, $errorNumber);
         }
@@ -192,7 +199,7 @@ class MySQLDriver implements Driver
      */
     public function getTableBuilder()
     {
-        $this->execute("set foreign_key_checks=0");
+
         return new MySQLTableBuilder();
     }
 
@@ -248,6 +255,16 @@ class MySQLDriver implements Driver
     {
         $this->connection->rollback();
         $this->connection->autocommit(true);
+    }
+
+    public function enableForeignKeyChecks()
+    {
+        $this->execute("set foreign_key_checks=1");
+    }
+
+    public function disableForeignKeyChecks()
+    {
+        $this->execute("set foreign_key_checks=0");
     }
 
 }

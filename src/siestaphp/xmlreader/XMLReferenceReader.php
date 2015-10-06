@@ -57,7 +57,8 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
      */
     public function getOnDelete()
     {
-        return $this->getAttribute(XMLReference::ATTRIBUTE_ON_DELETE);
+
+        return strtolower($this->getAttribute(XMLReference::ATTRIBUTE_ON_DELETE));
     }
 
     /**
@@ -65,7 +66,7 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
      */
     public function getOnUpdate()
     {
-        return $this->getAttribute(XMLReference::ATTRIBUTE_ON_UPDATE);
+        return strtolower($this->getAttribute(XMLReference::ATTRIBUTE_ON_UPDATE));
     }
 
 }

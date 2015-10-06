@@ -8,7 +8,7 @@ class PerformanceTest extends \SiestaTester
 
     const DATABASE_NAME = "PERFORMANCE_TEST";
 
-    const ASSET_PATH = "/performance.test";
+    const ASSET_PATH = "/performance";
 
     const SRC_XML = "/Performance.test.xml";
 
@@ -22,6 +22,7 @@ class PerformanceTest extends \SiestaTester
 
     protected function tearDown()
     {
+        $this->dropDatabase();
     }
 
     public function testInsert()

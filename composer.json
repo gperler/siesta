@@ -1,29 +1,40 @@
 {
-  "name" : "gm314/siesta",
-  "description" : "PHP ORM Library",
-  "version" : "0.1.0.",
-  "require" : {
-    "php" : ">=5.3.9",
-    "lib-xsl" : "*"
+  "name": "gm314/siesta",
+  "description": "PHP ORM Library",
+  "version": "0.1.0.",
+  "require": {
+    "php": ">=5.3.9",
+    "lib-xsl": "*"
   },
   "require-dev": {
-    "codeception/codeception" : "*"
+    "codeception/codeception": "*"
   },
-  "authors" : [ {
-    "name" : "Gregor Müller",
-    "email" : "gm@gm314.de",
-    "role" : "Developer"
-  } ],
-  "support" : {
-    "issues" : "https://github.com/gperler/siesta/issues"
+  "authors": [
+    {
+      "name": "Gregor Müller",
+      "email": "gm@gm314.de",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/gperler/siesta/issues"
   },
-  "keywords" : [ "Object relational mapper", "ORM", "Siesta" ],
-  "autoload" : {
-    "psr-0" : {
-      "siestaphp\\" : "src"
+  "keywords": [
+    "Object relational mapper",
+    "ORM",
+    "Siesta"
+  ],
+  "autoload": {
+    "psr-0": {
+      "siestaphp\\": "src"
     }
   },
-  "license" : "MIT",
-  "type" : "library",
-  "homepage" : "http://siesta.gm314.de"
+  "autoload-dev": {
+    "psr-4": {
+      "siestaphp\\tests\\func\\": "tests/functional"
+    }
+  },
+  "license": "MIT",
+  "type": "library",
+  "homepage": "http://siesta.gm314.de"
 }

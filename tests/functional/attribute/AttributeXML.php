@@ -1,11 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: gregor
- * Date: 15.09.15
- * Time: 16:50
+ * Class AttributeXML
+ * @package siestaphp\tests\funct\attribute
  */
-
 class AttributeXML {
 
     /**

@@ -13,7 +13,7 @@ class CollectorTest extends \SiestaTester
 
     const DATABASE_NAME = "ONE_N_COLLECTOR_TEST";
 
-    const ASSET_PATH = "/collector-1n.test";
+    const ASSET_PATH = "/collector-1n";
 
     const SRC_XML = "/Collector-1n.test.xml";
 
@@ -30,7 +30,7 @@ class CollectorTest extends \SiestaTester
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
 
     }
 

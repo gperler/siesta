@@ -427,6 +427,13 @@
                 return;
             }
 
+            <xsl:for-each select="/entity/referenceList/reference">
+                if ($this-><xsl:value-of select="@name"/>Obj !== null) {
+                $this-><xsl:value-of select="@name"/>Obj->save($cascade, $passport);
+
+                }
+            </xsl:for-each>
+
             <!-- Build stored procedure call with all parameters -->
             $driver = ServiceLocator::getDriver();
             $spCall = $this->createSaveStoredProcedureCall();
@@ -438,12 +445,6 @@
                 return;
             }
 
-            <xsl:for-each select="/entity/referenceList/reference">
-                if ($this-><xsl:value-of select="@name"/>Obj !== null) {
-                    $this-><xsl:value-of select="@name"/>Obj->save($cascade, $passport);
-
-                }
-            </xsl:for-each>
 
             <xsl:for-each select="/entity/collectorList/collector">
                 if ($this-><xsl:value-of select="@name"/> !== null) {

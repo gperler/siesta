@@ -1,8 +1,7 @@
 <?php
 
-use \xmlreadertest\LabelArtistXML;
 
-require_once 'xmlreader.test/LabelArtistXML.php';
+require_once 'xmlreader/XMLReaderXML.php';
 
 /**
  * The XMLReaderTest checks if the xml element is read correctly. It checks for example attributes of entity, attribute
@@ -11,7 +10,7 @@ require_once 'xmlreader.test/LabelArtistXML.php';
 class XMLReaderTest extends \PHPUnit_Framework_TestCase
 {
 
-    const ASSET_PATH = "/xmlreader.test";
+    const ASSET_PATH = "/xmlreader";
 
     /**
      * tries to extract artistEntity entity source from xml
@@ -21,7 +20,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
     {
 
         // load xml file & parse it
-        $file = new \siestaphp\util\File(__DIR__ . self::ASSET_PATH . "/LabelArtist.test.xml");
+        $file = new \siestaphp\util\File(__DIR__ . self::ASSET_PATH . "/XMLReader.test.xml");
         $xmlReader = new \siestaphp\xmlreader\XMLReader($file);
 
         // read entities from file
@@ -47,7 +46,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testEntity()
     {
-        $definition = LabelArtistXML::getEntityDefinition();
+        $definition = XMLReaderXML::getEntityDefinition();
         $artistEntity = $this->loadArtistEntity();
 
         $this->assertSame($artistEntity->getClassName(), $definition["name"], "name is not correct");
@@ -79,7 +78,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         $attributeName = $ats->getName();
 
         // get definition and check they exist
-        $definitionList = LabelArtistXML::getAttributeDefinition();
+        $definitionList = XMLReaderXML::getAttributeDefinition();
         $definition = \siestaphp\util\Util::getFromIndex($definitionList, $attributeName);
         $this->assertNotNull($definition, "Attribute " . $attributeName . " not in definition list");
 
@@ -113,7 +112,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         $referenceName = $referenceSource->getName();
 
         // find definition and check they exist
-        $definitionList = LabelArtistXML::getReferenceDefinition();
+        $definitionList = XMLReaderXML::getReferenceDefinition();
         $definition = \siestaphp\util\Util::getFromIndex($definitionList, $referenceName);
         $this->assertNotNull($definition, "Reference " . $referenceName . " not in definition list");
 
@@ -144,7 +143,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         $name = $collectorSource->getName();
 
         // find definition and check they exist
-        $definitionList = LabelArtistXML::getCollectorDefinition();
+        $definitionList = XMLReaderXML::getCollectorDefinition();
         $definition = \siestaphp\util\Util::getFromIndex($definitionList, $name);
         $this->assertNotNull($definition, "Collector " . $name . " not in definition list");
 
@@ -174,7 +173,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         $indexName = $index->getName();
 
         // find definition and check they exist
-        $definitionList = LabelArtistXML::getIndexDefinition();
+        $definitionList = XMLReaderXML::getIndexDefinition();
         $definition = \siestaphp\util\Util::getFromIndex($definitionList, $indexName);
         $this->assertNotNull($definition, "Index " . $indexName . " not in definition list");
 
@@ -195,7 +194,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
     {
         $indexPartName = $indexPart->getName();
 
-        $definitionList = LabelArtistXML::getIndexPartDefinition();
+        $definitionList = XMLReaderXML::getIndexPartDefinition();
         $indexPartListDefinition = \siestaphp\util\Util::getFromIndex($definitionList, $indexName);
         $this->assertNotNull($indexPartListDefinition, "Definition for " . $indexName . " not in definition list");
 
@@ -221,7 +220,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
      */
     private function testStoredProcedure(\siestaphp\datamodel\storedprocedure\StoredProcedureSource $spSource)
     {
-        $spDefinition = LabelArtistXML::getSPDefinition();
+        $spDefinition = XMLReaderXML::getSPDefinition();
         $this->assertSame($spSource->getName(), $spDefinition["name"]);
         $this->assertSame($spSource->modifies(), $spDefinition["modifies"]);
         $this->assertSame($spSource->getSql(), $spDefinition["sql"]);
@@ -240,7 +239,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
      */
     private function testSPParameter(\siestaphp\datamodel\storedprocedure\SPParameterSource $spParameterSource)
     {
-        $definitionList = LabelArtistXML::getSPParameterDefinition();
+        $definitionList = XMLReaderXML::getSPParameterDefinition();
 
         // find definition
         $definition = \siestaphp\util\Util::getFromIndex($definitionList, $spParameterSource->getName());

@@ -11,7 +11,7 @@ class MultiPKTest extends \SiestaTester
 
     const DATABASE_NAME = "MULTI_PK_TEST";
 
-    const ASSET_PATH = "/multipk.test";
+    const ASSET_PATH = "/multipk";
 
     const SRC_XML = "/MultiPK.test.xml";
 
@@ -33,7 +33,7 @@ class MultiPKTest extends \SiestaTester
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
 
     }
 

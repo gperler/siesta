@@ -11,7 +11,7 @@ class ReferenceTest extends \SiestaTester
 
     const DATABASE_NAME = "REFERENCE_TEST";
 
-    const ASSET_PATH = "/reference.test";
+    const ASSET_PATH = "/reference";
 
     const SRC_XML = "/Reference.test.xml";
 

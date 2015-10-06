@@ -158,11 +158,15 @@ class Generator
         $driver = ServiceLocator::getDriver();
         $driver->install();
 
+        $driver->disableForeignKeyChecks();
+
         $tableBuilder = $driver->getTableBuilder();
         foreach ($this->dataModelContainer->getEntityList() as $ets) {
             $tableBuilder->setupTables($ets);
             $tableBuilder->setupStoredProcedures($ets);
         }
+
+        $driver->enableForeignKeyChecks();
     }
 
 

@@ -151,4 +151,13 @@ class File
         $xsl->importStylesheet($this->loadAsXML());
         return $xsl;
     }
+
+    /**
+     * @return array
+     */
+    public function loadAsJSONArray()
+    {
+        $content = $this->getContents();
+        return json_decode($content, true);
+    }
 }
