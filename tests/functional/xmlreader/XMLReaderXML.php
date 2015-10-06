@@ -1,5 +1,7 @@
 <?php
 
+namespace siestaphp\tests\functional\xmlreader;
+
 /**
  * Class LabelArtistXML
  * @package xmlreadertest

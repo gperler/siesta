@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="ArtistEntity" namespace="gen\uuid" table="ARTIST" targetPath="gen/uuid">
+    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\uuid\gen" table="ARTIST" targetPath="gen">
 
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="uuid"/>
@@ -13,7 +13,7 @@
         </referenceList>
     </entity>
 
-    <entity name="LabelEntity" namespace="gen\uuid" table="LABEL" targetPath="gen/uuid">
+    <entity name="LabelEntity" namespace="siestaphp\tests\functional\uuid\gen" table="LABEL" targetPath="gen">
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="uuid"/>
             <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>

@@ -1,6 +1,17 @@
 <?php
 
-require_once 'transformer/TransformerXML.php';
+namespace siestaphp\tests\functional;
+
+use siestaphp\datamodel\attribute\AttributeTransformerSource;
+use siestaphp\datamodel\collector\CollectorTransformerSource;
+use siestaphp\datamodel\index\IndexDatabaseSource;
+use siestaphp\datamodel\index\IndexPartDatabaseSource;
+use siestaphp\datamodel\reference\ReferencedColumnSource;
+use siestaphp\datamodel\reference\ReferenceTransformerSource;
+use siestaphp\datamodel\storedprocedure\SPParameterSource;
+use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
+use siestaphp\tests\functional\transformer\TransformerXML;
+use siestaphp\util\Util;
 
 /**
  * Class TransformerTest
@@ -68,16 +79,16 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     /**
      * tests an attribute
      *
-     * @param \siestaphp\datamodel\attribute\AttributeTransformerSource $ats
+     * @param AttributeTransformerSource $ats
      */
-    private function testAttribute(\siestaphp\datamodel\attribute\AttributeTransformerSource $ats)
+    private function testAttribute(AttributeTransformerSource $ats)
     {
         // get name
         $attributeName = $ats->getName();
 
         // get definition
         $definitionList = TransformerXML::getAttributeTransformerDefinition();
-        $definition = \siestaphp\util\Util::getFromIndex($definitionList, $attributeName);
+        $definition = Util::getFromIndex($definitionList, $attributeName);
         $this->assertNotNull($definition, "Attribute " . $attributeName . " not in definition list");
 
         // check attribute values
@@ -106,9 +117,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     /**
      * checks a reference
      *
-     * @param \siestaphp\datamodel\reference\ReferenceTransformerSource $referenceSource
+     * @param ReferenceTransformerSource $referenceSource
      */
-    private function testReference(\siestaphp\datamodel\reference\ReferenceTransformerSource $referenceSource)
+    private function testReference(ReferenceTransformerSource $referenceSource)
     {
 
         // get name
@@ -116,7 +127,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
         // get definition
         $definitionList = TransformerXML::getReferenceTransformerDefinition();
-        $definition = \siestaphp\util\Util::getFromIndex($definitionList, $referenceName);
+        $definition = Util::getFromIndex($definitionList, $referenceName);
 
         // check that reference exists
         $this->assertNotNull($definition, "Reference " . $referenceName . " not in definition list");
@@ -140,16 +151,16 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     /**
      * tests a referenced column
      *
-     * @param \siestaphp\datamodel\reference\ReferencedColumnSource $column
+     * @param ReferencedColumnSource $column
      * @param array $data
      */
-    private function testReferencedColunm(\siestaphp\datamodel\reference\ReferencedColumnSource $column, array $data)
+    private function testReferencedColunm(ReferencedColumnSource $column, array $data)
     {
         // get name
         $columnName = $column->getName();
 
         // get data
-        $definition = \siestaphp\util\Util::getFromIndex($data, $columnName);
+        $definition = Util::getFromIndex($data, $columnName);
 
         // check that data exists
         $this->assertNotNull($definition, "Referenced Column " . $columnName . " not in definition list");
@@ -170,16 +181,16 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \siestaphp\datamodel\collector\CollectorTransformerSource $collectorSource
+     * @param CollectorTransformerSource $collectorSource
      */
-    private function testCollector(\siestaphp\datamodel\collector\CollectorTransformerSource $collectorSource)
+    private function testCollector(CollectorTransformerSource $collectorSource)
     {
         // get name
         $name = $collectorSource->getName();
 
         // find definition
         $definitionList = TransformerXML::getCollectorTransformerDefinition();
-        $definition = \siestaphp\util\Util::getFromIndex($definitionList, $name);
+        $definition = Util::getFromIndex($definitionList, $name);
         $this->assertNotNull($definition, "Collector " . $name . " not in definition list");
 
         $this->assertSame($collectorSource->getReferenceName(), $definition["referenceName"]);
@@ -203,9 +214,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \siestaphp\datamodel\index\IndexDatabaseSource $index
+     * @param IndexDatabaseSource $index
      */
-    private function testIndex(\siestaphp\datamodel\index\IndexDatabaseSource $index)
+    private function testIndex(IndexDatabaseSource $index)
     {
         $indexName = $index->getName();
 
@@ -225,17 +236,17 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $indexName
-     * @param \siestaphp\datamodel\index\IndexPartDatabaseSource $indexPart
+     * @param IndexPartDatabaseSource $indexPart
      */
-    private function testIndexPart($indexName, \siestaphp\datamodel\index\IndexPartDatabaseSource $indexPart)
+    private function testIndexPart($indexName, IndexPartDatabaseSource $indexPart)
     {
         $indexPartName = $indexPart->getName();
 
         $definitionList = TransformerXML::getIndexPartDefinition();
-        $indexPartListDefinition = \siestaphp\util\Util::getFromIndex($definitionList, $indexName);
+        $indexPartListDefinition = Util::getFromIndex($definitionList, $indexName);
         $this->assertNotNull($indexPartListDefinition, "Definition for " . $indexName . " not in definition list");
 
-        $indexPartDefinition = \siestaphp\util\Util::getFromIndex($indexPartListDefinition, $indexPartName);
+        $indexPartDefinition = Util::getFromIndex($indexPartListDefinition, $indexPartName);
         $this->assertNotNull($indexPartDefinition, "Definition for " . $indexPartName . " not in definition list");
 
         $this->assertSame($indexPart->getSortOrder(), $indexPartDefinition["sortOrder"]);
@@ -255,11 +266,12 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \siestaphp\datamodel\storedprocedure\StoredProcedureSource $spSource
+     * @param StoredProcedureSource $spSource
      */
-    private function testStoredProcedure(\siestaphp\datamodel\storedprocedure\StoredProcedureSource $spSource)
+    private function testStoredProcedure(StoredProcedureSource $spSource)
     {
         $spDefinition = TransformerXML::getSPDefinition();
+
         $this->assertSame($spSource->getName(), $spDefinition["name"]);
         $this->assertSame($spSource->modifies(), $spDefinition["modifies"]);
         $this->assertSame($spSource->getSql(), $spDefinition["sql"]);
@@ -274,14 +286,14 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \siestaphp\datamodel\storedprocedure\SPParameterSource $spParameterSource
+     * @param SPParameterSource $spParameterSource
      */
-    private function testSPParameter(\siestaphp\datamodel\storedprocedure\SPParameterSource $spParameterSource)
+    private function testSPParameter(SPParameterSource $spParameterSource)
     {
         $definitionList = TransformerXML::getSPParameterDefinition();
 
         // find definition
-        $definition = \siestaphp\util\Util::getFromIndex($definitionList, $spParameterSource->getName());
+        $definition = Util::getFromIndex($definitionList, $spParameterSource->getName());
         $this->assertNotNull($definition, "no definition for parameter " . $spParameterSource->getName() . " found");
 
         $this->assertSame($spParameterSource->getStoredProcedureName(), $definition["spName"]);

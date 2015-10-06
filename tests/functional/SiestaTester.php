@@ -1,5 +1,7 @@
 <?php
 
+namespace siestaphp\tests\functional;
+
 /**
  * Created by PhpStorm.
  * User: gregor
@@ -24,14 +26,12 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
      */
     protected $startTime;
 
-
-
     /**
      * @param string $database
      */
     protected function connectAndInstall($database)
     {
-        $d =  $database;
+        $d = $database;
         $d = SIESTA_DATABASE;
 
         $this->driver = \siestaphp\runtime\ServiceLocator::getDriver();
@@ -52,33 +52,29 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
     /**
      * @param string $assetPath
      * @param string $srcXML
-     * @param array $importList
      */
-    protected function generateEntityFile($assetPath, $srcXML, array $importList)
+    protected function generateEntityFile($assetPath, $srcXML)
     {
         $generator = new \siestaphp\generator\Generator();
         $generator->generateFile(__DIR__ . $assetPath, __DIR__ . $assetPath . $srcXML);
 
-        foreach ($importList as $import) {
-            require_once __DIR__ . $assetPath . $import;
-        }
-
     }
 
-
-    protected function startTimer() {
-        $this->startTime = - microtime(true);
+    protected function startTimer()
+    {
+        $this->startTime = -microtime(true);
     }
 
     /**
      * @param $output
      * @param int $executionCount
      */
-    protected function stopTimer($output, $executionCount = 0) {
-        $delta =  ($this->startTime + microtime(true)) * 1000;
+    protected function stopTimer($output, $executionCount = 0)
+    {
+        $delta = ($this->startTime + microtime(true)) * 1000;
         if ($executionCount) {
             $delta /= $executionCount;
         }
-        \Codeception\Util\Debug::debug(sprintf($output,$delta) );
+        \Codeception\Util\Debug::debug(sprintf($output, $delta));
     }
 }

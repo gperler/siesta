@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
 
-    <entity name="ArtistEntity" namespace="gen\notnull" table="ARTIST" targetPath="gen/notnull">
+    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\notnull\gen" table="ARTIST" targetPath="gen">
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
             <attribute name="bool" type="bool" dbName="D_BOOLEAN" dbType="SMALLINT" required="true" defaultValue="true"/>

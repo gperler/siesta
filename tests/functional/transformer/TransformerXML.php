@@ -1,5 +1,7 @@
 <?php
 
+namespace siestaphp\tests\functional\transformer;
+
 /**
  * Class LabelArtistXML
  * @package xmlreadertest

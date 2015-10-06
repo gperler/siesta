@@ -6,6 +6,7 @@ use Codeception\Util\Debug;
 use siestaphp\datamodel\attribute\Attribute;
 use siestaphp\datamodel\attribute\AttributeDatabaseSource;
 use siestaphp\datamodel\attribute\AttributeSource;
+use siestaphp\datamodel\attribute\AttributeTransformerSource;
 use siestaphp\datamodel\collector\Collector;
 use siestaphp\datamodel\collector\CollectorSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
@@ -323,7 +324,7 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
     }
 
     /**
-     * @return AttributeSource[]
+     * @return AttributeTransformerSource[]
      */
     public function getAttributeSourceList()
     {

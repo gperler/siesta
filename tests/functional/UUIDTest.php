@@ -1,12 +1,14 @@
 <?php
 
-use gen\collector1n\ArtistEntity;
-use gen\collector1n\LabelEntity;
+namespace siestaphp\tests\functional;
+
+use siestaphp\tests\functional\uuid\gen\ArtistEntity;
+use siestaphp\tests\functional\uuid\gen\LabelEntity;
 
 /**
  * Class UUIDTest
  */
-class UUIDTest extends \SiestaTester
+class UUIDTest extends SiestaTester
 {
 
     const DATABASE_NAME = "UUID_TEST";
@@ -19,10 +21,7 @@ class UUIDTest extends \SiestaTester
     {
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array(
-            "/gen/uuid/ArtistEntity.php",
-            "/gen/uuid/LabelEntity.php"
-        ));
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
     }
 
@@ -34,12 +33,12 @@ class UUIDTest extends \SiestaTester
 
     public function testArePKIdentical()
     {
-        $artist = new \gen\uuid\ArtistEntity();
+        $artist = new ArtistEntity();
         $artist->getId(true);
 
         $this->assertTrue($artist->arePrimaryKeyIdentical($artist), "Are Primary Key does not identify identity");
 
-        $other = new \gen\uuid\ArtistEntity();
+        $other = new ArtistEntity();
         $other->getId(true);
 
         $this->assertFalse($artist->arePrimaryKeyIdentical($other), "Are Primary Key does not identify identity");
@@ -48,15 +47,15 @@ class UUIDTest extends \SiestaTester
 
     public function testStorage()
     {
-        $artist = new \gen\uuid\ArtistEntity();
+        $artist = new ArtistEntity();
         $artist->save();
 
-        $artistLoaded = \gen\uuid\ArtistEntity::getEntityByPrimaryKey($artist->getId());
+        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId());
 
         $this->assertNotNull($artistLoaded, "Artist could not be loaded");
 
-        \gen\uuid\ArtistEntity::deleteEntityByPrimaryKey($artist->getId());
-        $artistLoaded = \gen\uuid\ArtistEntity::getEntityByPrimaryKey($artist->getId());
+        ArtistEntity::deleteEntityByPrimaryKey($artist->getId());
+        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId());
 
         $this->assertNull($artistLoaded, "Artist could not be deleted");
 
@@ -64,15 +63,15 @@ class UUIDTest extends \SiestaTester
 
     public function testReference()
     {
-        $label = new \gen\uuid\LabelEntity();
+        $label = new LabelEntity();
         $label->setCity("Berlin");
 
-        $artist = new \gen\uuid\ArtistEntity();
+        $artist = new ArtistEntity();
         $artist->setName("Kruder & Dorfmeister");
         $artist->setLabel($label);
         $artist->save(true);
 
-        $artistLoaded = \gen\uuid\ArtistEntity::getEntityByPrimaryKey($artist->getId(), $artist->getName());
+        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId(), $artist->getName());
         $this->assertNotNull($artistLoaded, "Artist could not be loaded");
         $this->assertSame($artistLoaded->getName(), $artist->getName());
 
@@ -87,16 +86,16 @@ class UUIDTest extends \SiestaTester
     public function testCollection()
     {
 
-        $kd = new \gen\uuid\ArtistEntity();
+        $kd = new ArtistEntity();
         $kd->setName("Kruder & Dorfmeister");
 
-        $upBustleNOut = new \gen\uuid\ArtistEntity();
+        $upBustleNOut = new ArtistEntity();
         $upBustleNOut->setName("Up Bustle & Out");
 
-        $tosca = new \gen\uuid\ArtistEntity();
+        $tosca = new ArtistEntity();
         $tosca->setName("Tosca");
 
-        $label = new \gen\uuid\LabelEntity();
+        $label = new LabelEntity();
         $label->setCity("Berlin");
 
         $label->addToArtistList($kd);
@@ -105,7 +104,7 @@ class UUIDTest extends \SiestaTester
 
         $label->save(true);
 
-        $labelLoaded = \gen\uuid\LabelEntity::getEntityByPrimaryKey($label->getId(), $label->getName());
+        $labelLoaded = LabelEntity::getEntityByPrimaryKey($label->getId(), $label->getName());
         $artistListLoaded = $labelLoaded->getArtistList();
 
         $this->assertSame(sizeof($artistListLoaded), 3, "not found all artist anymore");

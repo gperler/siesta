@@ -1,19 +1,20 @@
 <?php
 
-use gen\collector1n\ArtistEntity;
-use gen\collector1n\LabelEntity;
+namespace siestaphp\tests\functional;
 
-require_once "SiestaTester.php";
+use siestaphp\tests\functional\collector1n\gen\ArtistEntity;
+use siestaphp\tests\functional\collector1n\gen\LabelEntity;
+
 
 /**
  * Class ReferenceTest
  */
-class CollectorTest extends \SiestaTester
+class CollectorTest extends SiestaTester
 {
 
     const DATABASE_NAME = "ONE_N_COLLECTOR_TEST";
 
-    const ASSET_PATH = "/collector-1n";
+    const ASSET_PATH = "/collector1n";
 
     const SRC_XML = "/Collector-1n.test.xml";
 
@@ -22,10 +23,7 @@ class CollectorTest extends \SiestaTester
 
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array(
-            "/gen/collector1n/ArtistEntity.php",
-            "/gen/collector1n/LabelEntity.php"
-        ));
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
     }
 
     protected function tearDown()

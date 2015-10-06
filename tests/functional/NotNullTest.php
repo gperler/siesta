@@ -1,11 +1,13 @@
 <?php
 
-use \gen\notnull\ArtistEntity;
+namespace siestaphp\tests\functional;
+
+use siestaphp\tests\functional\notnull\gen\ArtistEntity;
 
 /**
  * Class AttributeTest
  */
-class NotNullTest extends \SiestaTester
+class NotNullTest extends SiestaTester
 {
 
     const DATABASE_NAME = "NOTNULL_TEST";
@@ -18,9 +20,7 @@ class NotNullTest extends \SiestaTester
     {
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array(
-            "/gen/notnull/ArtistEntity.php"
-        ));
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
     }
 
     protected function tearDown()

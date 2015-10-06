@@ -1,12 +1,14 @@
 <?php
 
-use gen\collector1n\ArtistEntity;
-use gen\collector1n\LabelEntity;
+namespace siestaphp\tests\functional;
+
+use siestaphp\tests\functional\json\gen\LabelEntity;
+use siestaphp\util\File;
 
 /**
  * Class ReferenceTest
  */
-class JSONTest extends \SiestaTester
+class JSONTest extends SiestaTester
 {
 
     const DATABASE_NAME = "JSON_TEST";
@@ -21,10 +23,7 @@ class JSONTest extends \SiestaTester
     {
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array(
-            "/gen/json/ArtistEntity.php",
-            "/gen/json/LabelEntity.php"
-        ));
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
     }
 
@@ -35,7 +34,7 @@ class JSONTest extends \SiestaTester
 
     public function testJSONLoad()
     {
-        $jsonFile = new \siestaphp\util\File(__DIR__ . self::TEST_JSON);
+        $jsonFile = new File(__DIR__ . self::TEST_JSON);
         $jsonString = $jsonFile->getContents();
         $jsonArray = json_decode($jsonString, true);
 

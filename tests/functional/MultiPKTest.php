@@ -1,12 +1,14 @@
 <?php
 
-use gen\collector1n\ArtistEntity;
-use gen\collector1n\LabelEntity;
+namespace siestaphp\tests\functional;
+
+use siestaphp\tests\functional\multipk\gen\ArtistEntity;
+use siestaphp\tests\functional\multipk\gen\LabelEntity;
 
 /**
  * Class MultiPKTest
  */
-class MultiPKTest extends \SiestaTester
+class MultiPKTest extends SiestaTester
 {
 
     const DATABASE_NAME = "MULTI_PK_TEST";
@@ -24,10 +26,7 @@ class MultiPKTest extends \SiestaTester
     {
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array(
-            "/gen/multipk/ArtistEntity.php",
-            "/gen/multipk/LabelEntity.php"
-        ));
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
     }
 
@@ -39,13 +38,13 @@ class MultiPKTest extends \SiestaTester
 
     public function testArePKIdentical()
     {
-        $artist = new \gen\multipk\ArtistEntity();
+        $artist = new ArtistEntity();
         $artist->getId(true);
         $artist->getName(true);
 
         $this->assertTrue($artist->arePrimaryKeyIdentical($artist), "Are Primary Key does not identify identity");
 
-        $other = new \gen\multipk\ArtistEntity();
+        $other = new ArtistEntity();
         $other->getId(true);
         $other->getName(true);
         $this->assertFalse($artist->arePrimaryKeyIdentical($other), "Are Primary Key does not identify identity");
@@ -54,15 +53,15 @@ class MultiPKTest extends \SiestaTester
 
     public function testStorage()
     {
-        $artist = new \gen\multipk\ArtistEntity();
+        $artist = new ArtistEntity();
         $artist->save();
 
-        $artistLoaded = \gen\multipk\ArtistEntity::getEntityByPrimaryKey($artist->getId(), $artist->getName());
+        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId(), $artist->getName());
 
         $this->assertNotNull($artistLoaded, "Artist could not be loaded");
 
-        \gen\multipk\ArtistEntity::deleteEntityByPrimaryKey($artist->getId(), $artist->getName());
-        $artistLoaded = \gen\multipk\ArtistEntity::getEntityByPrimaryKey($artist->getId(), $artist->getName());
+        ArtistEntity::deleteEntityByPrimaryKey($artist->getId(), $artist->getName());
+        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId(), $artist->getName());
 
         $this->assertNull($artistLoaded, "Artist could not be deleted");
 
@@ -70,15 +69,15 @@ class MultiPKTest extends \SiestaTester
 
     public function testReference()
     {
-        $label = new \gen\multipk\LabelEntity();
+        $label = new LabelEntity();
         $label->setCity("Berlin");
 
-        $artist = new \gen\multipk\ArtistEntity();
+        $artist = new ArtistEntity();
         $artist->setDisplayName("Kruder & Dorfmeister");
         $artist->setLabel($label);
         $artist->save(true);
 
-        $artistLoaded = \gen\multipk\ArtistEntity::getEntityByPrimaryKey($artist->getId(), $artist->getName());
+        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId(), $artist->getName());
         $this->assertNotNull($artistLoaded, "Artist could not be loaded");
         $this->assertSame($artistLoaded->getDisplayName(), $artist->getDisplayName());
 
@@ -93,16 +92,16 @@ class MultiPKTest extends \SiestaTester
     public function testCollection()
     {
 
-        $kd = new \gen\multipk\ArtistEntity();
+        $kd = new ArtistEntity();
         $kd->setDisplayName("Kruder & Dorfmeister");
 
-        $upBustleNOut = new \gen\multipk\ArtistEntity();
+        $upBustleNOut = new ArtistEntity();
         $upBustleNOut->setDisplayName("Up Bustle & Out");
 
-        $tosca = new \gen\multipk\ArtistEntity();
+        $tosca = new ArtistEntity();
         $tosca->setDisplayName("Tosca");
 
-        $label = new \gen\multipk\LabelEntity();
+        $label = new LabelEntity();
         $label->setCity("Berlin");
 
         $label->addToArtistList($kd);
@@ -112,7 +111,7 @@ class MultiPKTest extends \SiestaTester
         $artistList = $label->getArtistList();
         $label->save(true);
 
-        $labelLoaded = \gen\multipk\LabelEntity::getEntityByPrimaryKey($label->getId(), $label->getName());
+        $labelLoaded = LabelEntity::getEntityByPrimaryKey($label->getId(), $label->getName());
         $artistListLoaded = $labelLoaded->getArtistList();
 
         $this->assertSame(sizeof($artistListLoaded), 3, "not found all artist anymore");

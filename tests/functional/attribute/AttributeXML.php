@@ -1,4 +1,6 @@
 <?php
+
+namespace siestaphp\tests\functional\attribute;
 /**
  * Class AttributeXML
  * @package siestaphp\tests\funct\attribute

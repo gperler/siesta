@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="Book" namespace="gen\performance" table="BOOK" targetPath="gen/performance">
+    <entity name="Book" namespace="siestaphp\tests\functional\performance\gen" table="BOOK" targetPath="gen">
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
             <attribute name="title" type="bool" dbName="TITLE" dbType="VARCHAR(100)"/>
@@ -8,7 +8,7 @@
         </attributeList>
     </entity>
 
-    <entity name="Author" namespace="gen\performance" table="AUTHOR" targetPath="gen/performance">
+    <entity name="Author" namespace="siestaphp\tests\functional\performance\gen" table="AUTHOR" targetPath="gen">
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="uuid"/>
             <attribute name="name" type="bool" dbName="NAME" dbType="VARCHAR(100)"/>

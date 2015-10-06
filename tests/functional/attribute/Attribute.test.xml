@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="ArtistEntity" namespace="gen\attribute" table="ARTIST" targetPath="gen/attribute">
+    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\attribute\gen" table="ARTIST" targetPath="gen/">
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
             <attribute name="bool" type="bool" dbName="D_BOOLEAN" dbType="SMALLINT" defaultValue="true"/>

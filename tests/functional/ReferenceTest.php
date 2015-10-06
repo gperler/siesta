@@ -1,12 +1,14 @@
 <?php
 
-use \gen\reference\LabelEntity;
-use \gen\reference\ArtistEntity;
+namespace siestaphp\tests\functional;
+
+use siestaphp\tests\functional\reference\gen\ArtistEntity;
+use siestaphp\tests\functional\reference\gen\LabelEntity;
 
 /**
  * Class ReferenceTest
  */
-class ReferenceTest extends \SiestaTester
+class ReferenceTest extends SiestaTester
 {
 
     const DATABASE_NAME = "REFERENCE_TEST";
@@ -19,10 +21,7 @@ class ReferenceTest extends \SiestaTester
     {
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array(
-            "/gen/reference/ArtistEntity.php",
-            "/gen/reference/LabelEntity.php"
-        ));
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
     }
 
@@ -37,6 +36,7 @@ class ReferenceTest extends \SiestaTester
         $label = new LabelEntity();
         $label->setName("K7");
         $label->setCity("Berlin");
+
         $artist = new ArtistEntity();
         $artist->setLabel($label);
         $artist->setName("Richard Dorfmeister");

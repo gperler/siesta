@@ -1,13 +1,16 @@
 <?php
 
-use \gen\attribute\ArtistEntity;
+namespace siestaphp\tests\functional;
 
-require_once "SiestaTester.php";
+use siestaphp\runtime\Factory;
+use siestaphp\tests\functional\attribute\AttributeXML;
+use siestaphp\tests\functional\attribute\gen\ArtistEntity;
+
 
 /**
  * Class AttributeTest
  */
-class AttributeTest extends \SiestaTester
+class AttributeTest extends SiestaTester
 {
 
     const DATABASE_NAME = "ATTRIBUTE_TEST";
@@ -20,7 +23,7 @@ class AttributeTest extends \SiestaTester
     {
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array('/gen/attribute/ArtistEntity.php', '/AttributeXML.php'));
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
     }
 
     protected function tearDown()
@@ -34,24 +37,24 @@ class AttributeTest extends \SiestaTester
      */
     public function testCreateEntity()
     {
-        $artist = new \gen\attribute\ArtistEntity();
+        $artist = new ArtistEntity();
         $artist->setBool(true);
         $artist->setString("Test123");
         $artist->setFloat(19.77);
         $artist->setInt(42);
 
         // date time
-        $dateTime = \siestaphp\runtime\Factory::newDateTime();
+        $dateTime = Factory::newDateTime();
         $dateTime->stringToTime("19-08-1977 10:11:12");
         $artist->setDateTime($dateTime);
 
         // date
-        $date = \siestaphp\runtime\Factory::newDateTime();
+        $date = Factory::newDateTime();
         $date->stringToTime("19-08-1977");
         $artist->setPDate($date);
 
         // time
-        $time = \siestaphp\runtime\Factory::newDateTime();
+        $time = Factory::newDateTime();
         $time->stringToTime("10:11:12");
         $artist->setPTime($time);
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="ArtistEntity" namespace="gen\multipk" table="ARTIST" targetPath="gen/multipk">
+    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\multipk\gen" table="ARTIST" targetPath="gen">
 
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
@@ -14,7 +14,7 @@
         </referenceList>
     </entity>
 
-    <entity name="LabelEntity" namespace="gen\multipk" table="LABEL" targetPath="gen/multipk">
+    <entity name="LabelEntity" namespace="siestaphp\tests\functional\multipk\gen" table="LABEL" targetPath="gen">
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
             <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)" primaryKey="true" autoValue="uuid"/>

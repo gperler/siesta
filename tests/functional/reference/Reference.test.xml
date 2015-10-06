@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
 
-    <entity name="ArtistEntity" namespace="gen\reference" table="ARTIST" targetPath="gen/reference">
+    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\reference\gen" table="ARTIST" targetPath="gen">
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
             <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
@@ -12,7 +12,7 @@
         </referenceList>
     </entity>
 
-    <entity name="LabelEntity" table="LABEL" targetPath="gen/reference" namespace="gen\reference">
+    <entity name="LabelEntity" table="LABEL" namespace="siestaphp\tests\functional\reference\gen" targetPath="gen" >
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
             <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>

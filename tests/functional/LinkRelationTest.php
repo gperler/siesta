@@ -1,12 +1,13 @@
 <?php
 
-use gen\linkrelation\ArtistEntity;
-use gen\linkrelation\LabelEntity;
+namespace siestaphp\tests\functional;
+
+use siestaphp\tests\functional\linkrelation\gen\LabelEntity;
 
 /**
  * Class ReferenceTest
  */
-class LinkRelation extends \SiestaTester
+class LinkRelation extends SiestaTester
 {
 
     const DATABASE_NAME = "LINK_RELATION_TEST";
@@ -21,10 +22,7 @@ class LinkRelation extends \SiestaTester
     {
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array(
-            "/gen/linkrelation/ArtistEntity.php",
-            "/gen/linkrelation/LabelEntity.php"
-        ));
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
     }
 

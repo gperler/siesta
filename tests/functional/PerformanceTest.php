@@ -1,9 +1,11 @@
 <?php
 
+namespace siestaphp\tests\functional;
+
 /**
  * Class PerformanceTest
  */
-class PerformanceTest extends \SiestaTester
+class PerformanceTest extends SiestaTester
 {
 
     const DATABASE_NAME = "PERFORMANCE_TEST";
@@ -17,7 +19,7 @@ class PerformanceTest extends \SiestaTester
 
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array());
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
     }
 
     protected function tearDown()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="Customer" namespace="gen\bidirectional" table="CUSTOMER" targetPath="gen/bidirectional">
+    <entity name="Customer" namespace="siestaphp\tests\functional\bidirectional\gen" table="CUSTOMER" targetPath="gen">
 
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
@@ -13,7 +13,7 @@
         </referenceList>
     </entity>
 
-    <entity name="Address" namespace="gen\bidirectional" table="Address" targetPath="gen/bidirectional" >
+    <entity name="Address" namespace="siestaphp\tests\functional\bidirectional\gen" table="Address" targetPath="gen" >
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
             <attribute name="street" type="string" dbName="STREET" dbType="VARCHAR(100)"/>

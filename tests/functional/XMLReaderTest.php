@@ -1,7 +1,18 @@
 <?php
 
+namespace siestaphp\tests\functional;
 
-require_once 'xmlreader/XMLReaderXML.php';
+use siestaphp\datamodel\attribute\AttributeSource;
+use siestaphp\datamodel\collector\CollectorSource;
+use siestaphp\datamodel\index\IndexPartSource;
+use siestaphp\datamodel\index\IndexSource;
+use siestaphp\datamodel\reference\ReferenceSource;
+use siestaphp\datamodel\storedprocedure\SPParameterSource;
+use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
+use siestaphp\tests\functional\xmlreader\XMLReaderXML;
+use siestaphp\util\File;
+use siestaphp\util\Util;
+use siestaphp\xmlreader\XMLReader;
 
 /**
  * The XMLReaderTest checks if the xml element is read correctly. It checks for example attributes of entity, attribute
@@ -20,8 +31,8 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
     {
 
         // load xml file & parse it
-        $file = new \siestaphp\util\File(__DIR__ . self::ASSET_PATH . "/XMLReader.test.xml");
-        $xmlReader = new \siestaphp\xmlreader\XMLReader($file);
+        $file = new File(__DIR__ . self::ASSET_PATH . "/XMLReader.test.xml");
+        $xmlReader = new XMLReader($file);
 
         // read entities from file
         $entitySourceList = $xmlReader->getEntitySourceList();
@@ -70,16 +81,16 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
     /**
      * checks that all attribute data is correct
      *
-     * @param \siestaphp\datamodel\attribute\AttributeSource $ats
+     * @param AttributeSource $ats
      */
-    private function testAttribute(\siestaphp\datamodel\attribute\AttributeSource $ats)
+    private function testAttribute(AttributeSource $ats)
     {
 
         $attributeName = $ats->getName();
 
         // get definition and check they exist
         $definitionList = XMLReaderXML::getAttributeDefinition();
-        $definition = \siestaphp\util\Util::getFromIndex($definitionList, $attributeName);
+        $definition = Util::getFromIndex($definitionList, $attributeName);
         $this->assertNotNull($definition, "Attribute " . $attributeName . " not in definition list");
 
         // check attribute values
@@ -104,16 +115,16 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
     /**
      * check a reference
      *
-     * @param \siestaphp\datamodel\reference\ReferenceSource $referenceSource
+     * @param ReferenceSource $referenceSource
      */
-    private function testReference(\siestaphp\datamodel\reference\ReferenceSource $referenceSource)
+    private function testReference(ReferenceSource $referenceSource)
     {
         // get name
         $referenceName = $referenceSource->getName();
 
         // find definition and check they exist
         $definitionList = XMLReaderXML::getReferenceDefinition();
-        $definition = \siestaphp\util\Util::getFromIndex($definitionList, $referenceName);
+        $definition = Util::getFromIndex($definitionList, $referenceName);
         $this->assertNotNull($definition, "Reference " . $referenceName . " not in definition list");
 
         // check reference values
@@ -135,16 +146,16 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \siestaphp\datamodel\collector\CollectorSource $collectorSource
+     * @param CollectorSource $collectorSource
      */
-    private function testCollector(\siestaphp\datamodel\collector\CollectorSource $collectorSource)
+    private function testCollector(CollectorSource $collectorSource)
     {
         // get name
         $name = $collectorSource->getName();
 
         // find definition and check they exist
         $definitionList = XMLReaderXML::getCollectorDefinition();
-        $definition = \siestaphp\util\Util::getFromIndex($definitionList, $name);
+        $definition = Util::getFromIndex($definitionList, $name);
         $this->assertNotNull($definition, "Collector " . $name . " not in definition list");
 
         $this->assertSame($collectorSource->getReferenceName(), $definition["referenceName"]);
@@ -165,16 +176,16 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \siestaphp\datamodel\index\IndexSource $index
+     * @param IndexSource $index
      */
-    private function testIndex(\siestaphp\datamodel\index\IndexSource $index)
+    private function testIndex(IndexSource $index)
     {
         // get name
         $indexName = $index->getName();
 
         // find definition and check they exist
         $definitionList = XMLReaderXML::getIndexDefinition();
-        $definition = \siestaphp\util\Util::getFromIndex($definitionList, $indexName);
+        $definition = Util::getFromIndex($definitionList, $indexName);
         $this->assertNotNull($definition, "Index " . $indexName . " not in definition list");
 
         $this->assertSame($index->isUnique(), $definition["unique"]);
@@ -188,17 +199,17 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $indexName
-     * @param \siestaphp\datamodel\index\IndexPartSource $indexPart
+     * @param IndexPartSource $indexPart
      */
-    private function testIndexPart($indexName, \siestaphp\datamodel\index\IndexPartSource $indexPart)
+    private function testIndexPart($indexName, IndexPartSource $indexPart)
     {
         $indexPartName = $indexPart->getName();
 
         $definitionList = XMLReaderXML::getIndexPartDefinition();
-        $indexPartListDefinition = \siestaphp\util\Util::getFromIndex($definitionList, $indexName);
+        $indexPartListDefinition = Util::getFromIndex($definitionList, $indexName);
         $this->assertNotNull($indexPartListDefinition, "Definition for " . $indexName . " not in definition list");
 
-        $indexPartDefinition = \siestaphp\util\Util::getFromIndex($indexPartListDefinition, $indexPartName);
+        $indexPartDefinition = Util::getFromIndex($indexPartListDefinition, $indexPartName);
         $this->assertNotNull($indexPartDefinition, "Definition for " . $indexPartName . " not in definition list");
 
         $this->assertSame($indexPart->getSortOrder(), $indexPartDefinition["sortOrder"]);
@@ -216,9 +227,9 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \siestaphp\datamodel\storedprocedure\StoredProcedureSource $spSource
+     * @param StoredProcedureSource $spSource
      */
-    private function testStoredProcedure(\siestaphp\datamodel\storedprocedure\StoredProcedureSource $spSource)
+    private function testStoredProcedure(StoredProcedureSource $spSource)
     {
         $spDefinition = XMLReaderXML::getSPDefinition();
         $this->assertSame($spSource->getName(), $spDefinition["name"]);
@@ -235,14 +246,14 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \siestaphp\datamodel\storedprocedure\SPParameterSource $spParameterSource
+     * @param SPParameterSource $spParameterSource
      */
-    private function testSPParameter(\siestaphp\datamodel\storedprocedure\SPParameterSource $spParameterSource)
+    private function testSPParameter(SPParameterSource $spParameterSource)
     {
         $definitionList = XMLReaderXML::getSPParameterDefinition();
 
         // find definition
-        $definition = \siestaphp\util\Util::getFromIndex($definitionList, $spParameterSource->getName());
+        $definition = Util::getFromIndex($definitionList, $spParameterSource->getName());
         $this->assertNotNull($definition, "no definition for parameter " . $spParameterSource->getName() . " found");
 
         $this->assertSame($spParameterSource->getStoredProcedureName(), $definition["spName"]);

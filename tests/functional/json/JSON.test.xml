@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="ArtistEntity" namespace="gen\json" table="ARTIST" targetPath="gen/json">
+    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\json\gen" table="ARTIST" targetPath="gen">
 
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
@@ -12,7 +12,7 @@
         </referenceList>
     </entity>
 
-    <entity name="LabelEntity" namespace="gen\json" table="LABEL" targetPath="gen/json">
+    <entity name="LabelEntity" namespace="siestaphp\tests\functional\json\gen" table="LABEL" targetPath="gen">
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
             <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>

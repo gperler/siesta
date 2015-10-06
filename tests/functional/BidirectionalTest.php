@@ -1,11 +1,15 @@
 <?php
 
-require_once "SiestaTester.php";
+namespace siestaphp\tests\functional;
+
+use siestaphp\tests\functional\bidirectional\gen\Address;
+use siestaphp\tests\functional\bidirectional\gen\Customer;
+
 
 /**
  * Class ReferenceTest
  */
-class BidirectionalTest extends \SiestaTester
+class BidirectionalTest extends SiestaTester
 {
 
     const DATABASE_NAME = "BIDIRECTIONAL_TEST";
@@ -19,10 +23,7 @@ class BidirectionalTest extends \SiestaTester
 
         $this->connectAndInstall(self::DATABASE_NAME);
 
-        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array(
-            "/gen/bidirectional/Address.php",
-            "/gen/bidirectional/Customer.php"
-        ));
+        $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
     }
 
@@ -36,10 +37,10 @@ class BidirectionalTest extends \SiestaTester
     {
         $this->markTestSkipped();
 
-        $customer = new \gen\bidirectional\Customer();
+        $customer = new Customer();
         $customer->setName("Columbo");
 
-        $address = new \gen\bidirectional\Address();
+        $address = new Address();
         $address->setCity("Berlin");
 
         $customer->setAddress($address);
@@ -50,7 +51,7 @@ class BidirectionalTest extends \SiestaTester
         $customer->save(true);
 
         // load customer
-        $customer = \gen\bidirectional\Customer::getEntityByPrimaryKey(1);
+        $customer = Customer::getEntityByPrimaryKey(1);
         $this->assertNotNull($customer, "Customer could not be reloaded");
 
         // check address is available

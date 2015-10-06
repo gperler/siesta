@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="Customer" namespace="gen\constraint" table="CUSTOMER" targetPath="gen/constraint">
+    <entity name="Customer" namespace="siestaphp\tests\functional\constraint\gen" table="CUSTOMER" targetPath="gen">
 
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
@@ -16,7 +16,7 @@
         </referenceList>
     </entity>
 
-    <entity name="Address" namespace="gen\constraint" table="Address" targetPath="gen/constraint" >
+    <entity name="Address" namespace="siestaphp\tests\functional\constraint\gen" table="Address" targetPath="gen" >
         <attributeList>
             <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
             <attribute name="street" type="string" dbName="STREET" dbType="VARCHAR(100)"/>

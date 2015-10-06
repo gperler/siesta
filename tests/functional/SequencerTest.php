@@ -1,9 +1,10 @@
 <?php
+namespace siestaphp\tests\functional;
 
 /**
  * Class ReferenceTest
  */
-class SequencerTest extends \SiestaTester
+class SequencerTest extends SiestaTester
 {
 
     const DATABASE_NAME = "SEQUENCER_TEST";

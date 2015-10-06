@@ -1,11 +1,12 @@
 <?php
 
-require_once "SiestaTester.php";
+namespace siestaphp\tests\functional;
+
 
 /**
  * Class AttributeTest
  */
-class ReverseTest extends \SiestaTester
+class ReverseTest extends SiestaTester
 {
 
     const DATABASE_NAME = "REVERSE_TEST";
@@ -34,4 +35,4 @@ class ReverseTest extends \SiestaTester
     {
     }
 
- }
+}
