@@ -5,7 +5,6 @@ namespace siestaphp\tests\functional;
 use siestaphp\tests\functional\collector1n\gen\ArtistEntity;
 use siestaphp\tests\functional\collector1n\gen\LabelEntity;
 
-
 /**
  * Class ReferenceTest
  */
@@ -24,6 +23,8 @@ class CollectorTest extends SiestaTester
         $this->connectAndInstall(self::DATABASE_NAME);
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
+
+        $this->assertNoValidationErrors();
     }
 
     protected function tearDown()

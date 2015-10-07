@@ -20,6 +20,8 @@ class PerformanceTest extends SiestaTester
         $this->connectAndInstall(self::DATABASE_NAME);
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
+
+        $this->assertNoValidationErrors();
     }
 
     protected function tearDown()

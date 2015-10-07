@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\datamodel\collector;
 
 use Codeception\Util\Debug;
@@ -16,6 +15,11 @@ use siestaphp\generator\GeneratorLog;
  */
 class Collector implements Processable, CollectorSource, CollectorTransformerSource
 {
+    const VALIDATION_ERROR_INVALID_NAME = 400;
+
+    const VALIDATION_ERROR_INVALID_ENTITY_REFERENCED = 401;
+
+    const VALIDATION_ERROR_INVALID_REFERENCE = 402;
 
     /**
      * @var CollectorSource
@@ -58,12 +62,16 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
      */
     public function validate(GeneratorLog $log)
     {
+        if (!$this->getName()) {
+            $log->error("Collector without name found", self::VALIDATION_ERROR_INVALID_NAME);
+        }
+
         if (!$this->foreignClassEntity) {
-            $log->error("Collector '" . $this->getName() . "' refers to unknown entity " . $this->getForeignClass());
+            $log->error("Collector '" . $this->getName() . "' refers to unknown entity " . $this->getForeignClass(), self::VALIDATION_ERROR_INVALID_ENTITY_REFERENCED);
         }
 
         if (!$this->reference) {
-            $log->error("Collector '" . $this->getName() . "' refers to unknown reference " . $this->getReferenceName());
+            $log->error("Collector '" . $this->getName() . "' refers to unknown reference " . $this->getReferenceName(), self::VALIDATION_ERROR_INVALID_REFERENCE);
 
         }
 

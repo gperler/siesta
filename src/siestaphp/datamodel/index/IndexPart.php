@@ -17,6 +17,9 @@ use siestaphp\naming\XMLIndexPart;
 class IndexPart implements Processable, IndexPartSource, IndexPartDatabaseSource
 {
 
+    const VALIDATION_ERROR_INVALID_NAME = 500;
+
+    const VALIDATION_ERROR_INVALID_COLUMN = 501;
     /**
      * @var EntitySource
      */
@@ -123,15 +126,16 @@ class IndexPart implements Processable, IndexPartSource, IndexPartDatabaseSource
         $this->databaseColumnList = array_merge($this->databaseColumnList, $referencedColumns);
     }
 
+
     /**
      * @param GeneratorLog $log
      */
     public function validate(GeneratorLog $log)
     {
-        $log->errorIfAttributeNotSet($this->getName(), XMLIndexPart::ATTRIBUTE_NAME, XMLIndexPart::ELEMENT_INDEX_PART_NAME);
+        $log->errorIfAttributeNotSet($this->getName(), XMLIndexPart::ATTRIBUTE_NAME, XMLIndexPart::ELEMENT_INDEX_PART_NAME, self::VALIDATION_ERROR_INVALID_NAME);
 
         if (sizeof($this->databaseColumnList) === 0) {
-            $log->error("IndexPart " . $this->getName() . " from index " . $this->index->getName() . " does not refer an existing attribute or reference");
+            $log->error("IndexPart " . $this->getName() . " from index " . $this->index->getName() . " does not refer an existing attribute or reference", self::VALIDATION_ERROR_INVALID_COLUMN);
         }
     }
 

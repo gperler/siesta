@@ -68,7 +68,7 @@ class SimpleResultSet implements ResultSet
      * @return bool|null
      */
     public function getBooleanValue($key) {
-        $value = Util::getFromIndex($this->next, $key);
+        $value = Util::getFromArray($this->next, $key);
         if (is_null($value)) {
             return null;
         }
@@ -81,7 +81,7 @@ class SimpleResultSet implements ResultSet
      * @return int|null
      */
     public function getIntegerValue($key) {
-        $value = Util::getFromIndex($this->next, $key);
+        $value = Util::getFromArray($this->next, $key);
         if (is_null($value)) {
             return null;
         }
@@ -94,7 +94,7 @@ class SimpleResultSet implements ResultSet
      * @return float|null
      */
     public function getFloatValue($key){
-        $value = Util::getFromIndex($this->next, $key);
+        $value = Util::getFromArray($this->next, $key);
         if (is_null($value)) {
             return null;
         }
@@ -107,7 +107,7 @@ class SimpleResultSet implements ResultSet
      * @return null|string
      */
     public function getStringValue($key){
-        return Util::getFromIndex($this->next, $key);
+        return Util::getFromArray($this->next, $key);
     }
 
 
@@ -116,7 +116,7 @@ class SimpleResultSet implements ResultSet
      * @return null|DateTime
      */
     public function getDateTime($key) {
-        $value = Util::getFromIndex($this->next, $key);
+        $value = Util::getFromArray($this->next, $key);
         if (is_null($value)) {
             return null;
         }

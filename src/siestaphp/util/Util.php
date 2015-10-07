@@ -19,7 +19,7 @@ class Util
      *
      * @return string|null
      */
-    public static function getFromIndex($object, $key)
+    public static function getFromArray($object, $key)
     {
         if ($object == null) {
             return null;

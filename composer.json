@@ -4,7 +4,8 @@
   "version": "0.1.0.",
   "require": {
     "php": ">=5.3.9",
-    "lib-xsl": "*"
+    "lib-xsl": "*",
+    "symfony/console": "~2.4"
   },
   "require-dev": {
     "codeception/codeception": "*"
@@ -36,5 +37,6 @@
   },
   "license": "MIT",
   "type": "library",
-  "homepage": "http://siesta.gm314.de"
+  "homepage": "http://siesta.gm314.de",
+  "bin":["src/siestaphp/console/siesta"]
 }

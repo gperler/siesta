@@ -95,7 +95,7 @@
             </xsl:for-each>
 
             $resultList = self::executeStoredProcedure("CALL <xsl:value-of select="/entity/standardStoredProcedures/@findByPrimaryKey"/>(<xsl:value-of select="/entity/@storedProcedureCallSignature"/>)");
-            return Util::getFromIndex($resultList, 0);
+            return Util::getFromArray($resultList, 0);
         }
     </xsl:template>
 
@@ -208,7 +208,7 @@
 
                 <xsl:choose>
                     <xsl:when test="@resultType='single'">
-                        return Util::getFromIndex(self::executeStoredProcedure($spCall), 0);
+                        return Util::getFromArray(self::executeStoredProcedure($spCall), 0);
                     </xsl:when>
                     <xsl:when test="@resultType='list'">
                         return self::executeStoredProcedure($spCall);

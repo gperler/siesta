@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\datamodel\attribute;
 
 use siestaphp\datamodel\DatabaseColumn;
@@ -24,6 +23,13 @@ class Attribute implements Processable, AttributeSource, AttributeTransformerSou
     const AUTO_VALUE_UUID = "uuid";
 
     const AUTO_VALUE_AUTOINCREMENT = "autoincrement";
+
+    const VALIDATION_ERROR_NO_NAME = 200;
+    const VALIDATION_ERROR_INVALID_NAME = 201;
+    const VALIDATION_ERROR_NO_DATABASE_TYPE = 202;
+    const VALIDATION_ERROR_NO_PHP_TYPE = 203;
+    const VALIDATION_ERROR_INVALID_AUTOVALUE = 204;
+    const VALIDATION_ERROR_PK_WITHOUT_AUTOVALUE = 205;
 
     /**
      * @var AttributeSource
@@ -130,16 +136,16 @@ class Attribute implements Processable, AttributeSource, AttributeTransformerSou
      */
     public function validate(GeneratorLog $log)
     {
-        $log->errorIfAttributeNotSet($this->name, XMLAttribute::ATTRIBUTE_NAME, XMLAttribute::ELEMENT_ATTRIBUTE_NAME);
+        $log->errorIfAttributeNotSet($this->name, XMLAttribute::ATTRIBUTE_NAME, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_NAME);
 
-        $log->errorIfAttributeNotSet($this->databaseType, XMLAttribute::ATTRIBUTE_DATABASE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME);
+        $log->errorIfAttributeNotSet($this->databaseType, XMLAttribute::ATTRIBUTE_DATABASE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_DATABASE_TYPE);
 
-        $log->errorIfNotInList($this->phpType, self::$ALLOWED_PHP_TYPES, XMLAttribute::ATTRIBUTE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME);
+        $log->errorIfNotInList($this->phpType, self::$ALLOWED_PHP_TYPES, XMLAttribute::ATTRIBUTE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_PHP_TYPE);
 
-        $log->errorIfNotInList($this->autoValue, self::$ALLOWED_AUTO_VALUE, XMLAttribute::ATTRIBUTE_AUTO_VALUE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME);
+        $log->errorIfNotInList($this->autoValue, self::$ALLOWED_AUTO_VALUE, XMLAttribute::ATTRIBUTE_AUTO_VALUE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_INVALID_AUTOVALUE);
 
         if ($this->isPrimaryKey() and !$this->autoValue) {
-            $log->warn("Primary key '" . $this->name . "' does not have an autovalue attribute.");
+            $log->warn("Primary key '" . $this->name . "' does not have an autovalue attribute.", self::VALIDATION_ERROR_PK_WITHOUT_AUTOVALUE);
         }
     }
 

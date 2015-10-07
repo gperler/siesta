@@ -23,6 +23,8 @@ class ConstraintTest extends SiestaTester
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
+        $this->assertNoValidationErrors();
+
     }
 
     protected function tearDown()

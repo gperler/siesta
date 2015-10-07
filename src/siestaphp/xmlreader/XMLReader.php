@@ -2,7 +2,6 @@
 
 namespace siestaphp\xmlreader;
 
-
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\naming\XMLEntity;
 use siestaphp\util\File;
@@ -13,7 +12,6 @@ use siestaphp\util\File;
  */
 class XMLReader
 {
-
 
     /**
      * @var \DomDocument
@@ -39,7 +37,6 @@ class XMLReader
         $this->xmlDocument = $file->loadAsXML();
         $this->enityList = array();
     }
-
 
     /**
      * @return EntitySource[]
@@ -69,9 +66,5 @@ class XMLReader
 
         $this->enityList[] = $entityReader;
     }
-
-
-
-
 
 }

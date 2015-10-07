@@ -32,6 +32,18 @@ use siestaphp\util\File;
 class Entity implements Processable, EntitySource, EntityTransformerSource, EntityDatabaseSource
 {
 
+    const VALIDATION_ERROR_NO_CLASSNAME = 100;
+
+    const VALIDATION_ERROR_INVALID_CLASSNAME = 101;
+
+    const VALIDATION_ERROR_INVALID_NAMESPACE = 102;
+
+    const VALIDATION_ERROR_INVALID_CONSTRUCT_CLASSNAME = 103;
+
+    const VALIDATION_ERROR_INVALID_CONSTRUCT_NAMESPACE = 104;
+
+    const VALIDATION_ERROR_NO_PRIMARY_KEY = 110;
+
     /**
      * @var EntityDatabaseSource
      */
@@ -212,6 +224,9 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
             $this->constructorClass = $this->className;
             $this->constructorNamespace = $this->classNamespace;
         }
+        if (!$this->table) {
+            $this->table = strtoupper($this->className);
+        }
     }
 
     /**
@@ -284,13 +299,19 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
     {
         $log->info("Analyzing entity " . $this->className);
 
-        $log->errorIfAttributeNotSet($this->className, XMLEntity::ATTRIBUTE_CLASS_NAME, XMLEntity::ELEMENT_ENTITY_NAME);
+        $log->errorIfAttributeNotSet($this->className, XMLEntity::ATTRIBUTE_CLASS_NAME, XMLEntity::ELEMENT_ENTITY_NAME, self::VALIDATION_ERROR_NO_CLASSNAME);
 
-        $log->errorIfAttributeNotSet($this->table, XMLEntity::ATTRIBUTE_TABLE, XMLEntity::ELEMENT_ENTITY_NAME);
+        if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $this->className)) {
+            $log->error($this->className . " is not a valid classname ", self::VALIDATION_ERROR_INVALID_CLASSNAME);
+        }
+
+        if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $this->constructorClass)) {
+            $log->error($this->className . " is not a valid classname ", self::VALIDATION_ERROR_INVALID_CONSTRUCT_CLASSNAME);
+        }
 
         $pkList = $this->getPrimaryKeyAttributeList();
         if (sizeof($pkList) === 0) {
-            $log->error("No <" . XMLEntity::ELEMENT_ENTITY_NAME . "> has " . XMLAttribute::ATTRIBUTE_PRIMARY_KEY . " true. A primary key is required");
+            $log->error("No <" . XMLEntity::ELEMENT_ENTITY_NAME . "> has " . XMLAttribute::ATTRIBUTE_PRIMARY_KEY . " true. A primary key is required", self::VALIDATION_ERROR_NO_PRIMARY_KEY);
         }
     }
 

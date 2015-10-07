@@ -2,10 +2,9 @@
 
 namespace siestaphp\generator;
 
-
-use Codeception\Util\Debug;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\driver\exceptions\SQLException;
 use siestaphp\runtime\ServiceLocator;
 use siestaphp\util\File;
 use siestaphp\xmlreader\DirectoryScanner;
@@ -18,6 +17,7 @@ use siestaphp\xmlreader\XMLReader;
 class Generator
 {
 
+    const ERROR_SQL_EXCEPTION = 1100;
 
     /**
      * @var GeneratorLog
@@ -29,7 +29,6 @@ class Generator
      */
     protected $dataModelContainer;
 
-
     /**
      * @var DirectoryScanner
      */
@@ -40,34 +39,26 @@ class Generator
      */
     protected $transformerList;
 
-
     /**
      * @var string
      */
     protected $baseDir;
 
     /**
-     * @var number
+     * @param GeneratorLog $log
+     * @param string $suffix
      */
-    protected $startTime;
-
-    /**
-     * initializes the generator
-     */
-    public function __construct()
+    public function __construct(GeneratorLog $log, $suffix=null)
     {
 
-        $this->generatorLog = new GeneratorConsoleLog();
+        $this->generatorLog = $log;
 
         $this->dataModelContainer = new DataModelContainer($this->generatorLog);
 
-        $this->directoryScanner = new DirectoryScanner($this->dataModelContainer, $this->generatorLog);
+        $this->directoryScanner = new DirectoryScanner($this->dataModelContainer, $this->generatorLog, $suffix);
 
-        $this->transformerList = array(
-            new EntityTransformer()
-        );
+        $this->transformerList = array(new EntityTransformer());
     }
-
 
     /**
      * scans the given base dir for entity files and generates them
@@ -76,7 +67,7 @@ class Generator
      */
     public function generate($baseDir)
     {
-        $this->startTime = -time();
+        $time = -microtime(true);
 
         $this->baseDir = $baseDir;
 
@@ -86,7 +77,9 @@ class Generator
 
         $this->generateDataModelContainer();
 
-        $this->generatorLog->info($this->startTime + time() . "ms");
+        $time = (microtime(true) + $time)/1000;
+        $this->generatorLog->info( sprintf("%0.3fms", $time));
+
     }
 
     /**
@@ -124,7 +117,6 @@ class Generator
         $this->setupTablesAndStoredProcedures();
     }
 
-
     /**
      * applies the transformers to the all entities
      */
@@ -137,7 +129,6 @@ class Generator
         }
     }
 
-
     /**
      * Applies all registered transformers to the entitysource
      *
@@ -148,26 +139,32 @@ class Generator
         foreach ($this->transformerList as $transformer) {
             $transformer->transform($ets, $this->baseDir);
         }
-   }
+    }
 
     /**
      * creates the tables and stored procedures needed
      */
     private function setupTablesAndStoredProcedures()
     {
-        $driver = ServiceLocator::getDriver();
-        $driver->install();
+        try {
+            $driver = ServiceLocator::getDriver();
+            $driver->install();
 
-        $driver->disableForeignKeyChecks();
+            $driver->disableForeignKeyChecks();
 
-        $tableBuilder = $driver->getTableBuilder();
-        foreach ($this->dataModelContainer->getEntityList() as $ets) {
-            $tableBuilder->setupTables($ets);
-            $tableBuilder->setupStoredProcedures($ets);
+            $tableBuilder = $driver->getTableBuilder();
+            foreach ($this->dataModelContainer->getEntityList() as $ets) {
+                $tableBuilder->setupTables($ets);
+                $tableBuilder->setupStoredProcedures($ets);
+            }
+
+            $driver->enableForeignKeyChecks();
+
+
+        } catch (SQLException $s) {
+            $this->generatorLog->error("SQL Exception " . $s->getMessage(),self::ERROR_SQL_EXCEPTION);
         }
 
-        $driver->enableForeignKeyChecks();
     }
-
 
 }

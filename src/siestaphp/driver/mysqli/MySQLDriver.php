@@ -64,9 +64,10 @@ class MySQLDriver implements Driver
      */
     public function connect($host, $port, $database, $user, $password)
     {
+
         $this->database = $database;
         // connect
-        $this->connection = new \mysqli ($host, $user, $password, $database, $port);
+        $this->connection = @new \mysqli ($host, $user, $password, $database, $port);
 
         // check for errors
         if ($this->connection->connect_errno) {

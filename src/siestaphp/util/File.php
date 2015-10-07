@@ -1,8 +1,8 @@
 <?php
 
-
 namespace siestaphp\util;
 
+use siestaphp\exceptions\XMLNotValidException;
 use siestaphp\util\StringUtil;
 
 /**
@@ -35,24 +35,6 @@ class File
     }
 
     /**
-     * tells if the file exists
-     * @return bool
-     */
-    public function exists()
-    {
-        return file_exists($this->absoluteFileName);
-    }
-
-    /**
-     * tells if the file is a directory
-     * @return bool
-     */
-    public function isDir()
-    {
-        return is_dir($this->absoluteFileName);
-    }
-
-    /**
      * tells if the file is a file
      * @return bool
      */
@@ -71,6 +53,15 @@ class File
             return false;
         }
         return unlink($this->absoluteFileName);
+    }
+
+    /**
+     * tells if the file exists
+     * @return bool
+     */
+    public function exists()
+    {
+        return file_exists($this->absoluteFileName);
     }
 
     /**
@@ -123,22 +114,12 @@ class File
     }
 
     /**
-     * @return string
+     * tells if the file is a directory
+     * @return bool
      */
-    public function getContents()
+    public function isDir()
     {
-        return file_get_contents($this->absoluteFileName);
-    }
-
-    /**
-     * loads the file as XML DOMDocument
-     * @return \DOMDocument
-     */
-    public function loadAsXML()
-    {
-        $xml = new \DomDocument ();
-        $xml->load($this->absoluteFileName);
-        return $xml;
+        return is_dir($this->absoluteFileName);
     }
 
     /**
@@ -153,11 +134,39 @@ class File
     }
 
     /**
+     * loads the file as XML DOMDocument
+     * @return \DomDocument
+     * @throws XMLNotValidException
+     */
+    public function loadAsXML()
+    {
+        $xml = new \DomDocument ();
+        libxml_use_internal_errors(true);
+        $result = $xml->load($this->absoluteFileName);
+        if (!$result) {
+            $e = new XMLNotValidException(libxml_get_errors());
+            libxml_clear_errors();
+            throw $e;
+
+        }
+
+        return $xml;
+    }
+
+    /**
      * @return array
      */
     public function loadAsJSONArray()
     {
         $content = $this->getContents();
         return json_decode($content, true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getContents()
+    {
+        return file_get_contents($this->absoluteFileName);
     }
 }

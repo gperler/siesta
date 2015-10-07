@@ -16,6 +16,14 @@ use siestaphp\naming\XMLStoredProcedure;
 class SPParameter implements Processable, SPParameterSource
 {
 
+    const VALIDATION_ERROR_INVALID_NAME = 700;
+
+    const VALIDATION_ERROR_INVALID_SP_NAME = 701;
+
+    const VALIDATION_ERROR_INVALID_PHP_TYPE = 702;
+
+    const VALIDATION_ERROR_INVALID_DATABASE_TYPE = 703;
+
     /**
      * @var SPParameterSource
      */
@@ -38,16 +46,18 @@ class SPParameter implements Processable, SPParameterSource
 
     }
 
+
+
     /**
      * @param GeneratorLog $log
      */
     public function validate(GeneratorLog $log)
 
     {
-        $log->errorIfAttributeNotSet($this->getName(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_NAME, XMLStoredProcedure::ELEMENT_PARAMETER);
-        $log->errorIfAttributeNotSet($this->getStoredProcedureName(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_SP_NAME, XMLStoredProcedure::ELEMENT_PARAMETER);
-        $log->errorIfAttributeNotSet($this->getPHPType(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_TYPE, XMLStoredProcedure::ELEMENT_PARAMETER);
-        $log->errorIfAttributeNotSet($this->getDatabaseType(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_DATABASE_TYPE, XMLStoredProcedure::ELEMENT_PARAMETER);
+        $log->errorIfAttributeNotSet($this->getName(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_NAME, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_NAME);
+        $log->errorIfAttributeNotSet($this->getStoredProcedureName(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_SP_NAME, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_SP_NAME);
+        $log->errorIfAttributeNotSet($this->getPHPType(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_TYPE, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_PHP_TYPE);
+        $log->errorIfAttributeNotSet($this->getDatabaseType(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_DATABASE_TYPE, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_DATABASE_TYPE);
 
     }
 

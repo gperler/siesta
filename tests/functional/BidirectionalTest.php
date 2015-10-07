@@ -5,7 +5,6 @@ namespace siestaphp\tests\functional;
 use siestaphp\tests\functional\bidirectional\gen\Address;
 use siestaphp\tests\functional\bidirectional\gen\Customer;
 
-
 /**
  * Class ReferenceTest
  */
@@ -24,6 +23,8 @@ class BidirectionalTest extends SiestaTester
         $this->connectAndInstall(self::DATABASE_NAME);
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
+
+        $this->assertNoValidationErrors();
 
     }
 

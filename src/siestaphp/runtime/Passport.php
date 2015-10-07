@@ -35,7 +35,7 @@ class Passport
     public function furtherTravelAllowed($tableName, ORMEntity $visitor)
     {
         // check if we have an entry for the business object
-        $objTravels = Util::getFromIndex($this->stamps, $tableName);
+        $objTravels = Util::getFromArray($this->stamps, $tableName);
 
         // if object has not been visited
         if (!$objTravels) {

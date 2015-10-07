@@ -88,7 +88,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
         // get definition
         $definitionList = TransformerXML::getAttributeTransformerDefinition();
-        $definition = Util::getFromIndex($definitionList, $attributeName);
+        $definition = Util::getFromArray($definitionList, $attributeName);
         $this->assertNotNull($definition, "Attribute " . $attributeName . " not in definition list");
 
         // check attribute values
@@ -127,7 +127,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
         // get definition
         $definitionList = TransformerXML::getReferenceTransformerDefinition();
-        $definition = Util::getFromIndex($definitionList, $referenceName);
+        $definition = Util::getFromArray($definitionList, $referenceName);
 
         // check that reference exists
         $this->assertNotNull($definition, "Reference " . $referenceName . " not in definition list");
@@ -160,7 +160,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $columnName = $column->getName();
 
         // get data
-        $definition = Util::getFromIndex($data, $columnName);
+        $definition = Util::getFromArray($data, $columnName);
 
         // check that data exists
         $this->assertNotNull($definition, "Referenced Column " . $columnName . " not in definition list");
@@ -190,7 +190,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
         // find definition
         $definitionList = TransformerXML::getCollectorTransformerDefinition();
-        $definition = Util::getFromIndex($definitionList, $name);
+        $definition = Util::getFromArray($definitionList, $name);
         $this->assertNotNull($definition, "Collector " . $name . " not in definition list");
 
         $this->assertSame($collectorSource->getReferenceName(), $definition["referenceName"]);
@@ -221,7 +221,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $indexName = $index->getName();
 
         $definitionList = TransformerXML::getIndexDefinition();
-        $definition = \siestaphp\util\Util::getFromIndex($definitionList, $indexName);
+        $definition = \siestaphp\util\Util::getFromArray($definitionList, $indexName);
         $this->assertNotNull($definition, "Index " . $indexName . " not in definition list");
 
         $this->assertSame($index->isUnique(), $definition["unique"]);
@@ -243,10 +243,10 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $indexPartName = $indexPart->getName();
 
         $definitionList = TransformerXML::getIndexPartDefinition();
-        $indexPartListDefinition = Util::getFromIndex($definitionList, $indexName);
+        $indexPartListDefinition = Util::getFromArray($definitionList, $indexName);
         $this->assertNotNull($indexPartListDefinition, "Definition for " . $indexName . " not in definition list");
 
-        $indexPartDefinition = Util::getFromIndex($indexPartListDefinition, $indexPartName);
+        $indexPartDefinition = Util::getFromArray($indexPartListDefinition, $indexPartName);
         $this->assertNotNull($indexPartDefinition, "Definition for " . $indexPartName . " not in definition list");
 
         $this->assertSame($indexPart->getSortOrder(), $indexPartDefinition["sortOrder"]);
@@ -293,7 +293,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $definitionList = TransformerXML::getSPParameterDefinition();
 
         // find definition
-        $definition = Util::getFromIndex($definitionList, $spParameterSource->getName());
+        $definition = Util::getFromArray($definitionList, $spParameterSource->getName());
         $this->assertNotNull($definition, "no definition for parameter " . $spParameterSource->getName() . " found");
 
         $this->assertSame($spParameterSource->getStoredProcedureName(), $definition["spName"]);

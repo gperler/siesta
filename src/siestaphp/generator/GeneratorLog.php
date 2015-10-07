@@ -25,26 +25,30 @@ interface GeneratorLog
 
     /**
      * @param string $text
+     * @param int $code
      */
-    public function warn($text);
+    public function warn($text, $code);
 
     /**
      * @param string $text
+     * @param int $code
      */
-    public function error($text);
+    public function error($text, $code);
 
     /**
      * @param string $needle
      * @param string $attributeName
      * @param string $elementName
+     * @param int $code
      */
-    public function errorIfAttributeNotSet($needle, $attributeName, $elementName);
+    public function errorIfAttributeNotSet($needle, $attributeName, $elementName, $code);
 
     /**
      * @param string $needle
      * @param array $haystack
      * @param string $attributeName
      * @param string $elementName
+     * @param int $code
      */
-    public function errorIfNotInList($needle, $haystack, $attributeName, $elementName);
+    public function errorIfNotInList($needle, $haystack, $attributeName, $elementName,  $code);
 }

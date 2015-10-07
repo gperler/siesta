@@ -14,6 +14,9 @@ use siestaphp\naming\XMLStoredProcedure;
  */
 class StoredProcedure implements Processable, StoredProcedureSource
 {
+    const VALIDATION_ERROR_INVALID_NAME = 600;
+
+    const VALIDATION_ERROR_INVALID_RESULT_TYPE = 601;
 
     private static $ALLOWED_RESULT_TYPES = array("single", "list", "resultset");
 
@@ -74,13 +77,15 @@ class StoredProcedure implements Processable, StoredProcedureSource
         }
     }
 
+
+
     /**
      * @param GeneratorLog $log
      */
     public function validate(GeneratorLog $log)
     {
-        $log->errorIfAttributeNotSet($this->getName(), XMLStoredProcedure::ATTRIBUTE_NAME, XMLStoredProcedure::ATTRIBUTE_NAME);
-        $log->errorIfNotInList($this->getResultType(), self::$ALLOWED_RESULT_TYPES, XMLStoredProcedure::ATTRIBUTE_RESULT_TYPE, XMLStoredProcedure::ELEMENT_STORED_PROCEDURE);
+        $log->errorIfAttributeNotSet($this->getName(), XMLStoredProcedure::ATTRIBUTE_NAME, XMLStoredProcedure::ATTRIBUTE_NAME, self::VALIDATION_ERROR_INVALID_NAME);
+        $log->errorIfNotInList($this->getResultType(), self::$ALLOWED_RESULT_TYPES, XMLStoredProcedure::ATTRIBUTE_RESULT_TYPE, XMLStoredProcedure::ELEMENT_STORED_PROCEDURE, self::VALIDATION_ERROR_INVALID_RESULT_TYPE);
 
         foreach ($this->parameterList as $parameter) {
             $parameter->validate($log);

@@ -90,7 +90,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
 
         // get definition and check they exist
         $definitionList = XMLReaderXML::getAttributeDefinition();
-        $definition = Util::getFromIndex($definitionList, $attributeName);
+        $definition = Util::getFromArray($definitionList, $attributeName);
         $this->assertNotNull($definition, "Attribute " . $attributeName . " not in definition list");
 
         // check attribute values
@@ -124,7 +124,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
 
         // find definition and check they exist
         $definitionList = XMLReaderXML::getReferenceDefinition();
-        $definition = Util::getFromIndex($definitionList, $referenceName);
+        $definition = Util::getFromArray($definitionList, $referenceName);
         $this->assertNotNull($definition, "Reference " . $referenceName . " not in definition list");
 
         // check reference values
@@ -155,7 +155,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
 
         // find definition and check they exist
         $definitionList = XMLReaderXML::getCollectorDefinition();
-        $definition = Util::getFromIndex($definitionList, $name);
+        $definition = Util::getFromArray($definitionList, $name);
         $this->assertNotNull($definition, "Collector " . $name . " not in definition list");
 
         $this->assertSame($collectorSource->getReferenceName(), $definition["referenceName"]);
@@ -185,7 +185,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
 
         // find definition and check they exist
         $definitionList = XMLReaderXML::getIndexDefinition();
-        $definition = Util::getFromIndex($definitionList, $indexName);
+        $definition = Util::getFromArray($definitionList, $indexName);
         $this->assertNotNull($definition, "Index " . $indexName . " not in definition list");
 
         $this->assertSame($index->isUnique(), $definition["unique"]);
@@ -206,10 +206,10 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         $indexPartName = $indexPart->getName();
 
         $definitionList = XMLReaderXML::getIndexPartDefinition();
-        $indexPartListDefinition = Util::getFromIndex($definitionList, $indexName);
+        $indexPartListDefinition = Util::getFromArray($definitionList, $indexName);
         $this->assertNotNull($indexPartListDefinition, "Definition for " . $indexName . " not in definition list");
 
-        $indexPartDefinition = Util::getFromIndex($indexPartListDefinition, $indexPartName);
+        $indexPartDefinition = Util::getFromArray($indexPartListDefinition, $indexPartName);
         $this->assertNotNull($indexPartDefinition, "Definition for " . $indexPartName . " not in definition list");
 
         $this->assertSame($indexPart->getSortOrder(), $indexPartDefinition["sortOrder"]);
@@ -253,7 +253,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         $definitionList = XMLReaderXML::getSPParameterDefinition();
 
         // find definition
-        $definition = Util::getFromIndex($definitionList, $spParameterSource->getName());
+        $definition = Util::getFromArray($definitionList, $spParameterSource->getName());
         $this->assertNotNull($definition, "no definition for parameter " . $spParameterSource->getName() . " found");
 
         $this->assertSame($spParameterSource->getStoredProcedureName(), $definition["spName"]);

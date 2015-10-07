@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\datamodel\reference;
 
 use Codeception\Util\Debug;
@@ -18,6 +17,12 @@ use siestaphp\naming\XMLReference;
  */
 class Reference implements Processable, ReferenceSource, ReferenceTransformerSource, ReferenceDatabaseSource
 {
+
+    const VALIDATION_ERROR_INVALID_REFERENCE_NAME = 300;
+    const VALIDATION_ERROR_INVALID_ON_DELETE = 302;
+    const VALIDATION_ERROR_INVALID_ON_UPDATE = 303;
+    const VALIDATION_ERROR_ON_DELETE_NULL_AND_REQUIRED = 304;
+    const VALIDATION_ERROR_REFERENCED_ENTITY_NOT_FOUND = 305;
 
     private static $ALLOWED_ON_X = array("restrict", "cascade", "set null", "no action");
 
@@ -178,16 +183,18 @@ class Reference implements Processable, ReferenceSource, ReferenceTransformerSou
      */
     public function validate(GeneratorLog $log)
     {
-        $log->errorIfNotInList($this->onDelete, self::$ALLOWED_ON_X, XMLReference::ATTRIBUTE_ON_DELETE, XMLReference::ELEMENT_REFERENCE_NAME);
+        $log->errorIfAttributeNotSet($this->name, XMLReference::ATTRIBUTE_NAME, XMLReference::ELEMENT_REFERENCE_NAME, self::VALIDATION_ERROR_INVALID_REFERENCE_NAME);
 
-        $log->errorIfNotInList($this->onUpdate, self::$ALLOWED_ON_X, XMLReference::ATTRIBUTE_ON_UPDATE, XMLReference::ELEMENT_REFERENCE_NAME);
+        $log->errorIfNotInList($this->onDelete, self::$ALLOWED_ON_X, XMLReference::ATTRIBUTE_ON_DELETE, XMLReference::ELEMENT_REFERENCE_NAME, self::VALIDATION_ERROR_INVALID_ON_DELETE);
+
+        $log->errorIfNotInList($this->onUpdate, self::$ALLOWED_ON_X, XMLReference::ATTRIBUTE_ON_UPDATE, XMLReference::ELEMENT_REFERENCE_NAME, self::VALIDATION_ERROR_INVALID_ON_UPDATE);
 
         if ($this->onDelete === self::ON_X_SET_NULL and $this->required) {
-            $log->error("Reference '" . $this->name . "' has required='true' but onDelete='setnull'. Either change onDelete or required");
+            $log->error("Reference '" . $this->name . "' has required='true' but onDelete='setnull'. Either change onDelete or required", self::VALIDATION_ERROR_ON_DELETE_NULL_AND_REQUIRED);
         }
 
         if (!$this->referencedEntity) {
-            $log->error("Reference '" . $this->name . "' refers to unknown entity " . $this->foreignClass);
+            $log->error("Reference '" . $this->name . "' refers to unknown entity " . $this->foreignClass, self::VALIDATION_ERROR_REFERENCED_ENTITY_NOT_FOUND);
         }
     }
 
@@ -266,7 +273,8 @@ class Reference implements Processable, ReferenceSource, ReferenceTransformerSou
     /**
      * @return string
      */
-    public function getForeignMethodName() {
+    public function getForeignMethodName()
+    {
         return $this->foreignMethodName;
     }
 

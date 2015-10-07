@@ -22,11 +22,13 @@ class SPTest extends SiestaTester
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
         $this->generateData();
+
+        $this->assertNoValidationErrors();
     }
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
 
     }
 

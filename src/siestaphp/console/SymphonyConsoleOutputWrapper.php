@@ -1,15 +1,16 @@
 <?php
 
 
-namespace siestaphp\generator;
+namespace siestaphp\console;
 
-use Codeception\Util\Debug;
+use siestaphp\generator\GeneratorLog;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class GeneratorConsoleLog
  * @package siestaphp\generator
  */
-class GeneratorConsoleLog implements GeneratorLog
+class SymphonyConsoleOutputWrapper implements GeneratorLog
 {
 
     /**
@@ -25,12 +26,20 @@ class GeneratorConsoleLog implements GeneratorLog
     protected $warningCount;
 
     /**
-     *
+     * @var OutputInterface
      */
-    public function __construct()
+    protected $outputInterfase;
+
+
+
+    /**
+     * @param OutputInterface $output
+     */
+    public function __construct(OutputInterface $output)
     {
         $this->errorCount = 0;
         $this->warningCount = 0;
+        $this->outputInterfase = $output;
     }
 
     /**
@@ -46,7 +55,7 @@ class GeneratorConsoleLog implements GeneratorLog
      */
     private function println($text)
     {
-        echo $text . PHP_EOL;
+        $this->outputInterfase->writeln($text);
     }
 
     /**
@@ -54,6 +63,7 @@ class GeneratorConsoleLog implements GeneratorLog
      */
     public function printValidationSummary()
     {
+
         $this->println($this->errorCount . " error(s)");
         $this->println($this->warningCount . " warning(s)");
     }
@@ -63,22 +73,30 @@ class GeneratorConsoleLog implements GeneratorLog
      */
     public function info($text)
     {
+        if ($this->outputInterfase->getVerbosity() < 3) {
+            return;
+        }
         $this->println($text);
     }
 
     /**
-     * @param $text
+     * @param string $text
+     * @param int $errorCode
      */
-    public function warn($text)
+    public function warn($text, $errorCode)
     {
         $this->warningCount++;
+        if ($this->outputInterfase->getVerbosity() < 2) {
+            return;
+        }
         $this->println("[WARN] " . $text);
     }
 
     /**
-     * @param $text
+     * @param string $text
+     * @param int $errorCode
      */
-    public function error($text)
+    public function error($text, $errorCode)
     {
         $this->errorCount++;
         $this->println("[ERROR] " . $text);
@@ -88,11 +106,12 @@ class GeneratorConsoleLog implements GeneratorLog
      * @param string $needle
      * @param string $attributeName
      * @param string $elementName
+     * @param int $errorCode
      */
-    public function errorIfAttributeNotSet($needle, $attributeName, $elementName)
+    public function errorIfAttributeNotSet($needle, $attributeName, $elementName, $errorCode)
     {
         if (!$needle) {
-            $this->error("Mandatory attribute $attributeName in element <$elementName> not set");
+            $this->error("Mandatory attribute $attributeName in element <$elementName> not set", $errorCode);
 
         }
     }
@@ -102,12 +121,13 @@ class GeneratorConsoleLog implements GeneratorLog
      * @param array $haystack
      * @param string $attributeName
      * @param string $elementName
+     * @param int $errorCode
      */
-    public function errorIfNotInList($needle, $haystack, $attributeName, $elementName)
+    public function errorIfNotInList($needle, $haystack, $attributeName, $elementName, $errorCode)
     {
         if (!in_array($needle, $haystack)) {
             $allowedValues = implode(",", $haystack);
-            $this->error("Attribute '$attributeName' in element <$elementName> has an invalid value ('$needle'). Allowed values are: $allowedValues");
+            $this->error("Attribute '$attributeName' in element <$elementName> has an invalid value ('$needle'). Allowed values are: $allowedValues", $errorCode);
         }
     }
 

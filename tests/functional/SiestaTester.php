@@ -2,11 +2,11 @@
 
 namespace siestaphp\tests\functional;
 
+use Codeception\Util\Debug;
+
 /**
- * Created by PhpStorm.
- * User: gregor
- * Date: 02.10.15
- * Time: 20:47
+ * Class SiestaTester
+ * @package siestaphp\tests\functional
  */
 class SiestaTester extends \PHPUnit_Framework_TestCase
 {
@@ -25,6 +25,11 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
      * @var float
      */
     protected $startTime;
+
+    /**
+     * @var CodeceptionLogger
+     */
+    protected $logger;
 
     /**
      * @param string $database
@@ -55,9 +60,21 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
      */
     protected function generateEntityFile($assetPath, $srcXML)
     {
-        $generator = new \siestaphp\generator\Generator();
+        $this->logger = new CodeceptionLogger();
+        $generator = new \siestaphp\generator\Generator($this->logger);
         $generator->generateFile(__DIR__ . $assetPath, __DIR__ . $assetPath . $srcXML);
 
+    }
+
+    /**
+     * checks if the validation has errors
+     */
+    protected function assertNoValidationErrors()
+    {
+        if (!$this->logger) {
+            return;
+        }
+        $this->assertFalse($this->logger->hasErrors(), "Expected no validation errors");
     }
 
     protected function startTimer()
@@ -66,7 +83,7 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $output
+     * @param string $output
      * @param int $executionCount
      */
     protected function stopTimer($output, $executionCount = 0)
@@ -75,6 +92,6 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
         if ($executionCount) {
             $delta /= $executionCount;
         }
-        \Codeception\Util\Debug::debug(sprintf($output, $delta));
+        Debug::debug(sprintf($output, $delta));
     }
 }
