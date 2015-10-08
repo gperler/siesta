@@ -150,6 +150,8 @@ class TableCreator
 
         $sql .= $this->buildCharsetSQL();
 
+        echo $sql .PHP_EOL .PHP_EOL;
+
         return $sql;
     }
 
@@ -242,6 +244,8 @@ class TableCreator
             $sql .= "," . $this->buildIndex($indexSource);
         }
 
+        Debug::debug($sql);
+
         return $sql;
     }
 
@@ -286,10 +290,10 @@ class TableCreator
         foreach ($indexPartSource->getIndexColumnList() as $column) {
             $sql .= $this->quote($column->getDatabaseName());
             if ($indexPartSource->getLength()) {
-                $sql .= " (" . $indexPartSource->getLength() . ") ";
+                $sql .= " (" . $indexPartSource->getLength() . ")";
             }
 
-            $sql .= $indexPartSource->getSortOrder() . ",";
+            $sql .= " " . $indexPartSource->getSortOrder();
         }
 
         return $sql;

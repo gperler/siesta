@@ -70,6 +70,7 @@ class CodeceptionLogger implements GeneratorLog
     public function error($text, $code)
     {
         $this->errorCodeList[] = $code;
+        Debug::debug($text);
     }
 
     /**
@@ -82,6 +83,7 @@ class CodeceptionLogger implements GeneratorLog
     {
         if (!$needle) {
             $this->errorCodeList[] = $code;
+            Debug::debug($needle . "$elementName not set");
         }
     }
 
@@ -96,6 +98,7 @@ class CodeceptionLogger implements GeneratorLog
     {
         if (!in_array($needle, $haystack)) {
             $this->errorCodeList[] = $code;
+            Debug::debug($needle . "$needle not in list");
         }
     }
 

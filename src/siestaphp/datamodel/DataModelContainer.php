@@ -17,7 +17,7 @@ class DataModelContainer
     /**
      * @var Entity[]
      */
-    protected $entityContainer;
+    protected $entityList;
 
     /**
      * @var GeneratorLog
@@ -29,7 +29,7 @@ class DataModelContainer
      */
     public function __construct($generatorLog)
     {
-        $this->entityContainer = array();
+        $this->entityList = array();
 
         $this->generatorLog = $generatorLog;
     }
@@ -60,8 +60,8 @@ class DataModelContainer
             return;
         }
 
-        if (isset($this->entityContainer[$entityClassName])) {
-            $existingEntity = $this->entityContainer[$entityClassName];
+        if (isset($this->entityList[$entityClassName])) {
+            $existingEntity = $this->entityList[$entityClassName];
             echo "Found Entity in 2 file(s)" . PHP_EOL;
             return;
         }
@@ -69,7 +69,7 @@ class DataModelContainer
         $entity = new Entity();
         $entity->setSource($source);
 
-        $this->entityContainer[$entityClassName] = $entity;
+        $this->entityList[$entityClassName] = $entity;
     }
 
     /**
@@ -77,14 +77,14 @@ class DataModelContainer
      */
     public function updateModel()
     {
-        foreach ($this->entityContainer as $entity) {
+        foreach ($this->entityList as $entity) {
             $entity->updateModel($this);
         }
     }
 
     public function validate()
     {
-        foreach ($this->entityContainer as $entity) {
+        foreach ($this->entityList as $entity) {
             $entity->validate($this->generatorLog);
         }
     }
@@ -96,7 +96,7 @@ class DataModelContainer
      */
     public function getEntityDetails($entityName)
     {
-        return $this->entityContainer[$entityName];
+        return $this->entityList[$entityName];
     }
 
     /**
@@ -104,7 +104,7 @@ class DataModelContainer
      */
     public function getEntityList()
     {
-        return $this->entityContainer;
+        return $this->entityList;
     }
 
 }

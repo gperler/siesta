@@ -3,6 +3,7 @@
 
 namespace siestaphp\driver;
 
+use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\exceptions\ConnectException;
 
 /**
@@ -99,5 +100,14 @@ interface Driver
     public function enableForeignKeyChecks();
 
     public function disableForeignKeyChecks();
+
+    /**
+     * @param string $databaseName
+     * @param string $targetNamespace
+     * @param string $targetPath
+     *
+     * @return EntitySource[]
+     */
+    public function getEntitySourceList($databaseName, $targetNamespace, $targetPath);
 
 }

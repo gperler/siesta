@@ -25,10 +25,15 @@ class Attribute implements Processable, AttributeSource, AttributeTransformerSou
     const AUTO_VALUE_AUTOINCREMENT = "autoincrement";
 
     const VALIDATION_ERROR_NO_NAME = 200;
+
     const VALIDATION_ERROR_INVALID_NAME = 201;
+
     const VALIDATION_ERROR_NO_DATABASE_TYPE = 202;
+
     const VALIDATION_ERROR_NO_PHP_TYPE = 203;
+
     const VALIDATION_ERROR_INVALID_AUTOVALUE = 204;
+
     const VALIDATION_ERROR_PK_WITHOUT_AUTOVALUE = 205;
 
     /**

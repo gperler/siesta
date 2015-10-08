@@ -90,7 +90,9 @@ class AttributeMetaData implements AttributeSource
      */
     public function getAutoValue()
     {
-        // TODO: Implement getAutoValue() method.
+        if ($this->isPrimaryKey) {
+            return "autoincrement";
+        }
     }
 
     /**

@@ -11,6 +11,8 @@ namespace siestaphp\naming;
 class XMLIndexPart
 {
 
+    const ELEMENT_INDEX_PART_LIST_NAME = "indexList";
+
     const ELEMENT_INDEX_PART_NAME = "indexPart";
 
     const ATTRIBUTE_NAME = "name";

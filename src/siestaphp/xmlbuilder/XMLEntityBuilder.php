@@ -1,15 +1,16 @@
 <?php
 
-
 namespace siestaphp\xmlbuilder;
 
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\naming\StoredProcedureNaming;
 use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLCollector;
 use siestaphp\naming\XMLEntity;
+use siestaphp\naming\XMLIndex;
 use siestaphp\naming\XMLReference;
 use siestaphp\naming\XMLStoredProcedure;
 
@@ -68,6 +69,8 @@ class XMLEntityBuilder extends XMLBuilder
         $this->addAttributeData();
         $this->addReferenceData();
         $this->addCollectorData();
+
+        $this->addIndexList();
 
         // if this is used for transformation (and not reverse engineering) add transformation relevant data
         if ($this->entitySource instanceof EntityTransformerSource) {
@@ -216,6 +219,18 @@ class XMLEntityBuilder extends XMLBuilder
         // iterate stored procedures and add them to XML
         foreach ($spSourceList as $spSource) {
             $spXMLBuilder = new XMLSPBuilder($spSource, $this->domDocument, $xmlSPList);
+        }
+
+    }
+
+    private function addIndexList()
+    {
+
+        // create xml element as container
+        $xmlIndexList = $this->createElement($this->domElement, XMLIndex::ELEMENT_INDEX_LIST_NAME);
+
+        foreach ($this->entitySource->getIndexSourceList() as $indexSource) {
+            $indexXMLBuilder = new XMLIndexBuilder($indexSource, $this->domDocument, $xmlIndexList);
         }
 
     }

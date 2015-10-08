@@ -60,7 +60,7 @@ class ReferencedColumn implements DatabaseColumn, ReferencedColumnSource {
      */
     public function getDatabaseName()
     {
-        return "FK_" . strtoupper($this->referenceSource->getName()) . "_" . $this->attributeSource->getDatabaseName();
+        return strtoupper($this->referenceSource->getName()) . "_" . $this->attributeSource->getDatabaseName();
     }
 
     /**

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\driver\mysqli\metadata;
 
 use siestaphp\datamodel\attribute\AttributeSource;
@@ -9,6 +8,7 @@ use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
+use siestaphp\driver\Driver;
 use siestaphp\driver\mysqli\MySQLDriver;
 
 /**
@@ -19,6 +19,8 @@ class TableMetadata implements EntitySource
 {
     const SP_GET_COLUMN_DETAILS = "CALL `SIESTA_GET_COLUMN_DETAILS` ('%s','%s')";
     const SP_GET_FK_DETAILS = "CALL `SIESTA_GET_FOREIGN_KEY_DETAILS` ('%s','%s')";
+
+    const SQL_GET_INDEX_LIST = "SELECT S.* FROM INFORMATION_SCHEMA.STATISTICS AS S WHERE S.TABLE_SCHEMA = '%s' AND S.TABLE_NAME = '%s';";
 
     /**
      * @var string
@@ -51,23 +53,33 @@ class TableMetadata implements EntitySource
     protected $referenceMetaDataList;
 
     /**
-     * @param MySQLDriver $driver
-     * @param $tableName
-     * @param $targetPath
-     * @param $targetNamespace
+     * @var IndexMetaData[]
      */
-    public function __construct(MySQLDriver $driver, $tableName, $targetPath, $targetNamespace)
+    protected $indexMetaList;
+
+    /**
+     * @param Driver $driver
+     * @param TableDTO $tableDTO
+     * @param string $targetPath
+     * @param string $targetNamespace
+     */
+    public function __construct(Driver $driver, TableDTO $tableDTO, $targetPath, $targetNamespace)
     {
-        $this->tableName = $tableName;
+        $this->tableName = $tableDTO->name;
+        $this->targetPath = $targetPath;
+        $this->targetNamespace = $targetNamespace;
+
         $this->driver = $driver;
 
         $this->attributeMetaDataList = array();
         $this->referenceMetaDataList = array();
+        $this->indexMetaList = array();
 
         $this->extractReferenceData();
 
         $this->extractColumns();
 
+        $this->extractIndexData();
     }
 
     /**
@@ -84,7 +96,7 @@ class TableMetadata implements EntitySource
             $columnName = $resultSet->getStringValue(AttributeMetaData::COLUMN_NAME);
             $reference = $this->getReferenceByColumnName($columnName);
             if ($reference !== null) {
-                $reference->updateReferenceInformation($resultSet);
+                $reference->updateFromColumn($resultSet);
             } else {
                 $this->attributeMetaDataList[] = new AttributeMetaData($resultSet);
             }
@@ -99,17 +111,40 @@ class TableMetadata implements EntitySource
     protected function extractReferenceData()
     {
         $sql = sprintf(self::SP_GET_FK_DETAILS, $this->driver->getDatabase(), $this->tableName);
+
         $resultSet = $this->driver->executeStoredProcedure($sql);
 
         while ($resultSet->hasNext()) {
-            $this->referenceMetaDataList[] = new ReferenceMetaData($resultSet);
+            $constraintName = ReferenceMetaData::getConstraintNameFromResultSet($resultSet);
+            $referenceMetaData = $this->getReferenceByConstraintName($constraintName);
+            if ($referenceMetaData) {
+                $referenceMetaData->updateFromConstraint($resultSet);
+            } else {
+                $this->referenceMetaDataList[] = new ReferenceMetaData($resultSet);
+            }
         }
 
         $resultSet->close();
     }
 
     /**
+     * @param $constraintName
+     *
+     * @return null|ReferenceMetaData
+     */
+    private function getReferenceByConstraintName($constraintName)
+    {
+        foreach ($this->referenceMetaDataList as $referenceMetaData) {
+            if ($referenceMetaData->getConstraintName() === $constraintName) {
+                return $referenceMetaData;
+            }
+        }
+        return null;
+    }
+
+    /**
      * retrieves a ReferenceMetaData by column name
+     *
      * @param string $columnName
      *
      * @return ReferenceMetaData
@@ -117,8 +152,42 @@ class TableMetadata implements EntitySource
     protected function getReferenceByColumnName($columnName)
     {
         foreach ($this->referenceMetaDataList as $referenceMetaData) {
-            if ($referenceMetaData->getName() === $columnName) {
+            if ($referenceMetaData->usesColumn($columnName)) {
                 return $referenceMetaData;
+            }
+        }
+        return null;
+    }
+
+    protected function extractIndexData()
+    {
+        $sql = sprintf(self::SQL_GET_INDEX_LIST, $this->driver->getDatabase(), $this->tableName);
+
+        $resultSet = $this->driver->query($sql);
+        while ($resultSet->hasNext()) {
+            if (!IndexMetaData::isValidIndex($resultSet)) {
+                continue;
+            }
+            $indexName = IndexMetaData::getIndexNameFromResultSet($resultSet);
+            $index = $this->getIndexByName($indexName);
+            if ($index) {
+                $index->addIndexPart($resultSet);
+            } else {
+                $this->indexMetaList[] = new IndexMetaData($resultSet);
+            }
+        }
+    }
+
+    /**
+     * @param $indexName
+     *
+     * @return null|IndexMetaData
+     */
+    protected function getIndexByName($indexName)
+    {
+        foreach ($this->indexMetaList as $indexMetaData) {
+            if ($indexMetaData->getName() === $indexName) {
+                return $indexMetaData;
             }
         }
         return null;
@@ -161,7 +230,7 @@ class TableMetadata implements EntitySource
      */
     public function getIndexSourceList()
     {
-        // TODO: Implement getIndexSourceList() method.
+        return $this->indexMetaList;
     }
 
     /**
@@ -169,7 +238,7 @@ class TableMetadata implements EntitySource
      */
     public function getClassName()
     {
-        return ucfirst(strtolower($this->tableName));
+        return $this->tableName;
     }
 
     /**
@@ -177,6 +246,7 @@ class TableMetadata implements EntitySource
      */
     public function getClassNamespace()
     {
+        return $this->targetNamespace;
     }
 
     /**
@@ -216,7 +286,7 @@ class TableMetadata implements EntitySource
      */
     public function getTargetPath()
     {
-        // TODO: Implement getTargetPath() method.
+        return "sql/gen";
     }
 
 }

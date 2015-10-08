@@ -3,6 +3,7 @@
 namespace siestaphp\driver\mysqli;
 
 use Codeception\Util\Debug;
+use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\Driver;
 use siestaphp\driver\exceptions\CannotBeNullException;
 use siestaphp\driver\exceptions\ConnectException;
@@ -12,6 +13,7 @@ use siestaphp\driver\exceptions\TableAlreadyExistsException;
 use siestaphp\driver\exceptions\TableDoesNotExistException;
 use siestaphp\driver\exceptions\UniqueConstraintViolationException;
 use siestaphp\driver\mysqli\installer\Installer;
+use siestaphp\driver\mysqli\metadata\DatabaseMetaData;
 use siestaphp\driver\ResultSet;
 use siestaphp\driver\TableBuilder;
 
@@ -176,9 +178,6 @@ class MySQLDriver implements Driver
      */
     private function handleQueryError($errorNumber, $error, $sql)
     {
-        Debug::debug("MYSQL DRIVER");
-
-        Debug::debug($errorNumber);
         switch ($errorNumber) {
             case 1048:
                 throw new CannotBeNullException($error, $errorNumber);
@@ -266,6 +265,19 @@ class MySQLDriver implements Driver
     public function disableForeignKeyChecks()
     {
         $this->execute("set foreign_key_checks=0");
+    }
+
+
+    /**
+     * @param string $databaseName
+     * @param string $targetNamespace
+     * @param string $targetPath
+     *
+     * @return EntitySource[]
+     */
+    public function getEntitySourceList($databaseName, $targetNamespace, $targetPath) {
+        $databaseMetaData = new DatabaseMetaData($this);
+        return $databaseMetaData->getEntitySourceList($databaseName,$targetNamespace, $targetPath);
     }
 
 }

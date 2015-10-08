@@ -166,12 +166,12 @@ class TransformerXML
             "id" => array(
                 "type" => "int",
                 "methodName" => "Id",
-                "databaseName" => "FK_LABEL_ID"
+                "databaseName" => "LABEL_ID"
             ),
             "bool" => array(
                 "type" => "bool",
                 "methodName" => "Bool",
-                "databaseName" => "FK_LABEL_D_BOOLEAN"
+                "databaseName" => "LABEL_D_BOOLEAN"
             )
 
         );

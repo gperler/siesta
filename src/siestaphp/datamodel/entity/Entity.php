@@ -311,7 +311,7 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
 
         $pkList = $this->getPrimaryKeyAttributeList();
         if (sizeof($pkList) === 0) {
-            $log->error("No <" . XMLEntity::ELEMENT_ENTITY_NAME . "> has " . XMLAttribute::ATTRIBUTE_PRIMARY_KEY . " true. A primary key is required", self::VALIDATION_ERROR_NO_PRIMARY_KEY);
+            //$log->error("No <" . XMLEntity::ELEMENT_ENTITY_NAME . "> has " . XMLAttribute::ATTRIBUTE_PRIMARY_KEY . " true. A primary key is required", self::VALIDATION_ERROR_NO_PRIMARY_KEY);
         }
     }
 
