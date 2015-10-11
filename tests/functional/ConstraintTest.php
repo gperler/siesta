@@ -2,6 +2,7 @@
 
 namespace siestaphp\tests\functional;
 
+use siestaphp\driver\exceptions\ForeignKeyConstraintFailedException;
 use siestaphp\tests\functional\constraint\gen\Address;
 use siestaphp\tests\functional\constraint\gen\Customer;
 
@@ -43,7 +44,7 @@ class ConstraintTest extends SiestaTester
         $customer->save(true);
         try {
             Address::deleteEntityByPrimaryKey($standardAddress->getId());
-        } catch (\siestaphp\driver\exceptions\ForeignKeyConstraintFailedException $e) {
+        } catch (ForeignKeyConstraintFailedException $e) {
             return;
         }
         $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
@@ -64,7 +65,7 @@ class ConstraintTest extends SiestaTester
             // update address id
             $sql = "UPDATE Address SET ID=7 WHERE ID= " . $standardAddress->getId();
             $this->driver->query($sql);
-        } catch (\siestaphp\driver\exceptions\ForeignKeyConstraintFailedException $e) {
+        } catch (ForeignKeyConstraintFailedException $e) {
             return;
         }
         $this->assertTrue(false, "Foreign key constraint failed exception not thrown");

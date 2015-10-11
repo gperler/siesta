@@ -3,6 +3,7 @@
 
 namespace siestaphp\datamodel\entity;
 use siestaphp\datamodel\attribute\AttributeTransformerSource;
+use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\util\File;
 
 
@@ -65,5 +66,15 @@ interface EntityTransformerSource extends EntitySource {
      * @return string
      */
     public function getSPCallSignature();
+
+    /**
+     * @return bool
+     */
+    public function hasPrimaryKey();
+
+    /**
+     * @return DatabaseColumn[]
+     */
+    public function getPrimaryKeyColumns();
 
 }

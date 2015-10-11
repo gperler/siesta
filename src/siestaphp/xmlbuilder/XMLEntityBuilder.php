@@ -6,6 +6,7 @@ use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\entity\EntityTransformerSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\naming\StoredProcedureNaming;
+use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLEntity;
 use siestaphp\naming\XMLStoredProcedure;
 
@@ -141,18 +142,15 @@ class XMLEntityBuilder extends XMLBuilder
     private function addTransformerData(EntityTransformerSource $ets)
     {
         $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_DATETIME_IN_USE, $ets->isDateTimeUsed());
-
         $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_REFERENCES, $ets->hasReferences());
-
         $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_ATTRIBUTES, $ets->hasAttributes());
+        $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_PRIMARY_KEY, $ets->hasPrimaryKey());
 
         $this->addStoredProcedureNames();
-
         $this->addReferencedClassUseNames($ets);
-
         $this->addFindByPrimaryKeySignature($ets);
-
         $this->addCustomStoredProcedureList($ets->getStoredProcedureSourceList());
+        $this->addPrimaryKeyColumns($ets);
 
     }
 
@@ -219,5 +217,19 @@ class XMLEntityBuilder extends XMLBuilder
         }
 
     }
+
+    /**
+     * @param EntityTransformerSource $ets
+     */
+    private function addPrimaryKeyColumns(EntityTransformerSource $ets) {
+
+        foreach($ets->getPrimaryKeyColumns() as $column) {
+            $xmlPKColumn = $this->createElement($this->domElement, XMLAttribute::ELEMENT_PK_COLUMN_NAME);
+
+            $xmlPKColumn->setAttribute(XMLAttribute::ATTRIBUTE_NAME, $column->getName());
+            $xmlPKColumn->setAttribute(XMLAttribute::ATTRIBUTE_TYPE, $column->getPHPType());
+        }
+    }
+
 
 }

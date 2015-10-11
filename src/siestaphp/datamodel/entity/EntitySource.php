@@ -73,5 +73,4 @@ interface EntitySource
      * @return string
      */
     public function getTargetPath();
-
 }

@@ -238,4 +238,6 @@ class XMLEntityReader extends XMLAccess implements EntitySource
         return $this->getAttribute(XMLEntity::ATTRIBUTE_TARGET_PATH);
     }
 
+
+
 }

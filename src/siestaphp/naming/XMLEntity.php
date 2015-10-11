@@ -33,7 +33,10 @@ class XMLEntity
 
     const ATTRIBUTE_HAS_ATTRIBUTES = "hasAttributes";
 
+    const ATTRIBUTE_HAS_PRIMARY_KEY = "hasPrimaryKey";
+
     /* standard stored procedure names */
+
     const ELEMENT_STANDARD_STORED_PROCEDURES = "standardStoredProcedures";
 
     const ATTRIBUTE_SSP_FIND_BY_PK = "findByPrimaryKey";

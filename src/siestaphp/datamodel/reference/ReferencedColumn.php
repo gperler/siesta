@@ -48,7 +48,7 @@ class ReferencedColumn implements DatabaseColumn, ReferencedColumnSource
         if ($this->mappingSource !== null) {
             return $this->mappingSource->getName();
         }
-        return $this->attributeSource->getName();
+        return $this->referenceSource->getName() . ucfirst($this->attributeSource->getName());
     }
 
     /**

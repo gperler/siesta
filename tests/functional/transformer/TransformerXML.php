@@ -164,14 +164,14 @@ class TransformerXML
         $referenceData["label"]["foreignConstructClass"] = "Label";
         $referenceData["label"]["storedProcedureFinderName"] = "ARTIST_FBR_LABEL";
         $referenceData["label"]["columnList"] = array(
-            "id" => array(
+            "labelId" => array(
                 "type" => "int",
-                "methodName" => "Id",
+                "methodName" => "LabelId",
                 "databaseName" => "LABEL_ID"
             ),
-            "bool" => array(
+            "labelBool" => array(
                 "type" => "bool",
-                "methodName" => "Bool",
+                "methodName" => "LabelBool",
                 "databaseName" => "LABEL_D_BOOLEAN"
             )
 
