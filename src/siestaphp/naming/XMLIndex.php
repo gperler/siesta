@@ -11,8 +11,6 @@ namespace siestaphp\naming;
 class XMLIndex
 {
 
-    const ELEMENT_INDEX_LIST_NAME = "indexList";
-
     const ELEMENT_INDEX_NAME = "index";
 
     const ATTRIBUTE_NAME = "name";

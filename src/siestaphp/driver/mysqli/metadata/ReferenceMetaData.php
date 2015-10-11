@@ -2,6 +2,7 @@
 
 namespace siestaphp\driver\mysqli\metadata;
 
+use siestaphp\datamodel\reference\MappingSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\driver\ResultSet;
 
@@ -35,14 +36,24 @@ class ReferenceMetaData implements ReferenceSource
     }
 
     /**
+     * @param ResultSet $resultSet
+     *
+     * @return bool
+     */
+    public static function considerConstraints(ResultSet $resultSet)
+    {
+        return $resultSet->getStringValue(self::REFERENCED_TABLE_NAME) !== null;
+    }
+
+    /**
      * @var string
      */
     protected $constraintName;
 
     /**
-     * @var string[]
+     * @var ReferenceMappingMetaData[]
      */
-    protected $columnNameList;
+    protected $mappingList;
 
     /**
      * @var bool
@@ -57,18 +68,19 @@ class ReferenceMetaData implements ReferenceSource
 
     protected $onUpdate;
 
+    protected $isPrimaryKey;
+
     /**
      * @param ResultSet $resultSet
      */
     public function __construct(ResultSet $resultSet)
     {
-        $this->columnNameList = array();
+        $this->mappingList = array();
         $this->constraintName = $resultSet->getStringValue(self::CONSTRAINT_NAME);
         $this->foreignTable = $resultSet->getStringValue(self::REFERENCED_TABLE_NAME);
         $this->foreignColumn = $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME);
-        $this->onDelete = $resultSet->getStringValue(self::DELETE_RULE);
-        $this->onUpdate = $resultSet->getStringValue(self::UPDATE_RULE);
-        $this->columnNameList[] = $resultSet->getStringValue(self::COLUMN_NAME);
+        $this->mappingList[] = new ReferenceMappingMetaData($resultSet->getStringValue(self::COLUMN_NAME), $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME));
+
     }
 
     /**
@@ -77,6 +89,7 @@ class ReferenceMetaData implements ReferenceSource
     public function updateFromColumn(ResultSet $resultSet)
     {
         $this->isNullAble = $resultSet->getStringValue(AttributeMetaData::COLUMN_IS_NULLABLE) === AttributeMetaData::COLUMN_IS_NULLABLE_YES;
+        $this->isPrimaryKey = $resultSet->getStringValue(AttributeMetaData::COLUMN_KEY) === AttributeMetaData::COLUMN_KEY_PRIMARY_KEY;
     }
 
     /**
@@ -84,7 +97,16 @@ class ReferenceMetaData implements ReferenceSource
      */
     public function updateFromConstraint(ResultSet $resultSet)
     {
-        $this->columnNameList[] = $resultSet->getStringValue(self::COLUMN_NAME);
+        $this->mappingList[] = new ReferenceMappingMetaData($resultSet->getStringValue(self::COLUMN_NAME), $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME));
+    }
+
+    /**
+     * @param ResultSet $resultSet
+     */
+    public function updateConstraintData(ResultSet $resultSet)
+    {
+        $this->onUpdate = $resultSet->getStringValue(self::UPDATE_RULE);
+        $this->onDelete = $resultSet->getStringValue(self::DELETE_RULE);
     }
 
     /**
@@ -102,7 +124,21 @@ class ReferenceMetaData implements ReferenceSource
      */
     public function usesColumn($columnName)
     {
-        return in_array($columnName, $this->columnNameList);
+        foreach ($this->mappingList as $mapping) {
+            if ($mapping->getName() === $columnName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return MappingSource[]
+     */
+    public function getMappingSourceList()
+    {
+        return $this->mappingList;
     }
 
     /**
@@ -110,8 +146,8 @@ class ReferenceMetaData implements ReferenceSource
      */
     public function getName()
     {
-        if (sizeof($this->columnNameList) === 1) {
-            return $this->columnNameList[0];
+        if (sizeof($this->mappingList) === 1) {
+            return $this->mappingList[0]->getName();
         }
         return $this->constraintName;
     }
@@ -154,6 +190,14 @@ class ReferenceMetaData implements ReferenceSource
     public function getOnUpdate()
     {
         return strtoupper($this->onUpdate);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrimaryKey()
+    {
+        return $this->isPrimaryKey;
     }
 
 }

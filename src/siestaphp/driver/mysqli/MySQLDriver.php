@@ -267,7 +267,6 @@ class MySQLDriver implements Driver
         $this->execute("set foreign_key_checks=0");
     }
 
-
     /**
      * @param string $databaseName
      * @param string $targetNamespace
@@ -275,9 +274,10 @@ class MySQLDriver implements Driver
      *
      * @return EntitySource[]
      */
-    public function getEntitySourceList($databaseName, $targetNamespace, $targetPath) {
+    public function getEntitySourceList($databaseName, $targetNamespace, $targetPath)
+    {
         $databaseMetaData = new DatabaseMetaData($this);
-        return $databaseMetaData->getEntitySourceList($databaseName,$targetNamespace, $targetPath);
+        return $databaseMetaData->getEntitySourceList($databaseName, $targetNamespace, $targetPath);
     }
 
 }

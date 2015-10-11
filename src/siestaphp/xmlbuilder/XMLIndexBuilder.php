@@ -46,11 +46,9 @@ class XMLIndexBuilder extends XMLBuilder
 
     private function addIndexPartListData()
     {
-        // create xml element for referenced columns
-        $xmlIndexPartList = $this->createElement($this->domElement, XMLIndexPart::ELEMENT_INDEX_PART_LIST_NAME);
 
         foreach ($this->indexSource->getIndexPartSourceList() as $indexPartSource) {
-            $this->addIndexPart($xmlIndexPartList, $indexPartSource);
+            $this->addIndexPart($this->domElement, $indexPartSource);
         }
 
     }

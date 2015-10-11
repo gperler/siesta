@@ -4,14 +4,9 @@ namespace siestaphp\xmlbuilder;
 
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\entity\EntityTransformerSource;
-use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\naming\StoredProcedureNaming;
-use siestaphp\naming\XMLAttribute;
-use siestaphp\naming\XMLCollector;
 use siestaphp\naming\XMLEntity;
-use siestaphp\naming\XMLIndex;
-use siestaphp\naming\XMLReference;
 use siestaphp\naming\XMLStoredProcedure;
 
 /**
@@ -99,12 +94,9 @@ class XMLEntityBuilder extends XMLBuilder
      */
     private function addAttributeData()
     {
-        // create element
-        $attributeXMLList = $this->createElement($this->domElement, XMLAttribute::ELEMENT_ATTRIBUTE_LIST_NAME);
-
         // iterate attributes and create XML Builder for them
         foreach ($this->entitySource->getAttributeSourceList() as $attributeSource) {
-            $this->attributeList[] = new XMLAttributeBuilder($attributeSource, $this->domDocument, $attributeXMLList);
+            $this->attributeList[] = new XMLAttributeBuilder($attributeSource, $this->domDocument, $this->domElement);
         }
     }
 
@@ -113,12 +105,9 @@ class XMLEntityBuilder extends XMLBuilder
      */
     private function addReferenceData()
     {
-        // create element
-        $referenceXMLList = $this->createElement($this->domElement, XMLReference::ELEMENT_REFERENCE_LIST_NAME);
-
         // iterate references and create XML builder for them
         foreach ($this->entitySource->getReferenceSourceList() as $referenceSource) {
-            $this->referenceList[] = new XMLReferenceBuilder($referenceSource, $this->domDocument, $referenceXMLList);
+            $this->referenceList[] = new XMLReferenceBuilder($referenceSource, $this->domDocument, $this->domElement);
         }
     }
 
@@ -127,13 +116,21 @@ class XMLEntityBuilder extends XMLBuilder
      */
     private function addCollectorData()
     {
-        // create element
-        $collectorXMLList = $this->createElement($this->domElement, XMLCollector::ELEMENT_COLLECTOR_LIST_NAME);
-
         // iterate collectors and create XML builder for them
         foreach ($this->entitySource->getCollectorSourceList() as $collectorSource) {
-            $this->collectorList[] = new XMLCollectorBuilder($collectorSource, $this->domDocument, $collectorXMLList);
+            $this->collectorList[] = new XMLCollectorBuilder($collectorSource, $this->domDocument, $this->domElement);
         }
+    }
+
+    /**
+     * adds the index list to the xml
+     */
+    private function addIndexList()
+    {
+        foreach ($this->entitySource->getIndexSourceList() as $indexSource) {
+            $indexXMLBuilder = new XMLIndexBuilder($indexSource, $this->domDocument, $this->domElement);
+        }
+
     }
 
     /**
@@ -219,18 +216,6 @@ class XMLEntityBuilder extends XMLBuilder
         // iterate stored procedures and add them to XML
         foreach ($spSourceList as $spSource) {
             $spXMLBuilder = new XMLSPBuilder($spSource, $this->domDocument, $xmlSPList);
-        }
-
-    }
-
-    private function addIndexList()
-    {
-
-        // create xml element as container
-        $xmlIndexList = $this->createElement($this->domElement, XMLIndex::ELEMENT_INDEX_LIST_NAME);
-
-        foreach ($this->entitySource->getIndexSourceList() as $indexSource) {
-            $indexXMLBuilder = new XMLIndexBuilder($indexSource, $this->domDocument, $xmlIndexList);
         }
 
     }

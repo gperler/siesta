@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\naming;
 
 /**
@@ -9,8 +8,6 @@ namespace siestaphp\naming;
  */
 class XMLCollector
 {
-
-    const ELEMENT_COLLECTOR_LIST_NAME = "collectorList";
 
     const ELEMENT_COLLECTOR_NAME = "collector";
 

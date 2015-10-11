@@ -43,6 +43,9 @@ class CodeceptionLogger implements GeneratorLog
      */
     public function printValidationSummary()
     {
+        if (sizeof($this->errorCodeList) !== 0 ) {
+            Debug::debug("Errorlist " . implode(",", $this->errorCodeList));
+        }
 
     }
 

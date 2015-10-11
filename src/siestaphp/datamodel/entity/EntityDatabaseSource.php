@@ -9,6 +9,7 @@
 namespace siestaphp\datamodel\entity;
 
 use siestaphp\datamodel\attribute\AttributeDatabaseSource;
+use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\index\IndexDatabaseSource;
 use siestaphp\datamodel\reference\ReferenceDatabaseSource;
@@ -40,5 +41,15 @@ interface EntityDatabaseSource extends EntitySource {
      * @return IndexDatabaseSource[]
      */
     public function getIndexDatabaseSourceList();
+
+    /**
+     * @return DatabaseColumn[]
+     */
+    public function getPrimaryKeyColumns();
+
+    /**
+     * @return bool
+     */
+    public function hasPrimaryKey();
 
 }

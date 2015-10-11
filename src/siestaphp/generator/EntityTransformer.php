@@ -48,7 +48,7 @@ class EntityTransformer implements Transformer
 
         // store it xml
         $domDocument->formatOutput = true;
-        $name = str_replace("/", ".", $entity->getTargetPath());
+        $name = str_replace("\\", ".", $entity->getClassNamespace());
         $xmlTargetPath = __DIR__ . "/../../../tests/xml/" . $name . "." . $entity->getClassName() . ".xml";
         $domDocument->save($xmlTargetPath);
 

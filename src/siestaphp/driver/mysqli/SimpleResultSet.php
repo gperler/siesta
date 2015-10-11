@@ -58,7 +58,7 @@ class SimpleResultSet implements ResultSet
     public function close()
     {
         if ($this->resultSet != null) {
-            $this->resultSet->close();
+            $this->resultSet->free();
         }
     }
 

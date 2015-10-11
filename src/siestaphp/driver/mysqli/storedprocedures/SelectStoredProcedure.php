@@ -1,8 +1,6 @@
 <?php
 
-
 namespace siestaphp\driver\mysqli\storedprocedures;
-
 
 use siestaphp\datamodel\entity\EntityDatabaseSource;
 use siestaphp\driver\Driver;
@@ -15,7 +13,6 @@ use siestaphp\naming\StoredProcedureNaming;
  */
 class SelectStoredProcedure extends StoredProcedureBase
 {
-
 
     /**
      * @param EntityDatabaseSource $eds
@@ -42,11 +39,14 @@ class SelectStoredProcedure extends StoredProcedureBase
 
         $this->buildStatement();
 
+        if (!$this->entityDatabaseSource->hasPrimaryKey()) {
+            return;
+        }
+
         $this->executeProcedureDrop($driver);
 
         $this->executeProcedureBuild($driver);
     }
-
 
     /**
      * @param Driver $driver
@@ -65,30 +65,24 @@ class SelectStoredProcedure extends StoredProcedureBase
         $this->name = StoredProcedureNaming::getSPFindByPrimaryKeyName($this->entityDatabaseSource->getTable());
     }
 
-
     /**
      *
      */
     protected function buildSignature()
     {
         $this->signature = "(";
-        foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
-            if ($attribute->isPrimaryKey()) {
-                $this->signature .= "IN " . $attribute->getSQLParameterName() . " " . $attribute->getDatabaseType() . ",";
-            }
+        foreach ($this->entityDatabaseSource->getPrimaryKeyColumns() as $column) {
+            $this->signature .= "IN " . $column->getSQLParameterName() . " " . $column->getDatabaseType() . ",";
         }
         $this->signature = rtrim($this->signature, ",");
         $this->signature .= ")";
     }
 
-
     protected function buildStatement()
     {
         $where = "";
-        foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
-            if ($attribute->isPrimaryKey()) {
-                $where .= $attribute->getDatabaseName() . " = " . $attribute->getSQLParameterName() . " AND ";
-            }
+        foreach ($this->entityDatabaseSource->getPrimaryKeyColumns() as $column) {
+            $where .= $column->getDatabaseName() . " = " . $column->getSQLParameterName() . " AND ";
         }
 
         $where = substr($where, 0, -5);
@@ -97,6 +91,5 @@ class SelectStoredProcedure extends StoredProcedureBase
         $this->statement = "SELECT * FROM $tableName WHERE $where;";
 
     }
-
 
 }

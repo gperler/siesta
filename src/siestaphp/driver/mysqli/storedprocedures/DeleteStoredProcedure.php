@@ -1,8 +1,6 @@
 <?php
 
-
 namespace siestaphp\driver\mysqli\storedprocedures;
-
 
 use siestaphp\datamodel\entity\EntityDatabaseSource;
 use siestaphp\driver\Driver;
@@ -15,7 +13,6 @@ use siestaphp\naming\StoredProcedureNaming;
  */
 class DeleteStoredProcedure extends StoredProcedureBase
 {
-
 
     /**
      * @param EntityDatabaseSource $eds
@@ -39,6 +36,9 @@ class DeleteStoredProcedure extends StoredProcedureBase
 
         $this->buildStatement();
 
+        if (!$this->entityDatabaseSource->hasPrimaryKey()) {
+            return;
+        }
         $this->executeProcedureDrop($driver);
 
         $this->executeProcedureBuild($driver);
@@ -53,7 +53,6 @@ class DeleteStoredProcedure extends StoredProcedureBase
         $this->executeProcedureDrop($driver);
     }
 
-
     protected function buildName()
     {
         $this->name = StoredProcedureNaming::getSPDeleteByPrimaryKeyName($this->entityDatabaseSource->getTable());
@@ -63,11 +62,9 @@ class DeleteStoredProcedure extends StoredProcedureBase
     {
         $this->signature = "(";
 
-        foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
-            if ($attribute->isPrimaryKey()) {
-                $parameterName = $attribute->getSQLParameterName();
-                $this->signature .= "IN $parameterName " . $attribute->getDatabaseType() . ",";
-            }
+        foreach ($this->entityDatabaseSource->getPrimaryKeyColumns() as $pkColumn) {
+            $parameterName = $pkColumn->getSQLParameterName();
+            $this->signature .= "IN $parameterName " . $pkColumn->getDatabaseType() . ",";
         }
         $this->signature = rtrim($this->signature, ",");
         $this->signature .= ")";
@@ -83,26 +80,22 @@ class DeleteStoredProcedure extends StoredProcedureBase
         }
     }
 
-
     /**
      * @param string $tableName
+     *
      * @return string
      */
     protected function buildDeleteSQL($tableName)
     {
         $where = "";
 
-        foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
-
-            if ($attribute->isPrimaryKey()) {
-                $where .= $this->quote($attribute->getDatabaseName()) . " = " . $attribute->getSQLParameterName() . " and ";
-            }
+        foreach ($this->entityDatabaseSource->getPrimaryKeyColumns() as $column) {
+            $where .= $this->quote($column->getDatabaseName()) . " = " . $column->getSQLParameterName() . " and ";
         }
         $tableName = $this->quote($tableName);
-        $where =  substr($where, 0, -5);
+        $where = substr($where, 0, -5);
 
         return "DELETE FROM $tableName WHERE $where ;";
     }
-
 
 }

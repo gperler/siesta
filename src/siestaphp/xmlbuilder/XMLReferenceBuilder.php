@@ -1,11 +1,11 @@
 <?php
 
-
 namespace siestaphp\xmlbuilder;
 
 use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\reference\ReferenceTransformerSource;
+use siestaphp\naming\XMLMapping;
 use siestaphp\naming\XMLReference;
 
 /**
@@ -34,6 +34,7 @@ class XMLReferenceBuilder extends XMLBuilder
         $this->domElement = $this->createElement($parentElement, XMLReference::ELEMENT_REFERENCE_NAME);
 
         $this->addReferenceData();
+        $this->addMappingData();
 
         if ($referenceSource instanceof ReferenceTransformerSource) {
             $this->addGeneratorData($referenceSource);
@@ -50,7 +51,22 @@ class XMLReferenceBuilder extends XMLBuilder
         $this->setAttributeAsBool(XMLReference::ATTRIBUTE_REQUIRED, $this->referenceSource->isRequired());
         $this->setAttribute(XMLReference::ATTRIBUTE_ON_DELETE, $this->referenceSource->getOnDelete());
         $this->setAttribute(XMLReference::ATTRIBUTE_ON_UPDATE, $this->referenceSource->getOnUpdate());
+        $this->setAttributeAsBool(XMLReference::ATTRIBUTE_PRIMARY_KEY, $this->referenceSource->isPrimaryKey());
+        $this->setAttribute(XMLReference::ATTRIBUTE_CONSTRAINT_NAME, $this->referenceSource->getConstraintName());
 
+    }
+
+    protected function addMappingData()
+    {
+
+        foreach ($this->referenceSource->getMappingSourceList() as $mapping) {
+            $mappingXML = $this->createElement($this->domElement, XMLMapping::ELEMENT_MAPPING_NAME);
+            $mappingXML->setAttribute(XMLMapping::ATTRIBUTE_NAME, $mapping->getName());
+            $mappingXML->setAttribute(XMLMapping::ATTRIBUTE_DATABASE_NAME, $mapping->getDatabaseName());
+            $mappingXML->setAttribute(XMLMapping::ATTRIBUTE_FOREIGN_NAME, $mapping->getForeignName());
+        }
+
+        //
     }
 
     /**
@@ -69,13 +85,10 @@ class XMLReferenceBuilder extends XMLBuilder
         $this->setAttribute(XMLReference::ATTRIBUTE_FOREIGN_METHOD_NAME, $referenceTransformerSource->getForeignMethodName());
         $this->setAttributeAsBool(XMLReference::ATTRIBUTE_SP_REFERENCE_CREATOR_NEEDED, $referenceTransformerSource->isReferenceCreatorNeeded());
 
-        // create xml element for referenced columns
-        $xmlReferencedColumnList = $this->createElement($this->domElement, XMLReference::ELEMENT_REFERENCED_COLUMN_LIST);
-
         // attach referenced columns to xml
         $referencedColumnList = $referenceTransformerSource->getReferenceColumnList();
         foreach ($referencedColumnList as $referencedColumn) {
-            $this->addReferencedColumn($xmlReferencedColumnList, $referencedColumn);
+            $this->addReferencedColumn($this->domElement, $referencedColumn);
         }
 
     }
@@ -96,6 +109,7 @@ class XMLReferenceBuilder extends XMLBuilder
         $xmlReferencedColumn->setAttribute(XMLReference::ATTRIBUTE_COLUMN_PHPTYPE, $referencedColumn->getPHPType());
         $xmlReferencedColumn->setAttribute(XMLReference::ATTRIBUTE_COLUMN_METHODNAME, $referencedColumn->getMethodName());
         $xmlReferencedColumn->setAttribute(XMLReference::ATTRIBUTE_COLUMN_DATABASE_NAME, $referencedColumn->getDatabaseName());
+        $xmlReferencedColumn->setAttribute(XMLReference::ATTRIBUTE_COLUMN_REFERENCED_METHOD_NAME, $referencedColumn->getReferencedColumnMethodName());
     }
 
 }

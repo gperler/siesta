@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\naming;
 
 /**
@@ -9,8 +8,6 @@ namespace siestaphp\naming;
  */
 class XMLAttribute
 {
-
-    const ELEMENT_ATTRIBUTE_LIST_NAME = "attributeList";
 
     const ELEMENT_ATTRIBUTE_NAME = "attribute";
 

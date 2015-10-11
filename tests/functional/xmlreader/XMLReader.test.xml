@@ -26,7 +26,7 @@
         </attributeList>
 
         <referenceList>
-            <reference name="label" foreignClass="LabelEntity" required="false" onDelete="set null" onUpdate="set null" relationName="relationName"/>
+            <reference name="label" foreignClass="LabelEntity" required="false" onDelete="set null" onUpdate="set null" relationName="relationName" primaryKey="true"/>
         </referenceList>
 
         <collectorList>

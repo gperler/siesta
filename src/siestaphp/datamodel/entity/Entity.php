@@ -9,6 +9,7 @@ use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\attribute\AttributeTransformerSource;
 use siestaphp\datamodel\collector\Collector;
 use siestaphp\datamodel\collector\CollectorSource;
+use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\index\Index;
@@ -327,6 +328,32 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
             }
         }
         return $resultList;
+    }
+
+    /**
+     * @return DatabaseColumn[]
+     */
+    public function getPrimaryKeyColumns()
+    {
+        $resultList = array();
+        foreach ($this->attributeList as $attribute) {
+            if ($attribute->isPrimaryKey()) {
+                $resultList[] = $attribute;
+            }
+        }
+        foreach($this->referenceList as $reference) {
+            if ($reference->isPrimaryKey()) {
+                $resultList = array_merge($resultList, $reference->getReferenceColumnList());
+            }
+        }
+        return $resultList;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasPrimaryKey() {
+        return sizeof($this->getPrimaryKeyColumns()) !== 0;
     }
 
     /**

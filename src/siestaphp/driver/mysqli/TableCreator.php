@@ -27,8 +27,6 @@ class TableCreator
 
     const CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
 
-    const FOREIGN_KEY_CONSTRAINT = ",CONSTRAINT %s FOREIGN KEY %s (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s";
-
     const REPLICATION = "replication";
 
     const MYSQL_ENGINE_ATTRIBUTE = "engine";
@@ -82,7 +80,7 @@ class TableCreator
      */
     public static function getForeignKeyConstraintName($columnName)
     {
-        return strtoupper($columnName) . self::FOREIGN_KEY_SUFFIX;
+        return (strtoupper($columnName) . self::FOREIGN_KEY_SUFFIX);
     }
 
     /**
@@ -92,7 +90,7 @@ class TableCreator
      */
     public static function getForeignKeyConstraintIndexName($columnName)
     {
-        return strtoupper($columnName) . self::FOREIGN_KEY_INDEX_SUFFIX;
+        return (strtoupper($columnName) . self::FOREIGN_KEY_INDEX_SUFFIX);
     }
 
     /**
@@ -110,6 +108,8 @@ class TableCreator
      */
     protected $replication;
 
+    protected $tableName;
+
     /**
      * @param EntityDatabaseSource $eds
      */
@@ -120,6 +120,8 @@ class TableCreator
         $this->databaseSpecific = $eds->getDatabaseSpecific(MySQLDriver::NAME);
 
         $this->replication = $this->getDatabaseSpecificAsBool(self::REPLICATION);
+
+        $this->tableName = $eds->getTable();
 
         $sql = $this->buildTableCreateStatement($eds->getTable());
 
@@ -149,8 +151,6 @@ class TableCreator
         $sql .= $this->buildCollateSQL();
 
         $sql .= $this->buildCharsetSQL();
-
-        echo $sql .PHP_EOL .PHP_EOL;
 
         return $sql;
     }
@@ -221,16 +221,20 @@ class TableCreator
      */
     private function buildPrimaryKeySnippet()
     {
-        $sql = " ,PRIMARY KEY (";
-
-        foreach ($this->entityDatabaseSource->getAttributeSourceList() as $attribute) {
-            if ($attribute->isPrimaryKey()) {
-                $sql .= $this->quote($attribute->getDatabaseName()) . ",";
-            }
+        $columnList = $this->entityDatabaseSource->getPrimaryKeyColumns();
+        if (sizeof($columnList) === 0) {
+            return "";
         }
-        $sql = rtrim($sql, ",");
 
-        return $sql . ")";
+        // build primarykey snippet
+        $sql = " ,PRIMARY KEY (";
+        foreach ($columnList as $column) {
+            $sql .= $this->quote($column->getDatabaseName()) . ",";
+        }
+        $sql = rtrim($sql, ",") . ")";
+
+        // done
+        return $sql;
     }
 
     /**
@@ -243,8 +247,6 @@ class TableCreator
         foreach ($this->entityDatabaseSource->getIndexSourceList() as $indexSource) {
             $sql .= "," . $this->buildIndex($indexSource);
         }
-
-        Debug::debug($sql);
 
         return $sql;
     }
@@ -325,25 +327,25 @@ class TableCreator
         $columnList = $rds->getReferenceColumnList();
         foreach ($columnList as $column) {
             $columnNames .= $this->quote($column->getDatabaseName()) . ",";
-            $referencedColumnNames .= $this->quote($column->getReferencedColumnName()) . ",";
+            $referencedColumnNames .= $this->quote($column->getReferencedDatabaseName()) . ",";
         }
 
         $columnNames = rtrim($columnNames, ",");
         $referencedColumnNames = rtrim($referencedColumnNames, ",");
 
-        $constraintName = self::getForeignKeyConstraintName($rds->getName());
-        $constraintIndexName = self::getForeignKeyConstraintIndexName($rds->getName());
+        $constraintName = self::getForeignKeyConstraintName($this->tableName . $rds->getName());
+
+        $constraintName = $rds->getConstraintName();
         $onDelete = $this->getReferenceOption($rds->getOnDelete());
         $onSetNull = $this->getReferenceOption($rds->getOnUpdate());
 
-        $sql = $this->buildConstraintSnippet($constraintName, $constraintIndexName, $columnNames, $rds->getReferencedTableName(), $referencedColumnNames, $onDelete, $onSetNull);
+        $sql = $this->buildConstraintSnippet($constraintName, $columnNames, $rds->getReferencedTableName(), $referencedColumnNames, $onDelete, $onSetNull);
 
         return $sql;
     }
 
     /**
      * @param string $constraintName
-     * @param string $constraintIndexName
      * @param string $columnNames
      * @param string $tableName
      * @param string $referencedNames
@@ -352,12 +354,14 @@ class TableCreator
      *
      * @return string
      */
-    private function buildConstraintSnippet($constraintName, $constraintIndexName, $columnNames, $tableName, $referencedNames, $onDelete, $onSetNull)
+    private function buildConstraintSnippet($constraintName, $columnNames, $tableName, $referencedNames, $onDelete, $onSetNull)
     {
         $constraintName = $this->quote($constraintName);
-        $constraintIndexName = $this->quote($constraintIndexName);
         $tableName = $this->quote($tableName);
-        return sprintf(self::FOREIGN_KEY_CONSTRAINT, $constraintName, $constraintIndexName, $columnNames, $tableName, $referencedNames, $onDelete, $onSetNull);
+
+        $constraintSQL = ",CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s";
+
+        return sprintf($constraintSQL, $constraintName, $columnNames, $tableName, $referencedNames, $onDelete, $onSetNull);
     }
 
     /**

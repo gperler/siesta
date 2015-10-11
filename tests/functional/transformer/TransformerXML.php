@@ -149,7 +149,8 @@ class TransformerXML
                 "required" => false,
                 "onDelete" => "set null",
                 "onUpdate" => "set null",
-                "relationName" => "_label_artist_"
+                "relationName" => "_label_artist_",
+                "primaryKey" => true
             )
         );
     }
@@ -161,7 +162,7 @@ class TransformerXML
 
         $referenceData = self::getReferenceDefinition();
         $referenceData["label"]["foreignConstructClass"] = "Label";
-        $referenceData["label"]["storedProcedureFinderName"] = "ARTIST_FIND_BY_REFERENCE_LABEL";
+        $referenceData["label"]["storedProcedureFinderName"] = "ARTIST_FBR_LABEL";
         $referenceData["label"]["columnList"] = array(
             "id" => array(
                 "type" => "int",

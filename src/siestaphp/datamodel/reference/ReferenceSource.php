@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\datamodel\reference;
 
 use siestaphp\generator\GeneratorLog;
@@ -42,5 +41,20 @@ interface ReferenceSource
      * @return string
      */
     public function getOnUpdate();
+
+    /**
+     * @return bool
+     */
+    public function isPrimaryKey();
+
+    /**
+     * @return string
+     */
+    public function getConstraintName();
+
+    /**
+     * @return MappingSource[]
+     */
+    public function getMappingSourceList();
 
 }

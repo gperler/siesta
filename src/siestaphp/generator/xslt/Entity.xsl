@@ -79,18 +79,18 @@
 
     <xsl:template name="getEntityByPrimaryKey">
         /**
-        <xsl:for-each select="/entity/attributeList/attribute[@primaryKey = 'true']">
+        <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
           * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
         </xsl:for-each>
          * @return <xsl:value-of select="/entity/@constructClass"/>
          */
         public static function getEntityByPrimaryKey(<xsl:value-of select="/entity/@findByPKSignature"/>)
         {
-            if (<xsl:for-each select="/entity/attributeList/attribute[@primaryKey = 'true']">!$<xsl:value-of select="@name"/><xsl:if test="position() != last()"> or </xsl:if></xsl:for-each>) {
+            if (<xsl:for-each select="/entity/attribute[@primaryKey = 'true']">!$<xsl:value-of select="@name"/><xsl:if test="position() != last()"> or </xsl:if></xsl:for-each>) {
                 return null;
             }
             $driver = ServiceLocator::getDriver();
-            <xsl:for-each select="/entity/attributeList/attribute[@primaryKey = 'true']">
+            <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
                 $<xsl:value-of select="@name"/> = $driver->escape($<xsl:value-of select="@name"/>);
             </xsl:for-each>
 
@@ -100,20 +100,20 @@
     </xsl:template>
 
     <xsl:template name="referenceFinder">
-        <xsl:for-each select="/entity/referenceList/reference">
+        <xsl:for-each select="/entity/reference">
             /**
-             * <xsl:for-each select="columnList/column">
+             * <xsl:for-each select="column">
              * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
              * </xsl:for-each>
              * @return <xsl:value-of select="/entity/@constructClass"/>[]
              */
             public static function getEntityBy<xsl:value-of select="@methodName"/>Reference(
-            <xsl:for-each select="columnList/column">
+            <xsl:for-each select="column">
                 $<xsl:value-of select="@name"/><xsl:if test="position() != last()">,</xsl:if>
             </xsl:for-each> ) {
 
             return self::executeStoredProcedure("CALL <xsl:value-of select="@spFinderName"/>("
-                <xsl:for-each select="columnList/column">
+                <xsl:for-each select="column">
                 ."'$<xsl:value-of select="@name"/>'"<xsl:if test="position() != last()">.","</xsl:if>
                 </xsl:for-each>.")");
             }
@@ -122,26 +122,26 @@
 
 
     <xsl:template name="referenceDeleter">
-        <xsl:for-each select="/entity/referenceList/reference">
+        <xsl:for-each select="/entity/reference">
             /**
-            * <xsl:for-each select="columnList/column">
+            * <xsl:for-each select="column">
             * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
             * </xsl:for-each>
             */
             public static function deleteEntityBy<xsl:value-of select="@methodName"/>Reference(
-            <xsl:for-each select="columnList/column">
+            <xsl:for-each select="column">
                 $<xsl:value-of select="@name"/><xsl:if test="position() != last()">,</xsl:if>
             </xsl:for-each>) {
 
 
             $driver = ServiceLocator::getDriver();
 
-            <xsl:for-each select="columnList/column">
+            <xsl:for-each select="column">
                 $<xsl:value-of select="@name"/> = $driver->escape($<xsl:value-of select="@name"/>);
             </xsl:for-each>
 
             $driver->execute("CALL <xsl:value-of select="@spDeleterName"/>("
-            <xsl:for-each select="columnList/column">
+            <xsl:for-each select="column">
                 ."'$<xsl:value-of select="@name"/>'"
                 <xsl:if test="position() != last()">.","</xsl:if>
             </xsl:for-each>
@@ -153,7 +153,7 @@
 
     <xsl:template name="deleteByPrimaryKey">
         /**
-        <xsl:for-each select="/entity/attributeList/attribute">
+        <xsl:for-each select="/entity/attribute">
             <xsl:if test="@primaryKey = 'true'">
                 * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
             </xsl:if>
@@ -164,7 +164,7 @@
         {
 
         $driver = ServiceLocator::getDriver();
-        <xsl:for-each select="/entity/attributeList/attribute">
+        <xsl:for-each select="/entity/attribute">
             <xsl:if test="@primaryKey = 'true'">
                 $<xsl:value-of select="@name"/> = $driver->escape($<xsl:value-of select="@name"/>);
             </xsl:if>
@@ -275,21 +275,21 @@
              * @var bool
              */
             protected $_existing;
-        <xsl:for-each select="/entity/attributeList/attribute">
+        <xsl:for-each select="/entity/attribute">
             /**
              * @var <xsl:value-of select="@type"/>
              */
             protected $<xsl:value-of select="@name"/>;
         </xsl:for-each>
         
-        <xsl:for-each select="/entity/referenceList/reference">
+        <xsl:for-each select="/entity/reference">
            /**
             * @var <xsl:value-of select="@foreignConstructClass"/>
             */
             protected $<xsl:value-of select="@name"/>Obj;
 
             <xsl:variable name="referenceName" select="@name"/>
-            <xsl:for-each select="columnList/column">
+            <xsl:for-each select="column">
             /**
              * @var <xsl:value-of select="@type"/>
              */
@@ -297,7 +297,7 @@
             </xsl:for-each>
         </xsl:for-each>
 
-        <xsl:for-each select="/entity/collectorList/collector">
+        <xsl:for-each select="/entity/collector">
             /**
              * @var <xsl:value-of select="@foreignConstructClass"/>[]
              */
@@ -315,22 +315,22 @@
             $this->_existing = false;
 
             <!-- iterate attributes -->
-            <xsl:for-each select="/entity/attributeList/attribute">
+            <xsl:for-each select="/entity/attribute">
                 <xsl:if test="@defaultValue != ''">
                     $this-><xsl:value-of select="@name"/> = <xsl:value-of select="@defaultValue"/>;
                 </xsl:if>
             </xsl:for-each>
 
             <!-- iterate references -->
-            <xsl:for-each select="/entity/referenceList/reference">
+            <xsl:for-each select="/entity/reference">
                 $this-><xsl:value-of select="@name"/>Obj = null;
                 <xsl:variable name="referenceName" select="@name"/>
-                <xsl:for-each select="columnList/column">
+                <xsl:for-each select="column">
                     $this-><xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/> = null;
                 </xsl:for-each>
             </xsl:for-each>
 
-            <xsl:for-each select="/entity/collectorList/collector">
+            <xsl:for-each select="/entity/collector">
                 $this-><xsl:value-of select="@name"/> = null;
             </xsl:for-each>
         }
@@ -343,7 +343,7 @@
          */
         protected function createSaveStoredProcedureCall() {
             <!-- make sure ids are given -->
-            <xsl:for-each select="/entity/attributeList/attribute">
+            <xsl:for-each select="/entity/attribute">
                 <xsl:if test="@primaryKey = 'true'">
                     $this->get<xsl:value-of select="@methodName"/>(true);
                 </xsl:if>
@@ -354,13 +354,13 @@
             $spCall .= "("
 
             <!-- iterate references -->
-            <xsl:for-each select="/entity/referenceList/reference">
+            <xsl:for-each select="/entity/reference">
                 <xsl:if test="position() != 1">
                     . ","
                 </xsl:if>
                 <xsl:variable name="referenceName" select="@name"/>
                 <!-- iterate column list -->
-                <xsl:for-each select="columnList/column">
+                <xsl:for-each select="column">
                     <xsl:choose>
                         <xsl:when test="@type = 'bool' or @type = 'int' or @type='float'">
                             . Util::quoteNumber($this-><xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/>)
@@ -374,7 +374,7 @@
             </xsl:for-each>
 
             <!-- iterate attributes -->
-            <xsl:for-each select="/entity/attributeList/attribute">
+            <xsl:for-each select="/entity/attribute">
                 <xsl:if test="(position() = 1) and (/entity/@hasReferences = 'true')">
                     . ","
                 </xsl:if>
@@ -413,7 +413,7 @@
         public function save($cascade = false, $passport=null) {
 
             <!-- make sure ids are given -->
-            <xsl:for-each select="/entity/attributeList/attribute">
+            <xsl:for-each select="/entity/attribute">
                 <xsl:if test="@primaryKey = 'true'">
                     $this->get<xsl:value-of select="@methodName"/>(true);
                 </xsl:if>
@@ -427,7 +427,7 @@
                 return;
             }
 
-            <xsl:for-each select="/entity/referenceList/reference">
+            <xsl:for-each select="/entity/reference">
                 if ($this-><xsl:value-of select="@name"/>Obj !== null) {
                 $this-><xsl:value-of select="@name"/>Obj->save($cascade, $passport);
 
@@ -446,7 +446,7 @@
             }
 
 
-            <xsl:for-each select="/entity/collectorList/collector">
+            <xsl:for-each select="/entity/collector">
                 if ($this-><xsl:value-of select="@name"/> !== null) {
                     foreach($this-><xsl:value-of select="@name"/> as $c) {
                         $c->save($cascade, $passport);
@@ -464,7 +464,7 @@
          */
         public function arePrimaryKeyIdentical($other) {
             return
-            <xsl:for-each select="/entity/attributeList/attribute[@primaryKey = 'true']">
+            <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
                 $this->get<xsl:value-of select="@methodName"/>() === $other->get<xsl:value-of select="@methodName"/>()
                 <xsl:if test="position() != last()"> and </xsl:if>
             </xsl:for-each>;
@@ -478,7 +478,7 @@
          */
         public function validate() {
             $isValid = true;
-            <xsl:for-each select="/entity/attributeList/attribute">
+            <xsl:for-each select="/entity/attribute">
                 <xsl:choose>
                     <xsl:when test="@type = 'bool' or @type='int' or @type='float'">
                         $isValid &amp;= Util::setType($this-><xsl:value-of select="@name"/>, "<xsl:value-of select="@type"/>");
@@ -486,10 +486,10 @@
                 </xsl:choose>
             </xsl:for-each>
 
-            <xsl:for-each select="/entity/referenceList/reference">
+            <xsl:for-each select="/entity/reference">
                 <xsl:variable name="referenceName" select="@name"/>
                 <!-- iterate column list -->
-                <xsl:for-each select="columnList/column">
+                <xsl:for-each select="column">
                     <xsl:choose>
                         <xsl:when test="@type = 'bool' or @type='int' or @type='float'">
                             $isValid &amp;= Util::setType( $this-><xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/>, "<xsl:value-of select="@type"/>");
@@ -509,7 +509,7 @@
         */
         public function initializeFromResultSet(ResultSet $res) {
             $this->_existing = true;
-        <xsl:for-each select="/entity/attributeList/attribute">
+        <xsl:for-each select="/entity/attribute">
             <xsl:choose>
                 <xsl:when test="@type='bool'">
                     $this-><xsl:value-of select="@name"/> = $res->getBooleanValue('<xsl:value-of select="@dbName"/>');
@@ -528,10 +528,10 @@
                 </xsl:when>
             </xsl:choose>
         </xsl:for-each>
-        <xsl:for-each select="/entity/referenceList/reference">
+        <xsl:for-each select="/entity/reference">
             <xsl:variable name="referenceName" select="@name"/>
             <!-- iterate column list -->
-            <xsl:for-each select="columnList/column">
+            <xsl:for-each select="column">
                 <xsl:choose>
                     <xsl:when test="@type = 'bool'">
                         $this-><xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/> = $res->getBooleanValue('<xsl:value-of select="@databaseName"/>');
@@ -558,7 +558,7 @@
         */
         public function initializeFromHttpRequest(HttpRequest $req) {
         $this->_existing = $req->getBooleanValue("_existing");
-        <xsl:for-each select="/entity/attributeList/attribute">
+        <xsl:for-each select="/entity/attribute">
             <xsl:choose>
                 <xsl:when test="@type='bool'">
                     $this-><xsl:value-of select="@name"/> = $req->getBooleanValue('<xsl:value-of select="@name"/>');
@@ -577,7 +577,7 @@
                 </xsl:when>
             </xsl:choose>
         </xsl:for-each>
-        <xsl:for-each select="/entity/referenceList/reference">
+        <xsl:for-each select="/entity/reference">
             <xsl:choose>
                 <xsl:when test="@foreignKeyType ='int'">
                     $this-><xsl:value-of select="@name"/>Id = $req->getIntegerValue('<xsl:value-of select="@name"/>');
@@ -604,7 +604,7 @@
          */
         public function fromArray(array $data) {
             $arrayAccessor = new ArrayAccessor($data);
-            <xsl:for-each select="/entity/attributeList/attribute">
+            <xsl:for-each select="/entity/attribute">
                 <xsl:choose>
                     <xsl:when test="@type='bool'">
                         $this-><xsl:value-of select="@name"/> = $arrayAccessor->getBooleanValue('<xsl:value-of select="@name"/>');
@@ -624,20 +624,20 @@
                 </xsl:choose>
             </xsl:for-each>
 
-        <xsl:for-each select="/entity/referenceList/reference">
+        <xsl:for-each select="/entity/reference">
             $<xsl:value-of select="@name"/>Data = $arrayAccessor->get('<xsl:value-of select="@name"/>');
             if ($<xsl:value-of select="@name"/>Data) {
             $this-><xsl:value-of select="@name"/>Obj = new <xsl:value-of select="@foreignConstructClass"/>();
             $this-><xsl:value-of select="@name"/>Obj->fromArray($<xsl:value-of select="@name"/>Data);
             } else {
             <xsl:variable name="referenceName" select="@name"/>
-            <xsl:for-each select="columnList/column">
+            <xsl:for-each select="column">
                 $this-><xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/> = $arrayAccessor->get('<xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/>');
             </xsl:for-each>
             }
         </xsl:for-each>
 
-        <xsl:for-each select="/entity/collectorList/collector">
+        <xsl:for-each select="/entity/collector">
             $<xsl:value-of select="@name"/>DataList = $arrayAccessor->getArray('<xsl:value-of select="@name"/>');
             if ($<xsl:value-of select="@name"/>DataList) {
                 $this-><xsl:value-of select="@name"/> = array();
@@ -677,7 +677,7 @@
             }
 
             $result = array(
-            <xsl:for-each select="/entity/attributeList/attribute">
+            <xsl:for-each select="/entity/attribute">
                 <xsl:choose>
                     <xsl:when test="@type='bool'">
                         "<xsl:value-of select="@name"/>" => $this-><xsl:value-of select="@name"/>
@@ -698,18 +698,18 @@
                 <xsl:if test="position() != last()">,</xsl:if>
             </xsl:for-each>);
 
-            <xsl:for-each select="/entity/referenceList/reference">
+            <xsl:for-each select="/entity/reference">
                 if ($this-><xsl:value-of select="@name"/>Obj) {
                     $result["<xsl:value-of select="@name"/>"] = $this-><xsl:value-of select="@name"/>Obj->toArray($passport);
                 }
 
                 <xsl:variable name="referenceName" select="@name"/>
-                <xsl:for-each select="columnList/column">
+                <xsl:for-each select="column">
                     $result["<xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/>"] = $this-><xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/>;
                 </xsl:for-each>
             </xsl:for-each>
 
-            <xsl:for-each select="/entity/collectorList/collector">
+            <xsl:for-each select="/entity/collector">
                 $result["<xsl:value-of select="@name"/>"] = array();
                 if ($this-><xsl:value-of select="@name"/>) {
                     foreach($this-><xsl:value-of select="@name"/> as $<xsl:value-of select="@name"/>) {
@@ -737,7 +737,7 @@
             return;
         }
 
-        <xsl:for-each select="/entity/referenceList/reference">
+        <xsl:for-each select="/entity/reference">
             <!-- stores reference name for inner iteration -->
             <xsl:variable name="referenceName" select="@name"/>
 
@@ -747,7 +747,7 @@
             }
         </xsl:for-each>
 
-        <xsl:for-each select="/entity/collectorList/collector">
+        <xsl:for-each select="/entity/collector">
             if ($this-><xsl:value-of select="@name"/>) {
                 foreach($this-><xsl:value-of select="@name"/> as $<xsl:value-of select="@name"/>) {
                     $<xsl:value-of select="@name"/>->set<xsl:value-of select="@referenceMethodName"/>($this);
@@ -762,7 +762,7 @@
     </xsl:template>
 
     <xsl:template name="attributeGetterSetter">
-        <xsl:for-each select="/entity/attributeList/attribute">
+        <xsl:for-each select="/entity/attribute">
             /**
              * @param <xsl:if test="@primaryKey = 'true'">bool $generateKey</xsl:if>
              * @return <xsl:value-of select="@type"/>
@@ -799,7 +799,7 @@
 
 
     <xsl:template name="referenceGetterSetter">
-        <xsl:for-each select="/entity/referenceList/reference">
+        <xsl:for-each select="/entity/reference">
             <!-- stores reference name for inner iteration -->
             <xsl:variable name="referenceName" select="@name"/>
             <xsl:variable name="methodName" select="@methodName"/>
@@ -811,7 +811,7 @@
             {
                 if ($this-><xsl:value-of select="@name"/>Obj === null or $forceReload) {
                     $this-><xsl:value-of select="@name"/>Obj = <xsl:value-of select="@foreignConstructClass"/>::getEntityByPrimaryKey(
-                    <xsl:for-each select="columnList/column">
+                    <xsl:for-each select="column">
                         $this-><xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/><xsl:if test="position() != last()">,</xsl:if>
                     </xsl:for-each>);
                 }
@@ -823,7 +823,7 @@
                 return $this-><xsl:value-of select="@name"/>Obj;
             }
 
-            <xsl:for-each select="columnList/column">
+            <xsl:for-each select="column">
                 /**
                   * @return <xsl:value-of select="@type"/>
                   */
@@ -840,14 +840,14 @@
             {
                 if ($object === null) {
                    $this-><xsl:value-of select="@name"/>Obj = null;
-                    <xsl:for-each select="columnList/column">
+                    <xsl:for-each select="column">
                         $this-><xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/> = null;
                     </xsl:for-each>
                     return;
                 }
                 $this-><xsl:value-of select="@name"/>Obj = $object;
-                <xsl:for-each select="columnList/column">
-                    $this-><xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/> = $object->get<xsl:value-of select="@methodName"/>(true);
+                <xsl:for-each select="column">
+                    $this-><xsl:value-of select="$referenceName"/>_<xsl:value-of select="@name"/> = $object->get<xsl:value-of select="@foreignMethodName"/>(true);
                 </xsl:for-each>
 
                 <!-- for bidirectional relationships set-->
@@ -858,7 +858,7 @@
                 </xsl:if>
             }
 
-            <xsl:for-each select="columnList/column">
+            <xsl:for-each select="column">
                 /**
                 * @param <xsl:value-of select="@type"/> $id
                 */
@@ -874,7 +874,7 @@
 
 
     <xsl:template name="collectorGetterSetter">
-        <xsl:for-each select="/entity/collectorList/collector">
+        <xsl:for-each select="/entity/collector">
 
             /**
              * @param bool $forceReload
@@ -884,7 +884,7 @@
             {
                 if ($this-><xsl:value-of select="@name"/> === null or $forceReload) {
                     $this-><xsl:value-of select="@name"/> = <xsl:value-of select="@foreignConstructClass"/>::getEntityBy<xsl:value-of select="@referenceMethodName"/>Reference(
-                        <xsl:for-each select="/entity/attributeList/attribute[@primaryKey = 'true']">
+                        <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
                             $this->get<xsl:value-of select="@methodName"/>(true)<xsl:if test="position() != last()">,</xsl:if>
                         </xsl:for-each>);
                     foreach($this-><xsl:value-of select="@name"/> as $e) {
@@ -901,7 +901,7 @@
             {
                 $this-><xsl:value-of select="@name"/> = null;
                 <xsl:value-of select="@foreignConstructClass"/>::deleteEntityBy<xsl:value-of select="@referenceMethodName"/>Reference(
-                    <xsl:for-each select="/entity/attributeList/attribute[@primaryKey = 'true']">
+                    <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
                         $this->get<xsl:value-of select="@methodName"/>(true)
                         <xsl:if test="position() != last()">,</xsl:if>
                     </xsl:for-each>

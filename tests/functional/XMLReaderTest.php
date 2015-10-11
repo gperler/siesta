@@ -133,6 +133,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($referenceSource->getOnDelete(), $definition["onDelete"], "Reference $referenceName onDelete is not correct");
         $this->assertSame($referenceSource->getOnUpdate(), $definition["onUpdate"], "Reference $referenceName onUpdate is not correct");
         $this->assertSame($referenceSource->getRelationName(), $definition["relationName"], "Reference $referenceName relationName is not correct");
+        $this->assertSame($referenceSource->isPrimaryKey(), $definition["primaryKey"], "Reference $referenceName primaryKey is not correct");
     }
 
     public function testCollectorList()

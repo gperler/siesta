@@ -2,6 +2,7 @@
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
+use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntityDatabaseSource;
 use siestaphp\driver\Driver;
 use siestaphp\driver\mysqli\MySQLDriver;

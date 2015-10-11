@@ -9,8 +9,6 @@ namespace siestaphp\naming;
 class XMLReference
 {
 
-    const ELEMENT_REFERENCE_LIST_NAME = "referenceList";
-
     const ELEMENT_REFERENCE_NAME = "reference";
 
     const ATTRIBUTE_NAME = "name";
@@ -26,6 +24,10 @@ class XMLReference
     const ATTRIBUTE_ON_DELETE = "onDelete";
 
     const ATTRIBUTE_ON_UPDATE = "onUpdate";
+
+    const ATTRIBUTE_PRIMARY_KEY = "primaryKey";
+
+    const ATTRIBUTE_CONSTRAINT_NAME = "constraintName";
 
     /* derived data here */
 
@@ -44,7 +46,8 @@ class XMLReference
 
     const ATTRIBUTE_SP_REFERENCE_CREATOR_NEEDED = "referenceCretorNeeded";
 
-    const ELEMENT_REFERENCED_COLUMN_LIST = "columnList";
+
+    /* Referenced column */
     const ELEMENT_COLUMN = "column";
 
     const ATTRIBUTE_COLUMN_NAME = "name";
@@ -54,4 +57,7 @@ class XMLReference
     const ATTRIBUTE_COLUMN_METHODNAME = "methodName";
 
     const ATTRIBUTE_COLUMN_DATABASE_NAME = "databaseName";
+
+    const ATTRIBUTE_COLUMN_REFERENCED_METHOD_NAME = "foreignMethodName";
+
 }

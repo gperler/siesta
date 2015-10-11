@@ -9,7 +9,9 @@
         </attributeList>
 
         <referenceList>
-            <reference name="address" foreignClass="Address" relationName="_customer_address_"/>
+            <reference name="address" foreignClass="Address" relationName="_customer_address_">
+                <column foreignColumn="id" name="FK_LALAL"/>
+            </reference>
         </referenceList>
     </entity>
 

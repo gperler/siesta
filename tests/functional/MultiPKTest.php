@@ -34,7 +34,7 @@ class MultiPKTest extends SiestaTester
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
 
     }
 

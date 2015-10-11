@@ -56,6 +56,7 @@ class DataModelContainer
         $entityClassName = $source->getClassName();
 
         if (!$entityClassName) {
+
             echo "Found Entity without name in file(s) " . PHP_EOL;
             return;
         }

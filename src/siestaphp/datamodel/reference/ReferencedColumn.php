@@ -2,6 +2,7 @@
 
 namespace siestaphp\datamodel\reference;
 
+use Codeception\Util\Debug;
 use siestaphp\datamodel\attribute\Attribute;
 use siestaphp\datamodel\DatabaseColumn;
 
@@ -9,14 +10,13 @@ use siestaphp\datamodel\DatabaseColumn;
  * Class ReferencedColumn
  * @package siestaphp\datamodel
  */
-class ReferencedColumn implements DatabaseColumn, ReferencedColumnSource {
-
+class ReferencedColumn implements DatabaseColumn, ReferencedColumnSource
+{
 
     /**
      * @var DatabaseColumn
      */
     protected $attributeSource;
-
 
     /**
      * @var ReferenceSource
@@ -24,12 +24,20 @@ class ReferencedColumn implements DatabaseColumn, ReferencedColumnSource {
     protected $referenceSource;
 
     /**
+     * @var MappingSource
+     */
+    protected $mappingSource;
+
+    /**
      * @param DatabaseColumn $ats
      * @param ReferenceSource $referenceSource
+     * @param MappingSource $mappingSource
      */
-    public function fromAttributeSource(DatabaseColumn $ats, ReferenceSource $referenceSource) {
+    public function fromAttributeSource(DatabaseColumn $ats, ReferenceSource $referenceSource, $mappingSource)
+    {
         $this->attributeSource = $ats;
         $this->referenceSource = $referenceSource;
+        $this->mappingSource = $mappingSource;
     }
 
     /**
@@ -37,14 +45,18 @@ class ReferencedColumn implements DatabaseColumn, ReferencedColumnSource {
      */
     public function getName()
     {
+        if ($this->mappingSource !== null) {
+            return $this->mappingSource->getName();
+        }
         return $this->attributeSource->getName();
     }
 
     /**
      * @return string
      */
-    public function getMethodName() {
-        return ucfirst($this->attributeSource->getName());
+    public function getMethodName()
+    {
+        return ucfirst($this->getName());
     }
 
     /**
@@ -60,16 +72,35 @@ class ReferencedColumn implements DatabaseColumn, ReferencedColumnSource {
      */
     public function getDatabaseName()
     {
+        if ($this->mappingSource) {
+            return $this->mappingSource->getDatabaseName();
+        }
         return strtoupper($this->referenceSource->getName()) . "_" . $this->attributeSource->getDatabaseName();
     }
 
     /**
      * @return string
      */
-    public function getReferencedColumnName() {
+    public function getReferencedColumnName()
+    {
+        return $this->attributeSource->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getReferencedDatabaseName()
+    {
         return $this->attributeSource->getDatabaseName();
     }
 
+    /**
+     * @return string
+     */
+    public function getReferencedColumnMethodName()
+    {
+        return $this->attributeSource->getMethodName();
+    }
 
     /**
      * @return string
@@ -84,7 +115,7 @@ class ReferencedColumn implements DatabaseColumn, ReferencedColumnSource {
      */
     public function isPrimaryKey()
     {
-        return false;
+        return $this->referenceSource->isPrimaryKey();
     }
 
     /**
@@ -100,7 +131,11 @@ class ReferencedColumn implements DatabaseColumn, ReferencedColumnSource {
      */
     public function getSQLParameterName()
     {
+        if ($this->mappingSource !== null) {
+            return strtoupper(Attribute::PARAMETER_PREFIX . $this->getName());
+        }
         return strtoupper(Attribute::PARAMETER_PREFIX . $this->referenceSource->getName() . "_" . $this->attributeSource->getName());
+
     }
 
 }

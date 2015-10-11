@@ -38,6 +38,10 @@ class UpdateStoredProcedure extends StoredProcedureBase
 
         $this->buildStatement();
 
+        if (!$this->entityDatabaseSource->hasPrimaryKey()) {
+            return;
+        }
+
         $this->executeProcedureDrop($driver);
 
         $this->executeProcedureBuild($driver);
@@ -108,7 +112,7 @@ class UpdateStoredProcedure extends StoredProcedureBase
 
         // initialize values and where statements
         $values = "";
-        $where = "";
+
 
         // iterate references first
         foreach ($this->entityDatabaseSource->getReferenceDatabaseSourceList() as $reference) {
@@ -121,9 +125,13 @@ class UpdateStoredProcedure extends StoredProcedureBase
         foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
             if (!$attribute->isPrimaryKey()) {
                 $values .= $this->quote($attribute->getDatabaseName()) . " = " . $attribute->getSQLParameterName() . ",";
-            } else {
-                $where .= $this->quote($attribute->getDatabaseName()) . " = " . $attribute->getSQLParameterName() . " AND ";
             }
+        }
+
+        // build where statement
+        $where = "";
+        foreach ($this->entityDatabaseSource->getPrimaryKeyColumns() as $column) {
+            $where .= $this->quote($column->getDatabaseName()) . " = " . $column->getSQLParameterName() . " AND ";
         }
 
         // assemble parts

@@ -2,8 +2,11 @@
 
 namespace siestaphp\xmlreader;
 
+use Codeception\Util\Debug;
+use siestaphp\datamodel\reference\MappingSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\naming\XMLAttribute;
+use siestaphp\naming\XMLMapping;
 use siestaphp\naming\XMLReference;
 
 /**
@@ -12,6 +15,12 @@ use siestaphp\naming\XMLReference;
  */
 class XMLReferenceReader extends XMLAccess implements ReferenceSource
 {
+
+    /**
+     * @var MappingSource[]
+     */
+    protected $mappingList;
+
     /**
      * @return mixed
      */
@@ -67,6 +76,47 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
     public function getOnUpdate()
     {
         return strtolower($this->getAttribute(XMLReference::ATTRIBUTE_ON_UPDATE));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrimaryKey()
+    {
+        return $this->getAttributeAsBool(XMLReference::ATTRIBUTE_PRIMARY_KEY);
+    }
+
+    /**
+     * @return string
+     */
+    public function getConstraintName()
+    {
+        return $this->getAttribute(XMLReference::ATTRIBUTE_CONSTRAINT_NAME);
+    }
+
+    /**
+     * @return MappingSource[]
+     */
+    public function getMappingSourceList()
+    {
+        if ($this->mappingList === null) {
+            $this->readMappingList();
+        }
+        return $this->mappingList;
+
+    }
+
+    private function readMappingList()
+    {
+        $this->mappingList = array();
+        $mappingXMLList = $this->getXMLChildElementListByName(XMLMapping::ELEMENT_MAPPING_NAME);
+
+        foreach ($mappingXMLList as $mappingXML) {
+            $mapping = new XMLMappingReader();
+            $mapping->setSource($mappingXML);
+            $this->mappingList[] = $mapping;
+        }
+
     }
 
 }

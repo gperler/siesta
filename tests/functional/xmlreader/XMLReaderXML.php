@@ -141,7 +141,8 @@ class XMLReaderXML
                 "required" => false,
                 "onDelete" => "set null",
                 "onUpdate" => "set null",
-                "relationName" => "relationName"
+                "relationName" => "relationName",
+                "primaryKey" => true
             )
         );
     }

@@ -47,6 +47,7 @@ class DatabaseMetaData
         while ($resultSet->hasNext()) {
             $tableDTOList[] = new TableDTO($resultSet);
         }
+        $resultSet->close();
 
         foreach ($tableDTOList as $tableDTO) {
             $entitySourceList[] = new TableMetadata($this->driver, $tableDTO, $targetPath, $targetNamespace);

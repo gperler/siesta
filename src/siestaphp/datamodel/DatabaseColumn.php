@@ -10,9 +10,15 @@ namespace siestaphp\datamodel;
 interface DatabaseColumn {
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName();
+
+    /**
+     * @return string
+     */
+    public function getMethodName();
+
 
     /**
      * @return string

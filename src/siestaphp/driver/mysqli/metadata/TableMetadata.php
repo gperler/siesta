@@ -20,7 +20,15 @@ class TableMetadata implements EntitySource
     const SP_GET_COLUMN_DETAILS = "CALL `SIESTA_GET_COLUMN_DETAILS` ('%s','%s')";
     const SP_GET_FK_DETAILS = "CALL `SIESTA_GET_FOREIGN_KEY_DETAILS` ('%s','%s')";
 
+    const SQL_GET_KEY_COLUMN_USAGE = "SELECT * FROM information_schema.key_column_usage as KC WHERE KC.CONSTRAINT_SCHEMA = '%s' AND KC.TABLE_NAME = '%s'";
+
+    const SQL_GET_REFERENTIAL_CONSTRAINTS = "SELECT * FROM information_schema.REFERENTIAL_CONSTRAINTS AS RC WHERE RC.CONSTRAINT_SCHEMA = '%s' AND RC.TABLE_NAME = '%s'";
+
     const SQL_GET_INDEX_LIST = "SELECT S.* FROM INFORMATION_SCHEMA.STATISTICS AS S WHERE S.TABLE_SCHEMA = '%s' AND S.TABLE_NAME = '%s';";
+
+
+
+
 
     /**
      * @var string
@@ -110,12 +118,20 @@ class TableMetadata implements EntitySource
      */
     protected function extractReferenceData()
     {
-        $sql = sprintf(self::SP_GET_FK_DETAILS, $this->driver->getDatabase(), $this->tableName);
+        $sql = sprintf(self::SQL_GET_KEY_COLUMN_USAGE, $this->driver->getDatabase(), $this->tableName);
 
-        $resultSet = $this->driver->executeStoredProcedure($sql);
+        $resultSet = $this->driver->query($sql);
 
         while ($resultSet->hasNext()) {
+
+            // do not consider primary keys constraints here
+            if (!ReferenceMetaData::considerConstraints($resultSet)) {
+                continue;
+            }
+
+            // get constraint name to see, if we already have a constraint
             $constraintName = ReferenceMetaData::getConstraintNameFromResultSet($resultSet);
+
             $referenceMetaData = $this->getReferenceByConstraintName($constraintName);
             if ($referenceMetaData) {
                 $referenceMetaData->updateFromConstraint($resultSet);
@@ -125,6 +141,23 @@ class TableMetadata implements EntitySource
         }
 
         $resultSet->close();
+
+
+        $sql = sprintf(self::SQL_GET_REFERENTIAL_CONSTRAINTS, $this->driver->getDatabase(), $this->tableName);
+        $resultSet = $this->driver->query($sql);
+
+        while ($resultSet->hasNext()) {
+            $constraintName = ReferenceMetaData::getConstraintNameFromResultSet($resultSet);
+            $referenceMetaData = $this->getReferenceByConstraintName($constraintName);
+
+            if ($referenceMetaData) {
+                $referenceMetaData->updateConstraintData($resultSet);
+            }
+
+        }
+        $resultSet->close();
+
+
     }
 
     /**

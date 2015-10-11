@@ -34,7 +34,7 @@ class ReverseGeneratorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("not implemented yet");
-        return;
+
         // get input
         $suffix = $input->getOption('database');
         $targetPath = $input->getOption("targetPath") ? $input->getOption("targetPath") : getcwd();

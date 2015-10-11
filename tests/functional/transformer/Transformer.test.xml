@@ -12,7 +12,7 @@
         </attributeList>
 
         <referenceList>
-            <reference name="label" foreignClass="LabelEntity" required="false" onDelete="set null" onUpdate="set null" relationName="_label_artist_"/>
+            <reference name="label" foreignClass="LabelEntity" required="false" onDelete="set null" onUpdate="set null" relationName="_label_artist_" primaryKey="true"/>
         </referenceList>
 
         <collectorList>

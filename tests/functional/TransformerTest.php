@@ -141,6 +141,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($referenceSource->getStoredProcedureFinderName(), $definition["storedProcedureFinderName"], "Reference $referenceName storedProcedureFinderName is not correct");
         $this->assertSame($referenceSource->getRelationName(), $definition["relationName"], "Reference $referenceName storedProcedureFinderName is not correct");
         $this->assertSame($referenceSource->isReferenceCreatorNeeded(), true, "Reference $referenceName isReferenceCreator is not correct");
+        $this->assertSame($referenceSource->isPrimaryKey(), $definition["primaryKey"], "Reference $referenceName primaryKey is not correct");
 
         // iterate referenced columns
         foreach ($referenceSource->getReferenceColumnList() as $column) {

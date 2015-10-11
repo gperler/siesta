@@ -3,19 +3,19 @@
 namespace siestaphp\tests\functional;
 
 use Codeception\Util\Debug;
-use siestaphp\tests\functional\multipk\gen\ArtistEntity;
-use siestaphp\tests\functional\multipk\gen\LabelEntity;
 
 /**
- * Class MultiPKTest
+ * Class ForeignIsPrimary
  */
-class IndexTest extends SiestaTester
+class ForeignIsPrimaryTest extends SiestaTester
 {
-    const DATABASE_NAME = "INDEX_TEST";
 
-    const ASSET_PATH = "/index";
+    const DATABASE_NAME = "FOREIGN_PRIMARY";
 
-    const SRC_XML = "/Index.test.xml";
+    const ASSET_PATH = "/foreignkeyisprimary";
+
+    const SRC_XML = "/ForeignIsPrimary.test.xml";
+
 
     protected function setUp()
     {
@@ -33,9 +33,9 @@ class IndexTest extends SiestaTester
 
     }
 
-    public function testIndexList()
+    public function testForeignIsPrimary()
     {
-
+        Debug::debug("FOREIGN IS PRIAMRY");
     }
 
 }

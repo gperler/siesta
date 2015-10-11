@@ -85,6 +85,11 @@ class Reference implements Processable, ReferenceSource, ReferenceTransformerSou
      */
     protected $onUpdate;
 
+    /**
+     * @var bool
+     */
+    protected $isPrimaryKey;
+
     /* derived data from here */
 
     /**
@@ -126,6 +131,7 @@ class Reference implements Processable, ReferenceSource, ReferenceTransformerSou
         $this->required = $this->referenceSource->isRequired();
         $this->onDelete = $this->referenceSource->getOnDelete();
         $this->onUpdate = $this->referenceSource->getOnUpdate();
+        $this->isPrimaryKey = $this->referenceSource->isPrimaryKey();
     }
 
     /**
@@ -171,12 +177,28 @@ class Reference implements Processable, ReferenceSource, ReferenceTransformerSou
         $pkAttributeList = $this->referencedEntity->getPrimaryKeyAttributeList();
 
         foreach ($pkAttributeList as $pkAttribute) {
+            $mapping = $this->getMappingByForeignName($pkAttribute->getName());
             $referencedSource = new ReferencedColumn();
-            $referencedSource->fromAttributeSource($pkAttribute, $this);
+            $referencedSource->fromAttributeSource($pkAttribute, $this, $mapping);
             $this->referenceColumnList[] = $referencedSource;
         }
 
     }
+
+    /**
+     * @param $foreignName
+     *
+     * @return null|MappingSource
+     */
+    private function getMappingByForeignName($foreignName) {
+        foreach($this->referenceSource->getMappingSourceList() as $mapping) {
+            if ($mapping->getForeignName() === $foreignName) {
+                return $mapping;
+            }
+        }
+        return null;
+    }
+
 
     /**
      * @param GeneratorLog $log
@@ -223,11 +245,29 @@ class Reference implements Processable, ReferenceSource, ReferenceTransformerSou
     }
 
     /**
+     * @return MappingSource[]
+     */
+    public function getMappingSourceList()
+    {
+       return $this->referenceSource->getMappingSourceList();
+    }
+
+    /**
      * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     *
+     */
+    public function getConstraintName() {
+        if ($this->referenceSource->getConstraintName()) {
+            return $this->referenceSource->getConstraintName();
+        }
+        return $this->entitySource->getTable() . "_" . $this->name;
     }
 
     /**
@@ -324,6 +364,14 @@ class Reference implements Processable, ReferenceSource, ReferenceTransformerSou
     public function getOnUpdate()
     {
         return $this->onUpdate;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrimaryKey()
+    {
+        return $this->isPrimaryKey;
     }
 
 }

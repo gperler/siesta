@@ -34,9 +34,7 @@ class GeneratorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $output->writeln("not implemented yet");
-        return;
-
+        $start = -microtime(true);
         // get input
         $suffix = $input->getOption('suffix');
         $basePath = $input->getOption("basePath") ? $input->getOption("basePath") : getcwd();
@@ -55,5 +53,10 @@ class GeneratorCommand extends Command
         // do the work
         $generator = new Generator($log, $suffix);
         $generator->generate($basePath);
+
+        $delta = $start + microtime(true);
+
+        $output->writeln($delta*1000);
+
     }
 }
