@@ -143,7 +143,7 @@ class ConnectionFactory
             case "mysql":
                 return new MySQLDriver();
             default:
-                throw new DatabaseConfigurationException($connectionData, "Driver for " . $connectionData->database . " is not implemented");
+                throw new DatabaseConfigurationException($connectionData, "Driver for " . $connectionData->driver . " is not implemented");
         }
     }
 
