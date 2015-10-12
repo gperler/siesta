@@ -26,7 +26,7 @@ class PerformanceTest extends SiestaTester
 
     protected function tearDown()
     {
-        $this->dropDatabase();
+        //$this->dropDatabase();
     }
 
     public function testInsert()

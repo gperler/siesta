@@ -148,7 +148,6 @@ class XMLEntityBuilder extends XMLBuilder
 
         $this->addStoredProcedureNames();
         $this->addReferencedClassUseNames($ets);
-        $this->addFindByPrimaryKeySignature($ets);
         $this->addCustomStoredProcedureList($ets->getStoredProcedureSourceList());
         $this->addPrimaryKeyColumns($ets);
 
@@ -188,17 +187,6 @@ class XMLEntityBuilder extends XMLBuilder
             $xmlUse = $this->createElement($xmlUseList, XMLEntity::ELEMENT_REFERENCE_USE_FQ_CLASS_NAME);
             $xmlUse->setAttribute(XMLEntity::ATTRIBUTE_REFERENCE_USE_NAME, $use);
         }
-    }
-
-    /**
-     * adds the signature for find by primary key
-     *
-     * @param EntityTransformerSource $ets
-     */
-    private function addFindByPrimaryKeySignature(EntityTransformerSource $ets)
-    {
-        $this->setAttribute(XMLEntity::ATTRIBUTE_FIND_BY_PK_SIGNATURE, $ets->getFindByPKSignature());
-        $this->setAttribute(XMLEntity::ATTRIBUTE_STORED_PROCEDURE_CALL_SIGNATURE, $ets->getSPCallSignature());
     }
 
     /**

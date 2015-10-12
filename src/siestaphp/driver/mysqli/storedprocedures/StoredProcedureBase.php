@@ -2,12 +2,10 @@
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntityDatabaseSource;
-use siestaphp\driver\Driver;
-use siestaphp\driver\mysqli\MySQLDriver;
+use siestaphp\driver\Connection;
+use siestaphp\driver\mysqli\MySQLConnection;
 use siestaphp\driver\mysqli\replication\Replication;
-
 
 /**
  * Class StoredProcedureBase
@@ -85,25 +83,25 @@ abstract class StoredProcedureBase implements StoredProcedure
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      *
      */
-    protected function executeProcedureBuild(Driver $driver)
+    protected function executeProcedureBuild(Connection $connection)
     {
 
         $config = ($this->modifies) ? self::MODIFIES_DATA : self::READS_DATA;
 
         $definition = self::CREATE_PROCEDURE . " " . $this->quote($this->name) . " " . $this->signature . " " . $config . " BEGIN " . $this->statement . " END;";
 
-        $driver->query($definition);
+        $connection->query($definition);
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    protected function executeProcedureDrop(Driver $driver)
+    protected function executeProcedureDrop(Connection $connection)
     {
-        $driver->query("DROP PROCEDURE IF EXISTS " . $this->quote($this->name));
+        $connection->query("DROP PROCEDURE IF EXISTS " . $this->quote($this->name));
     }
 
 
@@ -113,7 +111,7 @@ abstract class StoredProcedureBase implements StoredProcedure
      */
     protected function quote($name)
     {
-        return MySQLDriver::quote($name);
+        return MySQLConnection::quote($name);
     }
 
 

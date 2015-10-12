@@ -55,18 +55,6 @@ interface EntityTransformerSource extends EntitySource {
      */
     public function hasAttributes();
 
-
-    /**
-     * @return string
-     */
-    public function getFindByPKSignature();
-
-
-    /**
-     * @return string
-     */
-    public function getSPCallSignature();
-
     /**
      * @return bool
      */

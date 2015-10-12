@@ -4,6 +4,7 @@ namespace siestaphp\tests\functional;
 
 use siestaphp\datamodel\attribute\AttributeTransformerSource;
 use siestaphp\datamodel\collector\CollectorTransformerSource;
+use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\index\IndexDatabaseSource;
 use siestaphp\datamodel\index\IndexPartDatabaseSource;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
@@ -11,7 +12,9 @@ use siestaphp\datamodel\reference\ReferenceTransformerSource;
 use siestaphp\datamodel\storedprocedure\SPParameterSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\tests\functional\transformer\TransformerXML;
+use siestaphp\util\File;
 use siestaphp\util\Util;
+use siestaphp\xmlreader\XMLReader;
 
 /**
  * Class TransformerTest
@@ -27,14 +30,14 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     private function loadEntitySource()
     {
         // read file
-        $file = new \siestaphp\util\File(__DIR__ . self::ASSET_PATH . "/Transformer.test.xml");
-        $xmlReader = new \siestaphp\xmlreader\XMLReader($file);
+        $file = new File(__DIR__ . self::ASSET_PATH . "/Transformer.test.xml");
+        $xmlReader = new XMLReader($file);
 
         // get entities
         $entitySourceList = $xmlReader->getEntitySourceList();
 
         // create datamodel
-        $dataModelContainer = new \siestaphp\datamodel\DataModelContainer(null);
+        $dataModelContainer = new DataModelContainer(null);
         $dataModelContainer->addEntitySourceList($entitySourceList);
         $dataModelContainer->updateModel();
 
@@ -64,8 +67,6 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($entity->isDateTimeUsed(), $definition["dateTimeInUse"], "dateTimeInUse is not correct");
         $this->assertSame($entity->hasReferences(), $definition["hasReferences"], "hasReferences is not correct");
         $this->assertSame($entity->hasAttributes(), $definition["hasAttributes"], "hasAttributes is not correct");
-        $this->assertSame($entity->getFindByPKSignature(), $definition["findByPKSignature"], "findByPKSignature is not correct");
-        $this->assertSame($entity->getSPCallSignature(), $definition["storedProcedureCallSignature"], "storedProcedureCallSignature is not correct");
     }
 
     public function testAttributeList()

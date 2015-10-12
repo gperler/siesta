@@ -3,6 +3,8 @@
 namespace siestaphp\tests\functional;
 
 use Codeception\Util\Debug;
+use siestaphp\driver\Connection;
+use siestaphp\driver\ConnectionFactory;
 
 /**
  * Class SiestaTester
@@ -12,9 +14,9 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var \siestaphp\driver\Driver
+     * @var Connection
      */
-    protected $driver;
+    protected $connection;
 
     /**
      * @var string
@@ -37,20 +39,19 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
     protected function connectAndInstall($database)
     {
         $d = $database;
-        $d = SIESTA_DATABASE;
-
-        $this->driver = \siestaphp\runtime\ServiceLocator::getDriver();
-        $this->driver->query("DROP DATABASE IF EXISTS " . $d);
-        $this->driver->query("CREATE DATABASE " . $d);
-        $this->driver->useDatabase($d);
-        $this->driver->install();
+        //$d = SIESTA_DATABASE;
+        $this->connection = ConnectionFactory::getConnection();
+        $this->connection->query("DROP DATABASE IF EXISTS " . $d);
+        $this->connection->query("CREATE DATABASE " . $d);
+        $this->connection->useDatabase($d);
+        $this->connection->install();
         $this->databaseName = $d;
     }
 
     protected function dropDatabase()
     {
-        if ($this->driver) {
-            $this->driver->query("DROP DATABASE IF EXISTS " . $this->databaseName);
+        if ($this->connection) {
+            $this->connection->query("DROP DATABASE IF EXISTS " . $this->databaseName);
         }
     }
 

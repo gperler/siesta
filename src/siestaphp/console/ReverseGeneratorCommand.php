@@ -18,7 +18,7 @@ class ReverseGeneratorCommand extends Command
 {
     protected function configure()
     {
-        $this->setName('generate');
+        $this->setName('reverse');
         $this->setDescription('Scans directories for entity files and generates classes and database tables');
         $this->addOption('database', null, InputOption::VALUE_OPTIONAL, 'Suffix of Entitiy definition files. Default is ' . DirectoryScanner::DEFAULT_SUFFIX);
         $this->addOption('targetPath', null, InputOption::VALUE_OPTIONAL, 'Suffix of Entitiy definition files. Default is ' . DirectoryScanner::DEFAULT_SUFFIX);

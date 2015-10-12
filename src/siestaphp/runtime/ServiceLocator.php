@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace siestaphp\runtime;
 
 use siestaphp\driver\Driver;
@@ -31,16 +29,6 @@ class ServiceLocator
     }
 
     /**
-     * @param array $config
-     *
-     * @return Driver
-     */
-    public static function getDriver($config = null)
-    {
-        return self::getInstance()->getDriverImpl($config);
-    }
-
-    /**
      * @return HttpRequest
      */
     public static function getHttpRequest()
@@ -60,11 +48,6 @@ class ServiceLocator
      * @var HttpRequest
      */
     protected $httpRequest;
-
-    /**
-     * @var Driver
-     */
-    protected $driver;
 
     /**
      * @var UUIDGenerator
@@ -92,19 +75,6 @@ class ServiceLocator
     public function getHttpRequestImpl()
     {
         return $this->httpRequest;
-    }
-
-    /**
-     * @param $config
-     *
-     * @return Driver
-     */
-    public function getDriverImpl($config)
-    {
-        if (!$this->driver) {
-            $this->driver = DriverFactory::getDriver($config);
-        }
-        return $this->driver;
     }
 
     /**

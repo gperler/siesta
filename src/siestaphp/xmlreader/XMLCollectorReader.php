@@ -43,4 +43,12 @@ class XMLCollectorReader extends XMLAccess implements CollectorSource
         return $this->getAttribute(XMLCollector::ATTRIBUTE_REFERENCE_NAME);
     }
 
+    /**
+     * @return string
+     */
+    public function getMapperClass()
+    {
+        return $this->getAttribute(XMLCollector::ATTRIBUTE_MAPPER_CLASS);
+    }
+
 }

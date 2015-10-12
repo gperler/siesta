@@ -19,6 +19,8 @@ class XMLCollector
 
     const ATTRIBUTE_REFERENCE_NAME = "referenceName";
 
+    const ATTRIBUTE_MAPPER_CLASS = "mapperClass";
+
     /* derived values */
     const ATTRIBUTE_METHOD_NAME = "methodName";
 

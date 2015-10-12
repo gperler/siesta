@@ -25,9 +25,9 @@ class SequencerTest extends SiestaTester
     {
         $this->startTimer();
         for ($i = 1; $i < 100; $i++) {
-            $this->assertSame($i, $this->driver->getSequence("A"));
-            $this->assertSame($i, $this->driver->getSequence("B"));
-            $this->assertSame($i, $this->driver->getSequence("C"));
+            $this->assertSame($i, $this->connection->getSequence("A"));
+            $this->assertSame($i, $this->connection->getSequence("B"));
+            $this->assertSame($i, $this->connection->getSequence("C"));
         }
         $this->stopTimer("Sequencer time %0.2fms", 300);
     }

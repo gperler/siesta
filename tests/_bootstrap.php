@@ -4,17 +4,16 @@ date_default_timezone_set('Europe/Berlin');
 
 require_once 'vendor/autoload.php';
 
-define(SIESTA_DATABASE, "SIESTA_TEST");
-define(SIESTA_DATABASE_HOST, "127.0.0.1");
-define(SIESTA_DATABASE_PORT, 3306);
-define(SIESTA_DATABASE_USER, "root");
-define(SIESTA_DATABASE_PASSWORD, "");
+// connection Details
+$name = "default";
+$driver = "mysql";
+$host = "127.0.0.1";
+$port = 3306;
+$database = "SIESTA_TEST";
+$user = "root";
+$password = "";
+$charset = "utf8";
+$postConnectStatementList = array("SET NAMES UTF8");
 
-
-\siestaphp\runtime\ServiceLocator::getDriver(array(
-    "user" => SIESTA_DATABASE_USER,
-    "password" => SIESTA_DATABASE_PASSWORD,
-    "port" => SIESTA_DATABASE_PORT,
-    "database" => null,
-    "host" => SIESTA_DATABASE_HOST
-));
+$cd = new \siestaphp\driver\ConnectionData($name, $driver, $host, $port, $database, $user, $password, $charset, $postConnectStatementList);
+\siestaphp\driver\ConnectionFactory::addConnection($cd);

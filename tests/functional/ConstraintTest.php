@@ -64,7 +64,7 @@ class ConstraintTest extends SiestaTester
         try {
             // update address id
             $sql = "UPDATE Address SET ID=7 WHERE ID= " . $standardAddress->getId();
-            $this->driver->query($sql);
+            $this->connection->query($sql);
         } catch (ForeignKeyConstraintFailedException $e) {
             return;
         }
@@ -92,7 +92,7 @@ class ConstraintTest extends SiestaTester
 
     public function testCascadeUpdate()
     {
-        $this->driver->enableForeignKeyChecks();
+        $this->connection->enableForeignKeyChecks();
         $deliveryAddress = new Address();
         $deliveryAddress->setCity("Trier");
         $deliveryAddress->setStreet("Nagelstraße");
@@ -103,7 +103,7 @@ class ConstraintTest extends SiestaTester
 
         // update address id
         $sql = "UPDATE Address SET ID=7 WHERE ID= " . $deliveryAddress->getId();
-        $this->driver->query($sql);
+        $this->connection->query($sql);
 
         $customerLoaded = Customer::getEntityByPrimaryKey($customer->getId());
 
@@ -140,7 +140,7 @@ class ConstraintTest extends SiestaTester
 
         // update address id
         $sql = "UPDATE Address SET ID=7 WHERE ID= " . $billingAddress->getId();
-        $this->driver->query($sql);
+        $this->connection->query($sql);
 
         $customerLoaded = Customer::getEntityByPrimaryKey($customer->getId());
 
@@ -181,7 +181,7 @@ class ConstraintTest extends SiestaTester
         try {
             // update address id
             $sql = "UPDATE Address SET ID=7 WHERE ID= " . $holidyAddress->getId();
-            $this->driver->query($sql);
+            $this->connection->query($sql);
         } catch (\siestaphp\driver\exceptions\ForeignKeyConstraintFailedException $e) {
             return;
         }

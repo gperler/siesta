@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
     <entity name="Book" namespace="siestaphp\tests\functional\performance\gen" table="BOOK" targetPath="gen">
-        <attributeList>
-            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
-            <attribute name="title" type="bool" dbName="TITLE" dbType="VARCHAR(100)"/>
-            <attribute name="price" type="float" dbName="PRICE" dbType="FLOAT"/>
-        </attributeList>
+        <entity-mysql engine="MEMORY" replication="true"/>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="title" type="bool" dbName="TITLE" dbType="VARCHAR(100)"/>
+        <attribute name="price" type="float" dbName="PRICE" dbType="FLOAT"/>
     </entity>
 
     <entity name="Author" namespace="siestaphp\tests\functional\performance\gen" table="AUTHOR" targetPath="gen">
-        <attributeList>
-            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="uuid"/>
-            <attribute name="name" type="bool" dbName="NAME" dbType="VARCHAR(100)"/>
-            <attribute name="price" type="float" dbName="D_FLOAT" dbType="FLOAT"/>
-        </attributeList>
+        <entity-mysql engine="MEMORY" replication="true"/>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="uuid"/>
+        <attribute name="name" type="bool" dbName="NAME" dbType="VARCHAR(100)"/>
+        <attribute name="price" type="float" dbName="D_FLOAT" dbType="FLOAT"/>
     </entity>
 </entityList>

@@ -49,6 +49,7 @@ class XMLCollectorBuilder extends XMLBuilder
         $this->setAttribute(XMLCollector::ATTRIBUTE_TYPE, $this->collectorSource->getType());
         $this->setAttribute(XMLCollector::ATTRIBUTE_FOREIGN_CLASS, $this->collectorSource->getForeignClass());
         $this->setAttribute(XMLCollector::ATTRIBUTE_REFERENCE_NAME, $this->collectorSource->getReferenceName());
+        $this->setAttribute(XMLCollector::ATTRIBUTE_MAPPER_CLASS, $this->collectorSource->getMapperClass());
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\entity\EntityDatabaseSource;
+use siestaphp\driver\Connection;
 use siestaphp\driver\Driver;
 use siestaphp\driver\mysqli\replication\Replication;
 use siestaphp\naming\StoredProcedureNaming;
@@ -24,9 +25,9 @@ class DeleteStoredProcedure extends StoredProcedureBase
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    public function createProcedure(Driver $driver)
+    public function createProcedure(Connection $connection)
     {
         $this->modifies = true;
 
@@ -39,18 +40,18 @@ class DeleteStoredProcedure extends StoredProcedureBase
         if (!$this->entityDatabaseSource->hasPrimaryKey()) {
             return;
         }
-        $this->executeProcedureDrop($driver);
+        $this->executeProcedureDrop($connection);
 
-        $this->executeProcedureBuild($driver);
+        $this->executeProcedureBuild($connection);
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    public function dropProcedure(Driver $driver)
+    public function dropProcedure(Connection $connection)
     {
         $this->buildName();
-        $this->executeProcedureDrop($driver);
+        $this->executeProcedureDrop($connection);
     }
 
     protected function buildName()

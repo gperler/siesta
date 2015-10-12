@@ -4,6 +4,7 @@
 namespace siestaphp\driver\mysqli\installer;
 
 use Codeception\Util\Debug;
+use siestaphp\driver\Connection;
 use siestaphp\driver\Driver;
 use siestaphp\util\File;
 
@@ -18,64 +19,64 @@ class Installer
     const CREATE_SEQUENCE_TABLE = "CREATE TABLE IF NOT EXISTS `SEQUENCER` (`TECHNICALNAME` VARCHAR(120) NOT NULL PRIMARY KEY, `SEQ` INT  ) ENGINE = InnoDB;";
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    public static function install(Driver $driver)
+    public static function install(Connection $connection)
     {
 
-        self::installGetColumnDetails($driver);
+        self::installGetColumnDetails($connection);
 
-        self::installSequencer($driver);
+        self::installSequencer($connection);
 
-        self::installGetForeignKeyDetails($driver);
+        self::installGetForeignKeyDetails($connection);
 
-        self::installGetIndexDetails($driver);
+        self::installGetIndexDetails($connection);
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    private static function installSequencer(Driver $driver)
+    private static function installSequencer(Connection $connection)
     {
         // create sequence table
-        $driver->query(self::CREATE_SEQUENCE_TABLE);
+        $connection->query(self::CREATE_SEQUENCE_TABLE);
 
         // create installer procedure
-        $driver->execute("DROP PROCEDURE IF EXISTS SEQUENCER_GETSEQUENCE");
+        $connection->execute("DROP PROCEDURE IF EXISTS SEQUENCER_GETSEQUENCE");
         $sequencerFile = new File(__DIR__ . "/Sequencer.sql");
-        $driver->execute($sequencerFile->getContents());
+        $connection->execute($sequencerFile->getContents());
 
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    private static function installGetForeignKeyDetails(Driver $driver)
+    private static function installGetForeignKeyDetails(Connection $connection)
     {
-        $driver->execute("DROP procedure IF EXISTS `SIESTA_GET_FOREIGN_KEY_DETAILS`");
+        $connection->execute("DROP procedure IF EXISTS `SIESTA_GET_FOREIGN_KEY_DETAILS`");
         $foreignKey = new File(__DIR__ . "/getForeignKeyDetails.sql");
-        $driver->execute($foreignKey->getContents());
+        $connection->execute($foreignKey->getContents());
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    private static function installGetColumnDetails(Driver $driver)
+    private static function installGetColumnDetails(Connection $connection)
     {
-        $driver->execute("DROP procedure IF EXISTS `SIESTA_GET_COLUMN_DETAILS`");
+        $connection->execute("DROP procedure IF EXISTS `SIESTA_GET_COLUMN_DETAILS`");
         $columnDetails = new File(__DIR__ . "/getColumnDetails.sql");
-        $driver->execute($columnDetails->getContents());
+        $connection->execute($columnDetails->getContents());
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    private static function installGetIndexDetails(Driver $driver)
+    private static function installGetIndexDetails(Connection $connection)
     {
         //
-        $driver->execute("DROP procedure IF EXISTS `SIESTA_GET_INDEX_DETAILS`");
+        $connection->execute("DROP procedure IF EXISTS `SIESTA_GET_INDEX_DETAILS`");
         $indexDetails = new File(__DIR__ . "/getIndexDetails.sql");
-        $driver->query($indexDetails->getContents());
+        $connection->query($indexDetails->getContents());
 
     }
 

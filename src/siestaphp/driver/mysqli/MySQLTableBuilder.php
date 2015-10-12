@@ -3,6 +3,7 @@
 namespace siestaphp\driver\mysqli;
 
 use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\mysqli\storedprocedures\CustomStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteStoredProcedure;
@@ -34,32 +35,32 @@ class MySQLTableBuilder implements TableBuilder
      */
     public function setupStoredProcedures(EntityTransformerSource $ets)
     {
-        $driver = ServiceLocator::getDriver();
+        $connection = ConnectionFactory::getConnection();
 
         $insert = new InsertStoredProcedure($ets, false);
-        $insert->createProcedure($driver);
+        $insert->createProcedure($connection);
 
         $select = new SelectStoredProcedure($ets, false);
-        $select->createProcedure($driver);
+        $select->createProcedure($connection);
 
         $update = new UpdateStoredProcedure($ets, false);
-        $update->createProcedure($driver);
+        $update->createProcedure($connection);
 
         $delete = new DeleteStoredProcedure($ets, false);
-        $delete->createProcedure($driver);
+        $delete->createProcedure($connection);
 
         foreach ($ets->getReferenceSourceList() as $reference) {
             $referenceBuilder = new SelectReferenceStoredProcedure($ets, $reference, false);
-            $referenceBuilder->createProcedure($driver);
+            $referenceBuilder->createProcedure($connection);
 
             $referenceDeleter = new DeleteReferenceStoredProcedure($ets, $reference, false);
-            $referenceDeleter->createProcedure($driver);
+            $referenceDeleter->createProcedure($connection);
 
         }
 
         foreach ($ets->getStoredProcedureSourceList() as $sp) {
             $spBuilder = new CustomStoredProcedure($sp, $ets, false);
-            $spBuilder->createProcedure($driver);
+            $spBuilder->createProcedure($connection);
         }
 
     }

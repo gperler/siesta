@@ -3,6 +3,7 @@
 namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\entity\EntityDatabaseSource;
+use siestaphp\driver\Connection;
 use siestaphp\driver\Driver;
 
 use siestaphp\naming\StoredProcedureNaming;
@@ -24,9 +25,9 @@ class SelectStoredProcedure extends StoredProcedureBase
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    public function createProcedure(Driver $driver)
+    public function createProcedure(Connection $connection)
     {
 
         $this->modifies = false;
@@ -43,18 +44,18 @@ class SelectStoredProcedure extends StoredProcedureBase
             return;
         }
 
-        $this->executeProcedureDrop($driver);
+        $this->executeProcedureDrop($connection);
 
-        $this->executeProcedureBuild($driver);
+        $this->executeProcedureBuild($connection);
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    public function dropProcedure(Driver $driver)
+    public function dropProcedure(Connection $connection)
     {
         $this->buildName();
-        $this->executeProcedureDrop($driver);
+        $this->executeProcedureDrop($connection);
     }
 
     /**

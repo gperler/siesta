@@ -608,38 +608,4 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
     {
         return $this->entitySource->getDatabaseSpecific($database);
     }
-
-    /**
-     * builds the find by primary key signature (might have multiple primary keys)
-     * @return string
-     */
-    public function getFindByPKSignature()
-    {
-        $signature = '';
-
-        foreach ($this->attributeList as $attribute) {
-            if ($attribute->isPrimaryKey()) {
-                $signature .= "$" . $attribute->getName() . ",";
-            }
-        }
-
-        return rtrim($signature, ",");
-    }
-
-    /**
-     * @return string
-     */
-    public function getSPCallSignature()
-    {
-        $signature = '';
-
-        foreach ($this->attributeList as $attribute) {
-            if ($attribute->isPrimaryKey()) {
-                $signature .= "'$" . $attribute->getName() . "',";
-            }
-        }
-
-        return rtrim($signature, ",");
-    }
-
 }

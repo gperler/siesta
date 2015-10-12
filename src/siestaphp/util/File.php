@@ -2,6 +2,7 @@
 
 namespace siestaphp\util;
 
+use Codeception\Util\Debug;
 use siestaphp\exceptions\XMLNotValidException;
 use siestaphp\util\StringUtil;
 
@@ -147,9 +148,7 @@ class File
             $e = new XMLNotValidException(libxml_get_errors());
             libxml_clear_errors();
             throw $e;
-
         }
-
         return $xml;
     }
 

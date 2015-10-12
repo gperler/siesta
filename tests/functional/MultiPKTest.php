@@ -20,7 +20,7 @@ class MultiPKTest extends SiestaTester
     /**
      * @var \siestaphp\driver\Driver
      */
-    protected $driver;
+    protected $connection;
 
     protected function setUp()
     {

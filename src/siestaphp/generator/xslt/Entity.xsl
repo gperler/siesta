@@ -17,6 +17,7 @@
         use siestaphp\runtime\ServiceLocator;
         use siestaphp\runtime\Passport;
         use siestaphp\runtime\ORMEntity;
+        use siestaphp\driver\ConnectionFactory;
         use siestaphp\driver\ResultSet;
         use siestaphp\util\StringUtil;
         use siestaphp\util\Util;
@@ -83,19 +84,17 @@
         <xsl:for-each select="/entity/pkColumn">
           * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
         </xsl:for-each>
+         * @param string $connectionName
          * @return <xsl:value-of select="/entity/@constructClass"/>
          */
-        public static function getEntityByPrimaryKey(
-            <xsl:for-each select="/entity/pkColumn">
-                $<xsl:value-of select="@name"/><xsl:if test="position() != last()">,</xsl:if>
-            </xsl:for-each>)
+        public static function getEntityByPrimaryKey(<xsl:for-each select="/entity/pkColumn">$<xsl:value-of select="@name"/>,</xsl:for-each> $connectionName=null)
         {
             if (<xsl:for-each select="/entity/pkColumn">!$<xsl:value-of select="@name"/><xsl:if test="position() != last()"> or </xsl:if></xsl:for-each>) {
                 return null;
             }
-            $driver = ServiceLocator::getDriver();
+            $connection = ConnectionFactory::getConnection($connectionName);
             <xsl:for-each select="/entity/pkColumn">
-                $<xsl:value-of select="@name"/> = $driver->escape($<xsl:value-of select="@name"/>);
+                $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
             </xsl:for-each>
 
             $resultList = self::executeStoredProcedure("CALL <xsl:value-of select="/entity/standardStoredProcedures/@findByPrimaryKey"/>(<xsl:for-each select="/entity/pkColumn">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
@@ -110,20 +109,16 @@
              * <xsl:for-each select="column">
              * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
              * </xsl:for-each>
+             * @param string $connectionName
              * @return <xsl:value-of select="/entity/@constructClass"/>[]
              */
-            public static function getEntityBy<xsl:value-of select="@methodName"/>Reference(
-            <xsl:for-each select="column">
-                $<xsl:value-of select="@name"/><xsl:if test="position() != last()">,</xsl:if>
-            </xsl:for-each> ) {
-
-            $driver = ServiceLocator::getDriver();
-
-            <xsl:for-each select="column">
-                $<xsl:value-of select="@name"/> = $driver->escape($<xsl:value-of select="@name"/>);
-            </xsl:for-each>
-
-            return self::executeStoredProcedure("CALL <xsl:value-of select="@spFinderName"/>(<xsl:for-each select="column">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
+            public static function getEntityBy<xsl:value-of select="@methodName"/>Reference(<xsl:for-each select="column">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
+            {
+                $connection = ConnectionFactory::getConnection($connectionName);
+                <xsl:for-each select="column">
+                    $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
+                </xsl:for-each>
+                return self::executeStoredProcedure("CALL <xsl:value-of select="@spFinderName"/>(<xsl:for-each select="column">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
             }
         </xsl:for-each>
     </xsl:template>
@@ -132,23 +127,18 @@
     <xsl:template name="referenceDeleter">
         <xsl:for-each select="/entity/reference">
             /**
-            * <xsl:for-each select="column">
-            * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
-            * </xsl:for-each>
-            */
-            public static function deleteEntityBy<xsl:value-of select="@methodName"/>Reference(
-            <xsl:for-each select="column">
-                $<xsl:value-of select="@name"/><xsl:if test="position() != last()">,</xsl:if>
-            </xsl:for-each>) {
-
-
-            $driver = ServiceLocator::getDriver();
-
-            <xsl:for-each select="column">
-                $<xsl:value-of select="@name"/> = $driver->escape($<xsl:value-of select="@name"/>);
-            </xsl:for-each>
-
-            $driver->execute("CALL <xsl:value-of select="@spDeleterName"/>(<xsl:for-each select="column">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
+             * <xsl:for-each select="column">
+             * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
+             * </xsl:for-each>
+             * @param string $connectionName
+             */
+            public static function deleteEntityBy<xsl:value-of select="@methodName"/>Reference(<xsl:for-each select="column">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
+            {
+                $connection = ConnectionFactory::getConnection($connectionName);
+                 <xsl:for-each select="column">
+                    $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
+                </xsl:for-each>
+                $connection->execute("CALL <xsl:value-of select="@spDeleterName"/>(<xsl:for-each select="column">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
             }
         </xsl:for-each>
     </xsl:template>
@@ -156,21 +146,20 @@
 
     <xsl:template name="deleteByPrimaryKey">
         <xsl:if test="/entity/@hasPrimaryKey = 'true'">
-        /**
-        <xsl:for-each select="/entity/pkColumn">
+         /**
+         <xsl:for-each select="/entity/pkColumn">
             * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
-        </xsl:for-each>
-        * @return <xsl:value-of select="/entity/@constructClass"/>
-        */
-        public static function deleteEntityByPrimaryKey(<xsl:for-each select="/entity/pkColumn">$<xsl:value-of select="@name"/><xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)
+         </xsl:for-each>
+         * @param string $connectionName
+         * @return <xsl:value-of select="/entity/@constructClass"/>
+         */
+        public static function deleteEntityByPrimaryKey(<xsl:for-each select="/entity/pkColumn">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName=null)
         {
-
-        $driver = ServiceLocator::getDriver();
-        <xsl:for-each select="/entity/pkColumn">
-            $<xsl:value-of select="@name"/> = $driver->escape($<xsl:value-of select="@name"/>);
-        </xsl:for-each>
-
-        $driver->execute("CALL <xsl:value-of select="/entity/standardStoredProcedures/@deleteByPrimaryKey"/>(<xsl:for-each select="/entity/pkColumn">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
+            $connection = ConnectionFactory::getConnection($connectionName);
+            <xsl:for-each select="/entity/pkColumn">
+                $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
+            </xsl:for-each>
+            $connection->execute("CALL <xsl:value-of select="/entity/standardStoredProcedures/@deleteByPrimaryKey"/>(<xsl:for-each select="/entity/pkColumn">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
         }
         </xsl:if>
     </xsl:template>
@@ -193,16 +182,15 @@
                         * @return ResultSet
                     </xsl:when>
                 </xsl:choose>
+             * @param string $connectionName
              */
-            public static function <xsl:value-of select="@name"/>(
-            <xsl:for-each select="parameter">
-                $<xsl:value-of select="@name"/><xsl:if test="position() != last()">,</xsl:if>
-            </xsl:for-each>
-            ) {
-                $driver = ServiceLocator::getDriver();
+            public static function <xsl:value-of select="@name"/>(<xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
+            {
+                $connection = ConnectionFactory::getConnection($connectionName);
                 <xsl:for-each select="parameter">
-                    $<xsl:value-of select="@name"/> = $driver->escape($<xsl:value-of select="@name"/>);
+                    $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
                 </xsl:for-each>
+
                 $spCall = "CALL <xsl:value-of select="@databaseName"/>("
                 <xsl:for-each select="parameter">
                     . "'$<xsl:value-of select="@name"/>'"
@@ -210,13 +198,13 @@
 
                 <xsl:choose>
                     <xsl:when test="@resultType='single'">
-                        return Util::getFromArray(self::executeStoredProcedure($spCall), 0);
+                        return Util::getFromArray(self::executeStoredProcedure($spCall,$connectionName), 0);
                     </xsl:when>
                     <xsl:when test="@resultType='list'">
-                        return self::executeStoredProcedure($spCall);
+                        return self::executeStoredProcedure($spCall, $connectionName);
                     </xsl:when>
                     <xsl:when test="@resultType='resultset'">
-                        return $driver->executeStoredProcedure($spCall);
+                        return $connection->executeStoredProcedure($spCall);
                     </xsl:when>
                 </xsl:choose>
             }
@@ -227,12 +215,13 @@
     <xsl:template name="executeStoredProcedure">
         /**
          * @param string $invocation
+         * @param string $connectionName
          * @return <xsl:value-of select="/entity/@constructClass"/>[]
          */
-        private static function executeStoredProcedure($invocation) {
-            $driver = ServiceLocator::getDriver();
+        private static function executeStoredProcedure($invocation, $connectionName=null) {
+            $connection = ConnectionFactory::getConnection($connectionName);
             $objectList = array();
-            $resultSet = $driver->executeStoredProcedure($invocation);
+            $resultSet = $connection->executeStoredProcedure($invocation);
             while ($resultSet->hasNext()) {
                 $objectList[] =  self::createInstanceFromResultSet($resultSet);
             }
@@ -257,14 +246,16 @@
     <xsl:template name="batchSaver">
        /**
         * @param $objectList <xsl:value-of select="/entity/@constructClass"/>[]
+        * @param string $connectionName
         */
-        public static function batchSave(array $objectList) {
+        public static function batchSave(array $objectList, $connectionName = null)
+        {
             $batchCall = "";
             foreach($objectList as $object) {
                 $batchCall .= $object->createSaveStoredProcedureCall();
             }
-            $driver = ServiceLocator::getDriver();
-            $driver->multiQuery($batchCall);
+            $connection = ConnectionFactory::getConnection($connectionName);
+            $connection->multiQuery($batchCall);
         }
     </xsl:template>
 
@@ -338,9 +329,9 @@
 
     <xsl:template name="save">
         /**
-         *
+         * @param string $connectionName
          */
-        protected function createSaveStoredProcedureCall() {
+        protected function createSaveStoredProcedureCall($connectionName = null) {
             <!-- make sure ids are given -->
             <xsl:for-each select="/entity/attribute">
                 <xsl:if test="@primaryKey = 'true'">
@@ -348,7 +339,8 @@
                 </xsl:if>
             </xsl:for-each>
             <!-- Build stored procedure call with all parameters -->
-            $driver = ServiceLocator::getDriver();
+            $connection = ConnectionFactory::getConnection($connectionName);
+
             $spCall = ($this->_existing) ? "CALL <xsl:value-of select="/entity/standardStoredProcedures/@update"/> " : "CALL <xsl:value-of select="/entity/standardStoredProcedures/@insert"/> ";
             $spCall .= "("
 
@@ -364,7 +356,7 @@
                             . Util::quoteNumber($this-><xsl:value-of select="@name"/>)
                         </xsl:when>
                         <xsl:when test="@type = 'string'">
-                            . Util::quoteEscape($driver, $this-><xsl:value-of select="@name"/>)
+                            . Util::quoteEscape($connection, $this-><xsl:value-of select="@name"/>)
                         </xsl:when>
                     </xsl:choose>
                     <xsl:if test="position() != last()">."," </xsl:if>
@@ -384,7 +376,7 @@
                         . Util::quoteNumber($this-><xsl:value-of select="@name"/>)
                     </xsl:when>
                     <xsl:when test="@type = 'string'">
-                        . Util::quoteEscape($driver, $this-><xsl:value-of select="@name"/>)
+                        . Util::quoteEscape($connection, $this-><xsl:value-of select="@name"/>)
                     </xsl:when>
                     <xsl:when test="@type = 'DateTime'">
                         <xsl:choose>
@@ -407,8 +399,10 @@
         /**
          * @param bool $cascade
          * @param Passport $passport
+         * @param string $connectionName
          */
-        public function save($cascade = false, $passport=null) {
+        public function save($cascade = false, $passport=null, $connectionName=null)
+        {
 
             <!-- make sure ids are given -->
             <xsl:for-each select="/entity/attribute">
@@ -427,16 +421,17 @@
 
             <xsl:for-each select="/entity/reference">
                 if ($this-><xsl:value-of select="@name"/>Obj !== null) {
-                $this-><xsl:value-of select="@name"/>Obj->save($cascade, $passport);
+                $this-><xsl:value-of select="@name"/>Obj->save($cascade, $passport,$connectionName);
 
                 }
             </xsl:for-each>
 
-            <!-- Build stored procedure call with all parameters -->
-            $driver = ServiceLocator::getDriver();
-            $spCall = $this->createSaveStoredProcedureCall();
 
-            $driver->execute($spCall);
+            <!-- Build stored procedure call with all parameters -->
+            $spCall = $this->createSaveStoredProcedureCall($connectionName);
+
+            $connection = ConnectionFactory::getConnection($connectionName);
+            $connection->execute($spCall);
             $this->_existing = true;
 
             if (!$cascade) {
@@ -447,7 +442,7 @@
             <xsl:for-each select="/entity/collector">
                 if ($this-><xsl:value-of select="@name"/> !== null) {
                     foreach($this-><xsl:value-of select="@name"/> as $c) {
-                        $c->save($cascade, $passport);
+                        $c->save($cascade, $passport,$connectionName);
                     }
                 }
             </xsl:for-each>
@@ -759,9 +754,10 @@
         <xsl:for-each select="/entity/attribute">
             /**
              * @param <xsl:if test="@primaryKey = 'true'">bool $generateKey</xsl:if>
+             * @param string $connectionName
              * @return <xsl:value-of select="@type"/>
              */
-            public function get<xsl:value-of select="@methodName"/>(<xsl:if test="@primaryKey = 'true'">$generateKey=false</xsl:if>) {
+            public function get<xsl:value-of select="@methodName"/>(<xsl:if test="@primaryKey = 'true'">$generateKey=false,</xsl:if>$connectionName = null) {
                 <xsl:if test="@primaryKey = 'true' and @autoValue != ''">
                     if ($generateKey and !$this-><xsl:value-of select="@name"/>) {
                     <xsl:choose>
@@ -769,7 +765,7 @@
                             $this-><xsl:value-of select="@name"/> = ServiceLocator::getUUIDGenerator()->uuid();
                         </xsl:when>
                         <xsl:when test="@autoValue='autoincrement'">
-                            $this-><xsl:value-of select="@name"/> = ServiceLocator::getDriver()->getSequence("<xsl:value-of select="/entity/@table"/>");
+                            $this-><xsl:value-of select="@name"/> = ConnectionFactory::getConnection($connectionName)->getSequence("<xsl:value-of select="/entity/@table"/>");
                         </xsl:when>
                     </xsl:choose>
                     }

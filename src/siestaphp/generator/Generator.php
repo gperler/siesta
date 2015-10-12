@@ -4,8 +4,8 @@ namespace siestaphp\generator;
 
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\exceptions\SQLException;
-use siestaphp\runtime\ServiceLocator;
 use siestaphp\util\File;
 use siestaphp\xmlreader\DirectoryScanner;
 use siestaphp\xmlreader\XMLReader;
@@ -48,7 +48,7 @@ class Generator
      * @param GeneratorLog $log
      * @param string $suffix
      */
-    public function __construct(GeneratorLog $log, $suffix=null)
+    public function __construct(GeneratorLog $log, $suffix = null)
     {
 
         $this->generatorLog = $log;
@@ -77,8 +77,8 @@ class Generator
 
         $this->generateDataModelContainer();
 
-        $time = (microtime(true) + $time)/1000;
-        $this->generatorLog->info( sprintf("%0.3fms", $time));
+        $time = (microtime(true) + $time) / 1000;
+        $this->generatorLog->info(sprintf("%0.3fms", $time));
 
     }
 
@@ -147,22 +147,21 @@ class Generator
     private function setupTablesAndStoredProcedures()
     {
         try {
-            $driver = ServiceLocator::getDriver();
-            $driver->install();
+            $connection = ConnectionFactory::getConnection();
+            $connection->install();
 
-            $driver->disableForeignKeyChecks();
+            $connection->disableForeignKeyChecks();
 
-            $tableBuilder = $driver->getTableBuilder();
+            $tableBuilder = $connection->getTableBuilder();
             foreach ($this->dataModelContainer->getEntityList() as $ets) {
                 $tableBuilder->setupTables($ets);
                 $tableBuilder->setupStoredProcedures($ets);
             }
 
-            $driver->enableForeignKeyChecks();
-
+            $connection->enableForeignKeyChecks();
 
         } catch (SQLException $s) {
-            $this->generatorLog->error("SQL Exception " . $s->getMessage(),self::ERROR_SQL_EXCEPTION);
+            $this->generatorLog->error("SQL Exception " . $s->getMessage(), self::ERROR_SQL_EXCEPTION);
         }
 
     }

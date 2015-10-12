@@ -35,9 +35,7 @@ class TransformerXML
             array(
                 "dateTimeInUse" => true,
                 "hasReferences" => true,
-                "hasAttributes" => true,
-                "findByPKSignature" => '$id,$int',
-                "storedProcedureCallSignature" => "'\$id','\$int'"
+                "hasAttributes" => true
             )
         );
     }

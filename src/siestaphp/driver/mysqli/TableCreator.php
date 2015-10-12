@@ -16,6 +16,7 @@ use siestaphp\datamodel\index\IndexDatabaseSource;
 use siestaphp\datamodel\index\IndexPartDatabaseSource;
 use siestaphp\datamodel\reference\Reference;
 use siestaphp\datamodel\reference\ReferenceDatabaseSource;
+use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\DriverFactory;
 
 /**
@@ -117,7 +118,7 @@ class TableCreator
     {
         $this->entityDatabaseSource = $eds;
 
-        $this->databaseSpecific = $eds->getDatabaseSpecific(MySQLDriver::NAME);
+        $this->databaseSpecific = $eds->getDatabaseSpecific(MySQLConnection::NAME);
 
         $this->replication = $this->getDatabaseSpecificAsBool(self::REPLICATION);
 
@@ -125,7 +126,7 @@ class TableCreator
 
         $sql = $this->buildTableCreateStatement($eds->getTable());
 
-        DriverFactory::getDriver()->query($sql);
+        ConnectionFactory::getConnection()->query($sql);
 
     }
 
@@ -452,7 +453,7 @@ class TableCreator
      */
     private function quote($name)
     {
-        return MySQLDriver::quote($name);
+        return MySQLConnection::quote($name);
     }
 
 }

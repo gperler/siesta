@@ -54,9 +54,4 @@ class XMLEntity
 
     const ATTRIBUTE_REFERENCE_USE_NAME = "use";
 
-    /* primary key */
-    const ATTRIBUTE_FIND_BY_PK_SIGNATURE = "findByPKSignature";
-
-    const ATTRIBUTE_STORED_PROCEDURE_CALL_SIGNATURE = "storedProcedureCallSignature";
-
 }

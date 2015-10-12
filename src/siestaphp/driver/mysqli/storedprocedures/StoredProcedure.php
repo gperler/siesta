@@ -2,22 +2,22 @@
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
-use siestaphp\driver\Driver;
+use siestaphp\driver\Connection;
 
 /**
  * Interface StoredProcedure
  * @package siestaphp\driver\mysqli\storedprocedures
  */
-interface StoredProcedure {
+interface StoredProcedure
+{
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    public function createProcedure(Driver $driver);
-
+    public function createProcedure(Connection $connection);
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    public function dropProcedure(Driver $driver);
+    public function dropProcedure(Connection $connection);
 }

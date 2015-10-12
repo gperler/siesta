@@ -72,7 +72,7 @@ class UUIDTest extends SiestaTester
         $artist->setLabel($label);
         $artist->save(true);
 
-        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId(), $artist->getName());
+        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId());
         $this->assertNotNull($artistLoaded, "Artist could not be loaded");
         $this->assertSame($artistLoaded->getName(), $artist->getName());
 

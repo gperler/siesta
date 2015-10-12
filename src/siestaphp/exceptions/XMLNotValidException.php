@@ -8,7 +8,7 @@ use siestaphp\util\Util;
  * Class XMLNotValidException
  * @package siestaphp\exceptions
  */
-class XMLNotValidException extends \Exception
+class XMLNotValidException extends \Exception implements SiestaException
 {
 
     /**

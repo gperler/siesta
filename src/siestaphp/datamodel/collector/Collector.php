@@ -49,11 +49,33 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
      */
     public function updateModel(DataModelContainer $container)
     {
+        switch ($this->getType()) {
+            case "1n":
+                $this->updateModel1N($container);
+                break;
+            case "nm":
+                $this->updateModelNM($container);
+                break;
+        }
+    }
+
+    /**
+     * @param DataModelContainer $container
+     */
+    private function updateModel1N(DataModelContainer $container)
+    {
         $this->foreignClassEntity = $container->getEntityDetails($this->getForeignClass());
 
         if ($this->foreignClassEntity) {
             $this->reference = $this->foreignClassEntity->getReferenceByName($this->getReferenceName());
         }
+    }
+
+    /**
+     * @param DataModelContainer $container
+     */
+    private function updateModelNM(DataModelContainer $container)
+    {
 
     }
 
@@ -62,6 +84,10 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
      */
     public function validate(GeneratorLog $log)
     {
+        if ($this->getType() !== "1n") {
+            return;
+        }
+
         if (!$this->getName()) {
             $log->error("Collector without name found", self::VALIDATION_ERROR_INVALID_NAME);
         }
@@ -72,7 +98,6 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
 
         if (!$this->reference) {
             $log->error("Collector '" . $this->getName() . "' refers to unknown reference " . $this->getReferenceName(), self::VALIDATION_ERROR_INVALID_REFERENCE);
-
         }
 
     }
@@ -110,6 +135,14 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
     public function getForeignClass()
     {
         return $this->collectorSource->getForeignClass();
+    }
+
+    /**
+     * @return string
+     */
+    public function getMapperClass()
+    {
+        return $this->collectorSource->getMapperClass();
     }
 
     /**
