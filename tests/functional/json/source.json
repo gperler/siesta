@@ -8,21 +8,24 @@
       "name": "Erlend \u00d8ye",
       "dob": null,
       "label": null,
-      "label_id": 1
+      "label_id": 1,
+      "transient" : "will not be persisted 1"
     },
     {
       "id": 2,
       "name": "Tosca",
       "dob": null,
       "label": null,
-      "label_id": 1
+      "label_id": 1,
+      "transient" : "will not be persisted 2"
     },
     {
       "id": 3,
       "name": "Herbalizer",
       "dob": null,
       "label": null,
-      "label_id": 1
+      "label_id": 1,
+      "transient" : "will not be persisted 3"
     }
   ]
 }

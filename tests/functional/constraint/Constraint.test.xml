@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
     <entity name="Customer" namespace="siestaphp\tests\functional\constraint\gen" table="CUSTOMER" targetPath="gen">
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
+        <attribute name="dob" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"/>
 
-        <attributeList>
-            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
-            <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
-            <attribute name="dob" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"/>
-        </attributeList>
-
-        <referenceList>
-            <reference name="standardAddress" foreignClass="Address" onDelete="RESTRICT" onUpdate="RESTRICT"/>
-            <reference name="deliveryAddress" foreignClass="Address" onDelete="CASCADE" onUpdate="CASCADE"/>
-            <reference name="billingAddress" foreignClass="Address" onDelete="SET NULL" onUpdate="SET NULL"/>
-            <reference name="holidayAddress" foreignClass="Address" onDelete="NO ACTION" onUpdate="NO ACTION"/>
-        </referenceList>
+        <reference name="standardAddress" foreignClass="Address" onDelete="RESTRICT" onUpdate="RESTRICT"/>
+        <reference name="deliveryAddress" foreignClass="Address" onDelete="CASCADE" onUpdate="CASCADE"/>
+        <reference name="billingAddress" foreignClass="Address" onDelete="SET NULL" onUpdate="SET NULL"/>
+        <reference name="holidayAddress" foreignClass="Address" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </entity>
 
     <entity name="Address" namespace="siestaphp\tests\functional\constraint\gen" table="Address" targetPath="gen" >
-        <attributeList>
-            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
-            <attribute name="street" type="string" dbName="STREET" dbType="VARCHAR(100)"/>
-            <attribute name="city" type="string" dbName="CITY" dbType="VARCHAR(100)"/>
-        </attributeList>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="street" type="string" dbName="STREET" dbType="VARCHAR(100)"/>
+        <attribute name="city" type="string" dbName="CITY" dbType="VARCHAR(100)"/>
     </entity>
 </entityList>

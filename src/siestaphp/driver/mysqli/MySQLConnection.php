@@ -2,11 +2,9 @@
 
 namespace siestaphp\driver\mysqli;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\Connection;
 use siestaphp\driver\ConnectionData;
-use siestaphp\driver\Driver;
 use siestaphp\driver\exceptions\CannotBeNullException;
 use siestaphp\driver\exceptions\ConnectException;
 use siestaphp\driver\exceptions\ForeignKeyConstraintFailedException;
@@ -20,7 +18,7 @@ use siestaphp\driver\ResultSet;
 use siestaphp\driver\TableBuilder;
 
 /**
- * Class MySQLDriver
+ * Class MySQLConnection
  * @package siestaphp\driver\mysqli
  */
 class MySQLConnection implements Connection

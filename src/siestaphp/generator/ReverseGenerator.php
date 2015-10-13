@@ -2,9 +2,8 @@
 
 namespace siestaphp\generator;
 
-use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\driver\DriverFactory;
+use siestaphp\driver\ConnectionFactory;
 use siestaphp\xmlbuilder\XMLEntityBuilder;
 
 /**
@@ -22,9 +21,9 @@ class ReverseGenerator
      */
     public function generateXML($databaseName, $targetPath, $targetNamespace, $singleFile)
     {
-        $driver = DriverFactory::getDriver();
+        $connection = ConnectionFactory::getConnection();
 
-        $entitySourceList = $driver->getEntitySourceList($databaseName, $targetNamespace, $targetPath);
+        $entitySourceList = $connection->getEntitySourceList($databaseName, $targetNamespace, $targetPath);
         foreach ($entitySourceList as $entitySource) {
             $this->generateXMLFiles($entitySource, $targetPath);
         }

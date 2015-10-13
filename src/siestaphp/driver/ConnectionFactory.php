@@ -65,6 +65,11 @@ class ConnectionFactory
     protected $connectionList;
 
     /**
+     * @var Connection
+     */
+    protected $defaultConnection;
+
+    /**
      *
      */
     public function __construct()
@@ -79,11 +84,13 @@ class ConnectionFactory
      * @return Connection
      * @throws DatabaseConfigurationException
      */
-    private function _getConnectionByName($name = null)
+    protected function _getConnectionByName($name = null)
     {
-        $key = ($name) ? $name : $this->getFirstConnectionKey();
-        Debug::debug($key);
-        $connection = Util::getFromArray($this->connectionList, $key);
+        if ($name === null) {
+            return $this->getDefaultConnection();
+        }
+
+        $connection = Util::getFromArray($this->connectionList, $name);
         if (!$connection) {
             throw new DatabaseConfigurationException(null, "Connection with name " . $name . " is not configured");
         }
@@ -91,12 +98,15 @@ class ConnectionFactory
     }
 
     /**
-     * @return string
+     * @return Connection
+     * @throws DatabaseConfigurationException
      */
-    private function getFirstConnectionKey()
+    protected function getDefaultConnection()
     {
-        reset($this->connectionList);
-        return key($this->connectionList);
+        if (!$this->defaultConnection) {
+            throw new DatabaseConfigurationException(null, "No default connection available");
+        }
+        return $this->defaultConnection;
     }
 
     /**
@@ -106,12 +116,16 @@ class ConnectionFactory
      * @throws DatabaseConfigurationException
      * @return Connection
      */
-    private function _getConnection(ConnectionData $connectionData)
+    protected function _getConnection(ConnectionData $connectionData)
     {
         $connection = Util::getFromArray($this->connectionList, $connectionData->name);
         if (!$connection) {
             $driver = $this->_getDriver($connectionData);
-            $this->connectionList[$connectionData->name] = $driver->connect($connectionData);
+            $connection = $driver->connect($connectionData);
+            $this->connectionList[$connectionData->name] = $connection;
+            if (!$this->defaultConnection) {
+                $this->defaultConnection = $connection;
+            }
         }
         return $this->connectionList[$connectionData->name];
     }
@@ -122,7 +136,7 @@ class ConnectionFactory
      * @return Driver
      * @throws DatabaseConfigurationException
      */
-    private function _getDriver(ConnectionData $connectionData)
+    protected function _getDriver(ConnectionData $connectionData)
     {
         $driver = Util::getFromArray($this->driverList, $connectionData->database);
         if (!$driver) {
@@ -137,7 +151,7 @@ class ConnectionFactory
      * @return Driver
      * @throws DatabaseConfigurationException
      */
-    private function instantiateDriver(ConnectionData $connectionData)
+    protected function instantiateDriver(ConnectionData $connectionData)
     {
         switch ($connectionData->driver) {
             case "mysql":

@@ -5,7 +5,6 @@ namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\entity\EntityDatabaseSource;
 use siestaphp\driver\Connection;
-use siestaphp\driver\Driver;
 use siestaphp\driver\mysqli\replication\Replication;
 use siestaphp\naming\StoredProcedureNaming;
 
@@ -80,6 +79,9 @@ class UpdateStoredProcedure extends StoredProcedureBase
 
         // iterate attributes
         foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
+            if ($attribute->isTransient()) {
+                continue;
+            }
             $parameterName = $attribute->getSQLParameterName();
             $this->signature .= "IN $parameterName " . $attribute->getDatabaseType() . ",";
         }
@@ -124,6 +126,9 @@ class UpdateStoredProcedure extends StoredProcedureBase
 
         // iterate attributes next
         foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
+            if ($attribute->isTransient()) {
+                continue;
+            }
             if (!$attribute->isPrimaryKey()) {
                 $values .= $this->quote($attribute->getDatabaseName()) . " = " . $attribute->getSQLParameterName() . ",";
             }

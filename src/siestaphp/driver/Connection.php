@@ -7,7 +7,7 @@ use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\exceptions\ConnectException;
 
 /**
- * Interface Driver
+ * Interface Connection
  * @package siestaphp\driver
  */
 interface Connection

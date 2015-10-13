@@ -3,7 +3,7 @@
 namespace siestaphp\driver\mysqli\metadata;
 
 use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\driver\Driver;
+use siestaphp\driver\Connection;
 
 /**
  * Class DatabaseMetaData
@@ -15,16 +15,16 @@ class DatabaseMetaData
     const SQL_GET_TABLE_LIST = "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA='%s';";
 
     /**
-     * @var Driver
+     * @var Connection
      */
-    protected $driver;
+    protected $connection;
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      */
-    public function __construct(Driver $driver)
+    public function __construct(Connection $connection)
     {
-        $this->driver = $driver;
+        $this->connection = $connection;
     }
 
     /**
@@ -37,20 +37,20 @@ class DatabaseMetaData
     public function getEntitySourceList($databaseName, $targetNamespace, $targetPath)
     {
 
-        $this->driver->useDatabase($databaseName);
+        $this->connection->useDatabase($databaseName);
 
         $entitySourceList = array();
         $tableDTOList = array();
 
         $sql = sprintf(self::SQL_GET_TABLE_LIST, $databaseName);
-        $resultSet = $this->driver->query($sql);
+        $resultSet = $this->connection->query($sql);
         while ($resultSet->hasNext()) {
             $tableDTOList[] = new TableDTO($resultSet);
         }
         $resultSet->close();
 
         foreach ($tableDTOList as $tableDTO) {
-            $entitySourceList[] = new TableMetadata($this->driver, $tableDTO, $targetPath, $targetNamespace);
+            $entitySourceList[] = new TableMetadata($this->connection, $tableDTO, $targetPath, $targetNamespace);
         }
 
         return $entitySourceList;

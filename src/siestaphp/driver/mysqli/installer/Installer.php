@@ -3,9 +3,7 @@
 
 namespace siestaphp\driver\mysqli\installer;
 
-use Codeception\Util\Debug;
 use siestaphp\driver\Connection;
-use siestaphp\driver\Driver;
 use siestaphp\util\File;
 
 /**

@@ -64,17 +64,17 @@ class XMLAttributeReader extends XMLAccess implements AttributeSource
     /**
      * @return bool
      */
-    public function addIndex()
+    public function isRequired()
     {
-        return $this->getAttributeAsBool(XMLAttribute::ATTRIBUTE_ADD_INDEX);
+        return $this->getAttributeAsBool(XMLAttribute::ATTRIBUTE_REQUIRED);
     }
 
     /**
      * @return bool
      */
-    public function isRequired()
+    public function isTransient()
     {
-        return $this->getAttributeAsBool(XMLAttribute::ATTRIBUTE_REQUIRED);
+        return $this->getAttributeAsBool(XMLAttribute::ATTRIBUTE_TRANSIENT);
     }
 
     /**

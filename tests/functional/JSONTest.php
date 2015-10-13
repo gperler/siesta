@@ -54,7 +54,7 @@ class JSONTest extends SiestaTester
         for ($i = 0; $i < sizeof($artistList); $i++) {
             $this->assertSame($artistList[$i]->getId(), $definitionList[$i]["id"]);
             $this->assertSame($artistList[$i]->getName(), $definitionList[$i]["name"]);
-
+            $this->assertSame($artistList[$i]->getTransient(), $definitionList[$i]["transient"]);
         }
 
     }

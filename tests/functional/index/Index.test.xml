@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
     <entity name="ArtistEntity" namespace="siestaphp\tests\functional\index\gen" table="ARTIST" targetPath="gen/">
-        <attributeList>
-            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
-            <attribute name="bool" type="bool" dbName="D_BOOLEAN" dbType="SMALLINT"/>
-            <attribute name="int" type="int" dbName="D_INTEGER" dbType="INT"/>
-            <attribute name="float" type="float" dbName="D_FLOAT" dbType="FLOAT"/>
-            <attribute name="string" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
-            <attribute name="string2" type="string" dbName="D_STRING_2" dbType="VARCHAR(100)"/>
-        </attributeList>
-        <indexList>
-            <index name="uniqueIndex" unique="true" type="btree">
-                <indexPart name="string" sortOrder="ASC" length="10"/>
-                <indexPart name="float" sortOrder="ASC" length=""/>
-            </index>
-            <index name="nonUniqueIndex" unique="false" type="hash">
-                <indexPart name="string2" sortOrder="DESC" length="20"/>
-            </index>
-        </indexList>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="bool" type="bool" dbName="D_BOOLEAN" dbType="SMALLINT"/>
+        <attribute name="int" type="int" dbName="D_INTEGER" dbType="INT"/>
+        <attribute name="float" type="float" dbName="D_FLOAT" dbType="FLOAT"/>
+        <attribute name="string" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
+        <attribute name="string2" type="string" dbName="D_STRING_2" dbType="VARCHAR(100)"/>
+
+        <index name="uniqueIndex" unique="true" type="btree">
+            <indexPart name="string" sortOrder="ASC" length="10"/>
+            <indexPart name="float" sortOrder="ASC" length=""/>
+        </index>
+
+        <index name="nonUniqueIndex" unique="false" type="hash">
+            <indexPart name="string2" sortOrder="DESC" length="20"/>
+        </index>
     </entity>
 </entityList>

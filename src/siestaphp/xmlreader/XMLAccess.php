@@ -2,8 +2,8 @@
 
 namespace siestaphp\xmlreader;
 
-use siestaphp\util\StringUtil;
 use siestaphp\datamodel\DatabaseSpecificSource;
+use siestaphp\util\StringUtil;
 
 /**
  * Class XMLContainer
@@ -37,7 +37,6 @@ class XMLAccess
     {
         $this->sourceElement = $sourceElement;
         $this->extractDatabaseSpecificData($sourceElement->nodeName);
-
     }
 
     /**
@@ -112,11 +111,8 @@ class XMLAccess
                 $databaseSpecific->setSource($childNode);
                 $databaseSpecific->setDatabase(str_replace($tagPrefix . "-", "", $childNode->tagName));
                 $this->databaseSpecific[] = $databaseSpecific;
-
             }
-
         }
-
     }
 
     /**
@@ -127,7 +123,6 @@ class XMLAccess
     public function getDatabaseSpecific($database)
     {
         foreach ($this->databaseSpecific as $databaseSpecific) {
-
             if ($databaseSpecific->getDatabase() === $database) {
                 return $databaseSpecific;
             }

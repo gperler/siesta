@@ -1,45 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
     <entity name="ArtistEntity" namespace="siestaphp\tests\functional\reverse\gen" table="ARTIST" targetPath="gen">
-        <attributeList>
-            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
-            <attribute name="bit" dbType="BIT" type="bool"/>
-            <attribute name="smallInt" dbType="SMALLINT" type="int"/>
-            <attribute name="mediumInt" dbType="MEDIUMINT" type="int"/>
-            <attribute name="int1" dbType="INT" type="int"/>
-            <attribute name="int2" dbType="INTEGER" type="int"/>
-            <attribute name="bigInt" dbType="BIGINT" type="int"/>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="bit" dbType="BIT" type="bool"/>
+        <attribute name="smallInt" dbType="SMALLINT" type="int"/>
+        <attribute name="mediumInt" dbType="MEDIUMINT" type="int"/>
+        <attribute name="int1" dbType="INT" type="int"/>
+        <attribute name="int2" dbType="INTEGER" type="int"/>
+        <attribute name="bigInt" dbType="BIGINT" type="int"/>
 
-            <attribute name="real" dbType="REAL" type="float"/>
-            <attribute name="double" dbType="DOUBLE" type="float"/>
-            <attribute name="float" dbType="FLOAT" type="float"/>
-            <attribute name="decimal" dbType="DECIMAL" type="float"/>
-            <attribute name="numeric" dbType="NUMERIC" type="float"/>
+        <attribute name="real" dbType="REAL" type="float"/>
+        <attribute name="double" dbType="DOUBLE" type="float"/>
+        <attribute name="float" dbType="FLOAT" type="float"/>
+        <attribute name="decimal" dbType="DECIMAL" type="float"/>
+        <attribute name="numeric" dbType="NUMERIC" type="float"/>
 
-            <attribute name="date" dbType="DATE" type="DateTime"/>
-            <attribute name="time" dbType="TIME" type="DateTime"/>
-            <attribute name="timestamp" dbType="TIMESTAMP" type="string"/>
-            <attribute name="datetime" dbType="DATETIME" type="DateTime"/>
-            <attribute name="year" dbType="YEAR" type="string"/>
+        <attribute name="date" dbType="DATE" type="DateTime"/>
+        <attribute name="time" dbType="TIME" type="DateTime"/>
+        <attribute name="timestamp" dbType="TIMESTAMP" type="string"/>
+        <attribute name="datetime" dbType="DATETIME" type="DateTime"/>
+        <attribute name="year" dbType="YEAR" type="string"/>
 
-            <attribute name="char" dbType="CHAR(100)" type="string"/>
-            <attribute name="varchar" dbType="VARCHAR(100)" type="string"/>
-            <attribute name="binary" dbType="BINARY(100)" type="string"/>
+        <attribute name="char" dbType="CHAR(100)" type="string"/>
+        <attribute name="varchar" dbType="VARCHAR(100)" type="string"/>
+        <attribute name="binary" dbType="BINARY(100)" type="string"/>
 
-            <attribute name="tinyblob" dbType="TINYBLOB" type="string"/>
-            <attribute name="blob" dbType="BLOB" type="string"/>
-            <attribute name="mediumblob" dbType="MEDIUMBLOB" type="string"/>
-            <attribute name="longblob" dbType="LONGBLOB" type="string"/>
+        <attribute name="tinyblob" dbType="TINYBLOB" type="string"/>
+        <attribute name="blob" dbType="BLOB" type="string"/>
+        <attribute name="mediumblob" dbType="MEDIUMBLOB" type="string"/>
+        <attribute name="longblob" dbType="LONGBLOB" type="string"/>
 
-            <attribute name="tintText" dbType="TINYTEXT" type="string"/>
-            <attribute name="text" dbType="TEXT" type="string"/>
-            <attribute name="mediumtext" dbType="MEDIUMTEXT" type="string"/>
-            <attribute name="longtext" dbType="LONGTEXT" type="string"/>
+        <attribute name="tintText" dbType="TINYTEXT" type="string"/>
+        <attribute name="text" dbType="TEXT" type="string"/>
+        <attribute name="mediumtext" dbType="MEDIUMTEXT" type="string"/>
+        <attribute name="longtext" dbType="LONGTEXT" type="string"/>
 
-            <attribute name="enum" dbType="ENUM('A','B')" type="string"/>
-            <attribute name="set" dbType="SET('X','Y')" type="string"/>
-
-        </attributeList>
+        <attribute name="enum" dbType="ENUM('A','B')" type="string"/>
+        <attribute name="set" dbType="SET('X','Y')" type="string"/>
 
     </entity>
 </entityList>

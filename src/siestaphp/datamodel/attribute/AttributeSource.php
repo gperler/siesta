@@ -48,4 +48,9 @@ interface AttributeSource
      * @return bool
      */
     public function isRequired();
+
+    /**
+     * @return bool
+     */
+    public function isTransient();
 }

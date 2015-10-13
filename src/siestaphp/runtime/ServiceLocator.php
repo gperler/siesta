@@ -2,10 +2,7 @@
 
 namespace siestaphp\runtime;
 
-use siestaphp\driver\Driver;
-use siestaphp\driver\DriverFactory;
 use siestaphp\runtime\impl\HttpRequestImpl;
-use siestaphp\runtime\impl\SequenceGeneratorImpl;
 use siestaphp\runtime\impl\UUIDGeneratorImpl;
 
 /**

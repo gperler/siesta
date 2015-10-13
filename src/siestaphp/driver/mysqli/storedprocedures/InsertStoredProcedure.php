@@ -75,6 +75,9 @@ class InsertStoredProcedure extends StoredProcedureBase
         }
 
         foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
+            if ($attribute->isTransient()) {
+                continue;
+            }
             $parameterName = $attribute->getSQLParameterName();
             $this->signature .= "IN $parameterName " . $attribute->getDatabaseType() . ",";
         }
@@ -115,6 +118,9 @@ class InsertStoredProcedure extends StoredProcedureBase
 
         // iterate attributes
         foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
+            if ($attribute->isTransient()) {
+                continue;
+            }
             $columnList .= $this->quote($attribute->getDatabaseName()) . ",";
             $valueList .= $attribute->getSQLParameterName() . ",";
         }

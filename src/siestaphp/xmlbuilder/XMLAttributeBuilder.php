@@ -53,6 +53,7 @@ class XMLAttributeBuilder extends XMLBuilder
         $this->setAttribute(XMLAttribute::ATTRIBUTE_AUTO_VALUE, $this->attributeSource->getAutoValue());
         $this->setAttributeAsBool(XMLAttribute::ATTRIBUTE_PRIMARY_KEY, $this->attributeSource->isPrimaryKey());
         $this->setAttributeAsBool(XMLAttribute::ATTRIBUTE_REQUIRED, $this->attributeSource->isRequired());
+        $this->setAttributeAsBool(XMLAttribute::ATTRIBUTE_TRANSIENT, $this->attributeSource->isTransient());
 
     }
 

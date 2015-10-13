@@ -3,7 +3,7 @@
 
 namespace siestaphp\util;
 
-use siestaphp\driver\Driver;
+use siestaphp\driver\Connection;
 use siestaphp\runtime\DateTime;
 
 /**
@@ -125,12 +125,12 @@ class Util
     }
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      * @param string $value
      *
      * @return string
      */
-    public static function quoteEscape($driver, $value)
+    public static function quoteEscape($connection, $value)
     {
         if ($value === 0 || $value === false) {
             return "'0'";
@@ -139,7 +139,7 @@ class Util
         if ($value === null) {
             return "NULL";
         }
-        return "'" . $driver->escape($value) . "'";
+        return "'" . $connection->escape($value) . "'";
     }
 
     /**

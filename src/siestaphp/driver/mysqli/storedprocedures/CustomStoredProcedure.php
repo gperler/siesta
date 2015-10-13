@@ -4,11 +4,8 @@
 namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\entity\EntityDatabaseSource;
-use siestaphp\datamodel\storedprocedure\StoredProcedureDatabaseSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\driver\Connection;
-use siestaphp\driver\Driver;
-use siestaphp\driver\mysqli\MySQLDriver;
 
 /**
  * Class CustomStoredProcedure

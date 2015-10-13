@@ -143,11 +143,14 @@ class Attribute implements Processable, AttributeSource, AttributeTransformerSou
     {
         $log->errorIfAttributeNotSet($this->name, XMLAttribute::ATTRIBUTE_NAME, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_NAME);
 
-        $log->errorIfAttributeNotSet($this->databaseType, XMLAttribute::ATTRIBUTE_DATABASE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_DATABASE_TYPE);
-
         $log->errorIfNotInList($this->phpType, self::$ALLOWED_PHP_TYPES, XMLAttribute::ATTRIBUTE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_PHP_TYPE);
 
         $log->errorIfNotInList($this->autoValue, self::$ALLOWED_AUTO_VALUE, XMLAttribute::ATTRIBUTE_AUTO_VALUE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_INVALID_AUTOVALUE);
+
+
+        if (!$this->isTransient()) {
+            $log->errorIfAttributeNotSet($this->databaseType, XMLAttribute::ATTRIBUTE_DATABASE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_DATABASE_TYPE);
+        }
 
         if ($this->isPrimaryKey() and !$this->autoValue) {
             $log->warn("Primary key '" . $this->name . "' does not have an autovalue attribute.", self::VALIDATION_ERROR_PK_WITHOUT_AUTOVALUE);
@@ -224,6 +227,14 @@ class Attribute implements Processable, AttributeSource, AttributeTransformerSou
     public function isRequired()
     {
         return $this->required;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTransient()
+    {
+        return $this->attributeSource->isTransient();
     }
 
     /**

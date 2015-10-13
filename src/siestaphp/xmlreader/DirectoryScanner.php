@@ -35,6 +35,9 @@ class DirectoryScanner
      */
     protected $entitySourceList;
 
+    /**
+     * @var string
+     */
     protected $fileSuffix;
 
     /**
@@ -92,33 +95,28 @@ class DirectoryScanner
             }
 
             if ($file->isFile()) {
-                $this->handleFile($file);
+                $this->handleEntityFile($file);
             }
         }
     }
 
-    /**
-     * @param File $file
-     */
-    private function handleFile(File $file)
-    {
-
-        if ($file->isType("entity.xml")) {
-            $this->handleEntityFile($file);
-        }
-    }
 
     /**
      * @param File $file
      */
     private function handleEntityFile(File $file)
     {
+        if (!$file->isType($this->fileSuffix)) {
+            return;
+        }
+
         $this->generatorLog->info("Found " . $file->getAbsoluteFileName());
 
         try {
             $xmlReader = new XMLReader($file);
             $this->entitySourceList = array_merge($this->entitySourceList, $xmlReader->getEntitySourceList());
         } catch (XMLNotValidException $e) {
+
             $this->generatorLog->error("Parsing file " . $e->getFileName(), self::VALIDATION_ERROR_INVALID_XML);
             foreach ($e->getErrorList() as $error) {
                 $this->generatorLog->error($error, self::VALIDATION_ERROR_INVALID_XML);

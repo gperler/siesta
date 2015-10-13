@@ -2,35 +2,23 @@
 <entityList>
 
     <entity name="Artist" namespace="siestaphp\tests\functional\foreignkeyisprimary\gen" table="ARTIST" targetPath="gen/">
-        <attributeList>
-            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
-            <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
-        </attributeList>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
 
-        <collectorList>
-            <collector name="artistSong" type="1n" foreignClass="ArtistSong" referenceName="artist"/>
-        </collectorList>
+        <collector name="artistSong" type="1n" foreignClass="ArtistSong" referenceName="artist"/>
     </entity>
 
     <entity name="ArtistSong" namespace="siestaphp\tests\functional\foreignkeyisprimary\gen" table="ArtistSong" targetPath="gen/">
-        <attributeList>
-            <attribute name="sequence" type="int" dbName="sequence" dbType="INT"/>
-        </attributeList>
+        <attribute name="sequence" type="int" dbName="sequence" dbType="INT"/>
 
-        <referenceList>
-            <reference name="artist" foreignClass="Artist" required="false" primaryKey="true"/>
-            <reference name="album" foreignClass="Album" required="false" primaryKey="true"/>
-        </referenceList>
+        <reference name="artist" foreignClass="Artist" required="false" primaryKey="true"/>
+        <reference name="album" foreignClass="Album" required="false" primaryKey="true"/>
     </entity>
 
     <entity name="Album" namespace="siestaphp\tests\functional\foreignkeyisprimary\gen" table="Album" targetPath="gen">
-        <attributeList>
-            <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
-            <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>
-        </attributeList>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>
 
-        <collectorList>
-            <collector name="artistSong" type="1n" foreignClass="ArtistSong" referenceName="album"/>
-        </collectorList>
+        <collector name="artistSong" type="1n" foreignClass="ArtistSong" referenceName="album"/>
     </entity>
 </entityList>

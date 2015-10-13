@@ -8,8 +8,7 @@ use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
-use siestaphp\driver\Driver;
-use siestaphp\driver\mysqli\MySQLDriver;
+use siestaphp\driver\Connection;
 
 /**
  * Class TableMetadata
@@ -46,9 +45,9 @@ class TableMetadata implements EntitySource
     protected $targetNamespace;
 
     /**
-     * @var MySQLDriver
+     * @var Connection
      */
-    protected $driver;
+    protected $connection;
 
     /**
      * @var AttributeMetaData[]
@@ -66,18 +65,18 @@ class TableMetadata implements EntitySource
     protected $indexMetaList;
 
     /**
-     * @param Driver $driver
+     * @param Connection $connection
      * @param TableDTO $tableDTO
      * @param string $targetPath
      * @param string $targetNamespace
      */
-    public function __construct(Driver $driver, TableDTO $tableDTO, $targetPath, $targetNamespace)
+    public function __construct(Connection $connection, TableDTO $tableDTO, $targetPath, $targetNamespace)
     {
         $this->tableName = $tableDTO->name;
         $this->targetPath = $targetPath;
         $this->targetNamespace = $targetNamespace;
 
-        $this->driver = $driver;
+        $this->connection = $connection;
 
         $this->attributeMetaDataList = array();
         $this->referenceMetaDataList = array();
@@ -96,9 +95,9 @@ class TableMetadata implements EntitySource
     protected function extractColumns()
     {
 
-        $sql = sprintf(self::SP_GET_COLUMN_DETAILS, $this->driver->getDatabase(), $this->tableName);
+        $sql = sprintf(self::SP_GET_COLUMN_DETAILS, $this->connection->getDatabase(), $this->tableName);
 
-        $resultSet = $this->driver->executeStoredProcedure($sql);
+        $resultSet = $this->connection->executeStoredProcedure($sql);
 
         while ($resultSet->hasNext()) {
             $columnName = $resultSet->getStringValue(AttributeMetaData::COLUMN_NAME);
@@ -118,9 +117,9 @@ class TableMetadata implements EntitySource
      */
     protected function extractReferenceData()
     {
-        $sql = sprintf(self::SQL_GET_KEY_COLUMN_USAGE, $this->driver->getDatabase(), $this->tableName);
+        $sql = sprintf(self::SQL_GET_KEY_COLUMN_USAGE, $this->connection->getDatabase(), $this->tableName);
 
-        $resultSet = $this->driver->query($sql);
+        $resultSet = $this->connection->query($sql);
 
         while ($resultSet->hasNext()) {
 
@@ -143,8 +142,8 @@ class TableMetadata implements EntitySource
         $resultSet->close();
 
 
-        $sql = sprintf(self::SQL_GET_REFERENTIAL_CONSTRAINTS, $this->driver->getDatabase(), $this->tableName);
-        $resultSet = $this->driver->query($sql);
+        $sql = sprintf(self::SQL_GET_REFERENTIAL_CONSTRAINTS, $this->connection->getDatabase(), $this->tableName);
+        $resultSet = $this->connection->query($sql);
 
         while ($resultSet->hasNext()) {
             $constraintName = ReferenceMetaData::getConstraintNameFromResultSet($resultSet);
@@ -194,9 +193,9 @@ class TableMetadata implements EntitySource
 
     protected function extractIndexData()
     {
-        $sql = sprintf(self::SQL_GET_INDEX_LIST, $this->driver->getDatabase(), $this->tableName);
+        $sql = sprintf(self::SQL_GET_INDEX_LIST, $this->connection->getDatabase(), $this->tableName);
 
-        $resultSet = $this->driver->query($sql);
+        $resultSet = $this->connection->query($sql);
         while ($resultSet->hasNext()) {
             if (!IndexMetaData::isValidIndex($resultSet)) {
                 continue;

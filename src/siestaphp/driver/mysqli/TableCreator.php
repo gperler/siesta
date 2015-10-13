@@ -17,7 +17,6 @@ use siestaphp\datamodel\index\IndexPartDatabaseSource;
 use siestaphp\datamodel\reference\Reference;
 use siestaphp\datamodel\reference\ReferenceDatabaseSource;
 use siestaphp\driver\ConnectionFactory;
-use siestaphp\driver\DriverFactory;
 
 /**
  * Class TableCreator
@@ -163,7 +162,9 @@ class TableCreator
     {
         $sql = "";
         foreach ($this->entityDatabaseSource->getAttributeSourceList() as $attribute) {
-            $sql .= $this->buildAttributeColumnSQL($attribute) . ",";
+            if (!$attribute->isTransient()) {
+                $sql .= $this->buildAttributeColumnSQL($attribute) . ",";
+            }
         }
         foreach ($this->entityDatabaseSource->getReferenceSourceList() as $reference) {
             $sql .= $this->buildReferenceColumnSQL($reference) . ",";

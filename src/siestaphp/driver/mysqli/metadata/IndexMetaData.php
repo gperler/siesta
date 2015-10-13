@@ -4,7 +4,6 @@ namespace siestaphp\driver\mysqli\metadata;
 
 use siestaphp\datamodel\index\IndexPartSource;
 use siestaphp\datamodel\index\IndexSource;
-use siestaphp\driver\Driver;
 use siestaphp\driver\ResultSet;
 
 /**

@@ -19,6 +19,8 @@ class XMLAttribute
 
     const ATTRIBUTE_DATABASE_TYPE = "dbType";
 
+    const ATTRIBUTE_TRANSIENT = "transient";
+
     const ATTRIBUTE_DATABASE_LENGTH = "length";
 
     const ATTRIBUTE_UNIQUE = "unique";

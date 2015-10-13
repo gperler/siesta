@@ -4,8 +4,6 @@ namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\entity\EntityDatabaseSource;
 use siestaphp\driver\Connection;
-use siestaphp\driver\Driver;
-
 use siestaphp\naming\StoredProcedureNaming;
 
 /**
