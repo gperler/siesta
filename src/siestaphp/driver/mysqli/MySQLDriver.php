@@ -19,6 +19,17 @@ use siestaphp\driver\exceptions\ConnectException;
  */
 class MySQLDriver implements Driver
 {
+    const MYSQL_QUOTE = "`";
+
+    /**
+     * @param $name
+     *
+     * @return string
+     */
+    public static function quote($name) {
+        return self::MYSQL_QUOTE . $name . self::MYSQL_QUOTE;
+    }
+
     /**
      * @param ConnectionData $connectionData
      *
@@ -29,5 +40,7 @@ class MySQLDriver implements Driver
     {
         return new MySQLConnection($connectionData);
     }
+
+
 
 }

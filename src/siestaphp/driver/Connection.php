@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\driver;
 
 use siestaphp\datamodel\entity\EntitySource;
@@ -102,6 +101,10 @@ interface Connection
      *
      * @return EntitySource[]
      */
-    public function getEntitySourceList($databaseName, $targetNamespace, $targetPath);
+    public function getEntitySourceList($databaseName = null, $targetNamespace = null, $targetPath = null);
 
+    /**
+     * @return ColumnMigrator
+     */
+    public function getColumnMigrator();
 }

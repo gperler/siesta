@@ -169,6 +169,14 @@ class ReferenceMetaData implements ReferenceSource
     }
 
     /**
+     * @return string
+     */
+    public function getForeignTable()
+    {
+       return $this->foreignTable;
+    }
+
+    /**
      * @return mixed
      */
     public function isRequired()

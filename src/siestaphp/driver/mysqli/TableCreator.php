@@ -339,9 +339,9 @@ class TableCreator
 
         $constraintName = $rds->getConstraintName();
         $onDelete = $this->getReferenceOption($rds->getOnDelete());
-        $onSetNull = $this->getReferenceOption($rds->getOnUpdate());
+        $onUpdate = $this->getReferenceOption($rds->getOnUpdate());
 
-        $sql = $this->buildConstraintSnippet($constraintName, $columnNames, $rds->getReferencedTableName(), $referencedColumnNames, $onDelete, $onSetNull);
+        $sql = $this->buildConstraintSnippet($constraintName, $columnNames, $rds->getReferencedTableName(), $referencedColumnNames, $onDelete, $onUpdate);
 
         return $sql;
     }

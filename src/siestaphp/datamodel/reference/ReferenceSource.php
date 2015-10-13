@@ -23,12 +23,17 @@ interface ReferenceSource
     public function getRelationName();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getForeignClass();
 
     /**
-     * @return mixed
+     * @return string
+     */
+    public function getForeignTable();
+
+    /**
+     * @return bool
      */
     public function isRequired();
 

@@ -3,6 +3,7 @@
 namespace siestaphp\driver\mysqli;
 
 use siestaphp\datamodel\entity\EntitySource;
+use siestaphp\driver\ColumnMigrator;
 use siestaphp\driver\Connection;
 use siestaphp\driver\ConnectionData;
 use siestaphp\driver\exceptions\CannotBeNullException;
@@ -25,8 +26,6 @@ class MySQLConnection implements Connection
 {
     const NAME = "mysql";
 
-    const MYSQL_QUOTE = "`";
-
     /**
      * @param $name
      *
@@ -34,7 +33,7 @@ class MySQLConnection implements Connection
      */
     public static function quote($name)
     {
-        return self::MYSQL_QUOTE . $name . self::MYSQL_QUOTE;
+        return MySQLDriver::quote($name);
     }
 
     /**
@@ -176,9 +175,9 @@ class MySQLConnection implements Connection
     }
 
     /**
-     * @param $errorNumber
-     * @param $error
-     * @param $sql
+     * @param string $errorNumber
+     * @param int $error
+     * @param string $sql
      *
      * @throws CannotBeNullException
      * @throws ForeignKeyConstraintFailedException
@@ -191,17 +190,17 @@ class MySQLConnection implements Connection
     {
         switch ($errorNumber) {
             case 1048:
-                throw new CannotBeNullException($error, $errorNumber);
+                throw new CannotBeNullException($error, $errorNumber, $sql);
             case 1050:
-                throw new TableAlreadyExistsException($error, $errorNumber);
+                throw new TableAlreadyExistsException($error, $errorNumber, $sql);
             case 1062:
-                throw new UniqueConstraintViolationException($error, $errorNumber);
+                throw new UniqueConstraintViolationException($error, $errorNumber, $sql);
             case 1146:
-                throw new TableDoesNotExistException($error, $errorNumber);
+                throw new TableDoesNotExistException($error, $errorNumber, $sql);
             case 1451:
-                throw new ForeignKeyConstraintFailedException($error, $errorNumber);
+                throw new ForeignKeyConstraintFailedException($error, $errorNumber, $sql);
             default:
-                throw new SQLException($error, $errorNumber);
+                throw new SQLException($error, $errorNumber, $sql);
         }
     }
 
@@ -285,11 +284,18 @@ class MySQLConnection implements Connection
      *
      * @return EntitySource[]
      */
-    public function getEntitySourceList($databaseName, $targetNamespace, $targetPath)
+    public function getEntitySourceList($databaseName = null, $targetNamespace = null, $targetPath = null)
     {
+        $databaseName = ($databaseName) ? $databaseName : $this->getDatabase();
         $databaseMetaData = new DatabaseMetaData($this);
         return $databaseMetaData->getEntitySourceList($databaseName, $targetNamespace, $targetPath);
     }
 
+    /**
+     * @return ColumnMigrator
+     */
+    public function getColumnMigrator() {
+        return new MysqlColumnMigrator();
+    }
 }
 

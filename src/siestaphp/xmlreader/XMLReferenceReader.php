@@ -46,6 +46,14 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
     }
 
     /**
+     * @return string
+     */
+    public function getForeignTable()
+    {
+        return null;
+    }
+
+    /**
      * @return mixed
      */
     public function getForeignAttribute()

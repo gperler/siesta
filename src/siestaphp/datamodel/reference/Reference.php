@@ -313,6 +313,17 @@ class Reference implements Processable, ReferenceSource, ReferenceTransformerSou
     /**
      * @return string
      */
+    public function getForeignTable()
+    {
+        if ($this->referencedEntity) {
+            return $this->referencedEntity->getTable();
+        }
+        return null;
+    }
+
+    /**
+     * @return string
+     */
     public function getForeignMethodName()
     {
         return $this->foreignMethodName;
