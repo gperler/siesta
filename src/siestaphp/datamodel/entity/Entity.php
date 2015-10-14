@@ -2,27 +2,24 @@
 
 namespace siestaphp\datamodel\entity;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\attribute\Attribute;
-use siestaphp\datamodel\attribute\AttributeDatabaseSource;
+use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\attribute\AttributeSource;
-use siestaphp\datamodel\attribute\AttributeTransformerSource;
 use siestaphp\datamodel\collector\Collector;
 use siestaphp\datamodel\collector\CollectorSource;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\index\Index;
-use siestaphp\datamodel\index\IndexDatabaseSource;
+use siestaphp\datamodel\index\IndexGeneratorSource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\Processable;
 use siestaphp\datamodel\reference\Reference;
-use siestaphp\datamodel\reference\ReferenceDatabaseSource;
+use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedure;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\generator\GeneratorLog;
-use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLEntity;
 use siestaphp\util\File;
 
@@ -30,7 +27,7 @@ use siestaphp\util\File;
  * Class Entity
  * @package siestaphp\datamodel
  */
-class Entity implements Processable, EntitySource, EntityTransformerSource, EntityDatabaseSource
+class Entity implements Processable, EntitySource, EntityGeneratorSource
 {
 
     const VALIDATION_ERROR_NO_CLASSNAME = 100;
@@ -46,7 +43,7 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
     const VALIDATION_ERROR_NO_PRIMARY_KEY = 110;
 
     /**
-     * @var EntityDatabaseSource
+     * @var EntitySource
      */
     protected $entitySource;
 
@@ -343,7 +340,7 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
         }
         foreach($this->referenceList as $reference) {
             if ($reference->isPrimaryKey()) {
-                $resultList = array_merge($resultList, $reference->getReferenceColumnList());
+                $resultList = array_merge($resultList, $reference->getReferencedColumnList());
             }
         }
         return $resultList;
@@ -372,7 +369,7 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
     }
 
     /**
-     * @return AttributeTransformerSource[]
+     * @return AttributeSource[]
      */
     public function getAttributeSourceList()
     {
@@ -380,9 +377,9 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
     }
 
     /**
-     * @return AttributeDatabaseSource[]
+     * @return AttributeGeneratorSource[]
      */
-    public function getAttributeDatabaseSourceList()
+    public function getAttributeGeneratorSourceList()
     {
         return $this->attributeList;
     }
@@ -429,9 +426,9 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
     }
 
     /**
-     * @return ReferenceDatabaseSource[]
+     * @return ReferenceGeneratorSource[]
      */
-    public function getReferenceDatabaseSourceList()
+    public function getReferenceGeneratorSourceList()
     {
         return $this->referenceList;
     }
@@ -461,7 +458,7 @@ class Entity implements Processable, EntitySource, EntityTransformerSource, Enti
     }
 
     /**
-     * @return IndexDatabaseSource[]
+     * @return IndexGeneratorSource[]
      */
     public function getIndexDatabaseSourceList()
     {

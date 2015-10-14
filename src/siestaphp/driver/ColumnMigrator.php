@@ -9,11 +9,10 @@
 namespace siestaphp\driver;
 
 use siestaphp\datamodel\attribute\AttributeSource;
-use siestaphp\datamodel\attribute\AttributeTransformerSource;
+use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\datamodel\index\IndexSource;
+use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
-use siestaphp\datamodel\reference\ReferenceTransformerSource;
 
 /**
  * Interface ColumnMigrator
@@ -32,27 +31,42 @@ interface ColumnMigrator
     public function getDropTableStatement(EntitySource $entitySource);
 
     /**
-     * @param ReferenceSource $asIs
-     * @param ReferenceTransformerSource $toBe
+     * @param string $columnName
      *
-     * @return string[]
+     * @return string
      */
-    public function getReferenceAlterStatement(ReferenceSource $asIs, ReferenceTransformerSource $toBe);
+    public function createDropColumnStatement($columnName);
 
     /**
-     * @param AttributeSource $asIs
-     * @param AttributeTransformerSource $toBe
+     * @param DatabaseColumn $column
      *
-     * @return string[]
+     * @return string
      */
-    public function getAttributeAlterStatement(AttributeSource $asIs, AttributeTransformerSource $toBe);
+    public function createAddColumnStatement(DatabaseColumn $column);
 
     /**
-     * @param IndexSource $asIs
-     * @param IndexSource $toBe
+     * @param DatabaseColumn $column
      *
-     * @return string[]
+     * @return string
      */
-    public function getIndexAlterStatement(IndexSource $asIs, IndexSource $toBe);
+    public function createModifiyColumnStatement(DatabaseColumn $column);
+
+    /**
+     * @param ReferenceGeneratorSource $reference
+     *
+     * @return string
+     */
+    public function createAddForeignKeyStatement(ReferenceGeneratorSource $reference);
+
+    /**
+     * @param ReferenceSource $reference
+     *
+     * @return string
+     */
+    public function createDropForeignKeyStatemtn(ReferenceSource $reference);
+
+    public function createAddIndexStatement();
+
+    public function createDropIndexStatement();
 
 }

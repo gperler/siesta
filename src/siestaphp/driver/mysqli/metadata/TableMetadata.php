@@ -4,6 +4,7 @@ namespace siestaphp\driver\mysqli\metadata;
 
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\CollectorSource;
+use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\ReferenceSource;
@@ -319,6 +320,16 @@ class TableMetadata implements EntitySource
     public function getTargetPath()
     {
         return "sql/gen";
+    }
+
+    /**
+     * @param string $database
+     *
+     * @return DatabaseSpecificSource
+     */
+    public function getDatabaseSpecific($database)
+    {
+        return null;
     }
 
 }

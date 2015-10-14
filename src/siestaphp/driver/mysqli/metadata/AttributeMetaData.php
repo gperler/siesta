@@ -40,7 +40,7 @@ class AttributeMetaData implements AttributeSource
     public function __construct(ResultSet $resultSet)
     {
         $this->name = $resultSet->getStringValue(self::COLUMN_NAME);
-        $this->type = $resultSet->getStringValue(self::COLUMN_TYPE);
+        $this->type = strtolower($resultSet->getStringValue(self::COLUMN_TYPE));
         $this->isPrimaryKey = $resultSet->getStringValue(self::COLUMN_KEY) === self::COLUMN_KEY_PRIMARY_KEY;
         $this->default = $resultSet->getStringValue(self::COLUMN_DEFAULT);
         $this->isNullAble = $resultSet->getStringValue(self::COLUMN_IS_NULLABLE) === self::COLUMN_IS_NULLABLE_YES;
@@ -108,7 +108,24 @@ class AttributeMetaData implements AttributeSource
      */
     public function getDatabaseType()
     {
-        return $this->type;
+        switch($this->type)  {
+            case "bit(1)":
+                return "bit";
+            case "smallint(6)":
+                return "smallint";
+            case "mediumint(9)":
+                return "mediumint";
+            case "int(11)":
+                return "int";
+            case "bigint(20)":
+                return "bigint";
+            case "decimal(10,0)":
+                return "decimal";
+            case "year(4)":
+                return "year";
+            default:
+                return $this->type;
+        }
     }
 
     /**
@@ -133,6 +150,14 @@ class AttributeMetaData implements AttributeSource
     public function isRequired()
     {
         return !$this->isNullAble;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTransient()
+    {
+        return false;
     }
 
 }

@@ -6,7 +6,7 @@
         <attribute name="smallInt" dbType="SMALLINT" type="int"/>
         <attribute name="mediumInt" dbType="MEDIUMINT" type="int"/>
         <attribute name="int1" dbType="INT" type="int"/>
-        <attribute name="int2" dbType="INTEGER" type="int"/>
+        <attribute name="int2" dbType="INT(5)" type="int"/>
         <attribute name="bigInt" dbType="BIGINT" type="int"/>
 
         <attribute name="real" dbType="REAL" type="float"/>

@@ -4,7 +4,7 @@ namespace siestaphp\datamodel;
 
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\generator\GeneratorLog;
 
 /**
@@ -56,8 +56,7 @@ class DataModelContainer
         $entityClassName = $source->getClassName();
 
         if (!$entityClassName) {
-
-            echo "Found Entity without name in file(s) " . PHP_EOL;
+            $this->generatorLog->warn("Found Entity without name in file(s) ", 0);
             return;
         }
 
@@ -101,7 +100,7 @@ class DataModelContainer
     }
 
     /**
-     * @return EntityTransformerSource[]
+     * @return EntityGeneratorSource[]
      */
     public function getEntityList()
     {

@@ -2,11 +2,13 @@
 
 namespace siestaphp\datamodel\attribute;
 
+use siestaphp\datamodel\DatabaseColumn;
+
 /**
  * Interface AttributeSource
  * @package siestaphp\datamodel
  */
-interface AttributeSource
+interface AttributeSource extends DatabaseColumn
 {
 
     /**

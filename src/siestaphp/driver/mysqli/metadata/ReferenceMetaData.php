@@ -3,6 +3,7 @@
 namespace siestaphp\driver\mysqli\metadata;
 
 use siestaphp\datamodel\reference\MappingSource;
+use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\driver\ResultSet;
 
@@ -90,6 +91,13 @@ class ReferenceMetaData implements ReferenceSource
     {
         $this->isNullAble = $resultSet->getStringValue(AttributeMetaData::COLUMN_IS_NULLABLE) === AttributeMetaData::COLUMN_IS_NULLABLE_YES;
         $this->isPrimaryKey = $resultSet->getStringValue(AttributeMetaData::COLUMN_KEY) === AttributeMetaData::COLUMN_KEY_PRIMARY_KEY;
+
+        $columName = $resultSet->getStringValue(AttributeMetaData::COLUMN_NAME);
+        $mapping = $this->getMappingByColumnName($columName);
+        if ($mapping) {
+            $mapping->setDatabaseType($resultSet->getStringValue(AttributeMetaData::DATA_TYPE));
+        }
+
     }
 
     /**
@@ -98,6 +106,28 @@ class ReferenceMetaData implements ReferenceSource
     public function updateFromConstraint(ResultSet $resultSet)
     {
         $this->mappingList[] = new ReferenceMappingMetaData($resultSet->getStringValue(self::COLUMN_NAME), $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME));
+    }
+
+    /**
+     * @param string $columnName
+     *
+     * @return ReferenceMappingMetaData
+     */
+    private function getMappingByColumnName($columnName) {
+        foreach ($this->mappingList as $mapping) {
+            if ($mapping->getName() === $columnName) {
+                return $mapping;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return ReferencedColumnSource[]
+     */
+    public function getReferencedColumnList()
+    {
+
     }
 
     /**
@@ -207,5 +237,7 @@ class ReferenceMetaData implements ReferenceSource
     {
         return $this->isPrimaryKey;
     }
+
+
 
 }

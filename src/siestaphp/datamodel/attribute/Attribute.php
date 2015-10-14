@@ -12,7 +12,7 @@ use siestaphp\naming\XMLAttribute;
  * Class Attribute represents th attribute of an entity
  * @package siestaphp\datamodel
  */
-class Attribute implements Processable, AttributeSource, AttributeTransformerSource, AttributeDatabaseSource, DatabaseColumn
+class Attribute implements Processable, AttributeSource, AttributeGeneratorSource
 {
     private static $ALLOWED_PHP_TYPES = array("bool", "int", "float", "string", "DateTime");
 

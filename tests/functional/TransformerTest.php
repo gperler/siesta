@@ -2,13 +2,13 @@
 
 namespace siestaphp\tests\functional;
 
-use siestaphp\datamodel\attribute\AttributeTransformerSource;
+use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\collector\CollectorTransformerSource;
 use siestaphp\datamodel\DataModelContainer;
-use siestaphp\datamodel\index\IndexDatabaseSource;
-use siestaphp\datamodel\index\IndexPartDatabaseSource;
+use siestaphp\datamodel\index\IndexGeneratorSource;
+use siestaphp\datamodel\index\IndexPartGeneratorSource;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
-use siestaphp\datamodel\reference\ReferenceTransformerSource;
+use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\storedprocedure\SPParameterSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\tests\functional\transformer\TransformerXML;
@@ -79,10 +79,11 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * tests an attribute
+
      *
-     * @param AttributeTransformerSource $ats
+*@param AttributeGeneratorSource $ats
      */
-    private function testAttribute(AttributeTransformerSource $ats)
+    private function testAttribute(AttributeGeneratorSource $ats)
     {
         // get name
         $attributeName = $ats->getName();
@@ -117,10 +118,11 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * checks a reference
+
      *
-     * @param ReferenceTransformerSource $referenceSource
+*@param ReferenceGeneratorSource $referenceSource
      */
-    private function testReference(ReferenceTransformerSource $referenceSource)
+    private function testReference(ReferenceGeneratorSource $referenceSource)
     {
 
         // get name
@@ -145,7 +147,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($referenceSource->isPrimaryKey(), $definition["primaryKey"], "Reference $referenceName primaryKey is not correct");
 
         // iterate referenced columns
-        foreach ($referenceSource->getReferenceColumnList() as $column) {
+        foreach ($referenceSource->getReferencedColumnList() as $column) {
             $this->testReferencedColunm($column, $definition["columnList"]);
         }
     }
@@ -216,9 +218,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param IndexDatabaseSource $index
+     * @param IndexGeneratorSource $index
      */
-    private function testIndex(IndexDatabaseSource $index)
+    private function testIndex(IndexGeneratorSource $index)
     {
         $indexName = $index->getName();
 
@@ -229,8 +231,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($index->isUnique(), $definition["unique"]);
         $this->assertSame($index->getType(), $definition["type"]);
 
-        $this->assertSame(sizeof($index->getIndexDatabaseSourceList()), 2, " not to indexParts found");
-        foreach ($index->getIndexDatabaseSourceList() as $indexPartSource) {
+        $this->assertSame(sizeof($index->getIndexPartGeneratorSourceList()), 2, " not to indexParts found");
+        foreach ($index->getIndexPartGeneratorSourceList() as $indexPartSource) {
             $this->testIndexPart($indexName, $indexPartSource);
         }
 
@@ -238,9 +240,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $indexName
-     * @param IndexPartDatabaseSource $indexPart
+     * @param IndexPartGeneratorSource $indexPart
      */
-    private function testIndexPart($indexName, IndexPartDatabaseSource $indexPart)
+    private function testIndexPart($indexName, IndexPartGeneratorSource $indexPart)
     {
         $indexPartName = $indexPart->getName();
 

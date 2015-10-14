@@ -14,7 +14,7 @@ use siestaphp\naming\XMLIndexPart;
  * Class IndexPart
  * @package siestaphp\datamodel\index
  */
-class IndexPart implements Processable, IndexPartSource, IndexPartDatabaseSource
+class IndexPart implements Processable, IndexPartSource, IndexPartGeneratorSource
 {
 
     const VALIDATION_ERROR_INVALID_NAME = 500;
@@ -118,7 +118,7 @@ class IndexPart implements Processable, IndexPartSource, IndexPartDatabaseSource
         }
 
         // a reference might have several referenced columns
-        $referencedColumns = $reference->getReferenceColumnList();
+        $referencedColumns = $reference->getReferencedColumnList();
         if (!$referencedColumns) {
             return;
         }

@@ -5,8 +5,9 @@ namespace siestaphp\driver\mysqli\storedprocedures;
 
 
 
-use siestaphp\datamodel\entity\EntityDatabaseSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceDatabaseSource;
+use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\driver\Connection;
 
 /**
@@ -19,11 +20,11 @@ class SelectReferenceStoredProcedure extends StoredProcedureBase
     protected $referenceSource;
 
     /**
-     * @param EntityDatabaseSource $eds
-     * @param ReferenceDatabaseSource $referenceSource
+     * @param EntityGeneratorSource $eds
+     * @param ReferenceGeneratorSource $referenceSource
      * @param bool $replication
      */
-    public function __construct(EntityDatabaseSource $eds, ReferenceDatabaseSource $referenceSource, $replication)
+    public function __construct(EntityGeneratorSource $eds, ReferenceGeneratorSource $referenceSource, $replication)
     {
         parent::__construct($eds, $replication);
         $this->referenceSource = $referenceSource;
@@ -77,7 +78,7 @@ class SelectReferenceStoredProcedure extends StoredProcedureBase
     {
         $this->signature = "(";
 
-        foreach ($this->referenceSource->getReferenceColumnList() as $column) {
+        foreach ($this->referenceSource->getReferencedColumnList() as $column) {
             $this->signature .= "IN " . $column->getSQLParameterName() . " " . $column->getDatabaseType() . ",";
         }
 
@@ -89,7 +90,7 @@ class SelectReferenceStoredProcedure extends StoredProcedureBase
     protected function buildStatement()
     {
         $where = "";
-        foreach ($this->referenceSource->getReferenceColumnList() as $column) {
+        foreach ($this->referenceSource->getReferencedColumnList() as $column) {
             $where .= $column->getDatabaseName() . " = " . $column->getSQLParameterName() . " AND ";
         }
 

@@ -8,14 +8,14 @@
 
 namespace siestaphp\driver\mysqli;
 
-use Codeception\Util\Debug;
-use siestaphp\datamodel\attribute\AttributeDatabaseSource;
+use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
-use siestaphp\datamodel\entity\EntityDatabaseSource;
-use siestaphp\datamodel\index\IndexDatabaseSource;
-use siestaphp\datamodel\index\IndexPartDatabaseSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
+use siestaphp\datamodel\index\IndexGeneratorSource;
+use siestaphp\datamodel\index\IndexPartGeneratorSource;
 use siestaphp\datamodel\reference\Reference;
 use siestaphp\datamodel\reference\ReferenceDatabaseSource;
+use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\driver\ConnectionFactory;
 
 /**
@@ -94,7 +94,7 @@ class TableCreator
     }
 
     /**
-     * @var EntityDatabaseSource
+     * @var EntityGeneratorSource
      */
     protected $entityDatabaseSource;
 
@@ -111,9 +111,9 @@ class TableCreator
     protected $tableName;
 
     /**
-     * @param EntityDatabaseSource $eds
+     * @param EntityGeneratorSource $eds
      */
-    public function setupTable(EntityDatabaseSource $eds)
+    public function setupTable(EntityGeneratorSource $eds)
     {
         $this->entityDatabaseSource = $eds;
 
@@ -173,25 +173,26 @@ class TableCreator
     }
 
     /**
-     * @param AttributeDatabaseSource $attribute
+     * @param AttributeGeneratorSource $attribute
+
      *
-     * @return string
+*@return string
      */
-    private function buildAttributeColumnSQL(AttributeDatabaseSource $attribute)
+    private function buildAttributeColumnSQL(AttributeGeneratorSource $attribute)
     {
         return $this->buildColumnSQLSnippet($attribute->getDatabaseName(), $attribute->getDatabaseType(), $attribute->isRequired());
     }
 
     /**
-     * @param ReferenceDatabaseSource $reference
+     * @param ReferenceGeneratorSource $reference
      *
      * @return string
      */
-    private function buildReferenceColumnSQL(ReferenceDatabaseSource $reference)
+    private function buildReferenceColumnSQL(ReferenceGeneratorSource $reference)
     {
         $referenceSQL = "";
 
-        $columnList = $reference->getReferenceColumnList();
+        $columnList = $reference->getReferencedColumnList();
 
         foreach ($columnList as $column) {
             $referenceSQL .= $this->buildColumnSQLSnippet($column->getDatabaseName(), $column->getDatabaseType(), $reference->isRequired()) . ",";
@@ -254,11 +255,12 @@ class TableCreator
     }
 
     /**
-     * @param IndexDatabaseSource $indexSource
+     * @param IndexGeneratorSource $indexSource
+
      *
-     * @return string
+*@return string
      */
-    private function buildIndex(IndexDatabaseSource $indexSource)
+    private function buildIndex(IndexGeneratorSource $indexSource)
     {
         // check if unique index or index
         $sql = $indexSource->isUnique() ? " UNIQUE INDEX " : " INDEX ";
@@ -284,11 +286,12 @@ class TableCreator
     }
 
     /**
-     * @param IndexPartDatabaseSource $indexPartSource
+     * @param IndexPartGeneratorSource $indexPartSource
+
      *
-     * @return string
+*@return string
      */
-    private function buildIndexPart(IndexPartDatabaseSource $indexPartSource)
+    private function buildIndexPart(IndexPartGeneratorSource $indexPartSource)
     {
         $sql = "";
         foreach ($indexPartSource->getIndexColumnList() as $column) {
@@ -309,24 +312,24 @@ class TableCreator
     private function buildAllForeignKeyConstraint()
     {
         $sql = "";
-        foreach ($this->entityDatabaseSource->getReferenceSourceList() as $reference) {
+        foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
             $sql .= $this->buildForeignKeyConstraintSQL($reference);
         }
         return $sql;
     }
 
     /**
-     * @param ReferenceDatabaseSource $rds
+     * @param ReferenceGeneratorSource $rds
      *
      * @return string
      */
-    private function buildForeignKeyConstraintSQL(ReferenceDatabaseSource $rds)
+    private function buildForeignKeyConstraintSQL(ReferenceGeneratorSource $rds)
     {
 
         $columnNames = "";
         $referencedColumnNames = "";
 
-        $columnList = $rds->getReferenceColumnList();
+        $columnList = $rds->getReferencedColumnList();
         foreach ($columnList as $column) {
             $columnNames .= $this->quote($column->getDatabaseName()) . ",";
             $referencedColumnNames .= $this->quote($column->getReferencedDatabaseName()) . ",";

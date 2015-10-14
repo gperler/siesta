@@ -3,7 +3,7 @@
 namespace siestaphp\driver\mysqli\storedprocedures;
 
 
-use siestaphp\datamodel\entity\EntityDatabaseSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\Connection;
 use siestaphp\driver\mysqli\replication\Replication;
 use siestaphp\naming\StoredProcedureNaming;
@@ -17,10 +17,10 @@ class UpdateStoredProcedure extends StoredProcedureBase
 
 
     /**
-     * @param EntityDatabaseSource $eds
+     * @param EntityGeneratorSource $eds
      * @param $replication
      */
-    public function __construct(EntityDatabaseSource $eds, $replication)
+    public function __construct(EntityGeneratorSource $eds, $replication)
     {
         parent::__construct($eds, $replication);
     }
@@ -70,15 +70,15 @@ class UpdateStoredProcedure extends StoredProcedureBase
         $this->signature = "(";
 
         // iterate references and their columns
-        foreach ($this->entityDatabaseSource->getReferenceDatabaseSourceList() as $reference) {
-            foreach ($reference->getReferenceColumnList() as $column) {
+        foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
+            foreach ($reference->getReferencedColumnList() as $column) {
                 $parameterName = $column->getSQLParameterName();
                 $this->signature .= "IN $parameterName " . $column->getDatabaseType() . ",";
             }
         }
 
         // iterate attributes
-        foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
+        foreach ($this->entityDatabaseSource->getAttributeGeneratorSourceList() as $attribute) {
             if ($attribute->isTransient()) {
                 continue;
             }
@@ -118,14 +118,14 @@ class UpdateStoredProcedure extends StoredProcedureBase
 
 
         // iterate references first
-        foreach ($this->entityDatabaseSource->getReferenceDatabaseSourceList() as $reference) {
-            foreach ($reference->getReferenceColumnList() as $referencedColumn) {
+        foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
+            foreach ($reference->getReferencedColumnList() as $referencedColumn) {
                 $values .= $this->quote($referencedColumn->getDatabaseName()) . " = " . $referencedColumn->getSQLParameterName() . ",";
             }
         }
 
         // iterate attributes next
-        foreach ($this->entityDatabaseSource->getAttributeDatabaseSourceList() as $attribute) {
+        foreach ($this->entityDatabaseSource->getAttributeGeneratorSourceList() as $attribute) {
             if ($attribute->isTransient()) {
                 continue;
             }

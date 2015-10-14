@@ -85,4 +85,20 @@ class XMLAttributeReader extends XMLAccess implements AttributeSource
         return $this->getAttribute(XMLAttribute::ATTRIBUTE_DEFAULT_VALUE);
     }
 
+    /**
+     * @return string
+     */
+    public function getMethodName()
+    {
+        return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSQLParameterName()
+    {
+        return null;
+    }
+
 }

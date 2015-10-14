@@ -6,10 +6,10 @@ namespace siestaphp\datamodel\index;
 use siestaphp\datamodel\DatabaseColumn;
 
 /**
- * Interface IndexPartDatabaseSource
+ * Interface IndexPartGeneratorSource
  * @package siestaphp\datamodel\index
  */
-interface IndexPartDatabaseSource extends IndexPartSource {
+interface IndexPartGeneratorSource extends IndexPartSource {
 
     /**
      * @return DatabaseColumn[]

@@ -8,6 +8,8 @@
 
 namespace siestaphp\datamodel\reference;
 
+use siestaphp\datamodel\DatabaseColumn;
+
 /**
  * Interface MappingSource
  * @package siestaphp\datamodel\reference
@@ -29,4 +31,9 @@ interface MappingSource
      * @return string
      */
     public function getForeignName();
+
+    /**
+     * @return string
+     */
+    public function getDatabaseType();
 }

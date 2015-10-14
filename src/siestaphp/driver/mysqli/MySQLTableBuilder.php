@@ -2,7 +2,7 @@
 
 namespace siestaphp\driver\mysqli;
 
-use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\mysqli\storedprocedures\CustomStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteReferenceStoredProcedure;
@@ -22,18 +22,18 @@ class MySQLTableBuilder implements TableBuilder
 {
 
     /**
-     * @param EntityTransformerSource $ets
+     * @param EntityGeneratorSource $ets
      */
-    public function setupTables(EntityTransformerSource $ets)
+    public function setupTables(EntityGeneratorSource $ets)
     {
         $tableBuilder = new TableCreator();
         $tableBuilder->setupTable($ets);
     }
 
     /**
-     * @param EntityTransformerSource $ets
+     * @param EntityGeneratorSource $ets
      */
-    public function setupStoredProcedures(EntityTransformerSource $ets)
+    public function setupStoredProcedures(EntityGeneratorSource $ets)
     {
         $connection = ConnectionFactory::getConnection();
 

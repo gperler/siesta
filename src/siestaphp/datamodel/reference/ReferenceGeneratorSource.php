@@ -4,10 +4,10 @@
 namespace siestaphp\datamodel\reference;
 
 /**
- * Interface ReferenceTransformerSource
+ * Interface ReferenceGeneratorSource
  * @package siestaphp\datamodel
  */
-interface ReferenceTransformerSource extends ReferenceSource
+interface ReferenceGeneratorSource extends ReferenceSource
 {
 
     /**
@@ -28,7 +28,7 @@ interface ReferenceTransformerSource extends ReferenceSource
     /**
      * @return ReferencedColumnSource[]
      */
-    public function getReferenceColumnList();
+    public function getReferencedColumnList();
 
     /**
      * @return string
@@ -44,5 +44,11 @@ interface ReferenceTransformerSource extends ReferenceSource
      * @return bool
      */
     public function isReferenceCreatorNeeded();
+
+
+    /**
+     * @return string
+     */
+    public function getReferencedTableName();
 
 }

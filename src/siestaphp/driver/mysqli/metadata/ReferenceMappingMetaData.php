@@ -14,6 +14,8 @@ class ReferenceMappingMetaData implements MappingSource
     protected $name;
     protected $foreignName;
 
+    protected $databaseType;
+
     /**
      * @param string $name
      * @param string $foreignName
@@ -48,4 +50,18 @@ class ReferenceMappingMetaData implements MappingSource
         return $this->foreignName;
     }
 
+    /**
+     * @return string
+     */
+    public function getDatabaseType()
+    {
+        return $this->databaseType;
+    }
+
+    /**
+     * @param string $databaseType
+     */
+    public function setDatabaseType($databaseType) {
+        $this->databaseType = $databaseType;
+    }
 }

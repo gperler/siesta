@@ -3,7 +3,7 @@
 namespace siestaphp\xmlbuilder;
 
 use siestaphp\datamodel\attribute\AttributeSource;
-use siestaphp\datamodel\attribute\AttributeTransformerSource;
+use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\naming\XMLAttribute;
 
 /**
@@ -34,7 +34,7 @@ class XMLAttributeBuilder extends XMLBuilder
         $this->addAttributeData();
 
         // add extended information for transformer
-        if ($attributeSource instanceof AttributeTransformerSource) {
+        if ($attributeSource instanceof AttributeGeneratorSource) {
             $this->addGeneratorValues($attributeSource);
         }
 
@@ -59,10 +59,11 @@ class XMLAttributeBuilder extends XMLBuilder
 
     /**
      * adds additional values for transformation
+
      *
-     * @param AttributeTransformerSource $ats
+*@param AttributeGeneratorSource $ats
      */
-    private function addGeneratorValues(AttributeTransformerSource $ats)
+    private function addGeneratorValues(AttributeGeneratorSource $ats)
     {
         $this->setAttribute(XMLAttribute::ATTRIBUTE_METHOD_NAME, $ats->getMethodName());
         $this->setAttribute(XMLAttribute::ATTRIBUTE_DATABASE_LENGTH, $ats->getLength());

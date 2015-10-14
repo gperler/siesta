@@ -3,7 +3,7 @@
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
-use siestaphp\datamodel\entity\EntityDatabaseSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\driver\Connection;
 
@@ -23,10 +23,10 @@ class CustomStoredProcedure extends StoredProcedureBase
 
     /**
      * @param StoredProcedureSource $source
-     * @param EntityDatabaseSource $eds
+     * @param EntityGeneratorSource $eds
      * @param $replication
      */
-    public function __construct(StoredProcedureSource $source, EntityDatabaseSource $eds, $replication)
+    public function __construct(StoredProcedureSource $source, EntityGeneratorSource $eds, $replication)
     {
         parent::__construct($eds, $replication);
 

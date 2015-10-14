@@ -3,7 +3,7 @@
 namespace siestaphp\xmlbuilder;
 
 use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\naming\StoredProcedureNaming;
 use siestaphp\naming\XMLAttribute;
@@ -69,7 +69,7 @@ class XMLEntityBuilder extends XMLBuilder
         $this->addIndexList();
 
         // if this is used for transformation (and not reverse engineering) add transformation relevant data
-        if ($this->entitySource instanceof EntityTransformerSource) {
+        if ($this->entitySource instanceof EntityGeneratorSource) {
             $this->addTransformerData($this->entitySource);
         }
 
@@ -136,10 +136,11 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * adds data that is used for transformation
+
      *
-     * @param EntityTransformerSource $ets
+*@param EntityGeneratorSource $ets
      */
-    private function addTransformerData(EntityTransformerSource $ets)
+    private function addTransformerData(EntityGeneratorSource $ets)
     {
         $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_DATETIME_IN_USE, $ets->isDateTimeUsed());
         $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_REFERENCES, $ets->hasReferences());
@@ -171,10 +172,11 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * adds all classes that a use statement is needed for
+
      *
-     * @param EntityTransformerSource $ets
+*@param EntityGeneratorSource $ets
      */
-    private function addReferencedClassUseNames(EntityTransformerSource $ets)
+    private function addReferencedClassUseNames(EntityGeneratorSource $ets)
     {
         // create XML Element to contain used classes
         $xmlUseList = $this->createElement($this->domElement, XMLEntity::ELEMENT_REFERENCE_USE_FQ_CLASS_NAME_LIST);
@@ -207,9 +209,9 @@ class XMLEntityBuilder extends XMLBuilder
     }
 
     /**
-     * @param EntityTransformerSource $ets
+     * @param EntityGeneratorSource $ets
      */
-    private function addPrimaryKeyColumns(EntityTransformerSource $ets) {
+    private function addPrimaryKeyColumns(EntityGeneratorSource $ets) {
 
         foreach($ets->getPrimaryKeyColumns() as $column) {
             $xmlPKColumn = $this->createElement($this->domElement, XMLAttribute::ELEMENT_PK_COLUMN_NAME);

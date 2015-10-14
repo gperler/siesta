@@ -35,4 +35,12 @@ class XMLMappingReader extends XMLAccess implements MappingSource
         return $this->getAttribute(XMLMapping::ATTRIBUTE_FOREIGN_NAME);
     }
 
+    /**
+     * @return string
+     */
+    public function getDatabaseType()
+    {
+        return null;
+    }
+
 }

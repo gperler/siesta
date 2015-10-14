@@ -3,10 +3,10 @@
 namespace siestaphp\generator;
 
 use siestaphp\datamodel\attribute\AttributeSource;
-use siestaphp\datamodel\attribute\AttributeTransformerSource;
+use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\ColumnMigrator;
 use siestaphp\driver\Connection;
 
@@ -74,9 +74,9 @@ class Migrator
     }
 
     /**
-     * @param EntityTransformerSource $modelSource
+     * @param EntityGeneratorSource $modelSource
      */
-    private function migrateEntity(EntityTransformerSource $modelSource)
+    private function migrateEntity(EntityGeneratorSource $modelSource)
     {
         $databaseEntity = $this->getDatabaseEntityByTableName($modelSource->getTable());
 
@@ -90,7 +90,7 @@ class Migrator
 
     /**
      * @param AttributeSource[] $databaseAttributeList
-     * @param AttributeTransformerSource[] $modelAttributeList
+     * @param AttributeGeneratorSource[] $modelAttributeList
      */
     private function migrateAttributeList($databaseAttributeList, $modelAttributeList)
     {
@@ -143,9 +143,9 @@ class Migrator
     }
 
     /**
-     * @param EntityTransformerSource $source
+     * @param EntityGeneratorSource $source
      */
-    private function createEntity(EntityTransformerSource $source)
+    private function createEntity(EntityGeneratorSource $source)
     {
         $tableBuilder = $this->connection->getTableBuilder();
 

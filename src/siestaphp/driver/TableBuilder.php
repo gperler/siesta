@@ -3,7 +3,7 @@
 
 namespace siestaphp\driver;
 
-use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 
 /**
  * Interface TableBuilder
@@ -13,12 +13,12 @@ interface TableBuilder
 {
 
     /**
-     * @param EntityTransformerSource $entity
+     * @param EntityGeneratorSource $entity
      */
-    public function setupTables(EntityTransformerSource $entity);
+    public function setupTables(EntityGeneratorSource $entity);
 
     /**
-     * @param EntityTransformerSource $ets
+     * @param EntityGeneratorSource $ets
      */
-    public function setupStoredProcedures(EntityTransformerSource $ets);
+    public function setupStoredProcedures(EntityGeneratorSource $ets);
 }

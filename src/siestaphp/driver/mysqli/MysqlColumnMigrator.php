@@ -8,12 +8,10 @@
 
 namespace siestaphp\driver\mysqli;
 
-use siestaphp\datamodel\attribute\AttributeSource;
-use siestaphp\datamodel\attribute\AttributeTransformerSource;
+use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\datamodel\index\IndexSource;
+use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
-use siestaphp\datamodel\reference\ReferenceTransformerSource;
 use siestaphp\driver\ColumnMigrator;
 
 /**
@@ -50,140 +48,63 @@ class MysqlColumnMigrator implements ColumnMigrator
     }
 
     /**
-     * @param ReferenceSource $asIs
-     * @param ReferenceTransformerSource $toBe
+     * @param string $columnName
      *
-     * @return string[]
+     * @return string
      */
-    public function getReferenceAlterStatement(ReferenceSource $asIs, ReferenceTransformerSource $toBe)
+    public function createDropColumnStatement($columnName)
     {
-        if ($asIs === null) {
-            return $this->addReference($toBe);
-        }
-
-        if ($toBe === null) {
-            return $this->dropReference($asIs);
-        }
+        return sprintf(self::DROP_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($columnName));
     }
 
     /**
-     * @param ReferenceTransformerSource $referenceSource
+     * @param DatabaseColumn $column
      *
-     * @return string[]
+     * @return string
      */
-    private function addReference(ReferenceTransformerSource $referenceSource) {
-        $statementList = array();
-        $columnNames = "";
-        $referencedNames = "";
-
-        // add column statements
-        foreach ($referenceSource->getReferenceColumnList() as $column) {
-            $statementList[] = sprintf(self::ADD_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($column->getDatabaseName()), $column->getDatabaseType());
-            $columnNames .= $this->quote($column->getDatabaseName()) . ",";
-            $referencedNames .= $this->quote($column->getReferencedDatabaseName()) . ",";
-        }
-
-        // assemble parts for the add foreign key statement
-        $constraintName = $referenceSource->getConstraintName();
-        $columnNames = rtrim($columnNames, ",");
-        $referencedNames = rtrim($referencedNames,",");
-        $onDelete = $referenceSource->getOnDelete();
-        $onUpdate = $referenceSource->getOnUpdate();
-
-        $statementList[] = sprintf(self::ADD_FOREIGN_KEY, $constraintName, $columnNames, ColumnMigrator::TABLE_PLACE_HOLDER, $referencedNames, $onDelete, $onUpdate);
-        return $statementList;
-    }
-
-    /**
-     * @param ReferenceSource $referenceSource
-     *
-     * @return string[]
-     */
-    private function dropReference(ReferenceSource $referenceSource) {
-        $statementList = array();
-
-        $statementList[] = sprintf(self::DROP_FOREIGN_KEY, ColumnMigrator::TABLE_PLACE_HOLDER, $referenceSource->getConstraintName());
-
-        foreach($referenceSource->getMappingSourceList() as $mapping) {
-            $statementList[] = sprintf(self::DROP_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $mapping->getDatabaseName());
-        }
-
-        return $statementList;
-    }
-
-    /**
-     * @param ReferenceSource $asIs
-     * @param ReferenceTransformerSource $toBe
-     */
-    private function modifyReference(ReferenceSource $asIs, ReferenceTransformerSource $toBe) {
-        // check referenced tables are identical
-        //
-        if ($asIs->getForeignTable() !== $toBe->getForeignTable()) {
-            // drop
-            // add
-            // return
-        }
-
-        if ($asIs->getOnDelete() !== $toBe->getOnDelete() or $asIs->getOnUpdate() !== $toBe->getOnUpdate()) {
-            // drop constraint
-            // add constraint
-            // return
-        }
-
-        // compare referenced columns
-        if ($asIs->getMappingSourceList()) {
-
-        }
-
-        $toBe->getReferenceColumnList();
-
-
-    }
-
-
-
-    /**
-     * @param AttributeSource $asIs
-     * @param AttributeTransformerSource $toBe
-     *
-     * @return string[]
-     */
-    public function getAttributeAlterStatement(AttributeSource $asIs, AttributeTransformerSource $toBe)
+    public function createAddColumnStatement(DatabaseColumn $column)
     {
-        // no as-is create the column
-        if ($asIs === null) {
-            $statement = sprintf(self::ADD_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($toBe->getDatabaseName()), $toBe->getDatabaseType());
-            return array($statement);
-        }
-
-        // no to-be drop the column
-        if ($toBe === null) {
-            $statement = sprintf(self::DROP_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($asIs->getDatabaseName()));
-            return array($statement);
-        }
-
-        // types identical nothing to do
-        if ($asIs->getDatabaseType() === $toBe->getDatabaseType()) {
-            return array();
-        }
-
-        // change the type
-        $statement = sprintf(self::MODIFY_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($asIs->getDatabaseName()), $toBe->getDatabaseType());
-        return array($statement);
+       return sprintf(self::ADD_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($column->getDatabaseName()), $column->getDatabaseType());
     }
 
     /**
-     * @param IndexSource $asIs
-     * @param IndexSource $toBe
+     * @param DatabaseColumn $column
      *
-     * @return string[]
+     * @return string
      */
-    public function getIndexAlterStatement(IndexSource $asIs, IndexSource $toBe)
+    public function createModifiyColumnStatement(DatabaseColumn $column)
     {
-        if ($asIs) {
+        return sprintf(self::MODIFY_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER,  $this->quote($column->getDatabaseName()), $column->getDatabaseType());
+    }
 
-        }
+    /**
+     * @param ReferenceGeneratorSource $reference
+     *
+     * @return string
+     */
+    public function createAddForeignKeyStatement(ReferenceGeneratorSource $reference)
+    {
+        // TODO: Implement createAddForeignKeyStatement() method.
+    }
 
+    /**
+     * @param ReferenceSource $reference
+     *
+     * @return string
+     */
+    public function createDropForeignKeyStatemtn(ReferenceSource $reference)
+    {
+        // TODO: Implement createDropForeignKeyStatemtn() method.
+    }
+
+    public function createAddIndexStatement()
+    {
+        // TODO: Implement createAddIndexStatement() method.
+    }
+
+    public function createDropIndexStatement()
+    {
+        // TODO: Implement createDropIndexStatement() method.
     }
 
     /**

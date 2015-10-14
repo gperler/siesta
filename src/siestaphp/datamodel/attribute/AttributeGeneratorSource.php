@@ -4,10 +4,10 @@
 namespace siestaphp\datamodel\attribute;
 
 /**
- * Class AttributeTransformerSource
+ * Class AttributeGeneratorSource
  * @package siestaphp\datamodel
  */
-interface AttributeTransformerSource extends AttributeSource
+interface AttributeGeneratorSource extends AttributeSource
 {
 
     /**
@@ -19,4 +19,10 @@ interface AttributeTransformerSource extends AttributeSource
      * @return int
      */
     public function getLength();
+
+
+    /**
+     * @return string
+     */
+    public function getSQLParameterName();
 }

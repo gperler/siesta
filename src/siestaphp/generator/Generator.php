@@ -3,7 +3,7 @@
 namespace siestaphp\generator;
 
 use siestaphp\datamodel\DataModelContainer;
-use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\exceptions\SQLException;
 use siestaphp\util\File;
@@ -131,10 +131,11 @@ class Generator
 
     /**
      * Applies all registered transformers to the entitysource
+
      *
-     * @param EntityTransformerSource $ets
+*@param EntityGeneratorSource $ets
      */
-    private function applyTransformerToEntity(EntityTransformerSource $ets)
+    private function applyTransformerToEntity(EntityGeneratorSource $ets)
     {
         foreach ($this->transformerList as $transformer) {
             $transformer->transform($ets, $this->baseDir);

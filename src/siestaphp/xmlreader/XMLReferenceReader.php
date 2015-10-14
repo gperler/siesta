@@ -4,6 +4,7 @@ namespace siestaphp\xmlreader;
 
 use Codeception\Util\Debug;
 use siestaphp\datamodel\reference\MappingSource;
+use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLMapping;
@@ -125,6 +126,14 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
             $this->mappingList[] = $mapping;
         }
 
+    }
+
+    /**
+     * @return ReferencedColumnSource[]
+     */
+    public function getReferencedColumnList()
+    {
+        return array();
     }
 
 }

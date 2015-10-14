@@ -62,4 +62,10 @@ interface ReferenceSource
      */
     public function getMappingSourceList();
 
+
+    /**
+     * @return ReferencedColumnSource[]
+     */
+    public function getReferencedColumnList();
+
 }

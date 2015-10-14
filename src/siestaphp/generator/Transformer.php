@@ -3,7 +3,7 @@
 namespace siestaphp\generator;
 
 use siestaphp\datamodel\Entity;
-use siestaphp\datamodel\entity\EntityTransformerSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 
 /**
  * Interface Transformer
@@ -13,8 +13,8 @@ interface Transformer
 {
 
     /**
-     * @param EntityTransformerSource $entity
+     * @param EntityGeneratorSource $entity
      * @param string $baseDir
      */
-    public function transform(EntityTransformerSource $entity, $baseDir);
+    public function transform(EntityGeneratorSource $entity, $baseDir);
 }

@@ -2,7 +2,7 @@
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
-use siestaphp\datamodel\entity\EntityDatabaseSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\Connection;
 use siestaphp\driver\mysqli\replication\Replication;
 use siestaphp\naming\StoredProcedureNaming;
@@ -15,10 +15,10 @@ class DeleteStoredProcedure extends StoredProcedureBase
 {
 
     /**
-     * @param EntityDatabaseSource $eds
+     * @param EntityGeneratorSource $eds
      * @param $replication
      */
-    public function __construct(EntityDatabaseSource $eds, $replication)
+    public function __construct(EntityGeneratorSource $eds, $replication)
     {
         parent::__construct($eds, $replication);
     }

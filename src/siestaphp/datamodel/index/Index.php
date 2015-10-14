@@ -14,7 +14,7 @@ use siestaphp\generator\GeneratorLog;
  * Class Index
  * @package siestaphp\datamodel\index
  */
-class Index implements Processable, IndexSource, IndexDatabaseSource
+class Index implements Processable, IndexSource, IndexGeneratorSource
 {
 
     /**
@@ -52,9 +52,9 @@ class Index implements Processable, IndexSource, IndexDatabaseSource
     }
 
     /**
-     * @return IndexPartDatabaseSource[]
+     * @return IndexPartGeneratorSource[]
      */
-    public function getIndexDatabaseSourceList() {
+    public function getIndexPartGeneratorSourceList() {
         return $this->indexPartList;
     }
 

@@ -2,7 +2,7 @@
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
-use siestaphp\datamodel\entity\EntityDatabaseSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\Connection;
 use siestaphp\driver\mysqli\MySQLConnection;
 use siestaphp\driver\mysqli\replication\Replication;
@@ -21,7 +21,7 @@ abstract class StoredProcedureBase implements StoredProcedure
 
 
     /**
-     * @var EntityDatabaseSource
+     * @var EntityGeneratorSource
      */
     protected $entityDatabaseSource;
 
@@ -64,10 +64,10 @@ abstract class StoredProcedureBase implements StoredProcedure
 
 
     /**
-     * @param EntityDatabaseSource $eds
+     * @param EntityGeneratorSource $eds
      * @param $replication
      */
-    public function __construct(EntityDatabaseSource $eds, $replication)
+    public function __construct(EntityGeneratorSource $eds, $replication)
     {
         $this->entityDatabaseSource = $eds;
         $this->replication = $replication;

@@ -15,7 +15,7 @@ use siestaphp\naming\XMLReference;
  * Class Reference
  * @package siestaphp\datamodel
  */
-class Reference implements Processable, ReferenceSource, ReferenceTransformerSource, ReferenceDatabaseSource
+class Reference implements Processable, ReferenceSource, ReferenceGeneratorSource
 {
 
     const VALIDATION_ERROR_INVALID_REFERENCE_NAME = 300;
@@ -239,7 +239,7 @@ class Reference implements Processable, ReferenceSource, ReferenceTransformerSou
     /**
      * @return ReferencedColumnSource[]
      */
-    public function getReferenceColumnList()
+    public function getReferencedColumnList()
     {
         return $this->referenceColumnList;
     }
