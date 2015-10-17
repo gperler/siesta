@@ -223,7 +223,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
             $this->constructorNamespace = $this->classNamespace;
         }
         if (!$this->table) {
-            $this->table = strtoupper($this->className);
+            $this->table = $this->className;
         }
     }
 

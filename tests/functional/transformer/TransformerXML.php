@@ -75,7 +75,7 @@ class TransformerXML
                 "dbName" => "D_INTEGER",
                 "dbType" => "INT",
                 "primaryKey" => true,
-                "required" => false,
+                "required" => true,
                 "addIndex" => false,
                 "defaultValue" => "42",
                 "autoValue" => "autoincrement",
@@ -160,17 +160,17 @@ class TransformerXML
 
         $referenceData = self::getReferenceDefinition();
         $referenceData["label"]["foreignConstructClass"] = "Label";
-        $referenceData["label"]["storedProcedureFinderName"] = "ARTIST_FBR_LABEL";
+        $referenceData["label"]["storedProcedureFinderName"] = "ARTIST_FBR_label";
         $referenceData["label"]["columnList"] = array(
             "labelId" => array(
                 "type" => "int",
                 "methodName" => "LabelId",
-                "databaseName" => "LABEL_ID"
+                "databaseName" => "label_ID"
             ),
             "labelBool" => array(
                 "type" => "bool",
                 "methodName" => "LabelBool",
-                "databaseName" => "LABEL_D_BOOLEAN"
+                "databaseName" => "label_D_BOOLEAN"
             )
 
         );

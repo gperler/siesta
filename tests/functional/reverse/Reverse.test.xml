@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
     <entity name="ArtistEntity" namespace="siestaphp\tests\functional\reverse\gen" table="ARTIST" targetPath="gen">
-        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="id" dbType="INT" type="int" primaryKey="true" autoValue="autoincrement"/>
         <attribute name="bit" dbType="BIT" type="bool"/>
         <attribute name="smallInt" dbType="SMALLINT" type="int"/>
         <attribute name="mediumInt" dbType="MEDIUMINT" type="int"/>
-        <attribute name="int1" dbType="INT" type="int"/>
+        <attribute name="int1" dbType="INT" type="int" required="true"/>
         <attribute name="int2" dbType="INT(5)" type="int"/>
         <attribute name="bigInt" dbType="BIGINT" type="int"/>
 
@@ -30,13 +30,34 @@
         <attribute name="mediumblob" dbType="MEDIUMBLOB" type="string"/>
         <attribute name="longblob" dbType="LONGBLOB" type="string"/>
 
-        <attribute name="tintText" dbType="TINYTEXT" type="string"/>
+        <attribute name="tinytext" dbType="TINYTEXT" type="string"/>
         <attribute name="text" dbType="TEXT" type="string"/>
         <attribute name="mediumtext" dbType="MEDIUMTEXT" type="string"/>
         <attribute name="longtext" dbType="LONGTEXT" type="string"/>
 
         <attribute name="enum" dbType="ENUM('A','B')" type="string"/>
         <attribute name="set" dbType="SET('X','Y')" type="string"/>
-
     </entity>
+
+
+    <entity name="Address" namespace="siestaphp\tests\functional\reverse\gen" targetPath="gen">
+
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)" primaryKey="true" autoValue="uuid"/>
+        <attribute name="displayName" type="string"  dbType="VARCHAR(100)"/>
+        <attribute name="dob" type="DateTime" dbType="DATETIME"/>
+
+        <reference name="person" foreignClass="Person" required="false" onDelete="CASCADE" onUpdate="SET NULL"/>
+    </entity>
+
+    <entity name="Person" namespace="siestaphp\tests\functional\reverse\gen" targetPath="gen">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)" primaryKey="true" autoValue="uuid"/>
+        <attribute name="city" type="string" dbType="VARCHAR(100)"/>
+
+        <collector name="addressList" type="1n" foreignClass="Address" referenceName="person"/>
+    </entity>
+
+
+
 </entityList>

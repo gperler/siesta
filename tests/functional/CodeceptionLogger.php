@@ -54,7 +54,7 @@ class CodeceptionLogger implements GeneratorLog
      */
     public function info($text)
     {
-
+        Debug::debug($text);
     }
 
     /**
@@ -64,6 +64,7 @@ class CodeceptionLogger implements GeneratorLog
     public function warn($text, $code)
     {
         $this->warningCodeList[] = $code;
+        Debug::debug($text);
     }
 
     /**

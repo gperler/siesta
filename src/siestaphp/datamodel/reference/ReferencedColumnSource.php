@@ -14,11 +14,6 @@ interface ReferencedColumnSource extends DatabaseColumn
     /**
      * @return string
      */
-    public function getReferencedColumnName();
-
-    /**
-     * @return string
-     */
     public function getReferencedColumnMethodName();
 
     /**

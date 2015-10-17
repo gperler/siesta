@@ -6,6 +6,8 @@ use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\exceptions\SQLException;
+use siestaphp\migrator\DatabaseMigrator;
+use siestaphp\migrator\Migrator;
 use siestaphp\util\File;
 use siestaphp\xmlreader\DirectoryScanner;
 use siestaphp\xmlreader\XMLReader;
@@ -35,6 +37,11 @@ class Generator
     protected $directoryScanner;
 
     /**
+     * @var Migrator
+     */
+    protected $migrator;
+
+    /**
      * @var Transformer[]
      */
     protected $transformerList;
@@ -45,19 +52,69 @@ class Generator
     protected $baseDir;
 
     /**
-     * @param GeneratorLog $log
-     * @param string $suffix
+     * @var string
      */
-    public function __construct(GeneratorLog $log, $suffix = null)
+    protected $entityFileSuffix;
+
+    /**
+     * @var string
+     */
+    protected $conncectionName;
+
+    /**
+     * @var bool
+     */
+    protected $dropUnusedTables;
+
+    /**
+     * @var int
+     */
+    protected $migrationMode;
+
+    /**
+     * @param GeneratorLog $log
+     */
+    public function __construct(GeneratorLog $log)
     {
 
         $this->generatorLog = $log;
 
         $this->dataModelContainer = new DataModelContainer($this->generatorLog);
 
-        $this->directoryScanner = new DirectoryScanner($this->dataModelContainer, $this->generatorLog, $suffix);
+        $this->directoryScanner = new DirectoryScanner();
 
         $this->transformerList = array(new EntityTransformer());
+
+        $this->dropUnusedTables = false;
+
+        $this->conncectionName = null;
+
+        $this->entityFileSuffix = DirectoryScanner::DEFAULT_SUFFIX;
+
+    }
+
+    /**
+     * @param string $suffix
+     */
+    public function setEntityFileSuffix($suffix)
+    {
+        $this->entityFileSuffix = $suffix;
+    }
+
+    /**
+     * @param bool $drop
+     */
+    public function dropUnusedTables($drop)
+    {
+        $this->dropUnusedTables = $drop;
+    }
+
+    /**
+     * @param string $connectionName
+     */
+    public function setConnectionName($connectionName)
+    {
+        $this->conncectionName = $connectionName;
     }
 
     /**
@@ -71,7 +128,7 @@ class Generator
 
         $this->baseDir = $baseDir;
 
-        $entitySourceList = $this->directoryScanner->scan($this->generatorLog, $this->baseDir);
+        $entitySourceList = $this->directoryScanner->scan($this->generatorLog, $this->baseDir, $this->entityFileSuffix);
 
         $this->dataModelContainer->addEntitySourceList($entitySourceList);
 
@@ -114,7 +171,23 @@ class Generator
 
         $this->applyTransformerToEntityList();
 
-        $this->setupTablesAndStoredProcedures();
+        $this->handleDatabaseMigration();
+    }
+
+    private function handleDatabaseMigration()
+    {
+        try {
+            $connection = ConnectionFactory::getConnection($this->conncectionName);
+            $connection->install();
+            $connection->disableForeignKeyChecks();
+
+            $this->migrator = new Migrator($this->dataModelContainer, $connection, $this->generatorLog);
+            $this->migrator->migrate();
+            $connection->enableForeignKeyChecks();
+        } catch (SQLException $s) {
+            $this->generatorLog->error("SQL Exception " . $s->getMessage(), self::ERROR_SQL_EXCEPTION);
+        }
+
     }
 
     /**
@@ -127,44 +200,19 @@ class Generator
         foreach ($entityTransformerSourceList as $ets) {
             $this->applyTransformerToEntity($ets);
         }
+
     }
 
     /**
      * Applies all registered transformers to the entitysource
-
      *
-*@param EntityGeneratorSource $ets
+     * @param EntityGeneratorSource $ets
      */
     private function applyTransformerToEntity(EntityGeneratorSource $ets)
     {
         foreach ($this->transformerList as $transformer) {
             $transformer->transform($ets, $this->baseDir);
         }
-    }
-
-    /**
-     * creates the tables and stored procedures needed
-     */
-    private function setupTablesAndStoredProcedures()
-    {
-        try {
-            $connection = ConnectionFactory::getConnection();
-            $connection->install();
-
-            $connection->disableForeignKeyChecks();
-
-            $tableBuilder = $connection->getTableBuilder();
-            foreach ($this->dataModelContainer->getEntityList() as $ets) {
-                $tableBuilder->setupTables($ets);
-                $tableBuilder->setupStoredProcedures($ets);
-            }
-
-            $connection->enableForeignKeyChecks();
-
-        } catch (SQLException $s) {
-            $this->generatorLog->error("SQL Exception " . $s->getMessage(), self::ERROR_SQL_EXCEPTION);
-        }
-
     }
 
 }

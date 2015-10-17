@@ -40,11 +40,11 @@ class AttributeMetaData implements AttributeSource
     public function __construct(ResultSet $resultSet)
     {
         $this->name = $resultSet->getStringValue(self::COLUMN_NAME);
-        $this->type = strtolower($resultSet->getStringValue(self::COLUMN_TYPE));
+        $this->type = strtoupper($resultSet->getStringValue(self::COLUMN_TYPE));
+        $this->dataType = strtoupper($resultSet->getStringValue(self::DATA_TYPE));
         $this->isPrimaryKey = $resultSet->getStringValue(self::COLUMN_KEY) === self::COLUMN_KEY_PRIMARY_KEY;
         $this->default = $resultSet->getStringValue(self::COLUMN_DEFAULT);
         $this->isNullAble = $resultSet->getStringValue(self::COLUMN_IS_NULLABLE) === self::COLUMN_IS_NULLABLE_YES;
-        $this->dataType = strtolower($resultSet->getStringValue(self::DATA_TYPE));
     }
 
     /**
@@ -52,7 +52,7 @@ class AttributeMetaData implements AttributeSource
      */
     public function getName()
     {
-        return strtolower($this->name);
+        return $this->name;
     }
 
     /**
@@ -61,22 +61,23 @@ class AttributeMetaData implements AttributeSource
     public function getPHPType()
     {
         switch ($this->dataType) {
-            case 'bit':
-            case 'smallint':
+            case 'BIT':
                 return 'bool';
 
-            case 'mediumint':
-            case 'int':
+            case 'SMALLINT':
+            case 'MEDIUMINT':
+            case 'INT':
+            case 'BIGINT':
                 return 'int';
 
-            case 'double':
-            case 'float':
-            case 'decimal':
+            case 'DOUBLE':
+            case 'FLOAT':
+            case 'DECIMAL':
                 return 'float';
 
-            case 'date':
-            case 'time':
-            case 'datetime':
+            case 'DATE':
+            case 'TIME':
+            case 'DATETIME':
                 return 'DateTime';
 
             default:
@@ -100,7 +101,7 @@ class AttributeMetaData implements AttributeSource
      */
     public function getDatabaseName()
     {
-        return strtoupper($this->name);
+        return $this->name;
     }
 
     /**
@@ -108,21 +109,21 @@ class AttributeMetaData implements AttributeSource
      */
     public function getDatabaseType()
     {
-        switch($this->type)  {
-            case "bit(1)":
-                return "bit";
-            case "smallint(6)":
-                return "smallint";
-            case "mediumint(9)":
-                return "mediumint";
-            case "int(11)":
-                return "int";
-            case "bigint(20)":
-                return "bigint";
-            case "decimal(10,0)":
-                return "decimal";
-            case "year(4)":
-                return "year";
+        switch ($this->type) {
+            case "BIT(1)":
+                return "BIT";
+            case "SMALLINT(6)":
+                return "SMALLINT";
+            case "MEDIUMINT(9)":
+                return "MEDIUMINT";
+            case "INT(11)":
+                return "INT";
+            case "BIGINT(20)":
+                return "BIGINT";
+            case "DECIMAL(10,0)":
+                return "DECIMAL";
+            case "YEAR(4)":
+                return "YEAR";
             default:
                 return $this->type;
         }
@@ -158,6 +159,22 @@ class AttributeMetaData implements AttributeSource
     public function isTransient()
     {
         return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethodName()
+    {
+        return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSQLParameterName()
+    {
+        return null;
     }
 
 }

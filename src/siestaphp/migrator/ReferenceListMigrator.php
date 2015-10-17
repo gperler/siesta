@@ -50,14 +50,14 @@ class ReferenceListMigrator
     {
         $this->columnMigrator = $columnMigrator;
         $this->databaseReferenceList = $databaseReferenceList;
-        $this->modelReferenceListList = $modelReferenceList;
+        $this->modelReferenceList = $modelReferenceList;
         $this->alterStatementList = array();
     }
 
     /**
      * @return string[]
      */
-    public function migrateAttributeList()
+    public function createAlterStatementList()
     {
         $processedDatabaseList = array();
 

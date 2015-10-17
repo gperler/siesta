@@ -8,13 +8,13 @@
 
 namespace siestaphp\driver\mysqli;
 
+use Codeception\Util\Debug;
 use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\index\IndexGeneratorSource;
 use siestaphp\datamodel\index\IndexPartGeneratorSource;
 use siestaphp\datamodel\reference\Reference;
-use siestaphp\datamodel\reference\ReferenceDatabaseSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\driver\ConnectionFactory;
 
@@ -52,46 +52,6 @@ class TableCreator
     const FOREIGN_KEY_SUFFIX = "_FOREIGN_KEY";
 
     const FOREIGN_KEY_INDEX_SUFFIX = "_FK_INDEX";
-
-    /**
-     * @param $columnName
-     *
-     * @return string
-     */
-    public static function getUniqueIndexName($columnName)
-    {
-        return $columnName . self::UNIQUE_SUFFIX;
-    }
-
-    /**
-     * @param $columnName
-     *
-     * @return string
-     */
-    public static function getIndexName($columnName)
-    {
-        return $columnName . self::INDEX_SUFFIX;
-    }
-
-    /**
-     * @param string $columnName
-     *
-     * @return string
-     */
-    public static function getForeignKeyConstraintName($columnName)
-    {
-        return (strtoupper($columnName) . self::FOREIGN_KEY_SUFFIX);
-    }
-
-    /**
-     * @param string $columnName
-     *
-     * @return string
-     */
-    public static function getForeignKeyConstraintIndexName($columnName)
-    {
-        return (strtoupper($columnName) . self::FOREIGN_KEY_INDEX_SUFFIX);
-    }
 
     /**
      * @var EntityGeneratorSource
@@ -152,6 +112,8 @@ class TableCreator
 
         $sql .= $this->buildCharsetSQL();
 
+        Debug::debug($sql);
+
         return $sql;
     }
 
@@ -166,7 +128,7 @@ class TableCreator
                 $sql .= $this->buildAttributeColumnSQL($attribute) . ",";
             }
         }
-        foreach ($this->entityDatabaseSource->getReferenceSourceList() as $reference) {
+        foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
             $sql .= $this->buildReferenceColumnSQL($reference) . ",";
         }
         return rtrim($sql, ",");
@@ -338,7 +300,6 @@ class TableCreator
         $columnNames = rtrim($columnNames, ",");
         $referencedColumnNames = rtrim($referencedColumnNames, ",");
 
-        $constraintName = self::getForeignKeyConstraintName($this->tableName . $rds->getName());
 
         $constraintName = $rds->getConstraintName();
         $onDelete = $this->getReferenceOption($rds->getOnDelete());

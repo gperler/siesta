@@ -59,7 +59,8 @@ class MySQLConnection implements Connection
      *
      * @throws ConnectException
      */
-    public function __construct(ConnectionData $connectionData) {
+    public function __construct(ConnectionData $connectionData)
+    {
         $this->connect($connectionData);
     }
 
@@ -86,7 +87,7 @@ class MySQLConnection implements Connection
         }
 
         $pcs = implode(";", $connectionData->postConnectStatements);
-        if($pcs) {
+        if ($pcs) {
             $this->multiQuery($pcs);
         }
 
@@ -286,6 +287,7 @@ class MySQLConnection implements Connection
      */
     public function getEntitySourceList($databaseName = null, $targetNamespace = null, $targetPath = null)
     {
+
         $databaseName = ($databaseName) ? $databaseName : $this->getDatabase();
         $databaseMetaData = new DatabaseMetaData($this);
         return $databaseMetaData->getEntitySourceList($databaseName, $targetNamespace, $targetPath);
@@ -294,7 +296,8 @@ class MySQLConnection implements Connection
     /**
      * @return ColumnMigrator
      */
-    public function getColumnMigrator() {
+    public function getColumnMigrator()
+    {
         return new MysqlColumnMigrator();
     }
 }

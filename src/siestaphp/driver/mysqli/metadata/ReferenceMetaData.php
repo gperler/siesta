@@ -6,6 +6,7 @@ use siestaphp\datamodel\reference\MappingSource;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\driver\ResultSet;
+use siestaphp\naming\NamingService;
 
 /**
  * Class ReferenceMetaData
@@ -57,18 +58,33 @@ class ReferenceMetaData implements ReferenceSource
     protected $mappingList;
 
     /**
+     * @var ReferencedColumnMetaData[]
+     */
+    protected $referencedColumnList;
+
+    /**
      * @var bool
      */
     protected $isNullAble;
 
+    /**
+     * @var string
+     */
     protected $foreignTable;
 
-    protected $foreignColumn;
-
+    /**
+     * @var string
+     */
     protected $onDelete;
 
+    /**
+     * @var string
+     */
     protected $onUpdate;
 
+    /**
+     * @var bool
+     */
     protected $isPrimaryKey;
 
     /**
@@ -76,12 +92,15 @@ class ReferenceMetaData implements ReferenceSource
      */
     public function __construct(ResultSet $resultSet)
     {
+
         $this->mappingList = array();
+        $this->referencedColumnList = array();
+
         $this->constraintName = $resultSet->getStringValue(self::CONSTRAINT_NAME);
         $this->foreignTable = $resultSet->getStringValue(self::REFERENCED_TABLE_NAME);
-        $this->foreignColumn = $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME);
-        $this->mappingList[] = new ReferenceMappingMetaData($resultSet->getStringValue(self::COLUMN_NAME), $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME));
 
+        $this->mappingList[] = new ReferenceMappingMetaData($resultSet->getStringValue(self::COLUMN_NAME), $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME));
+        $this->referencedColumnList[] = new ReferencedColumnMetaData($resultSet->getStringValue(self::COLUMN_NAME), $this->foreignTable, $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME));
     }
 
     /**
@@ -93,10 +112,12 @@ class ReferenceMetaData implements ReferenceSource
         $this->isPrimaryKey = $resultSet->getStringValue(AttributeMetaData::COLUMN_KEY) === AttributeMetaData::COLUMN_KEY_PRIMARY_KEY;
 
         $columName = $resultSet->getStringValue(AttributeMetaData::COLUMN_NAME);
+
+        $referencedColumn = $this->getReferencedColumnByName($columName);
+        $referencedColumn->updateFromColumn($resultSet);
+
         $mapping = $this->getMappingByColumnName($columName);
-        if ($mapping) {
-            $mapping->setDatabaseType($resultSet->getStringValue(AttributeMetaData::DATA_TYPE));
-        }
+        $mapping->setDatabaseType($referencedColumn->getDatabaseType());
 
     }
 
@@ -106,6 +127,7 @@ class ReferenceMetaData implements ReferenceSource
     public function updateFromConstraint(ResultSet $resultSet)
     {
         $this->mappingList[] = new ReferenceMappingMetaData($resultSet->getStringValue(self::COLUMN_NAME), $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME));
+        $this->referencedColumnList[] = new ReferencedColumnMetaData($resultSet->getStringValue(self::COLUMN_NAME), $this->foreignTable, $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME));
     }
 
     /**
@@ -113,10 +135,26 @@ class ReferenceMetaData implements ReferenceSource
      *
      * @return ReferenceMappingMetaData
      */
-    private function getMappingByColumnName($columnName) {
+    private function getMappingByColumnName($columnName)
+    {
         foreach ($this->mappingList as $mapping) {
             if ($mapping->getName() === $columnName) {
                 return $mapping;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param string $columnName
+     *
+     * @return ReferencedColumnMetaData
+     */
+    private function getReferencedColumnByName($columnName)
+    {
+        foreach ($this->referencedColumnList as $referencedColumn) {
+            if ($referencedColumn->getName() === $columnName) {
+                return $referencedColumn;
             }
         }
         return null;
@@ -127,7 +165,7 @@ class ReferenceMetaData implements ReferenceSource
      */
     public function getReferencedColumnList()
     {
-
+        return $this->referencedColumnList;
     }
 
     /**
@@ -195,7 +233,7 @@ class ReferenceMetaData implements ReferenceSource
      */
     public function getForeignClass()
     {
-        return $this->foreignTable;
+        return NamingService::getClassName($this->foreignTable);
     }
 
     /**
@@ -203,7 +241,7 @@ class ReferenceMetaData implements ReferenceSource
      */
     public function getForeignTable()
     {
-       return $this->foreignTable;
+        return $this->foreignTable;
     }
 
     /**
@@ -237,7 +275,5 @@ class ReferenceMetaData implements ReferenceSource
     {
         return $this->isPrimaryKey;
     }
-
-
 
 }

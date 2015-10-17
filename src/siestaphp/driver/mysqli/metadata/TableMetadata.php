@@ -10,6 +10,7 @@ use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\driver\Connection;
+use siestaphp\naming\NamingService;
 
 /**
  * Class TableMetadata
@@ -91,29 +92,6 @@ class TableMetadata implements EntitySource
     }
 
     /**
-     * extracts columns from table and create AttributeMetaData or ReferenceMetaData objects
-     */
-    protected function extractColumns()
-    {
-
-        $sql = sprintf(self::SP_GET_COLUMN_DETAILS, $this->connection->getDatabase(), $this->tableName);
-
-        $resultSet = $this->connection->executeStoredProcedure($sql);
-
-        while ($resultSet->hasNext()) {
-            $columnName = $resultSet->getStringValue(AttributeMetaData::COLUMN_NAME);
-            $reference = $this->getReferenceByColumnName($columnName);
-            if ($reference !== null) {
-                $reference->updateFromColumn($resultSet);
-            } else {
-                $this->attributeMetaDataList[] = new AttributeMetaData($resultSet);
-            }
-        }
-
-        $resultSet->close();
-    }
-
-    /**
      * reads foreign key constraints and enriches ReferenceMetaData objects
      */
     protected function extractReferenceData()
@@ -159,6 +137,32 @@ class TableMetadata implements EntitySource
 
 
     }
+
+
+    /**
+     * extracts columns from table and create AttributeMetaData or ReferenceMetaData objects
+     */
+    protected function extractColumns()
+    {
+
+        $sql = sprintf(self::SP_GET_COLUMN_DETAILS, $this->connection->getDatabase(), $this->tableName);
+
+        $resultSet = $this->connection->executeStoredProcedure($sql);
+
+        while ($resultSet->hasNext()) {
+            $columnName = $resultSet->getStringValue(AttributeMetaData::COLUMN_NAME);
+            $reference = $this->getReferenceByColumnName($columnName);
+            if ($reference !== null) {
+                $reference->updateFromColumn($resultSet);
+            } else {
+                $this->attributeMetaDataList[] = new AttributeMetaData($resultSet);
+            }
+        }
+
+        $resultSet->close();
+    }
+
+
 
     /**
      * @param $constraintName
@@ -271,7 +275,7 @@ class TableMetadata implements EntitySource
      */
     public function getClassName()
     {
-        return $this->tableName;
+        return NamingService::getClassName($this->tableName);
     }
 
     /**

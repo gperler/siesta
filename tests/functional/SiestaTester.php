@@ -5,6 +5,8 @@ namespace siestaphp\tests\functional;
 use Codeception\Util\Debug;
 use siestaphp\driver\Connection;
 use siestaphp\driver\ConnectionFactory;
+use siestaphp\generator\Generator;
+use siestaphp\util\File;
 
 /**
  * Class SiestaTester
@@ -62,9 +64,21 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
     protected function generateEntityFile($assetPath, $srcXML)
     {
         $this->logger = new CodeceptionLogger();
-        $generator = new \siestaphp\generator\Generator($this->logger);
+        $generator = new Generator($this->logger);
         $generator->generateFile(__DIR__ . $assetPath, __DIR__ . $assetPath . $srcXML);
 
+    }
+
+    /**
+     * @param string $fileName
+     *
+     * @return array
+     */
+    protected function loadJSON($fileName)
+    {
+        $file = new File($fileName);
+        $this->assertTrue($file->exists(), "File " . $fileName . " does not exist");
+        return $file->loadAsJSONArray();
     }
 
     /**

@@ -9,6 +9,7 @@
 namespace siestaphp\driver\mysqli\metadata;
 
 use siestaphp\datamodel\reference\ReferencedColumnSource;
+use siestaphp\driver\ResultSet;
 
 /**
  * Class ReferencedColumnMetaData
@@ -16,12 +17,53 @@ use siestaphp\datamodel\reference\ReferencedColumnSource;
  */
 class ReferencedColumnMetaData implements ReferencedColumnSource
 {
+
+    /**
+     * @var string
+     */
+    protected $columnName;
+
+    /**
+     * @var string
+     */
+    protected $foreignTable;
+
+    /**
+     * @var string
+     */
+    protected $foreignColumn;
+    /**
+     * @var AttributeMetaData
+     */
+    protected $attributeColumn;
+
+    /**
+     * @param $columnName
+     * @param $foreignTable
+     * @param $foreignColumn
+     */
+    public function __construct($columnName, $foreignTable, $foreignColumn)
+    {
+        $this->columnName = $columnName;
+        $this->foreignTable = $foreignTable;
+        $this->foreignColumn = $foreignColumn;
+
+    }
+
+    /**
+     * @param ResultSet $resultSet
+     */
+    public function updateFromColumn(ResultSet $resultSet)
+    {
+        $this->attributeColumn = new AttributeMetaData($resultSet);
+    }
+
     /**
      * @return string
      */
     public function getName()
     {
-        // TODO: Implement getName() method.
+        return $this->columnName;
     }
 
     /**
@@ -29,7 +71,7 @@ class ReferencedColumnMetaData implements ReferencedColumnSource
      */
     public function getPHPType()
     {
-        // TODO: Implement getPHPType() method.
+        return null;
     }
 
     /**
@@ -37,7 +79,7 @@ class ReferencedColumnMetaData implements ReferencedColumnSource
      */
     public function getDatabaseName()
     {
-        // TODO: Implement getDatabaseName() method.
+        return $this->columnName;
     }
 
     /**
@@ -45,7 +87,10 @@ class ReferencedColumnMetaData implements ReferencedColumnSource
      */
     public function getDatabaseType()
     {
-        // TODO: Implement getDatabaseType() method.
+        if (!$this->attributeColumn) {
+            return null;
+        }
+        return $this->attributeColumn->getDatabaseType();
     }
 
     /**
@@ -53,7 +98,10 @@ class ReferencedColumnMetaData implements ReferencedColumnSource
      */
     public function isPrimaryKey()
     {
-        // TODO: Implement isPrimaryKey() method.
+        if (!$this->attributeColumn) {
+            return null;
+        }
+        return $this->attributeColumn->isPrimaryKey();
     }
 
     /**
@@ -61,7 +109,10 @@ class ReferencedColumnMetaData implements ReferencedColumnSource
      */
     public function isRequired()
     {
-        // TODO: Implement isRequired() method.
+        if (!$this->attributeColumn) {
+            return null;
+        }
+        return $this->attributeColumn->isRequired();
     }
 
     /**
@@ -69,15 +120,10 @@ class ReferencedColumnMetaData implements ReferencedColumnSource
      */
     public function getSQLParameterName()
     {
-        // TODO: Implement getSQLParameterName() method.
-    }
-
-    /**
-     * @return string
-     */
-    public function getReferencedColumnName()
-    {
-        // TODO: Implement getReferencedColumnName() method.
+        if (!$this->attributeColumn) {
+            return null;
+        }
+        return $this->attributeColumn->getSQLParameterName();
     }
 
     /**
@@ -85,7 +131,7 @@ class ReferencedColumnMetaData implements ReferencedColumnSource
      */
     public function getReferencedColumnMethodName()
     {
-        // TODO: Implement getReferencedColumnMethodName() method.
+        return null;
     }
 
     /**
@@ -93,7 +139,7 @@ class ReferencedColumnMetaData implements ReferencedColumnSource
      */
     public function getReferencedDatabaseName()
     {
-        // TODO: Implement getReferencedDatabaseName() method.
+        return $this->foreignColumn;
     }
 
     /**
@@ -101,7 +147,7 @@ class ReferencedColumnMetaData implements ReferencedColumnSource
      */
     public function getMethodName()
     {
-        // TODO: Implement getMethodName() method.
+        return null;
     }
 
 }

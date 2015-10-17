@@ -44,7 +44,8 @@ class AttributeListMigrator
      * @param AttributeSource[] $databaseAttributeList
      * @param AttributeGeneratorSource[] $modelAttributeList
      */
-    public function __construct(ColumnMigrator $columnMigrator, $databaseAttributeList, $modelAttributeList) {
+    public function __construct(ColumnMigrator $columnMigrator, $databaseAttributeList, $modelAttributeList)
+    {
         $this->columnMigrator = $columnMigrator;
         $this->databaseAttributeList = $databaseAttributeList;
         $this->modelAttributeList = $modelAttributeList;
@@ -54,33 +55,32 @@ class AttributeListMigrator
     /**
      * @return string[]
      */
-    public function migrateAttributeList()
+    public function createAlterStatementList()
     {
         $processedDatabaseList = array();
 
         // iterate attributes from model and retrieve alter statements
         foreach ($this->modelAttributeList as $modelAttribute) {
-
             // check if a corresponding database attribute exists
-            $databaseAttribute = $this->getAttributeSourceByName($this->databaseAttributeList, $modelAttribute->getName());
+            $databaseAttribute = $this->getAttributeSourceByDatabaseName($this->databaseAttributeList, $modelAttribute->getDatabaseName());
 
             // retrieve alter statements from migrator and add them
             $this->createAlterStatement($databaseAttribute, $modelAttribute);
 
             // if a database attribute has been found add it to the processed list
             if ($databaseAttribute) {
-                $processedDatabaseList[] = $databaseAttribute->getName();
+                $processedDatabaseList[] = $databaseAttribute->getDatabaseName();
             }
         }
 
         // iterate attributes from database and retrieve alter statements
         foreach ($this->databaseAttributeList as $databaseAttribute) {
 
+
             // check if attribute has already been processed
-            if (in_array($databaseAttribute->getName(), $processedDatabaseList)) {
+            if (in_array($databaseAttribute->getDatabaseName(), $processedDatabaseList)) {
                 continue;
             }
-
             // no corresponding model attribute will result in drop statements
             $this->createAlterStatement($databaseAttribute, null);
         }
@@ -88,32 +88,29 @@ class AttributeListMigrator
         return $this->alterStatementList;
     }
 
-
     /**
      * @param AttributeSource[] $attributeSourceList
-     * @param string $attributeName
+     * @param string $databaseName
      *
-     * @return AttributeSource|null
+*@return AttributeSource|null
      */
-    private function getAttributeSourceByName($attributeSourceList, $attributeName)
+    private function getAttributeSourceByDatabaseName($attributeSourceList, $databaseName)
     {
         foreach ($attributeSourceList as $attribute) {
-            if ($attribute->getName() === $attributeName) {
+            if ($attribute->getDatabaseName() === $databaseName) {
                 return $attribute;
             }
         }
         return null;
     }
 
-
     /**
      * @param AttributeSource $asIs
      * @param AttributeGeneratorSource $toBe
-
      *
-     *@return string[]
+     * @return string[]
      */
-    public function createAlterStatement($asIs, $toBe)
+    private function createAlterStatement($asIs, $toBe)
     {
         // no as-is create the column
         if ($asIs === null) {
@@ -130,7 +127,7 @@ class AttributeListMigrator
         }
 
         // types identical nothing to do
-        if ($asIs->getDatabaseType() === strtolower($toBe->getDatabaseType())) {
+        if ($asIs->getDatabaseType() === $toBe->getDatabaseType() and $asIs->isRequired() === $toBe->isRequired()) {
             return;
         }
 
@@ -142,9 +139,9 @@ class AttributeListMigrator
     /**
      * @param string $statement
      */
-    private function addStatement($statement) {
+    private function addStatement($statement)
+    {
         $this->alterStatementList[] = $statement;
     }
-
 
 }

@@ -1,21 +1,26 @@
 <?php
 
-namespace siestaphp\generator;
+namespace siestaphp\migrator;
 
-use siestaphp\datamodel\attribute\AttributeSource;
-use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\DataModelContainer;
-use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\datamodel\entity\EntityGeneratorSource;
-use siestaphp\driver\ColumnMigrator;
 use siestaphp\driver\Connection;
+use siestaphp\driver\exceptions\SQLException;
+use siestaphp\generator\GeneratorLog;
 
 /**
  * Class Migrator
- * @package siestaphp\generator
+ * @package siestaphp\migrator
  */
 class Migrator
 {
+    const DIRECT_EXECUTION = 1;
+    const CREATE_SQL_FILE = 2;
+    const CREATE_PHP_FILE = 3;
+
+    /**
+     * @var DatabaseMigrator
+     */
+    protected $databaseMigrator;
 
     /**
      * @var DataModelContainer
@@ -23,159 +28,57 @@ class Migrator
     protected $dataModelContainer;
 
     /**
-     * @var EntitySource[]
-     */
-    protected $databaseModel;
-
-    /**
-     * list of table names that are also defined in the current datamodel
-     * @var string[]
-     */
-    protected $neededTableList;
-
-    /**
      * @var Connection
      */
     protected $connection;
 
     /**
-     * @var ColumnMigrator
+     * @var int
      */
-    protected $columnMigrator;
+    protected $executionMode;
 
-    /**
-     * @var String[]
-     */
-    protected $alterStatementList;
 
     /**
      * @param DataModelContainer $dataModelContainer
      * @param Connection $connection
+     * @param GeneratorLog $logger
      */
-    public function __construct(DataModelContainer $dataModelContainer, Connection $connection)
-    {
+    public function __construct(DataModelContainer $dataModelContainer, Connection $connection, GeneratorLog $logger) {
         $this->dataModelContainer = $dataModelContainer;
         $this->connection = $connection;
-        $this->columnMigrator = $connection->getColumnMigrator();
-        $this->databaseModel = array();
-        $this->neededTableList = array();
-        $this->alterStatementList = array();
-    }
-
-    public function migrateModel()
-    {
-
-        $this->databaseModel = $this->connection->getEntitySourceList();
-
-        foreach ($this->dataModelContainer->getEntityList() as $entity) {
-            $this->migrateEntity($entity);
-        }
-
+        $this->executionMode = self::DIRECT_EXECUTION;
+        $this->databaseMigrator = new DatabaseMigrator($dataModelContainer, $connection);
     }
 
     /**
-     * @param EntityGeneratorSource $modelSource
+     * @param $executionMode
      */
-    private function migrateEntity(EntityGeneratorSource $modelSource)
-    {
-        $databaseEntity = $this->getDatabaseEntityByTableName($modelSource->getTable());
-
-        if (!$databaseEntity) {
-            $this->createEntity($modelSource);
+    public function setExecutionMode($executionMode) {
+        if ($executionMode < self::DIRECT_EXECUTION or $executionMode > self::CREATE_PHP_FILE) {
             return;
         }
-
-        $this->migrateAttributeList($databaseEntity->getAttributeSourceList(), $modelSource->getAttributeSourceList());
+        $this->executionMode = $executionMode;
     }
 
     /**
-     * @param AttributeSource[] $databaseAttributeList
-     * @param AttributeGeneratorSource[] $modelAttributeList
+     * @param bool $dropUnUsedTables
      */
-    private function migrateAttributeList($databaseAttributeList, $modelAttributeList)
-    {
-        $processedDatabaseList = array();
+    public function migrate($dropUnUsedTables = false) {
+        $statementList = $this->databaseMigrator->createAlterStatementList($dropUnUsedTables);
 
-        // iterate attributes from model and retrieve alter statements
-        foreach ($modelAttributeList as $modelAttribute) {
+        $this->migrateDirect($statementList);
+    }
 
-            // check if a corresponding database attribute exists
-            $databaseAttribute = $this->getAttributeSourceByName($databaseAttributeList, $modelAttribute->getName());
+    /**
+     * @param string $statementList
+     */
+    private function migrateDirect($statementList) {
+        try {
+            $this->connection->multiQuery(implode(";", $statementList));
+        } catch (SQLException $e) {
 
-            // retrieve alter statements from migrator and add them
-            $statementList = $this->columnMigrator->getAttributeAlterStatement($databaseAttribute, $modelAttribute);
-            $this->addAlterStatements($statementList);
-
-            // if a database attribute has been found add it to the processed list
-            if ($databaseAttribute) {
-                $processedDatabaseList[] = $databaseAttribute->getName();
-            }
-        }
-
-        // iterate attributes from database and retrieve alter statements
-        foreach ($databaseAttributeList as $databaseAttribute) {
-
-            // check if attribute has already been processed
-            if (in_array($databaseAttribute->getName(), $processedDatabaseList)) {
-                continue;
-            }
-
-            // no corresponding model attribute will result in drop statements
-            $statementList = $this->columnMigrator->getAttributeAlterStatement($databaseAttribute, null);
-            $this->addAlterStatements($statementList);
         }
     }
 
-    /**
-     * @param AttributeSource[] $attributeSourceList
-     * @param string $attributeName
-     *
-     * @return AttributeSource|null
-     */
-    private function getAttributeSourceByName($attributeSourceList, $attributeName)
-    {
-        foreach ($attributeSourceList as $attribute) {
-            if ($attribute->getName() === $attributeName) {
-                return $attribute;
-            }
-        }
-        return;
-    }
-
-    /**
-     * @param EntityGeneratorSource $source
-     */
-    private function createEntity(EntityGeneratorSource $source)
-    {
-        $tableBuilder = $this->connection->getTableBuilder();
-
-        $tableBuilder->setupTables($source);
-        $tableBuilder->setupStoredProcedures($source);
-    }
-
-    /**
-     * @param $tableName
-     *
-     * @return null|EntitySource
-     */
-    private function getDatabaseEntityByTableName($tableName)
-    {
-        foreach ($this->databaseModel as $entity) {
-            if ($entity->getTable() === $tableName) {
-                // store that this table is actually in use
-                $this->neededTableList[] = $tableName;
-                return $entity;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param array $alterStatementList
-     */
-    private function addAlterStatements(array $alterStatementList)
-    {
-        $this->alterStatementList = array_merge($this->alterStatementList, $alterStatementList);
-    }
 
 }

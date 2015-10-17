@@ -42,7 +42,7 @@ class XMLAttributeReader extends XMLAccess implements AttributeSource
     public function getDatabaseName()
     {
 
-        return strtoupper($this->getAttribute(XMLAttribute::ATTRIBUTE_DATABASE_NAME));
+        return $this->getAttribute(XMLAttribute::ATTRIBUTE_DATABASE_NAME);
     }
 
     /**

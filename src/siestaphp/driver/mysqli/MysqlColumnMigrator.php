@@ -21,9 +21,9 @@ use siestaphp\driver\ColumnMigrator;
 class MysqlColumnMigrator implements ColumnMigrator
 
 {
-    const ADD_COLUMN = "ALTER TABLE %s ADD %s %s";
+    const ADD_COLUMN = "ALTER TABLE %s ADD %s %s %s";
 
-    const MODIFY_COLUMN = "ALTER TABLE %s MODIFY %s %s";
+    const MODIFY_COLUMN = "ALTER TABLE %s MODIFY %s %s %s";
 
     const DROP_COLUMN = "ALTER TABLE %s DROP COLUMN %s";
 
@@ -64,7 +64,8 @@ class MysqlColumnMigrator implements ColumnMigrator
      */
     public function createAddColumnStatement(DatabaseColumn $column)
     {
-       return sprintf(self::ADD_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($column->getDatabaseName()), $column->getDatabaseType());
+        $nullHandling = ($column->isRequired()) ? "NOT NULL" : "NULL";
+        return sprintf(self::ADD_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($column->getDatabaseName()), $column->getDatabaseType(), $nullHandling);
     }
 
     /**
@@ -74,7 +75,8 @@ class MysqlColumnMigrator implements ColumnMigrator
      */
     public function createModifiyColumnStatement(DatabaseColumn $column)
     {
-        return sprintf(self::MODIFY_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER,  $this->quote($column->getDatabaseName()), $column->getDatabaseType());
+        $nullHandling = ($column->isRequired()) ? "NOT NULL" : "NULL";
+        return sprintf(self::MODIFY_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($column->getDatabaseName()), $column->getDatabaseType(), $nullHandling);
     }
 
     /**

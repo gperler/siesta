@@ -1,0 +1,32 @@
+{
+  "name": "Address_person",
+  "constraintName": "Address_person",
+  "foreignClass": "Person",
+  "onDelete": "CASCADE",
+  "onUpdate": "SET NULL",
+  "referenceSource": {
+    "person_id": {
+      "dbType": "INT",
+      "foreignColumn": "id"
+    },
+    "person_name": {
+      "dbType": "VARCHAR(36)",
+      "foreignColumn": "name"
+    }
+  },
+  "mappingSource": {
+    "person_id": {
+      "foreignColumn": "id",
+      "databaseName": "person_id",
+      "databaseType": "INT"
+    },
+    "person_name": {
+      "foreignColumn": "name",
+      "databaseName": "person_name",
+      "databaseType": "VARCHAR(36)"
+    }
+  }
+}
+
+
+

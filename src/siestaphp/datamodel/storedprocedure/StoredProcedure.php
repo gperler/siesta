@@ -113,7 +113,7 @@ class StoredProcedure implements Processable, StoredProcedureSource
      */
     public function getDatabaseName()
     {
-        return strtoupper($this->entity->getTable() . "_" . $this->storedProcedureSource->getName());
+        return $this->entity->getTable() . "_" . $this->storedProcedureSource->getName();
     }
 
     /**

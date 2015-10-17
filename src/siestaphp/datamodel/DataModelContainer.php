@@ -62,7 +62,7 @@ class DataModelContainer
 
         if (isset($this->entityList[$entityClassName])) {
             $existingEntity = $this->entityList[$entityClassName];
-            echo "Found Entity in 2 file(s)" . PHP_EOL;
+            $this->generatorLog->warn("Found Entity in 2 file(s)",0);
             return;
         }
 
@@ -82,6 +82,9 @@ class DataModelContainer
         }
     }
 
+    /**
+     *
+     */
     public function validate()
     {
         foreach ($this->entityList as $entity) {

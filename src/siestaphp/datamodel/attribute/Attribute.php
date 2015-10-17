@@ -194,7 +194,7 @@ class Attribute implements Processable, AttributeSource, AttributeGeneratorSourc
      */
     public function getDatabaseType()
     {
-        return $this->databaseType;
+        return strtoupper($this->databaseType);
     }
 
     /**
@@ -226,7 +226,7 @@ class Attribute implements Processable, AttributeSource, AttributeGeneratorSourc
      */
     public function isRequired()
     {
-        return $this->required;
+        return $this->required or $this->primaryKey;
     }
 
     /**

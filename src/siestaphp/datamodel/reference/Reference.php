@@ -283,7 +283,7 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
      */
     public function getDatabaseName()
     {
-        return strtoupper($this->name);
+        return $this->name;
     }
 
     /**

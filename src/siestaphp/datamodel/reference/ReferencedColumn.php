@@ -75,15 +75,7 @@ class ReferencedColumn implements DatabaseColumn, ReferencedColumnSource
         if ($this->mappingSource) {
             return $this->mappingSource->getDatabaseName();
         }
-        return strtoupper($this->referenceSource->getName()) . "_" . $this->attributeSource->getDatabaseName();
-    }
-
-    /**
-     * @return string
-     */
-    public function getReferencedColumnName()
-    {
-        return $this->attributeSource->getName();
+        return $this->referenceSource->getName() . "_" . $this->attributeSource->getDatabaseName();
     }
 
     /**
