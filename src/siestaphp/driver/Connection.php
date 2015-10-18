@@ -59,11 +59,6 @@ interface Connection
     public function executeStoredProcedure($query);
 
     /**
-     * @return TableBuilder
-     */
-    public function getTableBuilder();
-
-    /**
      * @param string $value
      *
      * @return string
@@ -107,4 +102,10 @@ interface Connection
      * @return ColumnMigrator
      */
     public function getColumnMigrator();
+
+
+    /**
+     * @return CreateStatementFactory
+     */
+    public function getTableBuilder();
 }

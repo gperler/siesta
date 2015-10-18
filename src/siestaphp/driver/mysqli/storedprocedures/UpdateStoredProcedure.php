@@ -2,7 +2,6 @@
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
-
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\Connection;
 use siestaphp\driver\mysqli\replication\Replication;
@@ -12,9 +11,8 @@ use siestaphp\naming\StoredProcedureNaming;
  * Class UpdateStoredProcedure
  * @package siestaphp\driver\mysqli\storedprocedures
  */
-class UpdateStoredProcedure extends StoredProcedureBase
+class UpdateStoredProcedure extends MySQLStoredProcedureBase
 {
-
 
     /**
      * @param EntityGeneratorSource $eds
@@ -26,9 +24,9 @@ class UpdateStoredProcedure extends StoredProcedureBase
     }
 
     /**
-     * @param Connection $connection
+     * @return string
      */
-    public function createProcedure(Connection $connection)
+    public function buildCreateProcedureStatement()
     {
         $this->modifies = true;
 
@@ -39,21 +37,19 @@ class UpdateStoredProcedure extends StoredProcedureBase
         $this->buildStatement();
 
         if (!$this->entityDatabaseSource->hasPrimaryKey()) {
-            return;
+            return null;
         }
 
-        $this->executeProcedureDrop($connection);
-
-        $this->executeProcedureBuild($connection);
+        return parent::buildCreateProcedureStatement();
     }
 
     /**
-     * @param Connection $connection
+     * @return string
      */
-    public function dropProcedure(Connection $connection)
+    public function buildProcedureDropStatement()
     {
         $this->buildName();
-        $this->executeProcedureDrop($connection);
+        return parent::buildProcedureDropStatement();
     }
 
     protected function buildName()
@@ -91,7 +87,6 @@ class UpdateStoredProcedure extends StoredProcedureBase
         $this->signature .= ")";
     }
 
-
     /**
      * build the statement, considering table replication
      */
@@ -105,9 +100,9 @@ class UpdateStoredProcedure extends StoredProcedureBase
         }
     }
 
-
     /**
      * @param string $tableName
+     *
      * @return string
      */
     protected function buildUpdateSQL($tableName)
@@ -115,7 +110,6 @@ class UpdateStoredProcedure extends StoredProcedureBase
 
         // initialize values and where statements
         $values = "";
-
 
         // iterate references first
         foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
@@ -142,12 +136,11 @@ class UpdateStoredProcedure extends StoredProcedureBase
 
         // assemble parts
         $tableName = $this->quote($tableName);
-        $where =  substr($where, 0, -5);;
+        $where = substr($where, 0, -5);;
         $values = rtrim($values, ",");
 
         // create update statement
         return "UPDATE $tableName SET $values WHERE $where;";
     }
-
 
 }

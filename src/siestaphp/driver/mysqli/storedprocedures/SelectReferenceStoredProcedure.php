@@ -1,9 +1,6 @@
 <?php
 
-
 namespace siestaphp\driver\mysqli\storedprocedures;
-
-
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceDatabaseSource;
@@ -14,7 +11,7 @@ use siestaphp\driver\Connection;
  * Class SelectStoredProcedure
  * @package siestaphp\driver\mysqli\storedprocedures
  */
-class SelectReferenceStoredProcedure extends StoredProcedureBase
+class SelectReferenceStoredProcedure extends MySQLStoredProcedureBase
 {
 
     protected $referenceSource;
@@ -31,9 +28,9 @@ class SelectReferenceStoredProcedure extends StoredProcedureBase
     }
 
     /**
-     * @param Connection $connection
+     * @return string
      */
-    public function createProcedure(Connection $connection)
+    public function buildCreateProcedureStatement()
     {
 
         $this->modifies = false;
@@ -46,19 +43,16 @@ class SelectReferenceStoredProcedure extends StoredProcedureBase
 
         $this->buildStatement();
 
-        $this->executeProcedureDrop($connection);
-
-        $this->executeProcedureBuild($connection);
+        return parent::buildCreateProcedureStatement();
     }
 
-
     /**
-     * @param Connection $connection
+     * @return string
      */
-    public function dropProcedure(Connection $connection)
+    public function buildProcedureDropStatement()
     {
         $this->buildName();
-        $this->executeProcedureDrop($connection);
+        return parent::buildProcedureDropStatement();
     }
 
     /**
@@ -69,7 +63,6 @@ class SelectReferenceStoredProcedure extends StoredProcedureBase
         $this->name = $this->referenceSource->getStoredProcedureFinderName();
 
     }
-
 
     /**
      *
@@ -86,7 +79,6 @@ class SelectReferenceStoredProcedure extends StoredProcedureBase
         $this->signature .= ")";
     }
 
-
     protected function buildStatement()
     {
         $where = "";
@@ -100,6 +92,5 @@ class SelectReferenceStoredProcedure extends StoredProcedureBase
         $this->statement = "SELECT * FROM $tableName WHERE $where;";
 
     }
-
 
 }

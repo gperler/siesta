@@ -1,11 +1,8 @@
 <?php
 
-
 namespace siestaphp\driver\mysqli\storedprocedures;
 
-
 use siestaphp\datamodel\entity\EntityGeneratorSource;
-use siestaphp\driver\Connection;
 use siestaphp\driver\mysqli\replication\Replication;
 use siestaphp\naming\StoredProcedureNaming;
 
@@ -13,11 +10,10 @@ use siestaphp\naming\StoredProcedureNaming;
  * Class InsertStoredProcedure
  * @package siestaphp\driver\mysqli\storedprocedures
  */
-class InsertStoredProcedure extends StoredProcedureBase
+class InsertStoredProcedure extends MySQLStoredProcedureBase
 {
 
     const INSERT_STATEMENT = "INSERT INTO %s ( %s ) VALUES ( %s );";
-
 
     /**
      * @param EntityGeneratorSource $eds
@@ -29,9 +25,9 @@ class InsertStoredProcedure extends StoredProcedureBase
     }
 
     /**
-     * @param Connection $connection
+     * @return string
      */
-    public function createProcedure(Connection $connection)
+    public function buildCreateProcedureStatement()
     {
         $this->modifies = true;
 
@@ -41,20 +37,17 @@ class InsertStoredProcedure extends StoredProcedureBase
 
         $this->buildStatement();
 
-        $this->executeProcedureDrop($connection);
-
-        $this->executeProcedureBuild($connection);
+        return parent::buildCreateProcedureStatement();
     }
 
     /**
-     * @param Connection $connection
+     * @return string
      */
-    public function dropProcedure(Connection $connection)
+    public function buildProcedureDropStatement()
     {
         $this->buildName();
-        $this->executeProcedureDrop($connection);
+        return parent::buildProcedureDropStatement();
     }
-
 
     protected function buildName()
     {
@@ -70,7 +63,6 @@ class InsertStoredProcedure extends StoredProcedureBase
                 $parameterName = $column->getSQLParameterName();
                 $this->signature .= "IN $parameterName " . $column->getDatabaseType() . ",";
             }
-
 
         }
 
@@ -95,11 +87,11 @@ class InsertStoredProcedure extends StoredProcedureBase
         }
     }
 
-
     /**
      * builds the insert statement
      *
      * @param string $tableName
+     *
      * @return string
      */
     protected function buildInsertSQL($tableName)
@@ -133,6 +125,5 @@ class InsertStoredProcedure extends StoredProcedureBase
         // done
         return sprintf(self::INSERT_STATEMENT, $tableName, $columnList, $valueList);
     }
-
 
 }

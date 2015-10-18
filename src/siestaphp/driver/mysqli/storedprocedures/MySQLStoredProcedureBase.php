@@ -3,22 +3,19 @@
 namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
-use siestaphp\driver\Connection;
 use siestaphp\driver\mysqli\MySQLConnection;
 use siestaphp\driver\mysqli\replication\Replication;
 
 /**
- * Class StoredProcedureBase
+ * Class MySQLStoredProcedureBase
  * @package siestaphp\driver\mysqli\storedprocedures
  */
-abstract class StoredProcedureBase implements StoredProcedure
+abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
 {
-
 
     const CREATE_PROCEDURE = "CREATE PROCEDURE";
     const READS_DATA = " NOT DETERMINISTIC READS SQL DATA SQL SECURITY INVOKER ";
     const MODIFIES_DATA = " NOT DETERMINISTIC MODIFIES SQL DATA SQL SECURITY INVOKER ";
-
 
     /**
      * @var EntityGeneratorSource
@@ -40,7 +37,6 @@ abstract class StoredProcedureBase implements StoredProcedure
      */
     protected $name;
 
-
     /**
      * @var string
      */
@@ -51,7 +47,6 @@ abstract class StoredProcedureBase implements StoredProcedure
      */
     protected $tableName;
 
-
     /**
      * @var string
      */
@@ -61,7 +56,6 @@ abstract class StoredProcedureBase implements StoredProcedure
      * @var bool
      */
     protected $replication;
-
 
     /**
      * @param EntityGeneratorSource $eds
@@ -83,37 +77,33 @@ abstract class StoredProcedureBase implements StoredProcedure
     }
 
     /**
-     * @param Connection $connection
-     *
+     * @return string
      */
-    protected function executeProcedureBuild(Connection $connection)
+    public function buildCreateProcedureStatement()
     {
-
         $config = ($this->modifies) ? self::MODIFIES_DATA : self::READS_DATA;
 
         $definition = self::CREATE_PROCEDURE . " " . $this->quote($this->name) . " " . $this->signature . " " . $config . " BEGIN " . $this->statement . " END;";
 
-        $connection->query($definition);
+        return $definition;
     }
 
     /**
-     * @param Connection $connection
+     * @return string
      */
-    protected function executeProcedureDrop(Connection $connection)
+    public function buildProcedureDropStatement()
     {
-        $connection->query("DROP PROCEDURE IF EXISTS " . $this->quote($this->name));
+        return "DROP PROCEDURE IF EXISTS " . $this->quote($this->name);
     }
-
 
     /**
      * @param $name
+     *
      * @return string
      */
     protected function quote($name)
     {
         return MySQLConnection::quote($name);
     }
-
-
 
 }

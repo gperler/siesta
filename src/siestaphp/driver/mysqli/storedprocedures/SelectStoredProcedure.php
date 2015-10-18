@@ -10,7 +10,7 @@ use siestaphp\naming\StoredProcedureNaming;
  * Class SelectStoredProcedure
  * @package siestaphp\driver\mysqli\storedprocedures
  */
-class SelectStoredProcedure extends StoredProcedureBase
+class SelectStoredProcedure extends MySQLStoredProcedureBase
 {
 
     /**
@@ -23,9 +23,9 @@ class SelectStoredProcedure extends StoredProcedureBase
     }
 
     /**
-     * @param Connection $connection
+     * @return null|string
      */
-    public function createProcedure(Connection $connection)
+    public function buildCreateProcedureStatement()
     {
 
         $this->modifies = false;
@@ -39,21 +39,20 @@ class SelectStoredProcedure extends StoredProcedureBase
         $this->buildStatement();
 
         if (!$this->entityDatabaseSource->hasPrimaryKey()) {
-            return;
+            return null;
         }
 
-        $this->executeProcedureDrop($connection);
 
-        $this->executeProcedureBuild($connection);
+        return parent::buildCreateProcedureStatement();
     }
 
     /**
-     * @param Connection $connection
+     * @return string
      */
-    public function dropProcedure(Connection $connection)
+    public function buildProcedureDropStatement()
     {
         $this->buildName();
-        $this->executeProcedureDrop($connection);
+        return parent::buildProcedureDropStatement();
     }
 
     /**

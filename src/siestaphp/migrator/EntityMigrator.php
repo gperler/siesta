@@ -44,9 +44,11 @@ class EntityMigrator
     protected $statementList;
 
     /**
-     * @param ColumnMigrator $migrator
-     * @param EntitySource $databaseEntity
-     * @param EntityGeneratorSource $modelEntity
+     * creates a new entity migrator.
+     *
+     * @param ColumnMigrator $migrator           interface to the database specific migrator
+     * @param EntitySource $databaseEntity       current as is entity that needs to be transformed
+     * @param EntityGeneratorSource $modelEntity target state the is supposed to be created
      */
     public function __construct(ColumnMigrator $migrator, EntitySource $databaseEntity, EntityGeneratorSource $modelEntity)
     {
@@ -57,6 +59,7 @@ class EntityMigrator
     }
 
     /**
+     * returns the list of ALTER statement for the migration of the given database entity to the target model entity
      * @return string[]
      */
     public function createAlterStatementList()
@@ -70,7 +73,9 @@ class EntityMigrator
     }
 
     /**
-     * brings the alter table statements into the right order
+     * brings the alter table statements into the right order. First indexes and foreign keys are dropped, then columns
+     * are added, existing ones are modified. Then the primary key is changed (if needed). Afterwards not needed
+     * columns are droped and finaly indexes and foreign key constraints are addedd.
      */
     private function assembleStatementList()
     {
@@ -80,8 +85,8 @@ class EntityMigrator
         // drop indexes
 
         // add columns
-        $this->addStatementList($this->attributeListMigrator->getAddStatementList());
-        $this->addStatementList($this->attributeListMigrator->getModifyStatementList());
+        $this->addStatementList($this->attributeListMigrator->getAddStatementList(), true);
+        $this->addStatementList($this->attributeListMigrator->getModifyStatementList(), true);
 
         // modify columns
         $this->addStatementList($this->referenceListMigrator->getAddStatementList());
@@ -91,7 +96,7 @@ class EntityMigrator
         $this->addStatementList($this->getMigratePrimaryKeyStatementList());
 
         // drop columns
-        $this->addStatementList($this->attributeListMigrator->getDropStatementList());
+        $this->addStatementList($this->attributeListMigrator->getDropStatementList(), true);
         $this->addStatementList($this->referenceListMigrator->getDropStatementList());
 
         // add foreign key
@@ -101,6 +106,7 @@ class EntityMigrator
     }
 
     /**
+     * compares the primary key column and generates migrate primary key statements if needed
      * @return array
      */
     private function getMigratePrimaryKeyStatementList()
@@ -118,6 +124,8 @@ class EntityMigrator
     }
 
     /**
+     * creates a list of primary key columns for a given EntitySource object
+     *
      * @param EntitySource $source
      *
      * @return string[]
@@ -142,14 +150,20 @@ class EntityMigrator
         return $pkList;
     }
 
+    /**
+     * migrates the attributes of the entity and gathers add modify and drop statements
+     */
     private function migrateAttributeList()
     {
-
         $this->attributeListMigrator = new AttributeListMigrator($this->columnMigrator, $this->databaseEntity->getAttributeSourceList(), $this->modelEntity->getAttributeGeneratorSourceList());
         $this->attributeListMigrator->createAlterStatementList();
 
     }
 
+    /**
+     * migrates the references of the entity and gathers add modify and drop statements for the used columns and add
+     * drop constraints statements
+     */
     private function migrateReferenceList()
     {
         $this->referenceListMigrator = new ReferenceListMigrator($this->columnMigrator, $this->databaseEntity->getReferenceSourceList(), $this->modelEntity->getReferenceGeneratorSourceList());
@@ -162,15 +176,18 @@ class EntityMigrator
     }
 
     /**
+     * adds a statement and replaces the table place holder against the real table. Considers delimited tables.
+     *
      * @param string[] $statementList
+     * @param bool $isAttribute delimiter tables are only changed for the attributes
      */
-    private function addStatementList($statementList)
+    private function addStatementList($statementList, $isAttribute = false)
     {
         foreach ($statementList as $statement) {
             $this->statementList[] = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->databaseEntity->getTable(), $statement);
 
             // handle delimited table
-            if ($this->databaseEntity->isDelimit()) {
+            if ($this->databaseEntity->isDelimit() and $isAttribute) {
 
             }
         }

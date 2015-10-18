@@ -21,10 +21,10 @@ use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\driver\ConnectionFactory;
 
 /**
- * Class TableCreator
+ * Class MySQLTableCreator
  * @package siestaphp\driver\mysqli
  */
-class TableCreator
+class MySQLTableCreator
 {
 
     const CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
@@ -76,7 +76,10 @@ class TableCreator
 
     /**
      * @param EntityGeneratorSource $eds
+     *
+     * @return string
      */
+
     public function setupTable(EntityGeneratorSource $eds)
     {
         $this->entityDatabaseSource = $eds;
@@ -89,7 +92,7 @@ class TableCreator
 
         $sql = $this->buildTableCreateStatement($eds->getTable());
 
-        ConnectionFactory::getConnection()->query($sql);
+        return $sql;
 
     }
 
@@ -155,7 +158,7 @@ class TableCreator
     {
         $columnList = array();
         foreach ($reference->getReferencedColumnList() as $column) {
-            $columnList[]= $this->buildColumnSQLSnippet($column->getDatabaseName(), $column->getDatabaseType(), $reference->isRequired());
+            $columnList[] = $this->buildColumnSQLSnippet($column->getDatabaseName(), $column->getDatabaseType(), $reference->isRequired());
         }
 
         return implode(",", $columnList);

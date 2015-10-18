@@ -17,7 +17,7 @@ use siestaphp\driver\exceptions\UniqueConstraintViolationException;
 use siestaphp\driver\mysqli\installer\Installer;
 use siestaphp\driver\mysqli\metadata\DatabaseMetaData;
 use siestaphp\driver\ResultSet;
-use siestaphp\driver\TableBuilder;
+use siestaphp\driver\CreateStatementFactory;
 
 /**
  * Class MySQLConnection
@@ -214,12 +214,12 @@ class MySQLConnection implements Connection
     }
 
     /**
-     * @return TableBuilder
+     * @return CreateStatementFactory
      */
     public function getTableBuilder()
     {
 
-        return new MySQLTableBuilder();
+        return new MySQLCreateStatementFactory();
     }
 
     /**

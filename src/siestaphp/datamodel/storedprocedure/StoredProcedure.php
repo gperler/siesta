@@ -9,7 +9,7 @@ use siestaphp\generator\ValidationLogger;
 use siestaphp\naming\XMLStoredProcedure;
 
 /**
- * Class StoredProcedure
+ * Class MySQLStoredProcedure
  * @package siestaphp\datamodel
  */
 class StoredProcedure implements Processable, StoredProcedureSource

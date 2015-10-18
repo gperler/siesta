@@ -6,19 +6,23 @@ namespace siestaphp\driver;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 
 /**
- * Interface TableBuilder
+ * Interface CreateStatementFactory
  * @package siestaphp\driver
  */
-interface TableBuilder
+interface CreateStatementFactory
 {
 
     /**
      * @param EntityGeneratorSource $entity
+     *
+     * @return string[]
      */
     public function setupTables(EntityGeneratorSource $entity);
 
     /**
      * @param EntityGeneratorSource $ets
+     *
+     * @return string[]
      */
     public function setupStoredProcedures(EntityGeneratorSource $ets);
 }

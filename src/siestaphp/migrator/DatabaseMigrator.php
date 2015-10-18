@@ -9,7 +9,7 @@ use siestaphp\driver\ColumnMigrator;
 use siestaphp\driver\Connection;
 
 /**
- * Class DatabaseMigrator
+ * Class DatabaseMigrator allows to retrieve alter statement by comparing model/schema with current database setup
  * @package siestaphp\generator
  */
 class DatabaseMigrator
@@ -67,17 +67,20 @@ class DatabaseMigrator
      */
     public function createAlterStatementList($dropUnusedTables = false)
     {
-
+        // retrieve entity list as currently setup in the database
         $this->databaseModel = $this->connection->getEntitySourceList();
 
+        // iterate database entities and migrate entity
         foreach ($this->dataModelContainer->getEntityList() as $entity) {
             $this->migrateEntity($entity);
         }
 
+        // check if unused tables shall be dropped
         if ($dropUnusedTables) {
             $this->dropUnusedTables();
         }
 
+        // done, return list of needed statements
         return $this->alterStatementList;
 
     }
@@ -91,13 +94,21 @@ class DatabaseMigrator
     {
         $databaseEntity = $this->getDatabaseEntityByTableName($modelSource->getTable());
 
+        // if database entity does not exist, create it
         if ($databaseEntity === null) {
-            $this->createEntity($modelSource);
+            $this->setupEntityInDatabase($modelSource);
             return;
         }
+
+        // compare database with current model/schema
         $entityMigrator = new EntityMigrator($this->columnMigrator, $databaseEntity, $modelSource);
         $statementList = $entityMigrator->createAlterStatementList();
         $this->addAlterStatements($statementList);
+
+        // create stored procedures
+        $tableBuilder = $this->connection->getTableBuilder();
+        $tableBuilder->setupStoredProcedures($modelSource);
+
     }
 
     /**
@@ -105,12 +116,12 @@ class DatabaseMigrator
      *
      * @return void
      */
-    private function createEntity(EntityGeneratorSource $source)
+    private function setupEntityInDatabase(EntityGeneratorSource $source)
     {
         $tableBuilder = $this->connection->getTableBuilder();
 
-        $tableBuilder->setupTables($source);
-        $tableBuilder->setupStoredProcedures($source);
+        $this->addAlterStatements($tableBuilder->setupTables($source));
+        $this->addAlterStatements($tableBuilder->setupStoredProcedures($source));
     }
 
     /**

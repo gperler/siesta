@@ -13,43 +13,52 @@ use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\driver\ColumnMigrator;
 
 /**
- * Class AttributeListMigrator
+ * Class AttributeListMigrator allows to create alter statement for a list of attributes of current database entity and
+ * a (target) model entity
  * @package siestaphp\migrator
  */
 class AttributeListMigrator
 {
 
     /**
+     * current as is attribute list
      * @var AttributeSource[] $databaseAttributeList
      */
     protected $databaseAttributeList;
 
     /**
+     * target attribute list
      * @var AttributeGeneratorSource[]
      */
     protected $modelAttributeList;
 
     /**
+     * database specific alter statement creator
      * @var ColumnMigrator
      */
     protected $columnMigrator;
 
     /**
+     * list of all add column statements
      * @var string[]
      */
     protected $addStatementList;
 
     /**
+     * list of all modify column statements
      * @var string[]
      */
     protected $modifiyStatementList;
 
     /**
+     * list of all drop column statements
      * @var string[]
      */
     protected $dropStatementList;
 
     /**
+     * allows to compare the current setup in the database with a target state defined by a model/schema
+     *
      * @param ColumnMigrator $columnMigrator
      * @param AttributeSource[] $databaseAttributeList
      * @param AttributeGeneratorSource[] $modelAttributeList
@@ -65,7 +74,7 @@ class AttributeListMigrator
     }
 
     /**
-     *
+     * compares both attribute list and request the needed alter statements
      */
     public function createAlterStatementList()
     {
@@ -146,21 +155,24 @@ class AttributeListMigrator
     /**
      * @return string[]
      */
-    public function getAddStatementList() {
+    public function getAddStatementList()
+    {
         return $this->addStatementList;
     }
 
     /**
      * @return string[]
      */
-    public function getModifyStatementList() {
+    public function getModifyStatementList()
+    {
         return $this->modifiyStatementList;
     }
 
     /**
      * @return string[]
      */
-    public function getDropStatementList() {
+    public function getDropStatementList()
+    {
         return $this->dropStatementList;
     }
 }
