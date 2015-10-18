@@ -98,13 +98,13 @@ class MysqlColumnMigrator implements ColumnMigrator
     }
 
     /**
-     * @param string $columnName
+     * @param DatabaseColumn $column
      *
      * @return string
      */
-    public function createDropColumnStatement($columnName)
+    public function createDropColumnStatement(DatabaseColumn $column)
     {
-        return sprintf(self::DROP_COLUMN, $this->tableName, $this->quote($columnName));
+        return sprintf(self::DROP_COLUMN, $this->tableName, $this->quote($column->getDatabaseName()));
     }
 
     /**

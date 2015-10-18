@@ -130,7 +130,7 @@ class AttributeListMigrator
 
         // no to-be drop the column
         if ($toBe === null) {
-            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($asIs->getDatabaseName());
+            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($asIs);
             return;
         }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="Customer" namespace="siestaphp\tests\functional\migrationref\gen" targetPath="gen">
+    <entity name="Customer" namespace="siestaphp\tests\functional\migrationref\gen" targetPath="gen" table="Customer">
         <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
         <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
         <attribute name="dob" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"/>

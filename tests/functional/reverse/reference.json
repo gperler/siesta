@@ -2,8 +2,8 @@
   "name": "Address_person",
   "constraintName": "Address_person",
   "foreignClass": "Person",
-  "onDelete": "CASCADE",
-  "onUpdate": "SET NULL",
+  "onDelete": "cascade",
+  "onUpdate": "set null",
   "referenceSource": {
     "person_id": {
       "dbType": "INT",

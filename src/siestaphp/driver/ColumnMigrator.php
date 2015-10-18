@@ -40,11 +40,11 @@ interface ColumnMigrator
     public function getDropTableStatement(EntitySource $entitySource);
 
     /**
-     * @param string $columnName
+     * @param DatabaseColumn $column
      *
      * @return string
      */
-    public function createDropColumnStatement($columnName);
+    public function createDropColumnStatement(DatabaseColumn $column);
 
     /**
      * @param DatabaseColumn $column

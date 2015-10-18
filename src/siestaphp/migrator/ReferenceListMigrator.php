@@ -184,7 +184,7 @@ class ReferenceListMigrator
 
         // drop columns
         foreach ($referenceSource->getReferencedColumnList() as $column) {
-            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($column->getDatabaseName());
+            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($column);
         }
     }
 
