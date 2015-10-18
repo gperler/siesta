@@ -257,7 +257,7 @@ class ReferenceMetaData implements ReferenceSource
      */
     public function getOnDelete()
     {
-        return strtoupper($this->onDelete);
+        return strtolower($this->onDelete);
     }
 
     /**
@@ -265,7 +265,7 @@ class ReferenceMetaData implements ReferenceSource
      */
     public function getOnUpdate()
     {
-        return strtoupper($this->onUpdate);
+        return strtolower($this->onUpdate);
     }
 
     /**

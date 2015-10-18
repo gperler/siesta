@@ -85,7 +85,7 @@ class EntityMigrator
 
         // modify columns
         $this->addStatementList($this->referenceListMigrator->getAddStatementList());
-        $this->addStatementList($this->referenceListMigrator->getAddStatementList());
+        $this->addStatementList($this->referenceListMigrator->getModifyStatementList());
 
         // modify primary key
         $this->addStatementList($this->getMigratePrimaryKeyStatementList());

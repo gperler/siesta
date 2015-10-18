@@ -41,7 +41,7 @@ class MigrationATest extends SiestaTester
 
     }
 
-    public function testMigrationAttribute()
+    public function testMigrateAttribute()
     {
 
         // read model

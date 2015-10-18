@@ -8,7 +8,6 @@
 
 namespace siestaphp\migrator;
 
-use siestaphp\datamodel\reference\MappingSource;
 use siestaphp\datamodel\reference\ReferencedColumn;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
@@ -118,6 +117,7 @@ class ReferenceListMigrator
 
     /**
      * helper method that allows to find a referenceSource by the constraint name
+     *
      * @param ReferenceSource[] $referenceSourceList
      * @param string $constraintName
      *
@@ -135,6 +135,7 @@ class ReferenceListMigrator
 
     /**
      * compares to references sources and triggers corresponding
+     *
      * @param ReferenceSource $asIs
      * @param ReferenceGeneratorSource $toBe
      */
@@ -182,8 +183,8 @@ class ReferenceListMigrator
         $this->addDropForeignKey($referenceSource);
 
         // drop columns
-        foreach ($referenceSource->getMappingSourceList() as $mapping) {
-            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($mapping->getDatabaseName());
+        foreach ($referenceSource->getReferencedColumnList() as $column) {
+            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($column->getDatabaseName());
         }
     }
 
@@ -229,13 +230,13 @@ class ReferenceListMigrator
         $processedReferencedList = array();
 
         // stores if the foreign key constraint needs to be drop and recreated
-        $needsForeignKeyDropAdd = false;
+        $needsForeignKeyDropAdd = 0;
 
         // iterate to be referenced columns and determine if change is needed
         foreach ($toBeList as $toBeColumn) {
             $asIsColumn = $this->getReferencedColumnByDatabaseName($asIsList, $toBeColumn->getDatabaseName());
 
-            $needsForeignKeyDropAdd = ($needsForeignKeyDropAdd or $this->modifyReferencedColumn($asIsColumn, $toBeColumn));
+            $needsForeignKeyDropAdd |= $this->modifyReferencedColumn($asIsColumn, $toBeColumn);
 
             // if as is column was found store, that we already processed it
             if ($asIsColumn) {
@@ -250,10 +251,10 @@ class ReferenceListMigrator
                 continue;
             }
 
-            $needsForeignKeyDropAdd = ($needsForeignKeyDropAdd or $this->modifyReferencedColumn($asIsColumn, null));
+            $needsForeignKeyDropAdd |= $this->modifyReferencedColumn($asIsColumn, null);
         }
 
-        return $needsForeignKeyDropAdd;
+        return $needsForeignKeyDropAdd === 1;
 
     }
 
@@ -276,7 +277,7 @@ class ReferenceListMigrator
         }
 
         // check if columns are identical
-        if ($toBe->isRequired() === $toBe->isRequired() and $asIs->getDatabaseType() === $toBe->getDatabaseName()) {
+        if ($asIs->getDatabaseName() === $toBe->getDatabaseName() and $asIs->isRequired() === $toBe->isRequired()) {
             return false;
         }
 
