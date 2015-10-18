@@ -37,7 +37,17 @@ class AttributeListMigrator
     /**
      * @var string[]
      */
-    protected $alterStatementList;
+    protected $addStatementList;
+
+    /**
+     * @var string[]
+     */
+    protected $modifiyStatementList;
+
+    /**
+     * @var string[]
+     */
+    protected $dropStatementList;
 
     /**
      * @param ColumnMigrator $columnMigrator
@@ -49,11 +59,13 @@ class AttributeListMigrator
         $this->columnMigrator = $columnMigrator;
         $this->databaseAttributeList = $databaseAttributeList;
         $this->modelAttributeList = $modelAttributeList;
-        $this->alterStatementList = array();
+        $this->addStatementList = array();
+        $this->modifiyStatementList = array();
+        $this->dropStatementList = array();
     }
 
     /**
-     * @return string[]
+     *
      */
     public function createAlterStatementList()
     {
@@ -76,7 +88,6 @@ class AttributeListMigrator
         // iterate attributes from database and retrieve alter statements
         foreach ($this->databaseAttributeList as $databaseAttribute) {
 
-
             // check if attribute has already been processed
             if (in_array($databaseAttribute->getDatabaseName(), $processedDatabaseList)) {
                 continue;
@@ -85,14 +96,13 @@ class AttributeListMigrator
             $this->createAlterStatement($databaseAttribute, null);
         }
 
-        return $this->alterStatementList;
     }
 
     /**
      * @param AttributeSource[] $attributeSourceList
      * @param string $databaseName
      *
-*@return AttributeSource|null
+     * @return AttributeSource|null
      */
     private function getAttributeSourceByDatabaseName($attributeSourceList, $databaseName)
     {
@@ -108,21 +118,19 @@ class AttributeListMigrator
      * @param AttributeSource $asIs
      * @param AttributeGeneratorSource $toBe
      *
-     * @return string[]
+     * @return void
      */
     private function createAlterStatement($asIs, $toBe)
     {
         // no as-is create the column
         if ($asIs === null) {
-            $statement = $this->columnMigrator->createAddColumnStatement($toBe);
-            $this->addStatement($statement);
+            $this->addStatementList[] = $this->columnMigrator->createAddColumnStatement($toBe);
             return;
         }
 
         // no to-be drop the column
         if ($toBe === null) {
-            $statement = $this->columnMigrator->createDropColumnStatement($asIs->getDatabaseName());
-            $this->addStatement($statement);
+            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($asIs->getDatabaseName());
             return;
         }
 
@@ -132,16 +140,27 @@ class AttributeListMigrator
         }
 
         // types not identical
-        $statement = $this->columnMigrator->createModifiyColumnStatement($toBe);
-        $this->addStatement($statement);
+        $this->modifiyStatementList[] = $this->columnMigrator->createModifiyColumnStatement($toBe);
     }
 
     /**
-     * @param string $statement
+     * @return string[]
      */
-    private function addStatement($statement)
-    {
-        $this->alterStatementList[] = $statement;
+    public function getAddStatementList() {
+        return $this->addStatementList;
     }
 
+    /**
+     * @return string[]
+     */
+    public function getModifyStatementList() {
+        return $this->modifiyStatementList;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDropStatementList() {
+        return $this->dropStatementList;
+    }
 }

@@ -41,7 +41,6 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
     protected function connectAndInstall($database)
     {
         $d = $database;
-        //$d = SIESTA_DATABASE;
         $this->connection = ConnectionFactory::getConnection();
         $this->connection->query("DROP DATABASE IF EXISTS " . $d);
         $this->connection->query("CREATE DATABASE " . $d);

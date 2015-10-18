@@ -10,6 +10,7 @@ namespace siestaphp\migrator;
 
 use siestaphp\datamodel\reference\MappingSource;
 use siestaphp\datamodel\reference\ReferencedColumn;
+use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\driver\ColumnMigrator;
@@ -39,7 +40,27 @@ class ReferenceListMigrator
     /**
      * @var string[]
      */
-    protected $alterStatementList;
+    protected $dropForeignKeyStatementList;
+
+    /**
+     * @var string[]
+     */
+    protected $addForeignKeyStatementList;
+
+    /**
+     * @var string[]
+     */
+    protected $addStatementList;
+
+    /**
+     * @var string[]
+     */
+    protected $modifiyStatementList;
+
+    /**
+     * @var string[]
+     */
+    protected $dropStatementList;
 
     /**
      * @param ColumnMigrator $columnMigrator
@@ -51,11 +72,17 @@ class ReferenceListMigrator
         $this->columnMigrator = $columnMigrator;
         $this->databaseReferenceList = $databaseReferenceList;
         $this->modelReferenceList = $modelReferenceList;
-        $this->alterStatementList = array();
+        $this->addForeignKeyStatementList = array();
+        $this->dropForeignKeyStatementList = array();
+        $this->addStatementList = array();
+        $this->modifiyStatementList = array();
+        $this->dropStatementList = array();
     }
 
     /**
-     * @return string[]
+     * compares the refernces (foreign key) found in the database with the definition in the model and creates alter
+     * statements for columns and foreign key constraints
+     * @return void
      */
     public function createAlterStatementList()
     {
@@ -67,7 +94,7 @@ class ReferenceListMigrator
             // check if a corresponding database reference exists
             $databaseReference = $this->getReferenceSourceByConstraintName($this->databaseReferenceList, $modelReference->getConstraintName());
 
-            // retrieve alter statements from migrator and add them
+            // retrieve alter statements and add them
             $this->createAlterStatement($databaseReference, $modelReference);
 
             // if a database reference has been found add it to the processed list
@@ -87,11 +114,10 @@ class ReferenceListMigrator
             // no corresponding model reference will result in drop statements
             $this->createAlterStatement($databaseReference, null);
         }
-
-        return $this->alterStatementList;
     }
 
     /**
+     * helper method that allows to find a referenceSource by the constraint name
      * @param ReferenceSource[] $referenceSourceList
      * @param string $constraintName
      *
@@ -108,6 +134,7 @@ class ReferenceListMigrator
     }
 
     /**
+     * compares to references sources and triggers corresponding
      * @param ReferenceSource $asIs
      * @param ReferenceGeneratorSource $toBe
      */
@@ -136,15 +163,13 @@ class ReferenceListMigrator
     private function addReference(ReferenceGeneratorSource $referenceSource)
     {
 
+        $this->addAddForeignKey($referenceSource);
+
         // add column statements
         foreach ($referenceSource->getReferencedColumnList() as $column) {
-            $addColumStatement = $this->columnMigrator->createAddColumnStatement($column);
-            $this->addStatement($addColumStatement);
-
+            $this->addStatementList[] = $this->columnMigrator->createAddColumnStatement($column);
         }
 
-        $addFKStatement = $this->columnMigrator->createAddForeignKeyStatement($referenceSource);
-        $this->addStatement($addFKStatement);
     }
 
     /**
@@ -154,12 +179,11 @@ class ReferenceListMigrator
      */
     private function dropReference(ReferenceSource $referenceSource)
     {
-        $dropFKStatement = $this->columnMigrator->createDropForeignKeyStatemtn($referenceSource);
-        $this->addStatement($dropFKStatement);
+        $this->addDropForeignKey($referenceSource);
 
+        // drop columns
         foreach ($referenceSource->getMappingSourceList() as $mapping) {
-            $dropColumnStatement = $this->columnMigrator->createDropColumnStatement($mapping->getDatabaseName());
-            $this->addStatement($dropColumnStatement);
+            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($mapping->getDatabaseName());
         }
     }
 
@@ -167,43 +191,171 @@ class ReferenceListMigrator
      * @param ReferenceSource $asIs
      * @param ReferenceGeneratorSource $toBe
      */
-    private function modifyReference(ReferenceSource $asIs, ReferenceGeneratorSource $toBe) {
+    private function modifyReference(ReferenceSource $asIs, ReferenceGeneratorSource $toBe)
+    {
 
+        // check if they are referencing the same column
         if ($asIs->getForeignTable() !== $toBe->getForeignTable()) {
             $this->dropReference($asIs);
             $this->addReference($toBe);
             return;
         }
 
-        $asIs->getReferencedColumnList();
-        $toBe->getReferencedColumnList();
+        // modify columns if needed and check if the
+        if ($this->compareReferencedColumnList($asIs->getReferencedColumnList(), $toBe->getReferencedColumnList())) {
+            $this->addAddForeignKey($toBe);
+            $this->addDropForeignKey($asIs);
 
+            return;
+        }
 
-        if ($asIs->getOnUpdate() !== $toBe->getOnUpdate() or $asIs->getOnDelete() !== $toBe->getOnDelete()) {
+        // compare on update // >> drop constraint, add constraint
+        if ($asIs->getOnUpdate() === $toBe->getOnUpdate() and $asIs->getOnDelete() === $toBe->getOnDelete()) {
+            return;
+        }
+
+        $this->addAddForeignKey($toBe);
+        $this->addDropForeignKey($asIs);
+    }
+
+    /**
+     * @param ReferencedColumnSource[] $asIsList
+     * @param ReferencedColumnSource[] $toBeList
+     *
+     * @return bool
+     */
+    private function compareReferencedColumnList($asIsList, $toBeList)
+    {
+        $processedReferencedList = array();
+
+        // stores if the foreign key constraint needs to be drop and recreated
+        $needsForeignKeyDropAdd = false;
+
+        // iterate to be referenced columns and determine if change is needed
+        foreach ($toBeList as $toBeColumn) {
+            $asIsColumn = $this->getReferencedColumnByDatabaseName($asIsList, $toBeColumn->getDatabaseName());
+
+            $needsForeignKeyDropAdd = ($needsForeignKeyDropAdd or $this->modifyReferencedColumn($asIsColumn, $toBeColumn));
+
+            // if as is column was found store, that we already processed it
+            if ($asIsColumn) {
+                $processedReferencedList[] = $asIsColumn->getDatabaseName();
+            }
 
         }
-    }
 
-    /**
-     * @param MappingSource[] $asIsList
-     * @param ReferencedColumn[] $toBeList
-     */
-    private function compareColumns($asIsList, $toBeList) {
-        $asIsList[0]->getForeignName();
-        $toBeList[0]->getReferencedDatabaseName();
+        // iterate as is column that have not been processed yet (to drop them)
+        foreach ($asIsList as $asIsColumn) {
+            if (in_array($asIsColumn->getDatabaseName(), $processedReferencedList)) {
+                continue;
+            }
 
-    }
+            $needsForeignKeyDropAdd = ($needsForeignKeyDropAdd or $this->modifyReferencedColumn($asIsColumn, null));
+        }
 
-
-    private function referencedColumns() {
+        return $needsForeignKeyDropAdd;
 
     }
 
     /**
-     * @param string $statement
+     * @param ReferencedColumnSource $asIs
+     * @param ReferencedColumnSource $toBe
+     *
+     * @return bool tells if a drop/create fk constraint is needed
      */
-    private function addStatement($statement)
+    private function modifyReferencedColumn($asIs, $toBe)
     {
-        $this->alterStatementList[] = $statement;
+        if ($asIs === null) {
+            $this->addStatementList[] = $this->columnMigrator->createAddColumnStatement($toBe);
+            return true;
+        }
+
+        if ($toBe === null) {
+            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($asIs);
+            return true;
+        }
+
+        // check if columns are identical
+        if ($toBe->isRequired() === $toBe->isRequired() and $asIs->getDatabaseType() === $toBe->getDatabaseName()) {
+            return false;
+        }
+
+        // changing required or type does not required a drop/add foreign key statement
+        $this->modifiyStatementList[] = $this->columnMigrator->createModifiyColumnStatement($toBe);
+        return false;
+
     }
+
+    /**
+     * @param ReferencedColumn[] $referencedList
+     * @param string $databaseName
+     *
+     * @return ReferencedColumn
+     */
+    private function getReferencedColumnByDatabaseName(array $referencedList, $databaseName)
+    {
+        foreach ($referencedList as $referenced) {
+            if ($referenced->getDatabaseName() === $databaseName) {
+                return $referenced;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param ReferenceSource $source
+     */
+    private function addDropForeignKey(ReferenceSource $source)
+    {
+        $this->dropForeignKeyStatementList[] = $this->columnMigrator->createDropForeignKeyStatemtn($source);
+    }
+
+    /**
+     * @param ReferenceGeneratorSource $source
+     */
+    private function addAddForeignKey(ReferenceGeneratorSource $source)
+    {
+        $this->addForeignKeyStatementList[] = $this->columnMigrator->createAddForeignKeyStatement($source);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAddForeignKeyStatementList()
+    {
+        return $this->addForeignKeyStatementList;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDropForeignKeyStatementList()
+    {
+        return $this->dropForeignKeyStatementList;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAddStatementList()
+    {
+        return $this->addStatementList;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getModifyStatementList()
+    {
+        return $this->modifiyStatementList;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDropStatementList()
+    {
+        return $this->dropStatementList;
+    }
+
 }

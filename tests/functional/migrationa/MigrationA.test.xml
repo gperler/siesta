@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\migrationa\gen" table="ARTIST" targetPath="gen/">
+    <entity name="Artist" namespace="siestaphp\tests\functional\migrationa\gen" table="ARTIST" targetPath="gen/">
 
 
         <!-- ORIGINAL CONTENT

@@ -97,7 +97,7 @@ class DataModelContainer
      *
      * @return Entity
      */
-    public function getEntityDetails($entityName)
+    public function getEntityByClassname($entityName)
     {
         return $this->entityList[$entityName];
     }

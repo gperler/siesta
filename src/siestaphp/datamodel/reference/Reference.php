@@ -160,7 +160,7 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
         }
 
         // try to find the referenced entity
-        $this->referencedEntity = $container->getEntityDetails($this->foreignClass);
+        $this->referencedEntity = $container->getEntityByClassname($this->foreignClass);
         if (!$this->referencedEntity) {
             return;
         }

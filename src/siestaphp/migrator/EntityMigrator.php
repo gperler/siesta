@@ -35,9 +35,21 @@ class EntityMigrator
     protected $modelEntity;
 
     /**
+     * @var AttributeListMigrator
+     */
+    protected $attributeListMigrator;
+
+    /**
+     * @var ReferenceListMigrator
+     */
+    protected $referenceListMigrator;
+
+    /**
      * @var string[]
      */
     protected $statementList;
+
+
 
     /**
      * @param ColumnMigrator $migrator
@@ -61,8 +73,40 @@ class EntityMigrator
         $this->migrateAttributeList();
         $this->migrateReferenceList();
         $this->migrateIndexList();
+        $this->assembleStatementList();
+
         return $this->statementList;
     }
+
+    /**
+     * brings the alter table statements into the right order
+     */
+    private function assembleStatementList() {
+
+        // drop foreign key constraints
+        $this->addStatementList($this->referenceListMigrator->getDropForeignKeyStatementList());
+        // drop indexes
+
+        // add columns
+        $this->addStatementList($this->attributeListMigrator->getAddStatementList());
+        $this->addStatementList($this->attributeListMigrator->getModifyStatementList());
+
+        // modify columns
+        $this->addStatementList($this->referenceListMigrator->getAddStatementList());
+        $this->addStatementList($this->referenceListMigrator->getAddStatementList());
+
+        // modify primary key
+
+        // drop columns
+        $this->addStatementList($this->attributeListMigrator->getDropStatementList());
+        $this->addStatementList($this->referenceListMigrator->getDropStatementList());
+
+        // add foreign key
+        $this->addStatementList($this->referenceListMigrator->getAddForeignKeyStatementList());
+        // add indexes
+
+    }
+
 
     private function migratePrimaryKey()
     {
@@ -72,17 +116,15 @@ class EntityMigrator
     private function migrateAttributeList()
     {
 
-        $attributeListMigrator = new AttributeListMigrator($this->columnMigrator, $this->databaseEntity->getAttributeSourceList(), $this->modelEntity->getAttributeGeneratorSourceList());
-        $statementList = $attributeListMigrator->createAlterStatementList();
+        $this->attributeListMigrator = new AttributeListMigrator($this->columnMigrator, $this->databaseEntity->getAttributeSourceList(), $this->modelEntity->getAttributeGeneratorSourceList());
+        $this->attributeListMigrator->createAlterStatementList();
 
-        $this->addStatementList($statementList);
     }
 
     private function migrateReferenceList()
     {
-        $referenceListMigrator = new ReferenceListMigrator($this->columnMigrator, $this->databaseEntity->getReferenceSourceList(), $this->modelEntity->getReferenceGeneratorSourceList());
-        $statementList = $referenceListMigrator->createAlterStatementList();
-        $this->addStatementList($statementList);
+        $this->referenceListMigrator = new ReferenceListMigrator($this->columnMigrator, $this->databaseEntity->getReferenceSourceList(), $this->modelEntity->getReferenceGeneratorSourceList());
+        $this->referenceListMigrator->createAlterStatementList();
     }
 
     private function migrateIndexList()

@@ -64,7 +64,7 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
      */
     private function updateModel1N(DataModelContainer $container)
     {
-        $this->foreignClassEntity = $container->getEntityDetails($this->getForeignClass());
+        $this->foreignClassEntity = $container->getEntityByClassname($this->getForeignClass());
 
         if ($this->foreignClassEntity) {
             $this->reference = $this->foreignClassEntity->getReferenceByName($this->getReferenceName());

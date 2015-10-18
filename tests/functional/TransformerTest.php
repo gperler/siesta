@@ -43,7 +43,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $dataModelContainer->updateModel();
 
         // get artist entity
-        $entitySource = $dataModelContainer->getEntityDetails("ArtistEntity");
+        $entitySource = $dataModelContainer->getEntityByClassname("ArtistEntity");
 
         // check that artist entity was found
         $this->assertNotNull($entitySource, "ArtistEntity not found");

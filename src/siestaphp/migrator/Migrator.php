@@ -84,7 +84,7 @@ class Migrator
             $this->logger->info("Direct migration of database " . $datbase);
 
             foreach($statementList as $statement) {
-                $this->logger->info("Executing" . $statement);
+                $this->logger->info("Executing " . $statement);
                 $this->connection->query($statement);
             }
 
