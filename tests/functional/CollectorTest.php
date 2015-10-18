@@ -11,8 +11,6 @@ use siestaphp\tests\functional\collector1n\gen\LabelEntity;
 class CollectorTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "ONE_N_COLLECTOR_TEST";
-
     const ASSET_PATH = "/collector1n";
 
     const SRC_XML = "/Collector-1n.test.xml";
@@ -20,7 +18,7 @@ class CollectorTest extends SiestaTester
     protected function setUp()
     {
 
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

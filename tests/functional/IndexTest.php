@@ -11,7 +11,6 @@ use siestaphp\tests\functional\multipk\gen\LabelEntity;
  */
 class IndexTest extends SiestaTester
 {
-    const DATABASE_NAME = "INDEX_TEST";
 
     const ASSET_PATH = "/index";
 
@@ -19,7 +18,7 @@ class IndexTest extends SiestaTester
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

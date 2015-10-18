@@ -11,15 +11,13 @@ use siestaphp\tests\functional\namespacetest\base\ns4\Label;
 class NamespaceTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "NAMESPACE_TEST";
-
     const ASSET_PATH = "/namespacetest";
 
     const SRC_XML = "/Namespace.test.xml";
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

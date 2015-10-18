@@ -11,15 +11,13 @@ use siestaphp\tests\functional\uuid\gen\LabelEntity;
 class UUIDTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "UUID_TEST";
-
     const ASSET_PATH = "/uuid";
 
     const SRC_XML = "/UUID.test.xml";
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

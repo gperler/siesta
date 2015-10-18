@@ -13,8 +13,6 @@ use siestaphp\util\Util;
 class ReverseTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "REVERSE_TEST";
-
     const ASSET_PATH = "/reverse";
 
     const SRC_XML = "/Reverse.test.xml";
@@ -25,7 +23,7 @@ class ReverseTest extends SiestaTester
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML, array());
 
@@ -35,7 +33,7 @@ class ReverseTest extends SiestaTester
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
 
     }
 

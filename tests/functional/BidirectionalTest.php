@@ -11,8 +11,6 @@ use siestaphp\tests\functional\bidirectional\gen\Customer;
 class BidirectionalTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "BIDIRECTIONAL_TEST";
-
     const ASSET_PATH = "/bidirectional";
 
     const SRC_XML = "/Bidirectional.test.xml";
@@ -20,7 +18,7 @@ class BidirectionalTest extends SiestaTester
     protected function setUp()
     {
 
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

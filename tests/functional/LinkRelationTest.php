@@ -10,8 +10,6 @@ use siestaphp\tests\functional\linkrelation\gen\LabelEntity;
 class LinkRelation extends SiestaTester
 {
 
-    const DATABASE_NAME = "LINK_RELATION_TEST";
-
     const ASSET_PATH = "/linkrelation";
 
     const SRC_XML = "/Link.relation.test.xml";
@@ -20,7 +18,7 @@ class LinkRelation extends SiestaTester
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

@@ -11,8 +11,6 @@ use siestaphp\util\File;
 class JSONTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "JSON_TEST";
-
     const ASSET_PATH = "/json";
 
     const SRC_XML = "/JSON.test.xml";
@@ -21,7 +19,7 @@ class JSONTest extends SiestaTester
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

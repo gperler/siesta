@@ -10,15 +10,13 @@ use siestaphp\tests\functional\notnull\gen\ArtistEntity;
 class NotNullTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "NOTNULL_TEST";
-
     const ASSET_PATH = "/notnull";
 
     const SRC_XML = "/NotNull.test.xml";
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

@@ -10,6 +10,7 @@ namespace siestaphp\driver;
 
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\DatabaseColumn;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
@@ -22,6 +23,14 @@ interface ColumnMigrator
 {
 
     const TABLE_PLACE_HOLDER = "!TABLE!";
+
+    /**
+     * @param EntitySource $asIs
+     * @param EntityGeneratorSource $toBe
+     *
+     * @return string[]
+     */
+    public function getModifyPrimaryKeyStatement(EntitySource $asIs, EntityGeneratorSource $toBe);
 
     /**
      * @param EntitySource $entitySource
@@ -63,7 +72,7 @@ interface ColumnMigrator
      *
      * @return string
      */
-    public function createDropForeignKeyStatemtn(ReferenceSource $reference);
+    public function createDropForeignKeyStatement(ReferenceSource $reference);
 
     public function createAddIndexStatement();
 

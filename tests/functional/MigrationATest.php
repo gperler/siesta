@@ -20,19 +20,18 @@ use siestaphp\xmlreader\XMLReader;
 class MigrationATest extends SiestaTester
 {
 
-    const DATABASE_NAME = "MIGRATIONA_TEST";
 
     const ASSET_PATH = "/migrationa";
 
     const SRC_XML = "/MigrationA.test.xml";
 
-    const TABLE = "CREATE TABLE IF NOT EXISTS `ARTIST`(`id` INT NULL,`name` VARCHAR(100) NULL,`city` VARCHAR(100) NOT NULL,`zip` INT NULL ,PRIMARY KEY (`id`))";
+    const CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `ARTIST`(`id` INT NULL,`name` VARCHAR(100) NULL,`city` VARCHAR(100) NOT NULL,`zip` INT NULL ,PRIMARY KEY (`id`))";
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
-        $this->connection->query(self::TABLE);
+        $this->connection->query(self::CREATE_TABLE);
 
         $this->assertNoValidationErrors();
 

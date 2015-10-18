@@ -35,24 +35,20 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
      */
     protected $logger;
 
-    /**
-     * @param string $database
-     */
-    protected function connectAndInstall($database)
+
+    protected function connectAndInstall()
     {
-        $d = $database;
         $this->connection = ConnectionFactory::getConnection();
-        $this->connection->query("DROP DATABASE IF EXISTS " . $d);
-        $this->connection->query("CREATE DATABASE " . $d);
-        $this->connection->useDatabase($d);
+        $this->connection->query("DROP DATABASE IF EXISTS " . $this->connection->getDatabase());
+        $this->connection->query("CREATE DATABASE " . $this->connection->getDatabase());
+        $this->connection->useDatabase($this->connection->getDatabase());
         $this->connection->install();
-        $this->databaseName = $d;
     }
 
     protected function dropDatabase()
     {
         if ($this->connection) {
-            $this->connection->query("DROP DATABASE IF EXISTS " . $this->databaseName);
+            $this->connection->query("DROP DATABASE IF EXISTS " . $this->connection->getDatabase());
         }
     }
 

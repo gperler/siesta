@@ -8,8 +8,6 @@ namespace siestaphp\tests\functional;
 class PerformanceTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "PERFORMANCE_TEST";
-
     const ASSET_PATH = "/performance";
 
     const SRC_XML = "/Performance.test.xml";
@@ -17,7 +15,7 @@ class PerformanceTest extends SiestaTester
     protected function setUp()
     {
 
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
@@ -26,7 +24,7 @@ class PerformanceTest extends SiestaTester
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
     }
 
     public function testInsert()

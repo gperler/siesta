@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="Artist" namespace="siestaphp\tests\functional\migrationa\gen" table="ARTIST" targetPath="gen/">
+
+        <!-- ORIGINAL CONTENT         -->
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="city" type="string" dbType="VARCHAR(100)" required="true"/>
+        <attribute name="zip" type="string" dbType="INT"/>
+
+    </entity>
+</entityList>

@@ -307,7 +307,7 @@ class ReferenceListMigrator
      */
     private function addDropForeignKey(ReferenceSource $source)
     {
-        $this->dropForeignKeyStatementList[] = $this->columnMigrator->createDropForeignKeyStatemtn($source);
+        $this->dropForeignKeyStatementList[] = $this->columnMigrator->createDropForeignKeyStatement($source);
     }
 
     /**

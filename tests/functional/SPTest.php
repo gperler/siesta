@@ -9,15 +9,13 @@ use siestaphp\tests\functional\storedprocedure\gen\ArtistEntity;
 class SPTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "SP_TEST";
-
     const ASSET_PATH = "/storedprocedure";
 
     const SRC_XML = "/SP.test.xml";
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

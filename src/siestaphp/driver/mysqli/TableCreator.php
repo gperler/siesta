@@ -10,10 +10,12 @@ namespace siestaphp\driver\mysqli;
 
 use Codeception\Util\Debug;
 use siestaphp\datamodel\attribute\AttributeGeneratorSource;
+use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\index\IndexGeneratorSource;
 use siestaphp\datamodel\index\IndexPartGeneratorSource;
+use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\Reference;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\driver\ConnectionFactory;
@@ -26,6 +28,8 @@ class TableCreator
 {
 
     const CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
+
+    const PRIMARY_KEY_SNIPPET = ",PRIMARY KEY (%s)";
 
     const REPLICATION = "replication";
 
@@ -120,25 +124,24 @@ class TableCreator
      */
     private function buildColumnSQL()
     {
-        $sql = "";
+        $columnList = array();
         foreach ($this->entityDatabaseSource->getAttributeSourceList() as $attribute) {
             if (!$attribute->isTransient()) {
-                $sql .= $this->buildAttributeColumnSQL($attribute) . ",";
+                $columnList[] = $this->buildAttributeColumnSQL($attribute);
             }
         }
         foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
-            $sql .= $this->buildReferenceColumnSQL($reference) . ",";
+            $columnList[] = $this->buildReferenceColumnSQL($reference);
         }
-        return rtrim($sql, ",");
+        return implode(",", $columnList);
     }
 
     /**
-     * @param AttributeGeneratorSource $attribute
-
+     * @param AttributeSource $attribute
      *
-*@return string
+     * @return string
      */
-    private function buildAttributeColumnSQL(AttributeGeneratorSource $attribute)
+    private function buildAttributeColumnSQL(AttributeSource $attribute)
     {
         return $this->buildColumnSQLSnippet($attribute->getDatabaseName(), $attribute->getDatabaseType(), $attribute->isRequired());
     }
@@ -150,15 +153,12 @@ class TableCreator
      */
     private function buildReferenceColumnSQL(ReferenceGeneratorSource $reference)
     {
-        $referenceSQL = "";
-
-        $columnList = $reference->getReferencedColumnList();
-
-        foreach ($columnList as $column) {
-            $referenceSQL .= $this->buildColumnSQLSnippet($column->getDatabaseName(), $column->getDatabaseType(), $reference->isRequired()) . ",";
+        $columnList = array();
+        foreach ($reference->getReferencedColumnList() as $column) {
+            $columnList[]= $this->buildColumnSQLSnippet($column->getDatabaseName(), $column->getDatabaseType(), $reference->isRequired());
         }
 
-        return rtrim($referenceSQL, ",");
+        return implode(",", $columnList);
     }
 
     /**
@@ -184,20 +184,17 @@ class TableCreator
      */
     private function buildPrimaryKeySnippet()
     {
-        $columnList = $this->entityDatabaseSource->getPrimaryKeyColumns();
-        if (sizeof($columnList) === 0) {
+        $pkColumnList = $this->entityDatabaseSource->getPrimaryKeyColumns();
+        if (sizeof($pkColumnList) === 0) {
             return "";
         }
 
-        // build primarykey snippet
-        $sql = " ,PRIMARY KEY (";
-        foreach ($columnList as $column) {
-            $sql .= $this->quote($column->getDatabaseName()) . ",";
+        $sqlColumnList = array();
+        foreach ($pkColumnList as $column) {
+            $sqlColumnList[] = $this->quote($column->getDatabaseName());
         }
-        $sql = rtrim($sql, ",") . ")";
+        return sprintf(self::PRIMARY_KEY_SNIPPET, implode(",", $sqlColumnList));
 
-        // done
-        return $sql;
     }
 
     /**
@@ -215,12 +212,11 @@ class TableCreator
     }
 
     /**
-     * @param IndexGeneratorSource $indexSource
-
+     * @param IndexSource $indexSource
      *
-*@return string
+     * @return string
      */
-    private function buildIndex(IndexGeneratorSource $indexSource)
+    private function buildIndex(IndexSource $indexSource)
     {
         // check if unique index or index
         $sql = $indexSource->isUnique() ? " UNIQUE INDEX " : " INDEX ";
@@ -247,9 +243,8 @@ class TableCreator
 
     /**
      * @param IndexPartGeneratorSource $indexPartSource
-
      *
-*@return string
+     * @return string
      */
     private function buildIndexPart(IndexPartGeneratorSource $indexPartSource)
     {
@@ -285,19 +280,16 @@ class TableCreator
      */
     private function buildForeignKeyConstraintSQL(ReferenceGeneratorSource $rds)
     {
+        $columnList = array();
+        $foreignColumnList = array();
 
-        $columnNames = "";
-        $referencedColumnNames = "";
-
-        $columnList = $rds->getReferencedColumnList();
-        foreach ($columnList as $column) {
-            $columnNames .= $this->quote($column->getDatabaseName()) . ",";
-            $referencedColumnNames .= $this->quote($column->getReferencedDatabaseName()) . ",";
+        foreach ($rds->getReferencedColumnList() as $column) {
+            $columnList[] = $this->quote($column->getDatabaseName());
+            $foreignColumnList[] = $this->quote($column->getReferencedDatabaseName());
         }
 
-        $columnNames = rtrim($columnNames, ",");
-        $referencedColumnNames = rtrim($referencedColumnNames, ",");
-
+        $columnNames = implode(",", $columnList);
+        $referencedColumnNames = implode(",", $foreignColumnList);
 
         $constraintName = $rds->getConstraintName();
         $onDelete = $this->getReferenceOption($rds->getOnDelete());

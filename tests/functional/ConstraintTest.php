@@ -12,15 +12,13 @@ use siestaphp\tests\functional\constraint\gen\Customer;
 class ConstraintTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "CONSTRAINT_TEST";
-
     const ASSET_PATH = "/constraint";
 
     const SRC_XML = "/Constraint.test.xml";
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

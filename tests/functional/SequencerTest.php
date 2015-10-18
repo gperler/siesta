@@ -7,11 +7,9 @@ namespace siestaphp\tests\functional;
 class SequencerTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "SEQUENCER_TEST";
-
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
     }
 

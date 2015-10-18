@@ -11,7 +11,6 @@ use siestaphp\tests\functional\reference\gen\LabelEntity;
 class ReferenceTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "REFERENCE_TEST";
 
     const ASSET_PATH = "/reference";
 
@@ -19,7 +18,7 @@ class ReferenceTest extends SiestaTester
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 

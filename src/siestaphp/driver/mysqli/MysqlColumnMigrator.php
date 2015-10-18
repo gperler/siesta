@@ -9,6 +9,7 @@
 namespace siestaphp\driver\mysqli;
 
 use siestaphp\datamodel\DatabaseColumn;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
@@ -33,9 +34,23 @@ class MysqlColumnMigrator implements ColumnMigrator
 
     const DROP_TABLE = "DROP TABLE IF EXISTS %s";
 
+    const DROP_PRIMARY_KEY = "ALTER TABLE %s DROP PRIMARY KEY";
+
+    const MODIFY_PRIMARY_KEY = "ALTER TABLE %s DROP PRIMARY KEY, ADD PRIMARY KEY (%s);";
+
     const ADD_FOREIGN_KEY = "ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s";
 
     const DROP_FOREIGN_KEY = "ALTER TABLE %s DROP FOREIGN KEY %s";
+
+    protected $tableName;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->tableName = $this->quote(ColumnMigrator::TABLE_PLACE_HOLDER);
+    }
 
     /**
      * @param EntitySource $entitySource
@@ -44,7 +59,42 @@ class MysqlColumnMigrator implements ColumnMigrator
      */
     public function getDropTableStatement(EntitySource $entitySource)
     {
-        return sprintf(self::DROP_TABLE, ColumnMigrator::TABLE_PLACE_HOLDER);
+        return sprintf(self::DROP_TABLE, $this->tableName);
+    }
+
+    /**
+     * @param EntitySource $asIs
+     * @param EntityGeneratorSource $toBe
+     *
+     * @return string[]
+     */
+    public function getModifyPrimaryKeyStatement(EntitySource $asIs, EntityGeneratorSource $toBe)
+    {
+
+        $pkList = array();
+
+        // assemble PK list
+        foreach ($toBe->getAttributeSourceList() as $attribute) {
+            if ($attribute->isPrimaryKey()) {
+                $pkList[] = $this->quote($attribute->getDatabaseName());
+            }
+        }
+
+        foreach ($toBe->getReferenceSourceList() as $reference) {
+            if ($reference->isPrimaryKey()) {
+                foreach ($reference->getReferencedColumnList() as $column) {
+                    $pkList[] = $this->quote($column->getDatabaseName());
+                }
+            }
+        }
+
+        if (sizeof($pkList) === 0) {
+            return array(sprintf(self::DROP_PRIMARY_KEY, $this->tableName));
+        }
+
+        $pkColumns = implode(",", $pkList);
+
+        return array(sprintf(self::MODIFY_PRIMARY_KEY, $this->tableName, $pkColumns));
     }
 
     /**
@@ -54,7 +104,7 @@ class MysqlColumnMigrator implements ColumnMigrator
      */
     public function createDropColumnStatement($columnName)
     {
-        return sprintf(self::DROP_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($columnName));
+        return sprintf(self::DROP_COLUMN, $this->tableName, $this->quote($columnName));
     }
 
     /**
@@ -65,7 +115,7 @@ class MysqlColumnMigrator implements ColumnMigrator
     public function createAddColumnStatement(DatabaseColumn $column)
     {
         $nullHandling = ($column->isRequired()) ? "NOT NULL" : "NULL";
-        return sprintf(self::ADD_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($column->getDatabaseName()), $column->getDatabaseType(), $nullHandling);
+        return sprintf(self::ADD_COLUMN, $this->tableName, $this->quote($column->getDatabaseName()), $column->getDatabaseType(), $nullHandling);
     }
 
     /**
@@ -76,7 +126,7 @@ class MysqlColumnMigrator implements ColumnMigrator
     public function createModifiyColumnStatement(DatabaseColumn $column)
     {
         $nullHandling = ($column->isRequired()) ? "NOT NULL" : "NULL";
-        return sprintf(self::MODIFY_COLUMN, ColumnMigrator::TABLE_PLACE_HOLDER, $this->quote($column->getDatabaseName()), $column->getDatabaseType(), $nullHandling);
+        return sprintf(self::MODIFY_COLUMN, $this->tableName, $this->quote($column->getDatabaseName()), $column->getDatabaseType(), $nullHandling);
     }
 
     /**
@@ -86,7 +136,24 @@ class MysqlColumnMigrator implements ColumnMigrator
      */
     public function createAddForeignKeyStatement(ReferenceGeneratorSource $reference)
     {
-        // TODO: Implement createAddForeignKeyStatement() method.
+
+        $constraintName = $reference->getConstraintName();
+        $foreignTable = $reference->getForeignTable();
+        $onDelete = $reference->getOnDelete();
+        $onUpdate = $reference->getOnUpdate();
+
+        $columnList = array();
+        $foreignColumList = array();
+        foreach ($reference->getReferencedColumnList() as $column) {
+            $columnList[] = $this->quote($column->getDatabaseName());
+            $foreignColumList[] = $this->quote($column->getReferencedDatabaseName());
+        }
+
+        $colum = implode(",", $columnList);
+        $foreignColum = implode(",", $foreignColumList);
+
+        return sprintf(self::ADD_FOREIGN_KEY, $this->tableName, $constraintName, $colum, $foreignTable, $foreignColum, $onDelete, $onUpdate);
+
     }
 
     /**
@@ -94,9 +161,9 @@ class MysqlColumnMigrator implements ColumnMigrator
      *
      * @return string
      */
-    public function createDropForeignKeyStatemtn(ReferenceSource $reference)
+    public function createDropForeignKeyStatement(ReferenceSource $reference)
     {
-        // TODO: Implement createDropForeignKeyStatemtn() method.
+        return sprintf(self::DROP_FOREIGN_KEY, $this->tableName, $reference->getConstraintName());
     }
 
     public function createAddIndexStatement()

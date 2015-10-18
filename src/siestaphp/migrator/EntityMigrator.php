@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 15.10.15
- * Time: 22:46
- */
 
 namespace siestaphp\migrator;
 
@@ -49,8 +43,6 @@ class EntityMigrator
      */
     protected $statementList;
 
-
-
     /**
      * @param ColumnMigrator $migrator
      * @param EntitySource $databaseEntity
@@ -69,7 +61,6 @@ class EntityMigrator
      */
     public function createAlterStatementList()
     {
-        $this->migratePrimaryKey();
         $this->migrateAttributeList();
         $this->migrateReferenceList();
         $this->migrateIndexList();
@@ -81,7 +72,8 @@ class EntityMigrator
     /**
      * brings the alter table statements into the right order
      */
-    private function assembleStatementList() {
+    private function assembleStatementList()
+    {
 
         // drop foreign key constraints
         $this->addStatementList($this->referenceListMigrator->getDropForeignKeyStatementList());
@@ -96,6 +88,7 @@ class EntityMigrator
         $this->addStatementList($this->referenceListMigrator->getAddStatementList());
 
         // modify primary key
+        $this->addStatementList($this->getMigratePrimaryKeyStatementList());
 
         // drop columns
         $this->addStatementList($this->attributeListMigrator->getDropStatementList());
@@ -107,10 +100,46 @@ class EntityMigrator
 
     }
 
-
-    private function migratePrimaryKey()
+    /**
+     * @return array
+     */
+    private function getMigratePrimaryKeyStatementList()
     {
-        // ALTER TABLE `Author` DROP PRIMARY KEY, ADD PRIMARY KEY (`id`);
+        $databasePKList = $this->collectPrimaryKeyColumnList($this->databaseEntity);
+        $modelPKList = $this->collectPrimaryKeyColumnList($this->modelEntity);
+
+        $compare = array_diff($databasePKList, $modelPKList);
+
+        if (sizeof($compare) === 0) {
+            return array();
+        }
+
+        return $this->columnMigrator->getModifyPrimaryKeyStatement($this->databaseEntity, $this->modelEntity);
+    }
+
+    /**
+     * @param EntitySource $source
+     *
+     * @return string[]
+     */
+    private function collectPrimaryKeyColumnList(EntitySource $source)
+    {
+
+        $pkList = array();
+        foreach ($source->getAttributeSourceList() as $attribute) {
+            if ($attribute->isPrimaryKey()) {
+                $pkList[] = $attribute->getDatabaseName();
+            }
+        }
+
+        foreach ($this->databaseEntity->getReferenceSourceList() as $reference) {
+            if ($reference->isPrimaryKey()) {
+                foreach ($reference->getReferencedColumnList() as $column) {
+                    $pkList[] = $column->getDatabaseName();
+                }
+            }
+        }
+        return $pkList;
     }
 
     private function migrateAttributeList()

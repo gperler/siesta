@@ -6,14 +6,11 @@ use siestaphp\runtime\Factory;
 use siestaphp\tests\functional\attribute\AttributeXML;
 use siestaphp\tests\functional\attribute\gen\ArtistEntity;
 
-
 /**
  * Class AttributeTest
  */
 class AttributeTest extends SiestaTester
 {
-
-    const DATABASE_NAME = "ATTRIBUTE_TEST";
 
     const ASSET_PATH = "/attribute";
 
@@ -21,7 +18,7 @@ class AttributeTest extends SiestaTester
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
@@ -30,7 +27,7 @@ class AttributeTest extends SiestaTester
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
 
     }
 

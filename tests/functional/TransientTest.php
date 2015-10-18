@@ -11,15 +11,13 @@ use siestaphp\tests\functional\transient\gen\ArtistEntity;
 class TransientTest extends SiestaTester
 {
 
-    const DATABASE_NAME = "TRANSIENT_TEST";
-
     const ASSET_PATH = "/transient";
 
     const SRC_XML = "/Transient.test.xml";
 
     protected function setUp()
     {
-        $this->connectAndInstall(self::DATABASE_NAME);
+        $this->connectAndInstall();
 
         $this->generateEntityFile(self::ASSET_PATH, self::SRC_XML);
 
