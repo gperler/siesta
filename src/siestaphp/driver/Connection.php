@@ -66,11 +66,6 @@ interface Connection
     public function escape($value);
 
     /**
-     * allows the driver to install needed artifacts. Invoked when generating entities
-     */
-    public function install();
-
-    /**
      * returns next sequence for given technical name
      *
      * @param string $technicalName
@@ -103,9 +98,8 @@ interface Connection
      */
     public function getColumnMigrator();
 
-
     /**
      * @return CreateStatementFactory
      */
-    public function getTableBuilder();
+    public function getCreateStatementFactory();
 }

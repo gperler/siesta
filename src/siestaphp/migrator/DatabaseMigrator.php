@@ -7,6 +7,7 @@ use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\ColumnMigrator;
 use siestaphp\driver\Connection;
+use siestaphp\driver\CreateStatementFactory;
 
 /**
  * Class DatabaseMigrator allows to retrieve alter statement by comparing model/schema with current database setup
@@ -56,7 +57,7 @@ class DatabaseMigrator
         $this->connection = $connection;
         $this->columnMigrator = $connection->getColumnMigrator();
         $this->databaseModel = array();
-        $this->neededTableList = array();
+        $this->neededTableList = array( CreateStatementFactory::SEQUENCER_TABLE_NAME );
         $this->alterStatementList = array();
     }
 
@@ -67,6 +68,9 @@ class DatabaseMigrator
      */
     public function createAlterStatementList($dropUnusedTables = false)
     {
+        $factory = $this->connection->getCreateStatementFactory();
+        $this->addAlterStatements($factory->setupSequencer());
+
         // retrieve entity list as currently setup in the database
         $this->databaseModel = $this->connection->getEntitySourceList();
 
@@ -106,7 +110,7 @@ class DatabaseMigrator
         $this->addAlterStatements($statementList);
 
         // create stored procedures
-        $tableBuilder = $this->connection->getTableBuilder();
+        $tableBuilder = $this->connection->getCreateStatementFactory();
         $tableBuilder->setupStoredProcedures($modelSource);
 
     }
@@ -118,10 +122,11 @@ class DatabaseMigrator
      */
     private function setupEntityInDatabase(EntityGeneratorSource $source)
     {
-        $tableBuilder = $this->connection->getTableBuilder();
+        $factory = $this->connection->getCreateStatementFactory();
 
-        $this->addAlterStatements($tableBuilder->setupTables($source));
-        $this->addAlterStatements($tableBuilder->setupStoredProcedures($source));
+        $this->addAlterStatements($factory->setupTables($source));
+        $this->addAlterStatements($factory->setupStoredProcedures($source));
+
     }
 
     /**

@@ -12,6 +12,16 @@ use siestaphp\datamodel\entity\EntityGeneratorSource;
 interface CreateStatementFactory
 {
 
+    const SEQUENCER_TABLE_NAME = "SEQUENCER";
+
+    const SEQUENCER_SP_NAME = "SEQUENCER_GETSEQUENCE";
+
+    /**
+     *
+     * @return string[]
+     */
+    public function setupSequencer();
+
     /**
      * @param EntityGeneratorSource $entity
      *

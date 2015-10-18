@@ -42,7 +42,6 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
         $this->connection->query("DROP DATABASE IF EXISTS " . $this->connection->getDatabase());
         $this->connection->query("CREATE DATABASE " . $this->connection->getDatabase());
         $this->connection->useDatabase($this->connection->getDatabase());
-        $this->connection->install();
     }
 
     protected function dropDatabase()

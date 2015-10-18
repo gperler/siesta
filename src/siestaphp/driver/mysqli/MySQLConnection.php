@@ -216,7 +216,7 @@ class MySQLConnection implements Connection
     /**
      * @return CreateStatementFactory
      */
-    public function getTableBuilder()
+    public function getCreateStatementFactory()
     {
 
         return new MySQLCreateStatementFactory();
@@ -230,14 +230,6 @@ class MySQLConnection implements Connection
     public function escape($value)
     {
         return $this->connection->real_escape_string($value);
-    }
-
-    /**
-     * installs the installer
-     */
-    public function install()
-    {
-        Installer::install($this);
     }
 
     /**

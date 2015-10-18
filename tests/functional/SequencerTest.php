@@ -11,6 +11,15 @@ class SequencerTest extends SiestaTester
     {
         $this->connectAndInstall();
 
+        $factory = $this->connection->getCreateStatementFactory();
+
+        $statementList = $factory->setupSequencer();
+
+        foreach ($statementList as $statement) {
+            $this->connection->query($statement);
+        }
+
+
     }
 
     protected function tearDown()

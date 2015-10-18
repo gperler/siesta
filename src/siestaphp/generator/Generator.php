@@ -185,7 +185,6 @@ class Generator
     {
         try {
             $connection = ConnectionFactory::getConnection($this->conncectionName);
-            $connection->install();
             $connection->disableForeignKeyChecks();
 
             $this->migrator = new Migrator($this->dataModelContainer, $connection, $this->logger);

@@ -12,6 +12,7 @@ use siestaphp\driver\mysqli\storedprocedures\SelectReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\UpdateStoredProcedure;
 use siestaphp\driver\CreateStatementFactory;
+use siestaphp\util\File;
 
 /**
  * Class MySQLCreateStatementFactory
@@ -19,6 +20,24 @@ use siestaphp\driver\CreateStatementFactory;
  */
 class MySQLCreateStatementFactory implements CreateStatementFactory
 {
+
+    const CREATE_SEQUENCE_TABLE = "CREATE TABLE IF NOT EXISTS `%s` (`TECHNICALNAME` VARCHAR(120) NOT NULL PRIMARY KEY, `SEQ` INT  ) ENGINE = InnoDB;";
+
+    const DROP_SEQUENCER_SP = "DROP PROCEDURE IF EXISTS %s";
+
+    /**
+     * @return string[]
+     */
+    public function setupSequencer()
+    {
+        $sequencerFile = new File(__DIR__ . "/installer/Sequencer.sql");
+
+        $statementList = array();
+        $statementList[] = sprintf(self::CREATE_SEQUENCE_TABLE, CreateStatementFactory::SEQUENCER_TABLE_NAME);
+        $statementList[] = sprintf(self::DROP_SEQUENCER_SP, CreateStatementFactory::SEQUENCER_SP_NAME);
+        $statementList[] = $sequencerFile->getContents();
+        return $statementList;
+    }
 
     /**
      * @param EntityGeneratorSource $ets
