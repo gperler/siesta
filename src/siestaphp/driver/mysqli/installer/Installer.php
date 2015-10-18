@@ -22,13 +22,7 @@ class Installer
     public static function install(Connection $connection)
     {
 
-        self::installGetColumnDetails($connection);
-
         self::installSequencer($connection);
-
-        self::installGetForeignKeyDetails($connection);
-
-        self::installGetIndexDetails($connection);
     }
 
     /**
@@ -43,38 +37,6 @@ class Installer
         $connection->execute("DROP PROCEDURE IF EXISTS SEQUENCER_GETSEQUENCE");
         $sequencerFile = new File(__DIR__ . "/Sequencer.sql");
         $connection->execute($sequencerFile->getContents());
-
-    }
-
-    /**
-     * @param Connection $connection
-     */
-    private static function installGetForeignKeyDetails(Connection $connection)
-    {
-        $connection->execute("DROP procedure IF EXISTS `SIESTA_GET_FOREIGN_KEY_DETAILS`");
-        $foreignKey = new File(__DIR__ . "/getForeignKeyDetails.sql");
-        $connection->execute($foreignKey->getContents());
-    }
-
-    /**
-     * @param Connection $connection
-     */
-    private static function installGetColumnDetails(Connection $connection)
-    {
-        $connection->execute("DROP procedure IF EXISTS `SIESTA_GET_COLUMN_DETAILS`");
-        $columnDetails = new File(__DIR__ . "/getColumnDetails.sql");
-        $connection->execute($columnDetails->getContents());
-    }
-
-    /**
-     * @param Connection $connection
-     */
-    private static function installGetIndexDetails(Connection $connection)
-    {
-        //
-        $connection->execute("DROP procedure IF EXISTS `SIESTA_GET_INDEX_DETAILS`");
-        $indexDetails = new File(__DIR__ . "/getIndexDetails.sql");
-        $connection->query($indexDetails->getContents());
 
     }
 

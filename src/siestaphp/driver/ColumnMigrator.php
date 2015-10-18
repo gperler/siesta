@@ -74,6 +74,7 @@ interface ColumnMigrator
      */
     public function createDropForeignKeyStatement(ReferenceSource $reference);
 
+
     public function createAddIndexStatement();
 
     public function createDropIndexStatement();

@@ -18,18 +18,13 @@ use siestaphp\naming\NamingService;
  */
 class TableMetadata implements EntitySource
 {
-    const SP_GET_COLUMN_DETAILS = "CALL `SIESTA_GET_COLUMN_DETAILS` ('%s','%s')";
-    const SP_GET_FK_DETAILS = "CALL `SIESTA_GET_FOREIGN_KEY_DETAILS` ('%s','%s')";
+    const SQL_GET_COLUMN_DETAILS = "SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME = '%s';";
 
     const SQL_GET_KEY_COLUMN_USAGE = "SELECT * FROM information_schema.key_column_usage as KC WHERE KC.CONSTRAINT_SCHEMA = '%s' AND KC.TABLE_NAME = '%s'";
 
     const SQL_GET_REFERENTIAL_CONSTRAINTS = "SELECT * FROM information_schema.REFERENTIAL_CONSTRAINTS AS RC WHERE RC.CONSTRAINT_SCHEMA = '%s' AND RC.TABLE_NAME = '%s'";
 
     const SQL_GET_INDEX_LIST = "SELECT S.* FROM INFORMATION_SCHEMA.STATISTICS AS S WHERE S.TABLE_SCHEMA = '%s' AND S.TABLE_NAME = '%s';";
-
-
-
-
 
     /**
      * @var string
@@ -145,7 +140,7 @@ class TableMetadata implements EntitySource
     protected function extractColumns()
     {
 
-        $sql = sprintf(self::SP_GET_COLUMN_DETAILS, $this->connection->getDatabase(), $this->tableName);
+        $sql = sprintf(self::SQL_GET_COLUMN_DETAILS, $this->connection->getDatabase(), $this->tableName);
 
         $resultSet = $this->connection->executeStoredProcedure($sql);
 
