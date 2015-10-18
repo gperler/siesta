@@ -2,6 +2,7 @@
 
 namespace siestaphp\xmlreader;
 
+use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\index\IndexPartSource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\naming\XMLIndex;
@@ -65,7 +66,14 @@ class XMLIndexReader extends XMLAccess implements IndexSource
             $indexPart->setSource($indexPartXML);
             $this->indexPartList[] = $indexPart;
         }
+    }
 
+    /**
+     * @return DatabaseColumn[]
+     */
+    public function getReferencedColumnList()
+    {
+        return array();
     }
 
 }

@@ -89,7 +89,8 @@ class Migrator
             }
 
         } catch (SQLException $e) {
-
+            $this->logger->error($e->getMessage() .  "(" . $e->getCode() . ")");
+            $this->logger->error($e->getSQL());
         }
     }
 

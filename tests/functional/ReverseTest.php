@@ -6,6 +6,7 @@ use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\util\File;
 use siestaphp\util\Util;
+use siestaphp\xmlbuilder\XMLEntityBuilder;
 
 /**
  * Class AttributeTest
@@ -34,7 +35,6 @@ class ReverseTest extends SiestaTester
     protected function tearDown()
     {
         $this->dropDatabase();
-
     }
 
     /**
@@ -45,6 +45,13 @@ class ReverseTest extends SiestaTester
         $attributeJSONList = $this->loadJSON(__DIR__ . self::ASSET_PATH . self::ATTRIBUTE_DATA);
 
         $entitySourcelist = $this->connection->getEntitySourceList();
+
+        foreach ($entitySourcelist as $entitySource) {
+            $builder = new XMLEntityBuilder($entitySource);
+            $domDocument = $builder->getDOMDocument();
+            $domDocument->formatOutput = true;
+            $domDocument->save(__DIR__ . self::ASSET_PATH . "/gen/" . $entitySource->getClassName() . ".reverse.xml");
+        }
 
         $entity = $this->findEntityByTableName($entitySourcelist, "ARTIST");
         $this->assertNotNull($entity);
@@ -115,6 +122,7 @@ class ReverseTest extends SiestaTester
     private function findEntityByTableName($entitySourcelist, $tableName)
     {
         foreach ($entitySourcelist as $entitySource) {
+            Debug::debug("tablename " . $entitySource->getTable());
             if ($entitySource->getTable() === $tableName) {
                 return $entitySource;
             }

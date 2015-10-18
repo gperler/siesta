@@ -27,5 +27,11 @@ class SQLException extends \Exception implements SiestaException
         $this->sqlStatement = $sqlStatement;
     }
 
+    /**
+     * @return string
+     */
+    public function getSQL() {
+        return $this->sqlStatement;
+    }
 
 }

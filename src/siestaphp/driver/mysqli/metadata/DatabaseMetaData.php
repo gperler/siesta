@@ -4,6 +4,7 @@ namespace siestaphp\driver\mysqli\metadata;
 
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\Connection;
+use siestaphp\driver\CreateStatementFactory;
 
 /**
  * Class DatabaseMetaData
@@ -18,6 +19,11 @@ class DatabaseMetaData
      * @var Connection
      */
     protected $connection;
+
+    /**
+     * @var EntitySource[]
+     */
+    protected $entitySourceList;
 
     /**
      * @param Connection $connection
@@ -39,22 +45,37 @@ class DatabaseMetaData
 
         $this->connection->useDatabase($databaseName);
 
-        $entitySourceList = array();
+        $this->extractEntitySourceList($targetNamespace, $targetPath);
+
+        return $this->entitySourceList;
+
+    }
+
+    /**
+     * @param string $targetNamespace
+     * @param string $targetPath
+     */
+    private function extractEntitySourceList($targetNamespace, $targetPath)
+    {
+        $this->entitySourceList = array();
         $tableDTOList = array();
 
-        $sql = sprintf(self::SQL_GET_TABLE_LIST, $databaseName);
+        // find tables first
+        $sql = sprintf(self::SQL_GET_TABLE_LIST, $this->connection->getDatabase());
         $resultSet = $this->connection->query($sql);
         while ($resultSet->hasNext()) {
             $tableDTOList[] = new TableDTO($resultSet);
         }
         $resultSet->close();
 
+        // iterate tables and get data from database
         foreach ($tableDTOList as $tableDTO) {
-            $entitySourceList[] = new TableMetadata($this->connection, $tableDTO, $targetPath, $targetNamespace);
+            // do not care about sequencer table
+            if ($tableDTO->name === CreateStatementFactory::SEQUENCER_TABLE_NAME) {
+                continue;
+            }
+            $this->entitySourceList[] = new TableMetadata($this->connection, $tableDTO, $targetPath, $targetNamespace);
         }
-
-        return $entitySourceList;
-
     }
 
 }

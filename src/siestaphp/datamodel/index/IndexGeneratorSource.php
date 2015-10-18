@@ -2,6 +2,8 @@
 
 namespace siestaphp\datamodel\index;
 
+use siestaphp\datamodel\DatabaseColumn;
+
 /**
  * Interface IndexGeneratorSource
  * @package siestaphp\datamodel\index

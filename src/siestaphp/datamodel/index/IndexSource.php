@@ -2,6 +2,8 @@
 
 namespace siestaphp\datamodel\index;
 
+use siestaphp\datamodel\DatabaseColumn;
+
 /**
  * Interface IndexSource
  * @package siestaphp\datamodel\index
@@ -27,6 +29,11 @@ interface IndexSource {
      * @return IndexPartSource[]
      */
     public function getIndexPartSourceList();
+
+    /**
+     * @return DatabaseColumn[]
+     */
+    public function getReferencedColumnList();
 
 }
 

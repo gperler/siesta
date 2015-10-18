@@ -48,6 +48,14 @@
         <attribute name="dob" type="DateTime" dbType="DATETIME"/>
 
         <reference name="person" foreignClass="Person" required="false" onDelete="CASCADE" onUpdate="SET NULL"/>
+
+        <index name="easyIndex">
+            <indexPart name="name"/>
+        </index>
+
+        <index name="difficultIndex" unique="true">
+            <indexPart name="person"/>
+        </index>
     </entity>
 
     <entity name="Person" namespace="siestaphp\tests\functional\reverse\gen" targetPath="gen">

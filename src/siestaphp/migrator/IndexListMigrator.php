@@ -2,6 +2,7 @@
 
 namespace siestaphp\migrator;
 
+use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\index\Index;
 use siestaphp\datamodel\index\IndexGeneratorSource;
 use siestaphp\datamodel\index\IndexSource;
@@ -126,16 +127,25 @@ class IndexListMigrator
             return;
         }
 
-        $databaseIndexPartList = $databaseIndex->getIndexPartSourceList();
-        $modelIndexPartList = $modelIndex->getIndexPartGeneratorSourceList();
+        $databaseColumnList = $databaseIndex->getReferencedColumnList();
+        $modelColumnList = $modelIndex->getReferencedColumnList();
 
-        if (sizeof($databaseIndexPartList) !== sizeof($modelIndexPartList)) {
+        if (sizeof($databaseColumnList) !== sizeof($modelColumnList)) {
             $this->recreateIndex($databaseIndex, $modelIndex);
             return;
         }
 
-        foreach ($modelIndexPartList as $modelIndex) {
-            $modelIndex->getIndexColumnList();
+        $this->compareIndexColumns($databaseColumnList, $modelColumnList);
+
+    }
+
+    /**
+     * @param DatabaseColumn[] $databaseColumnList
+     * @param DatabaseColumn[] $modelColumnList
+     */
+    private function compareIndexColumns($databaseColumnList, $modelColumnList) {
+        foreach($modelColumnList as $modelColumn) {
+
         }
     }
 
@@ -181,8 +191,5 @@ class IndexListMigrator
         return null;
     }
 
-    private function getIndexPartSourceByName()
-    {
 
-    }
 }

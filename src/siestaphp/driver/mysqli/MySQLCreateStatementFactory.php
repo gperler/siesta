@@ -35,7 +35,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
         $statementList = array();
         $statementList[] = sprintf(self::CREATE_SEQUENCE_TABLE, CreateStatementFactory::SEQUENCER_TABLE_NAME);
         $statementList[] = sprintf(self::DROP_SEQUENCER_SP, CreateStatementFactory::SEQUENCER_SP_NAME);
-        $statementList[] = $sequencerFile->getContents();
+        $statementList[] = preg_replace('/\s\s+/', ' ', $sequencerFile->getContents());
         return $statementList;
     }
 

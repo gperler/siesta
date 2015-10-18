@@ -2,6 +2,7 @@
 
 namespace siestaphp\driver\mysqli\metadata;
 
+use Codeception\Util\Debug;
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\CollectorSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
@@ -191,21 +192,37 @@ class TableMetadata implements EntitySource
         return null;
     }
 
+    /**
+     * extracts index data
+     */
     protected function extractIndexData()
     {
         $sql = sprintf(self::SQL_GET_INDEX_LIST, $this->connection->getDatabase(), $this->tableName);
 
         $resultSet = $this->connection->query($sql);
         while ($resultSet->hasNext()) {
+
+            // do not handle primary key indexes
             if (!IndexMetaData::isValidIndex($resultSet)) {
                 continue;
             }
+
             $indexName = IndexMetaData::getIndexNameFromResultSet($resultSet);
+
+            // do not handle indexes that are created for constraints
+            $constraint = $this->getReferenceByConstraintName($indexName);
+            if ($constraint) {
+                continue;
+            }
+
+            // check if there is already an existing index
             $index = $this->getIndexByName($indexName);
             if ($index) {
+                // if the index already exists add this information about a part of the index
                 $index->addIndexPart($resultSet);
             } else {
-                $this->indexMetaList[] = new IndexMetaData($resultSet);
+                // create a new Index
+                $this->indexMetaList[] = new IndexMetaData($resultSet, $this->attributeMetaDataList, $this->referenceMetaDataList);
             }
         }
     }

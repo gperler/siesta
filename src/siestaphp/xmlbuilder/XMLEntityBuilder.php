@@ -136,9 +136,8 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * adds data that is used for transformation
-
      *
-*@param EntityGeneratorSource $ets
+     * @param EntityGeneratorSource $ets
      */
     private function addTransformerData(EntityGeneratorSource $ets)
     {
@@ -172,9 +171,8 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * adds all classes that a use statement is needed for
-
      *
-*@param EntityGeneratorSource $ets
+     * @param EntityGeneratorSource $ets
      */
     private function addReferencedClassUseNames(EntityGeneratorSource $ets)
     {
@@ -211,15 +209,15 @@ class XMLEntityBuilder extends XMLBuilder
     /**
      * @param EntityGeneratorSource $ets
      */
-    private function addPrimaryKeyColumns(EntityGeneratorSource $ets) {
+    private function addPrimaryKeyColumns(EntityGeneratorSource $ets)
+    {
 
-        foreach($ets->getPrimaryKeyColumns() as $column) {
+        foreach ($ets->getPrimaryKeyColumns() as $column) {
             $xmlPKColumn = $this->createElement($this->domElement, XMLAttribute::ELEMENT_PK_COLUMN_NAME);
 
             $xmlPKColumn->setAttribute(XMLAttribute::ATTRIBUTE_NAME, $column->getName());
             $xmlPKColumn->setAttribute(XMLAttribute::ATTRIBUTE_TYPE, $column->getPHPType());
         }
     }
-
 
 }

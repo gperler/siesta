@@ -2,11 +2,11 @@
 
 namespace siestaphp\driver\mysqli;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\ColumnMigrator;
 use siestaphp\driver\Connection;
 use siestaphp\driver\ConnectionData;
+use siestaphp\driver\CreateStatementFactory;
 use siestaphp\driver\exceptions\CannotBeNullException;
 use siestaphp\driver\exceptions\ConnectException;
 use siestaphp\driver\exceptions\ForeignKeyConstraintFailedException;
@@ -14,10 +14,8 @@ use siestaphp\driver\exceptions\SQLException;
 use siestaphp\driver\exceptions\TableAlreadyExistsException;
 use siestaphp\driver\exceptions\TableDoesNotExistException;
 use siestaphp\driver\exceptions\UniqueConstraintViolationException;
-use siestaphp\driver\mysqli\installer\Installer;
 use siestaphp\driver\mysqli\metadata\DatabaseMetaData;
 use siestaphp\driver\ResultSet;
-use siestaphp\driver\CreateStatementFactory;
 
 /**
  * Class MySQLConnection
@@ -196,7 +194,6 @@ class MySQLConnection implements Connection
      */
     private function handleQueryError($errorNumber, $error, $sql)
     {
-        Debug::debug($errorNumber);
         switch ($errorNumber) {
             case 1048:
                 throw new CannotBeNullException($error, $errorNumber, $sql);

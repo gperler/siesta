@@ -251,17 +251,18 @@ class MySQLTableCreator
      */
     private function buildIndexPart(IndexPartGeneratorSource $indexPartSource)
     {
-        $sql = "";
+        $indexPartSQL = array();
         foreach ($indexPartSource->getIndexColumnList() as $column) {
-            $sql .= $this->quote($column->getDatabaseName());
+            $sql = $this->quote($column->getDatabaseName());
             if ($indexPartSource->getLength()) {
                 $sql .= " (" . $indexPartSource->getLength() . ")";
             }
 
             $sql .= " " . $indexPartSource->getSortOrder();
+            $indexPartSQL[] = $sql;
         }
 
-        return $sql;
+        return implode(",", $indexPartSQL);
     }
 
     /**

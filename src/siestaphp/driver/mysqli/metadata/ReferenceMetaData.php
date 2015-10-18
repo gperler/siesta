@@ -146,6 +146,18 @@ class ReferenceMetaData implements ReferenceSource
     }
 
     /**
+     * tells if this reference has a referenced column with given column name
+     * @param $columnName
+     *
+     * @return bool
+     */
+    public function refersColumnName($columnName)
+    {
+        $reference = $this->getReferencedColumnByName($columnName);
+        return ($reference !== null);
+    }
+
+    /**
      * @param string $columnName
      *
      * @return ReferencedColumnMetaData

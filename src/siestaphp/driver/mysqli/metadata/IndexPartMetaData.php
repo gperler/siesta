@@ -17,6 +17,16 @@ class IndexPartMetaData implements IndexPartSource
     const SUB_PART = "SUB_PART";
 
     /**
+     * @param ResultSet $resultSet
+     *
+     * @return string
+     */
+    public static function getColumnName(ResultSet $resultSet)
+    {
+        return $resultSet->getStringValue(self::COLUMN_NAME);
+    }
+
+    /**
      * @var string
      */
     protected $name;
@@ -27,11 +37,12 @@ class IndexPartMetaData implements IndexPartSource
     protected $length;
 
     /**
+     * @param string $referencedName
      * @param ResultSet $resultSet
      */
-    public function __construct(ResultSet $resultSet)
+    public function __construct($referencedName, ResultSet $resultSet)
     {
-        $this->name = $resultSet->getStringValue(self::COLUMN_NAME);
+        $this->name = $referencedName;
         $this->length = $resultSet->getIntegerValue(self::SUB_PART);
     }
 

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\datamodel\index;
 
 use Codeception\Util\Debug;
@@ -54,8 +53,21 @@ class Index implements Processable, IndexSource, IndexGeneratorSource
     /**
      * @return IndexPartGeneratorSource[]
      */
-    public function getIndexPartGeneratorSourceList() {
+    public function getIndexPartGeneratorSourceList()
+    {
         return $this->indexPartList;
+    }
+
+    /**
+     * @return DatabaseColumn[]
+     */
+    public function getReferencedColumnList()
+    {
+        $columnList = array();
+        foreach ($this->indexPartList as $indexPart) {
+            $columnList = array_merge($columnList, $indexPart->getIndexColumnList());
+        }
+        return $columnList;
     }
 
     /**
@@ -68,7 +80,7 @@ class Index implements Processable, IndexSource, IndexGeneratorSource
             return $indexName;
         }
 
-        $indexName =  $this->entity->getTable() . "_";
+        $indexName = $this->entity->getTable() . "_";
         foreach ($this->getIndexPartSourceList() as $indexPart) {
             $indexName .= $indexPart->getName();
         }
