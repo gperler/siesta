@@ -11,6 +11,8 @@ namespace siestaphp\driver\mysqli;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
+use siestaphp\datamodel\index\IndexGeneratorSource;
+use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\driver\ColumnMigrator;
@@ -166,12 +168,22 @@ class MysqlColumnMigrator implements ColumnMigrator
         return sprintf(self::DROP_FOREIGN_KEY, $this->tableName, $reference->getConstraintName());
     }
 
-    public function createAddIndexStatement()
+    /**
+     * @param IndexGeneratorSource $indexSource
+     *
+     * @return string
+     */
+    public function createAddIndexStatement(IndexGeneratorSource $indexSource)
     {
         // TODO: Implement createAddIndexStatement() method.
     }
 
-    public function createDropIndexStatement()
+    /**
+     * @param IndexSource $indexSource
+     *
+     * @return string
+     */
+    public function createDropIndexStatement(IndexSource $indexSource)
     {
         // TODO: Implement createDropIndexStatement() method.
     }

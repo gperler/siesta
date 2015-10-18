@@ -63,7 +63,17 @@ class Index implements Processable, IndexSource, IndexGeneratorSource
      */
     public function getName()
     {
-        return $this->indexSource->getName();
+        $indexName = $this->indexSource->getName();
+        if ($indexName) {
+            return $indexName;
+        }
+
+        $indexName =  $this->entity->getTable() . "_";
+        foreach ($this->getIndexPartSourceList() as $indexPart) {
+            $indexName .= $indexPart->getName();
+        }
+        $indexName .= "_index";
+        return $indexName;
     }
 
     /**

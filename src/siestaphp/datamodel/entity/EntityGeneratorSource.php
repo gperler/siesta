@@ -1,7 +1,7 @@
 <?php
 
-
 namespace siestaphp\datamodel\entity;
+
 use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DatabaseSpecificSource;
@@ -14,36 +14,34 @@ use siestaphp\util\File;
  * Interface EntityGeneratorSource
  * @package siestaphp\datamodel\entity
  */
-interface EntityGeneratorSource extends EntitySource {
-
+interface EntityGeneratorSource extends EntitySource
+{
 
     /**
      * @return bool
      */
     public function isDateTimeUsed();
 
-
     /**
      * @return string[]
      */
     public function getUsedFQClassNames();
-
 
     /**
      * @return AttributeGeneratorSource;
      */
     public function getPrimaryKeyAttributeList();
 
-
     /**
      * @param $baseDir
+     *
      * @return File
      */
     public function getTargetEntityFile($baseDir);
 
-
     /**
      * @param $baseDir
+     *
      * @return File
      */
     public function getAbsoluteTargetPath($baseDir);
@@ -70,6 +68,7 @@ interface EntityGeneratorSource extends EntitySource {
 
     /**
      * @param $database
+     *
      * @return DatabaseSpecificSource
      */
     public function getDatabaseSpecific($database);
@@ -87,9 +86,6 @@ interface EntityGeneratorSource extends EntitySource {
     /**
      * @return IndexGeneratorSource[]
      */
-    public function getIndexDatabaseSourceList();
-
-
-
+    public function getIndexGeneratorSourceList();
 
 }

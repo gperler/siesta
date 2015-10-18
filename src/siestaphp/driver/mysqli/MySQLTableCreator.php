@@ -60,7 +60,7 @@ class MySQLTableCreator
     /**
      * @var EntityGeneratorSource
      */
-    protected $entityDatabaseSource;
+    protected $entityGeneratorSource;
 
     /**
      * @var DatabaseSpecificSource
@@ -82,7 +82,7 @@ class MySQLTableCreator
 
     public function setupTable(EntityGeneratorSource $eds)
     {
-        $this->entityDatabaseSource = $eds;
+        $this->entityGeneratorSource = $eds;
 
         $this->databaseSpecific = $eds->getDatabaseSpecific(MySQLConnection::NAME);
 
@@ -128,12 +128,12 @@ class MySQLTableCreator
     private function buildColumnSQL()
     {
         $columnList = array();
-        foreach ($this->entityDatabaseSource->getAttributeSourceList() as $attribute) {
+        foreach ($this->entityGeneratorSource->getAttributeSourceList() as $attribute) {
             if (!$attribute->isTransient()) {
                 $columnList[] = $this->buildAttributeColumnSQL($attribute);
             }
         }
-        foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
+        foreach ($this->entityGeneratorSource->getReferenceGeneratorSourceList() as $reference) {
             $columnList[] = $this->buildReferenceColumnSQL($reference);
         }
         return implode(",", $columnList);
@@ -187,7 +187,7 @@ class MySQLTableCreator
      */
     private function buildPrimaryKeySnippet()
     {
-        $pkColumnList = $this->entityDatabaseSource->getPrimaryKeyColumns();
+        $pkColumnList = $this->entityGeneratorSource->getPrimaryKeyColumns();
         if (sizeof($pkColumnList) === 0) {
             return "";
         }
@@ -207,7 +207,7 @@ class MySQLTableCreator
     {
 
         $sql = "";
-        foreach ($this->entityDatabaseSource->getIndexSourceList() as $indexSource) {
+        foreach ($this->entityGeneratorSource->getIndexGeneratorSourceList() as $indexSource) {
             $sql .= "," . $this->buildIndex($indexSource);
         }
 
@@ -215,11 +215,11 @@ class MySQLTableCreator
     }
 
     /**
-     * @param IndexSource $indexSource
+     * @param IndexGeneratorSource $indexSource
      *
      * @return string
      */
-    private function buildIndex(IndexSource $indexSource)
+    private function buildIndex(IndexGeneratorSource $indexSource)
     {
         // check if unique index or index
         $sql = $indexSource->isUnique() ? " UNIQUE INDEX " : " INDEX ";
@@ -235,7 +235,7 @@ class MySQLTableCreator
         // open columns
         $sql .= " ( ";
 
-        foreach ($indexSource->getIndexPartSourceList() as $indexPartSource) {
+        foreach ($indexSource->getIndexPartGeneratorSourceList() as $indexPartSource) {
             $sql .= $this->buildIndexPart($indexPartSource) . ",";
         }
 
@@ -270,7 +270,7 @@ class MySQLTableCreator
     private function buildAllForeignKeyConstraint()
     {
         $sql = "";
-        foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
+        foreach ($this->entityGeneratorSource->getReferenceGeneratorSourceList() as $reference) {
             $sql .= $this->buildForeignKeyConstraintSQL($reference);
         }
         return $sql;

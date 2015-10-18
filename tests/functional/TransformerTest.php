@@ -211,9 +211,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $entity = $this->loadEntitySource();
 
         $this->assertSame(sizeof($entity->getIndexSourceList()), 2, "Not 2 indexes found");
-        $this->assertSame(sizeof($entity->getIndexDatabaseSourceList()), 2, "Not 2 indexes found");
+        $this->assertSame(sizeof($entity->getIndexGeneratorSourceList()), 2, "Not 2 indexes found");
 
-        foreach ($entity->getIndexDatabaseSourceList() as $indexDatabaseSource) {
+        foreach ($entity->getIndexGeneratorSourceList() as $indexDatabaseSource) {
             $this->testIndex($indexDatabaseSource);
         }
     }

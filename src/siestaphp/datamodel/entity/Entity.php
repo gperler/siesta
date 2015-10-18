@@ -460,7 +460,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     /**
      * @return IndexGeneratorSource[]
      */
-    public function getIndexDatabaseSourceList()
+    public function getIndexGeneratorSourceList()
     {
         return $this->indexList;
     }

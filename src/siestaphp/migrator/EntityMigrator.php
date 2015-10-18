@@ -173,6 +173,9 @@ class EntityMigrator
     private function migrateIndexList()
     {
 
+        $this->databaseEntity->getIndexSourceList();
+
+        $this->modelEntity->getIndexSourceList();
     }
 
     /**

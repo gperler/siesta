@@ -12,6 +12,8 @@ use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
+use siestaphp\datamodel\index\IndexGeneratorSource;
+use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 
@@ -74,9 +76,18 @@ interface ColumnMigrator
      */
     public function createDropForeignKeyStatement(ReferenceSource $reference);
 
+    /**
+     * @param IndexGeneratorSource $indexSource
+     *
+     * @return mixed
+     */
+    public function createAddIndexStatement(IndexGeneratorSource $indexSource);
 
-    public function createAddIndexStatement();
-
-    public function createDropIndexStatement();
+    /**
+     * @param IndexSource $indexSource
+     *
+     * @return string
+     */
+    public function createDropIndexStatement(IndexSource $indexSource);
 
 }
