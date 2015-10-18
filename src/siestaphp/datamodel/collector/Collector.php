@@ -7,7 +7,7 @@ use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\Processable;
 use siestaphp\datamodel\reference\Reference;
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 
 /**
  * Class Collector
@@ -80,9 +80,9 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
     }
 
     /**
-     * @param GeneratorLog $log
+     * @param ValidationLogger $log
      */
-    public function validate(GeneratorLog $log)
+    public function validate(ValidationLogger $log)
     {
         if ($this->getType() !== "1n") {
             return;

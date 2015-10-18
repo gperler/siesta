@@ -4,7 +4,7 @@ namespace siestaphp\xmlreader;
 
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\exceptions\XMLNotValidException;
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 use siestaphp\util\File;
 
 /**
@@ -26,7 +26,7 @@ class DirectoryScanner
     protected $baseDirFile;
 
     /**
-     * @var GeneratorLog
+     * @var ValidationLogger
      */
     protected $generatorLog;
 
@@ -49,13 +49,14 @@ class DirectoryScanner
     }
 
     /**
-     * @param GeneratorLog $log
+     * @param ValidationLogger $log
      * @param string $baseDir
      * @param string $suffix
+
      *
-     * @return EntitySource[]
+*@return EntitySource[]
      */
-    public function scan(GeneratorLog $log, $baseDir, $suffix = self::DEFAULT_SUFFIX)
+    public function scan(ValidationLogger $log, $baseDir, $suffix = self::DEFAULT_SUFFIX)
     {
 
         $this->fileSuffix = $suffix;

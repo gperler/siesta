@@ -3,13 +3,15 @@
 namespace siestaphp\tests\functional;
 
 use Codeception\Util\Debug;
-use siestaphp\generator\GeneratorLog;
+use Psr\Log\LoggerInterface;
+use siestaphp\generator\ValidationLogger;
+use siestaphp\util\Util;
 
 /**
  * Class CodeceptionLogger
  * @package siestaphp\tests\functional\xmlreader
  */
-class CodeceptionLogger implements GeneratorLog
+class CodeceptionLogger implements LoggerInterface
 {
     /**
      * @var int[]
@@ -39,79 +41,144 @@ class CodeceptionLogger implements GeneratorLog
     }
 
     /**
-     *
-     */
-    public function printValidationSummary()
-    {
-        if (sizeof($this->errorCodeList) !== 0 ) {
-            Debug::debug("Errorlist " . implode(",", $this->errorCodeList));
-        }
-
-    }
-
-    /**
-     * @param string $text
-     */
-    public function info($text)
-    {
-        Debug::debug($text);
-    }
-
-    /**
-     * @param string $text
-     * @param int $code
-     */
-    public function warn($text, $code)
-    {
-        $this->warningCodeList[] = $code;
-        Debug::debug($text);
-    }
-
-    /**
-     * @param string $text
-     * @param int $code
-     */
-    public function error($text, $code)
-    {
-        $this->errorCodeList[] = $code;
-        Debug::debug($text);
-    }
-
-    /**
-     * @param string $needle
-     * @param string $attributeName
-     * @param string $elementName
-     * @param int $code
-     */
-    public function errorIfAttributeNotSet($needle, $attributeName, $elementName, $code)
-    {
-        if (!$needle) {
-            $this->errorCodeList[] = $code;
-            Debug::debug($needle . "$elementName not set");
-        }
-    }
-
-    /**
-     * @param string $needle
-     * @param array $haystack
-     * @param string $attributeName
-     * @param string $elementName
-     * @param int $code
-     */
-    public function errorIfNotInList($needle, $haystack, $attributeName, $elementName, $code)
-    {
-        if (!in_array($needle, $haystack)) {
-            $this->errorCodeList[] = $code;
-            Debug::debug($needle . "$needle not in list");
-        }
-    }
-
-    /**
      * @param $errorCode
+     *
      * @return bool
      */
-    public function isErrorCodeSet($errorCode) {
+    public function isErrorCodeSet($errorCode)
+    {
         return in_array($this->errorCodeList, $errorCode);
+    }
+
+    /**
+     * System is unusable.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function emergency($message, array $context = array())
+    {
+        Debug::debug($message);
+    }
+
+    /**
+     * Action must be taken immediately.
+     * Example: Entire website down, database unavailable, etc. This should
+     * trigger the SMS alerts and wake you up.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function alert($message, array $context = array())
+    {
+        Debug::debug($message);
+    }
+
+    /**
+     * Critical conditions.
+     * Example: Application component unavailable, unexpected exception.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function critical($message, array $context = array())
+    {
+        Debug::debug($message);
+    }
+
+    /**
+     * Runtime errors that do not require immediate action but should typically
+     * be logged and monitored.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function error($message, array $context = array())
+    {
+
+        Debug::debug($message);
+        $code = Util::getFromArray($context, "code");
+        if ($code) {
+            $this->errorCodeList[] = $code;
+        }
+
+    }
+
+    /**
+     * Exceptional occurrences that are not errors.
+     * Example: Use of deprecated APIs, poor use of an API, undesirable things
+     * that are not necessarily wrong.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function warning($message, array $context = array())
+    {
+        Debug::debug($message);
+    }
+
+    /**
+     * Normal but significant events.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function notice($message, array $context = array())
+    {
+        Debug::debug($message);
+    }
+
+    /**
+     * Interesting events.
+     * Example: User logs in, SQL logs.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function info($message, array $context = array())
+    {
+        Debug::debug($message);
+    }
+
+    /**
+     * Detailed debug information.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function debug($message, array $context = array())
+    {
+        Debug::debug($message);
+    }
+
+    /**
+     * Logs with an arbitrary level.
+     *
+     * @param mixed $level
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function log($level, $message, array $context = array())
+    {
+        Debug::debug($message);
     }
 
 }

@@ -58,5 +58,6 @@ class GeneratorCommand extends Command
 
         $output->writeln($delta*1000);
 
+
     }
 }

@@ -3,7 +3,7 @@
 
 namespace siestaphp\datamodel;
 
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 
 /**
  * Interface Processable
@@ -18,8 +18,8 @@ interface Processable
     public function updateModel(DataModelContainer $container);
 
     /**
-     * @param GeneratorLog $log
+     * @param ValidationLogger $log
      */
-    public function validate(GeneratorLog $log);
+    public function validate(ValidationLogger $log);
 
 }

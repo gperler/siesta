@@ -5,7 +5,7 @@ namespace siestaphp\datamodel\attribute;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\Processable;
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 use siestaphp\naming\XMLAttribute;
 
 /**
@@ -137,9 +137,9 @@ class Attribute implements Processable, AttributeSource, AttributeGeneratorSourc
     }
 
     /**
-     * @param GeneratorLog $log
+     * @param ValidationLogger $log
      */
-    public function validate(GeneratorLog $log)
+    public function validate(ValidationLogger $log)
     {
         $log->errorIfAttributeNotSet($this->name, XMLAttribute::ATTRIBUTE_NAME, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_NAME);
 

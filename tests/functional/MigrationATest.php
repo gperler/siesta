@@ -5,6 +5,7 @@ namespace siestaphp\tests\functional;
 use Codeception\Util\Debug;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\EntitySource;
+use siestaphp\generator\ValidationLogger;
 use siestaphp\migrator\DatabaseMigrator;
 use siestaphp\migrator\Migrator;
 use siestaphp\util\File;
@@ -47,13 +48,13 @@ class MigrationATest extends SiestaTester
 
         // read model
         $this->logger = new CodeceptionLogger();
-        $dmc = new DataModelContainer($this->logger);
+        $dmc = new DataModelContainer(new ValidationLogger($this->logger));
         $xmlReader = new XMLReader(new File(__DIR__ . self::ASSET_PATH . self::SRC_XML));
         $dmc->addEntitySourceList($xmlReader->getEntitySourceList());
         $dmc->updateModel();
         $dmc->validate();
 
-        $migrator = new Migrator($dmc, $this->connection);
+        $migrator = new Migrator($dmc, $this->connection, $this->logger);
         $migrator->migrate();
 
 

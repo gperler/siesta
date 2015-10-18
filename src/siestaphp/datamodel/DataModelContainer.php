@@ -5,7 +5,7 @@ namespace siestaphp\datamodel;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 
 /**
  * Class DataModelContainer contains the entire defined data model
@@ -20,18 +20,18 @@ class DataModelContainer
     protected $entityList;
 
     /**
-     * @var GeneratorLog
+     * @var ValidationLogger
      */
     protected $generatorLog;
 
     /**
-     * @param $generatorLog
+     * @param ValidationLogger $validationLogger
      */
-    public function __construct($generatorLog)
+    public function __construct(ValidationLogger $validationLogger)
     {
         $this->entityList = array();
 
-        $this->generatorLog = $generatorLog;
+        $this->generatorLog = $validationLogger;
     }
 
     /**

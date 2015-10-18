@@ -19,7 +19,7 @@ use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedure;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 use siestaphp\naming\XMLEntity;
 use siestaphp\util\File;
 
@@ -266,9 +266,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     }
 
     /**
-     * @param GeneratorLog $log
+     * @param ValidationLogger $log
      */
-    public function validate(GeneratorLog $log)
+    public function validate(ValidationLogger $log)
     {
 
         $this->validateEntity($log);
@@ -291,9 +291,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     }
 
     /**
-     * @param GeneratorLog $log
+     * @param ValidationLogger $log
      */
-    private function validateEntity(GeneratorLog $log)
+    private function validateEntity(ValidationLogger $log)
     {
         $log->info("Analyzing entity " . $this->className);
 

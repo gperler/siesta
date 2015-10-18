@@ -112,8 +112,6 @@ class TableCreator
 
         $sql .= $this->buildCharsetSQL();
 
-        Debug::debug($sql);
-
         return $sql;
     }
 

@@ -56,6 +56,7 @@ class InitCommand extends Command
     {
         $this->input = $input;
         $this->output = $output;
+
         $this->questionHelper = $this->getQuestionHelper();
 
         do {

@@ -7,7 +7,7 @@ use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\Processable;
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 use siestaphp\naming\StoredProcedureNaming;
 use siestaphp\naming\XMLReference;
 
@@ -201,9 +201,9 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
 
 
     /**
-     * @param GeneratorLog $log
+     * @param ValidationLogger $log
      */
-    public function validate(GeneratorLog $log)
+    public function validate(ValidationLogger $log)
     {
         $log->errorIfAttributeNotSet($this->name, XMLReference::ATTRIBUTE_NAME, XMLReference::ELEMENT_REFERENCE_NAME, self::VALIDATION_ERROR_INVALID_REFERENCE_NAME);
 

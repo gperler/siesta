@@ -8,7 +8,7 @@ use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\Processable;
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 
 /**
  * Class Index
@@ -101,9 +101,9 @@ class Index implements Processable, IndexSource, IndexGeneratorSource
     }
 
     /**
-     * @param GeneratorLog $log
+     * @param ValidationLogger $log
      */
-    public function validate(GeneratorLog $log)
+    public function validate(ValidationLogger $log)
     {
         foreach ($this->indexPartList as $indexPart) {
             $indexPart->validate($log);

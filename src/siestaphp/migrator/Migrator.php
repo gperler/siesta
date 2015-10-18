@@ -2,10 +2,10 @@
 
 namespace siestaphp\migrator;
 
+use Psr\Log\LoggerInterface;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\driver\Connection;
 use siestaphp\driver\exceptions\SQLException;
-use siestaphp\generator\GeneratorLog;
 
 /**
  * Class Migrator
@@ -37,17 +37,23 @@ class Migrator
      */
     protected $executionMode;
 
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
 
     /**
      * @param DataModelContainer $dataModelContainer
      * @param Connection $connection
-     * @param GeneratorLog $logger
+     * @param LoggerInterface $logger
      */
-    public function __construct(DataModelContainer $dataModelContainer, Connection $connection, GeneratorLog $logger) {
+    public function __construct(DataModelContainer $dataModelContainer, Connection $connection, LoggerInterface $logger) {
         $this->dataModelContainer = $dataModelContainer;
         $this->connection = $connection;
         $this->executionMode = self::DIRECT_EXECUTION;
         $this->databaseMigrator = new DatabaseMigrator($dataModelContainer, $connection);
+        $this->logger = $logger;
     }
 
     /**
@@ -70,11 +76,18 @@ class Migrator
     }
 
     /**
-     * @param string $statementList
+     * @param string[] $statementList
      */
-    private function migrateDirect($statementList) {
+    private function migrateDirect(array $statementList) {
         try {
-            $this->connection->multiQuery(implode(";", $statementList));
+            $datbase = $this->connection->getDatabase();
+            $this->logger->info("Direct migration of database " . $datbase);
+
+            foreach($statementList as $statement) {
+                $this->logger->info("Executing" . $statement);
+                $this->connection->query($statement);
+            }
+
         } catch (SQLException $e) {
 
         }

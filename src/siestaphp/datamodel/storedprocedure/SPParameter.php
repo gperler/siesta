@@ -6,7 +6,7 @@ namespace siestaphp\datamodel\storedprocedure;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\Processable;
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 use siestaphp\naming\XMLStoredProcedure;
 
 /**
@@ -49,9 +49,9 @@ class SPParameter implements Processable, SPParameterSource
 
 
     /**
-     * @param GeneratorLog $log
+     * @param ValidationLogger $log
      */
-    public function validate(GeneratorLog $log)
+    public function validate(ValidationLogger $log)
 
     {
         $log->errorIfAttributeNotSet($this->getName(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_NAME, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_NAME);

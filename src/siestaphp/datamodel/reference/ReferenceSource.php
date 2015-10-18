@@ -2,7 +2,7 @@
 
 namespace siestaphp\datamodel\reference;
 
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 use siestaphp\runtime\ServiceLocator;
 
 /**

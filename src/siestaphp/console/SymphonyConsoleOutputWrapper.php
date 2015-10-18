@@ -1,134 +1,225 @@
 <?php
 
-
 namespace siestaphp\console;
 
-use siestaphp\generator\GeneratorLog;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+use siestaphp\util\Util;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class GeneratorConsoleLog
  * @package siestaphp\generator
  */
-class SymphonyConsoleOutputWrapper implements GeneratorLog
+class SymphonyConsoleOutputWrapper implements LoggerInterface
 {
-
-    /**
-     * counts the errors
-     * @var int
-     */
-    protected $errorCount;
-
-    /**
-     * counts the warnings
-     * @var int
-     */
-    protected $warningCount;
 
     /**
      * @var OutputInterface
      */
     protected $outputInterfase;
 
-
-
     /**
      * @param OutputInterface $output
      */
     public function __construct(OutputInterface $output)
     {
-        $this->errorCount = 0;
-        $this->warningCount = 0;
         $this->outputInterfase = $output;
     }
 
     /**
-     * @return bool
-     */
-    public function hasErrors()
-    {
-        return $this->errorCount !== 0;
-    }
-
-    /**
-     * @param string $text
-     */
-    private function println($text)
-    {
-        $this->outputInterfase->writeln($text);
-    }
-
-    /**
+     * @param int $loglevel
+     * @param string $message
+     * @param array $context
      *
+     * @return string
      */
-    public function printValidationSummary()
+    private function compileMessage($loglevel, $message, array $context = array())
     {
+        $prefix = "";
+        switch ($loglevel) {
+            case LogLevel::ERROR:
+                $prefix = "[ERROR] ";
+                break;
+            case LogLevel::WARNING:
+                $prefix = "[WARNING] ";
+                break;
+        }
+        $code = Util::getFromArray($context, "code");
 
-        $this->println($this->errorCount . " error(s)");
-        $this->println($this->warningCount . " warning(s)");
+        return $prefix . $message . " (" . $code . ")";
+
     }
 
     /**
-     * @param string $text
+     * System is unusable.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
      */
-    public function info($text)
+    public function emergency($message, array $context = array())
+    {
+        $message = $this->compileMessage(LogLevel::EMERGENCY, $message, $context);
+        $this->outputInterfase->writeln($message);
+    }
+
+    /**
+     * Action must be taken immediately.
+     * Example: Entire website down, database unavailable, etc. This should
+     * trigger the SMS alerts and wake you up.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function alert($message, array $context = array())
+    {
+        $message = $this->compileMessage(LogLevel::ALERT, $message, $context);
+        $this->outputInterfase->writeln($message);
+    }
+
+    /**
+     * Critical conditions.
+     * Example: Application component unavailable, unexpected exception.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function critical($message, array $context = array())
+    {
+        $message = $this->compileMessage(LogLevel::CRITICAL, $message, $context);
+        $this->outputInterfase->writeln($message);
+    }
+
+    /**
+     * Runtime errors that do not require immediate action but should typically
+     * be logged and monitored.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function error($message, array $context = array())
+    {
+        $message = $this->compileMessage(LogLevel::ERROR, $message, $context);
+        $this->outputInterfase->writeln($message);
+    }
+
+    /**
+     * Exceptional occurrences that are not errors.
+     * Example: Use of deprecated APIs, poor use of an API, undesirable things
+     * that are not necessarily wrong.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function warning($message, array $context = array())
+    {
+        if ($this->outputInterfase->getVerbosity() < 2) {
+            return;
+        }
+        $message = $this->compileMessage(LogLevel::WARNING, $message, $context);
+        $this->outputInterfase->writeln($message);
+    }
+
+    /**
+     * Normal but significant events.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
+     */
+    public function notice($message, array $context = array())
     {
         if ($this->outputInterfase->getVerbosity() < 3) {
             return;
         }
-        $this->println($text);
+        $message = $this->compileMessage(LogLevel::NOTICE, $message, $context);
+        $this->outputInterfase->writeln($message);
     }
 
     /**
-     * @param string $text
-     * @param int $errorCode
+     * Interesting events.
+     * Example: User logs in, SQL logs.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
      */
-    public function warn($text, $errorCode)
+    public function info($message, array $context = array())
     {
-        $this->warningCount++;
-        if ($this->outputInterfase->getVerbosity() < 2) {
+        if ($this->outputInterfase->getVerbosity() < 3) {
             return;
         }
-        $this->println("[WARN] " . $text);
+        $message = $this->compileMessage(LogLevel::INFO, $message, $context);
+        $this->outputInterfase->writeln($message);
     }
 
     /**
-     * @param string $text
-     * @param int $errorCode
+     * Detailed debug information.
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
      */
-    public function error($text, $errorCode)
+    public function debug($message, array $context = array())
     {
-        $this->errorCount++;
-        $this->println("[ERROR] " . $text);
-    }
-
-    /**
-     * @param string $needle
-     * @param string $attributeName
-     * @param string $elementName
-     * @param int $errorCode
-     */
-    public function errorIfAttributeNotSet($needle, $attributeName, $elementName, $errorCode)
-    {
-        if (!$needle) {
-            $this->error("Mandatory attribute $attributeName in element <$elementName> not set", $errorCode);
-
+        if ($this->outputInterfase->getVerbosity() < 3) {
+            return;
         }
+        $message = $this->compileMessage(LogLevel::DEBUG, $message, $context);
+        $this->outputInterfase->writeln($message);
     }
 
     /**
-     * @param string $needle
-     * @param array $haystack
-     * @param string $attributeName
-     * @param string $elementName
-     * @param int $errorCode
+     * Logs with an arbitrary level.
+     *
+     * @param mixed $level
+     * @param string $message
+     * @param array $context
+     *
+     * @return null
      */
-    public function errorIfNotInList($needle, $haystack, $attributeName, $elementName, $errorCode)
+    public function log($level, $message, array $context = array())
     {
-        if (!in_array($needle, $haystack)) {
-            $allowedValues = implode(",", $haystack);
-            $this->error("Attribute '$attributeName' in element <$elementName> has an invalid value ('$needle'). Allowed values are: $allowedValues", $errorCode);
+        switch ($level) {
+            case LogLevel::EMERGENCY:
+                $this->emergency($message, $context);
+                break;
+            case LogLevel::DEBUG:
+                $this->debug($message, $context);
+                break;
+            case LogLevel::ERROR:
+                $this->error($message, $context);
+                break;
+            case LogLevel::ALERT:
+                $this->alert($message, $context);
+                break;
+            case LogLevel::CRITICAL:
+                $this->critical($message, $context);
+                break;
+            case LogLevel::INFO:
+                $this->info($message, $context);
+                break;
+            case LogLevel::NOTICE:
+                $this->notice($message, $context);
+                break;
+            case LogLevel::WARNING:
+                $this->warning($message, $context);
+                break;
         }
+
     }
 
 }

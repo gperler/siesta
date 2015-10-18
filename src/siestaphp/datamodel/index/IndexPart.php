@@ -7,7 +7,7 @@ use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\Processable;
-use siestaphp\generator\GeneratorLog;
+use siestaphp\generator\ValidationLogger;
 use siestaphp\naming\XMLIndexPart;
 
 /**
@@ -128,9 +128,9 @@ class IndexPart implements Processable, IndexPartSource, IndexPartGeneratorSourc
 
 
     /**
-     * @param GeneratorLog $log
+     * @param ValidationLogger $log
      */
-    public function validate(GeneratorLog $log)
+    public function validate(ValidationLogger $log)
     {
         $log->errorIfAttributeNotSet($this->getName(), XMLIndexPart::ATTRIBUTE_NAME, XMLIndexPart::ELEMENT_INDEX_PART_NAME, self::VALIDATION_ERROR_INVALID_NAME);
 

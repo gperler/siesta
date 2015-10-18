@@ -11,6 +11,7 @@ use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\storedprocedure\SPParameterSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
+use siestaphp\generator\ValidationLogger;
 use siestaphp\tests\functional\transformer\TransformerXML;
 use siestaphp\util\File;
 use siestaphp\util\Util;
@@ -37,7 +38,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $entitySourceList = $xmlReader->getEntitySourceList();
 
         // create datamodel
-        $dataModelContainer = new DataModelContainer(null);
+        $dataModelContainer = new DataModelContainer(new ValidationLogger(new CodeceptionLogger()));
         $dataModelContainer->addEntitySourceList($entitySourceList);
         $dataModelContainer->updateModel();
 

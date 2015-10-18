@@ -89,7 +89,6 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
         if (!$this->logger) {
             return;
         }
-        $this->logger->printValidationSummary();
         $this->assertFalse($this->logger->hasErrors(), "Expected no validation errors");
     }
 

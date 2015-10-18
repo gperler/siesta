@@ -2,11 +2,11 @@
 
 namespace siestaphp\generator;
 
+use Psr\Log\LoggerInterface;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\exceptions\SQLException;
-use siestaphp\migrator\DatabaseMigrator;
 use siestaphp\migrator\Migrator;
 use siestaphp\util\File;
 use siestaphp\xmlreader\DirectoryScanner;
@@ -22,9 +22,14 @@ class Generator
     const ERROR_SQL_EXCEPTION = 1100;
 
     /**
-     * @var GeneratorLog
+     * @var LoggerInterface
      */
-    protected $generatorLog;
+    protected $logger;
+
+    /**
+     * @var ValidationLogger
+     */
+    protected $validationLogger;
 
     /**
      * @var DataModelContainer
@@ -72,14 +77,16 @@ class Generator
     protected $migrationMode;
 
     /**
-     * @param GeneratorLog $log
+     * @param LoggerInterface $logger
      */
-    public function __construct(GeneratorLog $log)
+    public function __construct(LoggerInterface $logger)
     {
 
-        $this->generatorLog = $log;
+        $this->logger = $logger;
 
-        $this->dataModelContainer = new DataModelContainer($this->generatorLog);
+        $this->validationLogger = new ValidationLogger($logger);
+
+        $this->dataModelContainer = new DataModelContainer($this->validationLogger);
 
         $this->directoryScanner = new DirectoryScanner();
 
@@ -128,14 +135,14 @@ class Generator
 
         $this->baseDir = $baseDir;
 
-        $entitySourceList = $this->directoryScanner->scan($this->generatorLog, $this->baseDir, $this->entityFileSuffix);
+        $entitySourceList = $this->directoryScanner->scan($this->validationLogger, $this->baseDir, $this->entityFileSuffix);
 
         $this->dataModelContainer->addEntitySourceList($entitySourceList);
 
         $this->generateDataModelContainer();
 
         $time = (microtime(true) + $time) / 1000;
-        $this->generatorLog->info(sprintf("%0.3fms", $time));
+        $this->validationLogger->info(sprintf("%0.3fms", $time));
 
     }
 
@@ -165,7 +172,7 @@ class Generator
 
         $this->dataModelContainer->validate();
 
-        if ($this->generatorLog->hasErrors()) {
+        if ($this->validationLogger->hasErrors()) {
             return;
         }
 
@@ -181,11 +188,11 @@ class Generator
             $connection->install();
             $connection->disableForeignKeyChecks();
 
-            $this->migrator = new Migrator($this->dataModelContainer, $connection, $this->generatorLog);
+            $this->migrator = new Migrator($this->dataModelContainer, $connection, $this->logger);
             $this->migrator->migrate();
             $connection->enableForeignKeyChecks();
         } catch (SQLException $s) {
-            $this->generatorLog->error("SQL Exception " . $s->getMessage(), self::ERROR_SQL_EXCEPTION);
+            $this->validationLogger->error("SQL Exception " . $s->getMessage(), self::ERROR_SQL_EXCEPTION);
         }
 
     }

@@ -30,7 +30,7 @@ class AttributeTest extends SiestaTester
 
     protected function tearDown()
     {
-        $this->dropDatabase();
+        //$this->dropDatabase();
 
     }
 
@@ -39,6 +39,7 @@ class AttributeTest extends SiestaTester
      */
     public function testCreateEntity()
     {
+        echo "CREATE ENTITY";
         $artist = new ArtistEntity();
         $artist->setBool(true);
         $artist->setString("Test123");
