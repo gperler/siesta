@@ -33,8 +33,6 @@ class MigrationATest extends SiestaTester
 
         $this->connection->query(self::CREATE_TABLE);
 
-        $this->assertNoValidationErrors();
-
     }
 
     protected function tearDown()
@@ -43,7 +41,7 @@ class MigrationATest extends SiestaTester
 
     }
 
-    public function testMigration()
+    public function testMigrationAttribute()
     {
 
         // read model

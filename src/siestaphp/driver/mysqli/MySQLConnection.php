@@ -2,6 +2,7 @@
 
 namespace siestaphp\driver\mysqli;
 
+use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\ColumnMigrator;
 use siestaphp\driver\Connection;
@@ -75,6 +76,12 @@ class MySQLConnection implements Connection
         $this->database = $connectionData->database;
         // connect
         $this->connection = @new \mysqli ($connectionData->host, $connectionData->user, $connectionData->password, $connectionData->database, $connectionData->port);
+
+        // database does not exist . create it
+        if ($this->connection->connect_errno === 1049) {
+            $this->connection = @new \mysqli ($connectionData->host, $connectionData->user, $connectionData->password, null, $connectionData->port);
+            $this->useDatabase($connectionData->database);
+        }
 
         // check for errors
         if ($this->connection->connect_errno) {
@@ -189,6 +196,7 @@ class MySQLConnection implements Connection
      */
     private function handleQueryError($errorNumber, $error, $sql)
     {
+        Debug::debug($errorNumber);
         switch ($errorNumber) {
             case 1048:
                 throw new CannotBeNullException($error, $errorNumber, $sql);
