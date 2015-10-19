@@ -34,12 +34,29 @@ class File
     }
 
     /**
+     * @return string
+     */
+    public function getFileName()
+    {
+        return basename($this->absoluteFileName);
+    }
+
+    /**
      * tells if the file is a file
      * @return bool
      */
     public function isFile()
     {
         return is_file($this->absoluteFileName);
+    }
+
+    /**
+     * tells if the file is a directory
+     * @return bool
+     */
+    public function isDir()
+    {
+        return is_dir($this->absoluteFileName);
     }
 
     /**
@@ -113,13 +130,35 @@ class File
     }
 
     /**
-     * tells if the file is a directory
-     * @return bool
+     * Finds the first occurence of the given filename
+     * @param string $fileName
+     *
+     * @return null|File
      */
-    public function isDir()
+    public function findFile($fileName)
     {
-        return is_dir($this->absoluteFileName);
+        // only possible in directories
+        if (!$this->isDir()) {
+            return null;
+        }
+
+        foreach ($this->scanDir() as $file) {
+            if ($file->getFileName() === $fileName) {
+                return $file;
+            }
+
+            if ($file->isDir()) {
+                $result = $file->findFile($fileName);
+                if ($result !== null) {
+                    return $result;
+                }
+            }
+
+        }
+        return null;
     }
+
+
 
     /**
      * loads the file as XSLT Processor
@@ -142,12 +181,12 @@ class File
         $xml = new \DomDocument ();
         libxml_use_internal_errors(true);
         $result = $xml->load($this->absoluteFileName);
-        if (!$result) {
-            $e = new XMLNotValidException(libxml_get_errors());
-            libxml_clear_errors();
-            throw $e;
+        if ($result) {
+            return $xml;
         }
-        return $xml;
+        $e = new XMLNotValidException(libxml_get_errors());
+        libxml_clear_errors();
+        throw $e;
     }
 
     /**
@@ -155,8 +194,7 @@ class File
      */
     public function loadAsJSONArray()
     {
-        $content = $this->getContents();
-        return json_decode($content, true);
+        return json_decode($this->getContents(), true);
     }
 
     /**
@@ -166,4 +204,15 @@ class File
     {
         return file_get_contents($this->absoluteFileName);
     }
+
+    /**
+     * The __toString method allows a class to decide how it will react when it is converted to a string.
+     * @return string
+     * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
+     */
+    function __toString()
+    {
+        return $this->absoluteFileName;
+    }
+
 }
