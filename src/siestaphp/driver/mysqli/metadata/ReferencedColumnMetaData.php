@@ -75,7 +75,7 @@ class ReferencedColumnMetaData implements ReferencedColumnSource
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDatabaseName()
     {

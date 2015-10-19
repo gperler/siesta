@@ -3,7 +3,8 @@
     <entity name="ArtistEntity" namespace="siestaphp\tests\functional\multipk\gen" table="ARTIST" targetPath="gen">
 
         <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
-        <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)" primaryKey="true" autoValue="uuid"/>
+        <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)" primaryKey="true"
+                   autoValue="uuid"/>
         <attribute name="displayName" type="string" dbName="displayName" dbType="VARCHAR(100)"/>
         <attribute name="dob" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"/>
 

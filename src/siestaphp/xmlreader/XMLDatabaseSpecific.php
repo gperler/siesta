@@ -26,6 +26,8 @@ class XMLDatabaseSpecific extends XMLAccess implements DatabaseSpecificSource
 
     /**
      * @param $db
+     *
+     * @return void
      */
     public function setDatabase($db)
     {

@@ -2,9 +2,6 @@
 
 namespace siestaphp\datamodel\reference;
 
-use siestaphp\generator\ValidationLogger;
-use siestaphp\runtime\ServiceLocator;
-
 /**
  * Class Reference
  * @package siestaphp\datamodel
@@ -13,7 +10,7 @@ interface ReferenceSource
 {
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName();
 
@@ -61,7 +58,6 @@ interface ReferenceSource
      * @return MappingSource[]
      */
     public function getMappingSourceList();
-
 
     /**
      * @return ReferencedColumnSource[]

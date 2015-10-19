@@ -12,6 +12,7 @@ use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\index\IndexGeneratorSource;
+use siestaphp\datamodel\index\IndexPartSource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
@@ -169,13 +170,53 @@ class MysqlColumnMigrator implements ColumnMigrator
     }
 
     /**
-     * @param IndexGeneratorSource $indexSource
+     * @param IndexSource $indexSource
      *
      * @return string
      */
-    public function createAddIndexStatement(IndexGeneratorSource $indexSource)
+    public function createAddIndexStatement(IndexSource $indexSource)
     {
-        // TODO: Implement createAddIndexStatement() method.
+        $sql = "ALTER TABLE " . $this->tableName . " ADD ";
+        // check if unique index or index
+        $sql .= $indexSource->isUnique() ? "UNIQUE INDEX " : " INDEX ";
+
+        // add index name
+        $sql .= $this->quote($indexSource->getName());
+
+        // check if an index type has been set
+        if ($indexSource->getType()) {
+            $sql .= " USING " . $indexSource->getType();
+        }
+
+        // open columns
+        $sql .= " ( ";
+
+        foreach ($indexSource->getIndexPartSourceList() as $indexPartSource) {
+            $sql .= $this->buildIndexPart($indexPartSource) . ",";
+        }
+
+        $sql = rtrim($sql, ",") . ")";
+
+        return $sql;
+
+    }
+
+    /**
+     * @param IndexPartSource $indexPartSource
+     *
+     * @return string
+     */
+    private function buildIndexPart(IndexPartSource $indexPartSource)
+    {
+
+        $sql = $this->quote($indexPartSource->getColumnName());
+        if ($indexPartSource->getLength()) {
+            $sql .= " (" . $indexPartSource->getLength() . ")";
+        }
+
+        $sql .= " " . $indexPartSource->getSortOrder();
+
+        return $sql;
     }
 
     /**
@@ -185,7 +226,7 @@ class MysqlColumnMigrator implements ColumnMigrator
      */
     public function createDropIndexStatement(IndexSource $indexSource)
     {
-        // TODO: Implement createDropIndexStatement() method.
+        return sprintf(self::DROP_INDEX, $this->tableName, $indexSource->getName());
     }
 
     /**

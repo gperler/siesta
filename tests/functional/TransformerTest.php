@@ -80,9 +80,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * tests an attribute
-
      *
-*@param AttributeGeneratorSource $ats
+     * @param AttributeGeneratorSource $ats
      */
     private function testAttribute(AttributeGeneratorSource $ats)
     {
@@ -119,9 +118,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * checks a reference
-
      *
-*@param ReferenceGeneratorSource $referenceSource
+     * @param ReferenceGeneratorSource $referenceSource
      */
     private function testReference(ReferenceGeneratorSource $referenceSource)
     {
@@ -245,7 +243,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
      */
     private function testIndexPart($indexName, IndexPartGeneratorSource $indexPart)
     {
-        $indexPartName = $indexPart->getName();
+        $indexPartName = $indexPart->getColumnName();
 
         $definitionList = TransformerXML::getIndexPartDefinition();
         $indexPartListDefinition = Util::getFromArray($definitionList, $indexName);

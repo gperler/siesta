@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\runtime;
 
 use siestaphp\util\StringUtil;
@@ -84,7 +83,7 @@ class ArrayAccessor
     /**
      * @param string $key
      *
-     * @return null
+     * @return string|null
      */
     public function getStringValue($key)
     {
@@ -95,7 +94,7 @@ class ArrayAccessor
      * @param string $key
      * @param int $maxLength
      *
-     * @return string
+     * @return string|null
      */
     public function getStringValueTrimmed($key, $maxLength = 0)
     {
@@ -123,7 +122,7 @@ class ArrayAccessor
     /**
      * @param string $key
      *
-     * @return mixed|null
+     * @return array|null
      */
     public function getArray($key)
     {

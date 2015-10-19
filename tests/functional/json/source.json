@@ -9,7 +9,7 @@
       "dob": null,
       "label": null,
       "label_id": 1,
-      "transient" : "will not be persisted 1"
+      "transient": "will not be persisted 1"
     },
     {
       "id": 2,
@@ -17,7 +17,7 @@
       "dob": null,
       "label": null,
       "label_id": 1,
-      "transient" : "will not be persisted 2"
+      "transient": "will not be persisted 2"
     },
     {
       "id": 3,
@@ -25,7 +25,7 @@
       "dob": null,
       "label": null,
       "label_id": 1,
-      "transient" : "will not be persisted 3"
+      "transient": "will not be persisted 3"
     }
   ]
 }

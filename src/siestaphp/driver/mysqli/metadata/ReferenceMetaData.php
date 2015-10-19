@@ -147,6 +147,7 @@ class ReferenceMetaData implements ReferenceSource
 
     /**
      * tells if this reference has a referenced column with given column name
+     *
      * @param $columnName
      *
      * @return bool
@@ -241,7 +242,7 @@ class ReferenceMetaData implements ReferenceSource
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getForeignClass()
     {
@@ -257,7 +258,7 @@ class ReferenceMetaData implements ReferenceSource
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function isRequired()
     {

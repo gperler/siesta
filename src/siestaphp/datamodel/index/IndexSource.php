@@ -8,7 +8,8 @@ use siestaphp\datamodel\DatabaseColumn;
  * Interface IndexSource
  * @package siestaphp\datamodel\index
  */
-interface IndexSource {
+interface IndexSource
+{
 
     /**
      * @return string
@@ -30,10 +31,7 @@ interface IndexSource {
      */
     public function getIndexPartSourceList();
 
-    /**
-     * @return DatabaseColumn[]
-     */
-    public function getReferencedColumnList();
+
 
 }
 

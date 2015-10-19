@@ -21,7 +21,7 @@ class IndexPartMetaData implements IndexPartSource
      *
      * @return string
      */
-    public static function getColumnName(ResultSet $resultSet)
+    public static function getColumnNameFromResultSet(ResultSet $resultSet)
     {
         return $resultSet->getStringValue(self::COLUMN_NAME);
     }
@@ -49,7 +49,7 @@ class IndexPartMetaData implements IndexPartSource
     /**
      * @return string
      */
-    public function getName()
+    public function getColumnName()
     {
         return $this->name;
     }

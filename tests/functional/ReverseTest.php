@@ -4,7 +4,6 @@ namespace siestaphp\tests\functional;
 
 use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\util\File;
 use siestaphp\util\Util;
 use siestaphp\xmlbuilder\XMLEntityBuilder;
 
@@ -34,7 +33,7 @@ class ReverseTest extends SiestaTester
 
     protected function tearDown()
     {
-        $this->dropDatabase();
+        //$this->dropDatabase();
     }
 
     /**

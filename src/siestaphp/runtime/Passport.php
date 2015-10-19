@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\runtime;
 
 use siestaphp\util\Util;
@@ -66,6 +65,8 @@ class Passport
     /**
      * @param string $technicalName
      * @param ORMEntity $visitor
+     *
+     * @return void
      */
     private function addTravel($technicalName, $visitor)
     {

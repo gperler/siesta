@@ -204,7 +204,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
      */
     private function testIndexPart($indexName, IndexPartSource $indexPart)
     {
-        $indexPartName = $indexPart->getName();
+        $indexPartName = $indexPart->getColumnName();
 
         $definitionList = XMLReaderXML::getIndexPartDefinition();
         $indexPartListDefinition = Util::getFromArray($definitionList, $indexName);

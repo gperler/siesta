@@ -11,7 +11,6 @@ use siestaphp\tests\functional\reference\gen\LabelEntity;
 class ReferenceTest extends SiestaTester
 {
 
-
     const ASSET_PATH = "/reference";
 
     const SRC_XML = "/Reference.test.xml";

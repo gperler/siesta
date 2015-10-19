@@ -2,7 +2,6 @@
 
 namespace siestaphp\datamodel\attribute;
 
-use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\Processable;
 use siestaphp\generator\ValidationLogger;
@@ -102,6 +101,9 @@ class Attribute implements Processable, AttributeSource, AttributeGeneratorSourc
 
     }
 
+    /**
+     * @return void
+     */
     private function storeAttributeData()
     {
         $this->name = $this->attributeSource->getName();
@@ -122,6 +124,8 @@ class Attribute implements Processable, AttributeSource, AttributeGeneratorSourc
 
     /**
      * @param DataModelContainer $container
+     *
+     * @return void
      */
     public function updateModel(DataModelContainer $container)
     {
@@ -138,6 +142,8 @@ class Attribute implements Processable, AttributeSource, AttributeGeneratorSourc
 
     /**
      * @param ValidationLogger $log
+     *
+     * @return void
      */
     public function validate(ValidationLogger $log)
     {
@@ -146,7 +152,6 @@ class Attribute implements Processable, AttributeSource, AttributeGeneratorSourc
         $log->errorIfNotInList($this->phpType, self::$ALLOWED_PHP_TYPES, XMLAttribute::ATTRIBUTE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_PHP_TYPE);
 
         $log->errorIfNotInList($this->autoValue, self::$ALLOWED_AUTO_VALUE, XMLAttribute::ATTRIBUTE_AUTO_VALUE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_INVALID_AUTOVALUE);
-
 
         if (!$this->isTransient()) {
             $log->errorIfAttributeNotSet($this->databaseType, XMLAttribute::ATTRIBUTE_DATABASE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_DATABASE_TYPE);

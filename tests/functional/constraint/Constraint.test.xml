@@ -11,7 +11,7 @@
         <reference name="holidayAddress" foreignClass="Address" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </entity>
 
-    <entity name="Address" namespace="siestaphp\tests\functional\constraint\gen" table="Address" targetPath="gen" >
+    <entity name="Address" namespace="siestaphp\tests\functional\constraint\gen" table="Address" targetPath="gen">
         <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
         <attribute name="street" type="string" dbName="STREET" dbType="VARCHAR(100)"/>
         <attribute name="city" type="string" dbName="CITY" dbType="VARCHAR(100)"/>

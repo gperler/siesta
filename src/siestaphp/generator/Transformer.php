@@ -2,7 +2,6 @@
 
 namespace siestaphp\generator;
 
-use siestaphp\datamodel\Entity;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 
 /**

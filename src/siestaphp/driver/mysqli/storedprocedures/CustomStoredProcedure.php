@@ -85,7 +85,7 @@ class CustomStoredProcedure extends MySQLStoredProcedureBase
      * @param $sql
      * @param $tableName
      *
-     * @return mixed
+     * @return string
      */
     protected function replaceTable($sql, $tableName)
     {

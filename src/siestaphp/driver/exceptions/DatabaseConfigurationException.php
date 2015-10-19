@@ -21,7 +21,7 @@ class DatabaseConfigurationException extends \Exception implements SiestaExcepti
      * @param ConnectionData $connectionData
      * @param string $message
      */
-    public function __construct(ConnectionData $connectionData, $message=null)
+    public function __construct(ConnectionData $connectionData, $message = null)
     {
         parent::__construct($message);
     }

@@ -2,7 +2,6 @@
 
 namespace siestaphp\datamodel\reference;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\entity\EntitySource;
@@ -123,6 +122,9 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
 
     }
 
+    /**
+     * @return void
+     */
     private function storeReferenceData()
     {
         $this->name = $this->referenceSource->getName();
@@ -147,6 +149,8 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
 
     /**
      * @param DataModelContainer $container
+     *
+     * @return void
      */
     public function updateModel(DataModelContainer $container)
     {
@@ -190,8 +194,9 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
      *
      * @return null|MappingSource
      */
-    private function getMappingByForeignName($foreignName) {
-        foreach($this->referenceSource->getMappingSourceList() as $mapping) {
+    private function getMappingByForeignName($foreignName)
+    {
+        foreach ($this->referenceSource->getMappingSourceList() as $mapping) {
             if ($mapping->getForeignName() === $foreignName) {
                 return $mapping;
             }
@@ -199,9 +204,10 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
         return null;
     }
 
-
     /**
      * @param ValidationLogger $log
+     *
+     * @return void
      */
     public function validate(ValidationLogger $log)
     {
@@ -222,6 +228,7 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
 
     /**
      * indicates that this reference needs to be backlinked
+     * @return void
      */
     public function setReferenceCreatorNeeded()
     {
@@ -245,11 +252,26 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     }
 
     /**
+     * @param string $columnName
+     *
+     * @return ReferencedColumnSource
+     */
+    public function getReferencedColumn($columnName)
+    {
+        foreach ($this->referenceColumnList as $column) {
+            if ($column->getDatabaseName() === $columnName) {
+                return $column;
+            }
+        }
+        return null;
+    }
+
+    /**
      * @return MappingSource[]
      */
     public function getMappingSourceList()
     {
-       return $this->referenceSource->getMappingSourceList();
+        return $this->referenceSource->getMappingSourceList();
     }
 
     /**
@@ -261,9 +283,10 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     }
 
     /**
-     *
+     * @return string
      */
-    public function getConstraintName() {
+    public function getConstraintName()
+    {
         if ($this->referenceSource->getConstraintName()) {
             return $this->referenceSource->getConstraintName();
         }

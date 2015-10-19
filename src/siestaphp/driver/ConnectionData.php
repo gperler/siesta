@@ -65,7 +65,8 @@ class ConnectionData
      * @param $charSet
      * @param array|null $postConnectStatements
      */
-    public function __construct($name = null, $driver = null, $host = null, $port = null, $database = null, $user = null, $password = null, $charSet = null, array $postConnectStatements = null) {
+    public function __construct($name = null, $driver = null, $host = null, $port = null, $database = null, $user = null, $password = null, $charSet = null, array $postConnectStatements = null)
+    {
         $this->postConnectStatements = $postConnectStatements ? $postConnectStatements : array();
         $this->name = $name;
         $this->driver = $driver;
@@ -80,7 +81,8 @@ class ConnectionData
     /**
      * @param string $statement
      */
-    public function addPostConnectStatement($statement) {
+    public function addPostConnectStatement($statement)
+    {
         $this->postConnectStatements[] = $statement;
     }
 }

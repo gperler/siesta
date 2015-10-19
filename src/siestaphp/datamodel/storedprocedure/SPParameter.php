@@ -1,10 +1,8 @@
 <?php
 
-
 namespace siestaphp\datamodel\storedprocedure;
 
 use siestaphp\datamodel\DataModelContainer;
-use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\Processable;
 use siestaphp\generator\ValidationLogger;
 use siestaphp\naming\XMLStoredProcedure;
@@ -31,6 +29,8 @@ class SPParameter implements Processable, SPParameterSource
 
     /**
      * @param SPParameterSource $source
+     *
+     * @return void
      */
     public function setSource(SPParameterSource $source)
     {
@@ -40,16 +40,18 @@ class SPParameter implements Processable, SPParameterSource
 
     /**
      * @param DataModelContainer $container
+     *
+     * @return void
      */
     public function updateModel(DataModelContainer $container)
     {
 
     }
 
-
-
     /**
      * @param ValidationLogger $log
+     *
+     * @return void
      */
     public function validate(ValidationLogger $log)
 

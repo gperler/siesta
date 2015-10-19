@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\xmlbuilder;
 
 use siestaphp\datamodel\collector\CollectorSource;
@@ -42,6 +41,7 @@ class XMLCollectorBuilder extends XMLBuilder
 
     /**
      * adds the standard information to the xml
+     * @return void
      */
     private function addCollectorData()
     {
@@ -56,6 +56,8 @@ class XMLCollectorBuilder extends XMLBuilder
      * adds additional information for transformation
      *
      * @param CollectorTransformerSource $transformerSource
+     *
+     * @return void
      */
     private function addCollectorTransformerData(CollectorTransformerSource $transformerSource)
     {

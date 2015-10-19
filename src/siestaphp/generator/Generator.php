@@ -102,6 +102,8 @@ class Generator
 
     /**
      * @param string $suffix
+     *
+     * @return void
      */
     public function setEntityFileSuffix($suffix)
     {
@@ -110,6 +112,8 @@ class Generator
 
     /**
      * @param bool $drop
+     *
+     * @return void
      */
     public function dropUnusedTables($drop)
     {
@@ -118,6 +122,8 @@ class Generator
 
     /**
      * @param string $connectionName
+     *
+     * @return void
      */
     public function setConnectionName($connectionName)
     {
@@ -128,6 +134,8 @@ class Generator
      * scans the given base dir for entity files and generates them
      *
      * @param string $baseDir
+     *
+     * @return void
      */
     public function generate($baseDir)
     {
@@ -151,6 +159,8 @@ class Generator
      *
      * @param string $baseDir
      * @param string $fileName
+     *
+     * @return void
      */
     public function generateFile($baseDir, $fileName)
     {
@@ -165,6 +175,7 @@ class Generator
 
     /**
      * generates all artifacts for current datamodel container
+     * @return void
      */
     private function generateDataModelContainer()
     {
@@ -181,6 +192,9 @@ class Generator
         $this->handleDatabaseMigration();
     }
 
+    /**
+     * @return void
+     */
     private function handleDatabaseMigration()
     {
         try {

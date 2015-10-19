@@ -138,6 +138,8 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
 
     /**
      * @param EntitySource $source
+     *
+     * @return void
      */
     public function setSource(EntitySource $source)
     {
@@ -158,6 +160,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         $this->deriveData();
     }
 
+    /**
+     * @return void
+     */
     private function storeEntityData()
     {
         $this->className = $this->entitySource->getClassName();
@@ -170,7 +175,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     }
 
     /**
-     *
+     * @return void
      */
     private function storeAttributeData()
     {
@@ -182,6 +187,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         }
     }
 
+    /**
+     * @return void
+     */
     private function storeReferenceData()
     {
         foreach ($this->entitySource->getReferenceSourceList() as $referenceSource) {
@@ -191,6 +199,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         }
     }
 
+    /**
+     * @return void
+     */
     private function storeCollectorData()
     {
         foreach ($this->entitySource->getCollectorSourceList() as $collectorSource) {
@@ -200,6 +211,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         }
     }
 
+    /**
+     * @return void
+     */
     private function storeStoredProcedureData()
     {
         foreach ($this->entitySource->getStoredProcedureSourceList() as $storedProcedureSource) {
@@ -209,6 +223,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         }
     }
 
+    /**
+     * @return void
+     */
     private function storeIndexData()
     {
         foreach ($this->entitySource->getIndexSourceList() as $indexSource) {
@@ -216,6 +233,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         }
     }
 
+    /**
+     * @return void
+     */
     private function deriveData()
     {
         if (!$this->constructorClass) {
@@ -229,6 +249,8 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
 
     /**
      * @param DataModelContainer $container
+     *
+     * @return void
      */
     public function updateModel(DataModelContainer $container)
     {
@@ -256,6 +278,8 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
 
     /**
      * @param $fqClassName
+     *
+     * @return void
      */
     private function addToUsedFQClassNames($fqClassName)
     {
@@ -267,6 +291,8 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
 
     /**
      * @param ValidationLogger $log
+     *
+     * @return void
      */
     public function validate(ValidationLogger $log)
     {
@@ -292,6 +318,8 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
 
     /**
      * @param ValidationLogger $log
+     *
+     * @return void
      */
     private function validateEntity(ValidationLogger $log)
     {
@@ -338,7 +366,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
                 $resultList[] = $attribute;
             }
         }
-        foreach($this->referenceList as $reference) {
+        foreach ($this->referenceList as $reference) {
             if ($reference->isPrimaryKey()) {
                 $resultList = array_merge($resultList, $reference->getReferencedColumnList());
             }
@@ -349,7 +377,8 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     /**
      * @return bool
      */
-    public function hasPrimaryKey() {
+    public function hasPrimaryKey()
+    {
         return sizeof($this->getPrimaryKeyColumns()) !== 0;
     }
 
@@ -393,6 +422,23 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     {
         foreach ($this->referenceList as $reference) {
             if ($reference->getName() === $name) {
+                return $reference;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * checks if this reference refers to the given column name
+     *
+     * @param string $name
+     *
+     * @return Reference|null
+     */
+    public function getReferenceByColumnName($name)
+    {
+        foreach ($this->referenceList as $reference) {
+            if ($reference->getReferencedColumn($name) !== null) {
                 return $reference;
             }
         }

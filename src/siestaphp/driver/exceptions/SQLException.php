@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\driver\exceptions;
 
 use siestaphp\exceptions\SiestaException;
@@ -22,7 +21,8 @@ class SQLException extends \Exception implements SiestaException
      * @param int $code
      * @param string $sqlStatement
      */
-    public function __construct($message=null, $code = null, $sqlStatement=null) {
+    public function __construct($message = null, $code = null, $sqlStatement = null)
+    {
         parent::__construct($message, $code);
         $this->sqlStatement = $sqlStatement;
     }
@@ -30,7 +30,8 @@ class SQLException extends \Exception implements SiestaException
     /**
      * @return string
      */
-    public function getSQL() {
+    public function getSQL()
+    {
         return $this->sqlStatement;
     }
 

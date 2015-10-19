@@ -2,7 +2,6 @@
 
 namespace siestaphp\generator;
 
-use Codeception\Util\Debug;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
@@ -59,7 +58,7 @@ class ValidationLogger implements LoggerAwareInterface
     }
 
     /**
-     *
+     * @return void
      */
     public function printValidationSummary()
     {
@@ -69,6 +68,8 @@ class ValidationLogger implements LoggerAwareInterface
 
     /**
      * @param string $text
+     *
+     * @return void
      */
     public function info($text)
     {
@@ -78,6 +79,8 @@ class ValidationLogger implements LoggerAwareInterface
     /**
      * @param string $text
      * @param int $errorCode
+     *
+     * @return void
      */
     public function warn($text, $errorCode)
     {
@@ -88,6 +91,8 @@ class ValidationLogger implements LoggerAwareInterface
     /**
      * @param string $text
      * @param int $errorCode
+     *
+     * @return void
      */
     public function error($text, $errorCode)
     {
@@ -100,6 +105,8 @@ class ValidationLogger implements LoggerAwareInterface
      * @param string $attributeName
      * @param string $elementName
      * @param int $errorCode
+     *
+     * @return void
      */
     public function errorIfAttributeNotSet($needle, $attributeName, $elementName, $errorCode)
     {
@@ -115,6 +122,8 @@ class ValidationLogger implements LoggerAwareInterface
      * @param string $attributeName
      * @param string $elementName
      * @param int $errorCode
+     *
+     * @return void
      */
     public function errorIfNotInList($needle, $haystack, $attributeName, $elementName, $errorCode)
     {

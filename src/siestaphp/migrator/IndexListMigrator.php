@@ -2,9 +2,7 @@
 
 namespace siestaphp\migrator;
 
-use siestaphp\datamodel\DatabaseColumn;
-use siestaphp\datamodel\index\Index;
-use siestaphp\datamodel\index\IndexGeneratorSource;
+use siestaphp\datamodel\index\IndexPartSource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\driver\ColumnMigrator;
 
@@ -26,7 +24,7 @@ class IndexListMigrator
     protected $databaseIndexList;
 
     /**
-     * @var IndexGeneratorSource[]
+     * @var IndexSource[]
      */
     protected $modelIndexList;
 
@@ -43,7 +41,7 @@ class IndexListMigrator
     /**
      * @param ColumnMigrator $columnMigrator
      * @param IndexSource[] $databaseIndexList
-     * @param IndexGeneratorSource[] $modelIndexList
+     * @param IndexSource[] $modelIndexList
      */
     public function __construct(ColumnMigrator $columnMigrator, $databaseIndexList, $modelIndexList)
     {
@@ -57,6 +55,7 @@ class IndexListMigrator
 
     /**
      * compares both attribute list and request the needed alter statements
+     * @return void
      */
     public function createAlterStatementList()
     {
@@ -91,22 +90,22 @@ class IndexListMigrator
 
     /**
      * @param IndexSource $databaseIndex
-     * @param IndexGeneratorSource $modelIndex
+     * @param IndexSource $modelIndex
      *
      * @return void
      */
-    private function createAlterStatement(IndexSource $databaseIndex, IndexGeneratorSource $modelIndex)
+    private function createAlterStatement($databaseIndex, $modelIndex)
     {
 
         // nothing in db create the index
         if ($databaseIndex === null) {
-            $this->createDropIndex($databaseIndex);
+            $this->createAddIndex($modelIndex);
             return;
         }
 
         // nothing in model, drop the index
         if ($modelIndex === null) {
-            $this->createAddIndex($modelIndex);
+            $this->createDropIndex($databaseIndex);
             return;
         }
 
@@ -116,44 +115,76 @@ class IndexListMigrator
 
     /**
      * @param IndexSource $databaseIndex
-     * @param IndexGeneratorSource $modelIndex
+     * @param IndexSource $modelIndex
      *
      * @return void
      */
-    private function compareIndex(IndexSource $databaseIndex, IndexGeneratorSource $modelIndex)
+    private function compareIndex(IndexSource $databaseIndex, IndexSource $modelIndex)
     {
         if ($databaseIndex->getType() !== $modelIndex->getType()) {
             $this->recreateIndex($databaseIndex, $modelIndex);
             return;
         }
 
-        $databaseColumnList = $databaseIndex->getReferencedColumnList();
-        $modelColumnList = $modelIndex->getReferencedColumnList();
+        $databasePartList = $databaseIndex->getIndexPartSourceList();
+        $modelPartList = $modelIndex->getIndexPartSourceList();
 
-        if (sizeof($databaseColumnList) !== sizeof($modelColumnList)) {
+        if (sizeof($databasePartList) !== sizeof($modelPartList)) {
             $this->recreateIndex($databaseIndex, $modelIndex);
             return;
         }
 
-        $this->compareIndexColumns($databaseColumnList, $modelColumnList);
+        if ($this->needsRecreationOfIndex($databasePartList, $modelPartList)) {
+            $this->recreateIndex($databaseIndex, $modelIndex);
+        }
 
     }
 
     /**
-     * @param DatabaseColumn[] $databaseColumnList
-     * @param DatabaseColumn[] $modelColumnList
+     * @param IndexPartSource[] $databaseColumnList
+     * @param IndexPartSource[] $modelColumnList
+     *
+     * @return bool
      */
-    private function compareIndexColumns($databaseColumnList, $modelColumnList) {
-        foreach($modelColumnList as $modelColumn) {
+    private function needsRecreationOfIndex($databaseColumnList, $modelColumnList)
+    {
+        foreach ($modelColumnList as $modelColumn) {
+            $databaseIndex = $this->getIndexPartByColumnName($databaseColumnList, $modelColumn->getColumnName());
+            if ($databaseIndex === null) {
+                return true;
+            }
+
+            if ($databaseIndex->getLength() !== $modelColumn->getLength()) {
+                return true;
+            }
 
         }
+        return false;
+    }
+
+    /**
+     * @param IndexPartSource[] $indexPartList
+     * @param string $columnName
+     *
+     * @return IndexPartSource|null
+     */
+    private function getIndexPartByColumnName(array $indexPartList, $columnName)
+    {
+        foreach ($indexPartList as $indexPart) {
+            if ($indexPart->getColumnName() === $columnName) {
+                return $indexPart;
+            }
+        }
+        return null;
     }
 
     /**
      * @param IndexSource $databaseIndex
-     * @param IndexGeneratorSource $modelIndex
+     * @param IndexSource $modelIndex
+     *
+     * @return void
      */
-    private function recreateIndex(IndexSource $databaseIndex, IndexGeneratorSource $modelIndex)
+    private function recreateIndex(IndexSource $databaseIndex, IndexSource $modelIndex)
     {
         $this->createDropIndex($databaseIndex);
         $this->createAddIndex($modelIndex);
@@ -161,6 +192,8 @@ class IndexListMigrator
 
     /**
      * @param IndexSource $source
+     *
+     * @return void
      */
     private function createDropIndex(IndexSource $source)
     {
@@ -168,11 +201,29 @@ class IndexListMigrator
     }
 
     /**
-     * @param IndexGeneratorSource $source
+     * @param IndexSource $source
+     *
+     * @return void
      */
-    private function createAddIndex(IndexGeneratorSource $source)
+    private function createAddIndex(IndexSource $source)
     {
         $this->addIndexStatementList[] = $this->columnMigrator->createAddIndexStatement($source);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAddIndexStatementList()
+    {
+        return $this->addIndexStatementList;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDropIndexStatementList()
+    {
+        return $this->dropIndexStatementList;
     }
 
     /**
@@ -190,6 +241,5 @@ class IndexListMigrator
         }
         return null;
     }
-
 
 }

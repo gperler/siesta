@@ -39,6 +39,11 @@ class EntityMigrator
     protected $referenceListMigrator;
 
     /**
+     * @var IndexListMigrator
+     */
+    protected $indexListMigrator;
+
+    /**
      * @var string[]
      */
     protected $statementList;
@@ -76,32 +81,33 @@ class EntityMigrator
      * brings the alter table statements into the right order. First indexes and foreign keys are dropped, then columns
      * are added, existing ones are modified. Then the primary key is changed (if needed). Afterwards not needed
      * columns are droped and finaly indexes and foreign key constraints are addedd.
+     * @return void
      */
     private function assembleStatementList()
     {
 
-        // drop foreign key constraints
+        // drop foreign key and index
         $this->addStatementList($this->referenceListMigrator->getDropForeignKeyStatementList());
-        // drop indexes
+        $this->addStatementList($this->indexListMigrator->getDropIndexStatementList());
 
         // add columns
-        $this->addStatementList($this->attributeListMigrator->getAddStatementList(), true);
-        $this->addStatementList($this->attributeListMigrator->getModifyStatementList(), true);
+        $this->addStatementList($this->attributeListMigrator->getAddColumnStatementList(), true);
+        $this->addStatementList($this->attributeListMigrator->getModifyColumnStatementList(), true);
 
         // modify columns
-        $this->addStatementList($this->referenceListMigrator->getAddStatementList());
-        $this->addStatementList($this->referenceListMigrator->getModifyStatementList());
+        $this->addStatementList($this->referenceListMigrator->getAddColumnStatementList());
+        $this->addStatementList($this->referenceListMigrator->getModifyColumnStatementList());
 
         // modify primary key
         $this->addStatementList($this->getMigratePrimaryKeyStatementList());
 
         // drop columns
-        $this->addStatementList($this->attributeListMigrator->getDropStatementList(), true);
-        $this->addStatementList($this->referenceListMigrator->getDropStatementList());
+        $this->addStatementList($this->attributeListMigrator->getDropColumnStatementList(), true);
+        $this->addStatementList($this->referenceListMigrator->getDropColumnStatementList());
 
-        // add foreign key
+        // add foreign key and index
         $this->addStatementList($this->referenceListMigrator->getAddForeignKeyStatementList());
-        // add indexes
+        $this->addStatementList($this->indexListMigrator->getAddIndexStatementList());
 
     }
 
@@ -152,6 +158,7 @@ class EntityMigrator
 
     /**
      * migrates the attributes of the entity and gathers add modify and drop statements
+     * @return void
      */
     private function migrateAttributeList()
     {
@@ -163,6 +170,7 @@ class EntityMigrator
     /**
      * migrates the references of the entity and gathers add modify and drop statements for the used columns and add
      * drop constraints statements
+     * @return void
      */
     private function migrateReferenceList()
     {
@@ -170,12 +178,14 @@ class EntityMigrator
         $this->referenceListMigrator->createAlterStatementList();
     }
 
+    /**
+     * migrates the indexes of the entity and gathers drop and add statements
+     * @return void
+     */
     private function migrateIndexList()
     {
-
-        $this->databaseEntity->getIndexSourceList();
-
-        $this->modelEntity->getIndexSourceList();
+        $this->indexListMigrator = new IndexListMigrator($this->columnMigrator, $this->databaseEntity->getIndexSourceList(), $this->modelEntity->getIndexGeneratorSourceList());
+        $this->indexListMigrator->createAlterStatementList();
     }
 
     /**
@@ -183,6 +193,8 @@ class EntityMigrator
      *
      * @param string[] $statementList
      * @param bool $isAttribute delimiter tables are only changed for the attributes
+     *
+     * @return void
      */
     private function addStatementList($statementList, $isAttribute = false)
     {

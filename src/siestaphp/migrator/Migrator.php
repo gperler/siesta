@@ -42,13 +42,18 @@ class Migrator
      */
     protected $logger;
 
+    /**
+     * @var string
+     */
+    protected $targetPath;
 
     /**
      * @param DataModelContainer $dataModelContainer
      * @param Connection $connection
      * @param LoggerInterface $logger
      */
-    public function __construct(DataModelContainer $dataModelContainer, Connection $connection, LoggerInterface $logger) {
+    public function __construct(DataModelContainer $dataModelContainer, Connection $connection, LoggerInterface $logger)
+    {
         $this->dataModelContainer = $dataModelContainer;
         $this->connection = $connection;
         $this->executionMode = self::DIRECT_EXECUTION;
@@ -59,7 +64,8 @@ class Migrator
     /**
      * @param $executionMode
      */
-    public function setExecutionMode($executionMode) {
+    public function setExecutionMode($executionMode)
+    {
         if ($executionMode < self::DIRECT_EXECUTION or $executionMode > self::CREATE_PHP_FILE) {
             return;
         }
@@ -67,9 +73,20 @@ class Migrator
     }
 
     /**
+     * @param $targetPath
+     */
+    public function setCreateSQL($targetPath)
+    {
+        $this->executionMode = self::CREATE_SQL_FILE;
+        $this->targetPath = $targetPath;
+
+    }
+
+    /**
      * @param bool $dropUnUsedTables
      */
-    public function migrate($dropUnUsedTables = false) {
+    public function migrate($dropUnUsedTables = false)
+    {
         $statementList = $this->databaseMigrator->createAlterStatementList($dropUnUsedTables);
 
         $this->migrateDirect($statementList);
@@ -78,21 +95,21 @@ class Migrator
     /**
      * @param string[] $statementList
      */
-    private function migrateDirect(array $statementList) {
+    private function migrateDirect(array $statementList)
+    {
         try {
             $datbase = $this->connection->getDatabase();
             $this->logger->info("Direct migration of database " . $datbase);
 
-            foreach($statementList as $statement) {
+            foreach ($statementList as $statement) {
                 $this->logger->info("Executing " . $statement);
                 $this->connection->query($statement);
             }
 
         } catch (SQLException $e) {
-            $this->logger->error($e->getMessage() .  "(" . $e->getCode() . ")");
-            $this->logger->error($e->getSQL());
+            $this->logger->error("SQL Exception : " . $e->getMessage() . " (" . $e->getCode() . ")");
+            $this->logger->error("Query : " . $e->getSQL());
         }
     }
-
 
 }

@@ -11,11 +11,11 @@
         <attribute name="pTime" type="DateTime" dbName="D_TIME" dbType="TIME"/>
 
         <index name="indexName" unique="true" type="btree">
-            <indexPart name="string" sortOrder="ASC" length="10"/>
+            <indexPart columnName="D_STRING" sortOrder="ASC" length="10"/>
         </index>
 
         <index name="indexName2" unique="false" type="hash">
-            <indexPart name="string" sortOrder="DESC" length="20"/>
+            <indexPart columnName="D_STRING" sortOrder="DESC" length="20"/>
         </index>
     </entity>
 </entityList>

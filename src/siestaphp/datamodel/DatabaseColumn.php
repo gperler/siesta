@@ -1,13 +1,13 @@
 <?php
 
-
 namespace siestaphp\datamodel;
 
 /**
  * Interface DatabaseColumn
  * @package siestaphp\datamodel
  */
-interface DatabaseColumn {
+interface DatabaseColumn
+{
 
     /**
      * @return string
@@ -19,17 +19,15 @@ interface DatabaseColumn {
      */
     public function getMethodName();
 
-
     /**
      * @return string
      */
     public function getPHPType();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDatabaseName();
-
 
     /**
      * @return string
@@ -45,7 +43,6 @@ interface DatabaseColumn {
      * @return bool
      */
     public function isRequired();
-
 
     /**
      * @return string

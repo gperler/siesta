@@ -3,8 +3,8 @@
 namespace siestaphp\xmlbuilder;
 
 use siestaphp\datamodel\reference\ReferencedColumnSource;
-use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
+use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\naming\XMLMapping;
 use siestaphp\naming\XMLReference;
 
@@ -42,7 +42,7 @@ class XMLReferenceBuilder extends XMLBuilder
     }
 
     /**
-     *
+     * @return void
      */
     protected function addReferenceData()
     {
@@ -56,6 +56,9 @@ class XMLReferenceBuilder extends XMLBuilder
 
     }
 
+    /**
+     * @return void
+     */
     protected function addMappingData()
     {
 
@@ -66,14 +69,14 @@ class XMLReferenceBuilder extends XMLBuilder
             $mappingXML->setAttribute(XMLMapping::ATTRIBUTE_FOREIGN_NAME, $mapping->getForeignName());
         }
 
-        //
     }
 
     /**
      * adds information about the reference for transformation including referenced columns
-
      *
-*@param ReferenceGeneratorSource $referenceTransformerSource
+     * @param ReferenceGeneratorSource $referenceTransformerSource
+     *
+     * @return void
      */
     protected function addGeneratorData(ReferenceGeneratorSource $referenceTransformerSource)
     {
@@ -99,6 +102,8 @@ class XMLReferenceBuilder extends XMLBuilder
      *
      * @param \DOMElement $xmlReferencedColumnList
      * @param ReferencedColumnSource $referencedColumn
+     *
+     * @return void
      */
     protected function addReferencedColumn(\DOMElement $xmlReferencedColumnList, ReferencedColumnSource $referencedColumn)
     {

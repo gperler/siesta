@@ -44,17 +44,20 @@
 
         <attribute name="id" type="int" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
         <attribute name="name" type="string" dbType="VARCHAR(100)" primaryKey="true" autoValue="uuid"/>
-        <attribute name="displayName" type="string"  dbType="VARCHAR(100)"/>
+        <attribute name="displayName" type="string" dbType="VARCHAR(100)"/>
         <attribute name="dob" type="DateTime" dbType="DATETIME"/>
 
-        <reference name="person" foreignClass="Person" required="false" onDelete="CASCADE" onUpdate="SET NULL"/>
+        <reference name="person" foreignClass="Person" required="false" onDelete="CASCADE" onUpdate="SET NULL">
+            <mapping name="person_id" dbName="fk_person_id" foreignName="id"/>
+            <mapping name="person_name" dbName="fk_person_name" foreignName="name"/>
+        </reference>
 
         <index name="easyIndex">
-            <indexPart name="name"/>
+            <indexPart columnName="name"/>
         </index>
 
         <index name="difficultIndex" unique="true">
-            <indexPart name="person"/>
+            <indexPart columnName="fk_person_name"/>
         </index>
     </entity>
 
@@ -65,7 +68,6 @@
 
         <collector name="addressList" type="1n" foreignClass="Address" referenceName="person"/>
     </entity>
-
 
 
 </entityList>

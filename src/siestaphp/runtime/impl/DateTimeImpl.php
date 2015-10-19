@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\runtime\impl;
 
 use siestaphp\runtime\DateTime;
@@ -51,6 +50,8 @@ class DateTimeImpl implements DateTime
 
     /**
      * @param string $dateString
+     *
+     * @return void
      */
     public function stringToTime($dateString)
     {

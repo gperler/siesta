@@ -2,16 +2,11 @@
 
 namespace siestaphp\tests\functional;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\DataModelContainer;
-use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\exceptions\XMLNotValidException;
 use siestaphp\generator\ValidationLogger;
-use siestaphp\migrator\DatabaseMigrator;
 use siestaphp\migrator\Migrator;
 use siestaphp\util\File;
-use siestaphp\util\Util;
 use siestaphp\xmlreader\XMLReader;
 
 /**

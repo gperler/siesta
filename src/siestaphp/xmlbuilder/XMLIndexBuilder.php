@@ -60,7 +60,7 @@ class XMLIndexBuilder extends XMLBuilder
     private function addIndexPart(\DOMElement $parentElement, IndexPartSource $indexPartSource)
     {
         $xmlIndexPart = $this->createElement($parentElement, XMLIndexPart::ELEMENT_INDEX_PART_NAME);
-        $xmlIndexPart->setAttribute(XMLIndexPart::ATTRIBUTE_NAME, $indexPartSource->getName());
+        $xmlIndexPart->setAttribute(XMLIndexPart::ATTRIBUTE_COLUMN_NAME, $indexPartSource->getColumnName());
         $xmlIndexPart->setAttribute(XMLIndexPart::ATTRIBUTE_LENGTH, $indexPartSource->getLength());
         $xmlIndexPart->setAttribute(XMLIndexPart::ATTRIBUTE_SORT_ORDER, $indexPartSource->getSortOrder());
     }

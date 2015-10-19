@@ -19,26 +19,36 @@ interface ORMEntity
     /**
      * @param bool $cascade
      * @param Passport $passport
+     *
+     * @return void
      */
     public function save($cascade = false, $passport = null);
 
     /**
      * @param ResultSet $res
+     *
+     * @return void
      */
     public function initializeFromResultSet(ResultSet $res);
 
     /**
      * @param HttpRequest $req
+     *
+     * @return void
      */
     public function initializeFromHttpRequest(HttpRequest $req);
 
     /**
      * @param string $jsonString
+     *
+     * @return void
      */
     public function fromJSON($jsonString);
 
     /**
      * @param array $data
+     *
+     * @return void
      */
     public function fromArray(array $data);
 
@@ -50,12 +60,14 @@ interface ORMEntity
     /**
      * @param Passport $passport
      *
-     * @return array|void
+     * @return array
      */
     public function toArray($passport = null);
 
     /**
      * @param Passport $passport
+     *
+     * @return void
      **/
     public function linkRelations($passport = null);
 

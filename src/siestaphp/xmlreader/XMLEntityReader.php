@@ -68,6 +68,7 @@ class XMLEntityReader extends XMLAccess implements EntitySource
 
     /**
      *  parses the attribute list
+     * @return void
      */
     private function readAttributeList()
     {
@@ -94,7 +95,7 @@ class XMLEntityReader extends XMLAccess implements EntitySource
     }
 
     /**
-     *
+     * @return void
      */
     private function readReferenceList()
     {
@@ -121,7 +122,7 @@ class XMLEntityReader extends XMLAccess implements EntitySource
     }
 
     /**
-     *
+     * @return void
      */
     private function readCollectorList()
     {
@@ -146,7 +147,7 @@ class XMLEntityReader extends XMLAccess implements EntitySource
     }
 
     /**
-     *
+     * @return void
      */
     private function readStoredProcedureList()
     {
@@ -171,6 +172,9 @@ class XMLEntityReader extends XMLAccess implements EntitySource
         return $this->indexList;
     }
 
+    /**
+     * @return void
+     */
     private function readIndexSourceList()
     {
         $this->indexList = array();
@@ -237,7 +241,5 @@ class XMLEntityReader extends XMLAccess implements EntitySource
     {
         return $this->getAttribute(XMLEntity::ATTRIBUTE_TARGET_PATH);
     }
-
-
 
 }

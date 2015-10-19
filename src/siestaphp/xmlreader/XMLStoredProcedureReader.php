@@ -2,7 +2,6 @@
 
 namespace siestaphp\xmlreader;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\storedprocedure\SPParameterSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\naming\XMLStoredProcedure;
@@ -66,6 +65,9 @@ class XMLStoredProcedureReader extends XMLAccess implements StoredProcedureSourc
 
     }
 
+    /**
+     * @return void
+     */
     private function readParameterList()
     {
         $this->spParameterReaderList = array();

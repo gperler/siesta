@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\datamodel\reference;
 
 /**
@@ -44,7 +43,6 @@ interface ReferenceGeneratorSource extends ReferenceSource
      * @return bool
      */
     public function isReferenceCreatorNeeded();
-
 
     /**
      * @return string

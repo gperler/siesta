@@ -49,17 +49,17 @@ class ReferenceListMigrator
     /**
      * @var string[]
      */
-    protected $addStatementList;
+    protected $addColumnStatementList;
 
     /**
      * @var string[]
      */
-    protected $modifiyStatementList;
+    protected $modifiyColumnStatementList;
 
     /**
      * @var string[]
      */
-    protected $dropStatementList;
+    protected $dropColumnStatementList;
 
     /**
      * @param ColumnMigrator $columnMigrator
@@ -73,9 +73,9 @@ class ReferenceListMigrator
         $this->modelReferenceList = $modelReferenceList;
         $this->addForeignKeyStatementList = array();
         $this->dropForeignKeyStatementList = array();
-        $this->addStatementList = array();
-        $this->modifiyStatementList = array();
-        $this->dropStatementList = array();
+        $this->addColumnStatementList = array();
+        $this->modifiyColumnStatementList = array();
+        $this->dropColumnStatementList = array();
     }
 
     /**
@@ -138,6 +138,8 @@ class ReferenceListMigrator
      *
      * @param ReferenceSource $asIs
      * @param ReferenceGeneratorSource $toBe
+     *
+     * @return void
      */
     private function createAlterStatement($asIs, $toBe)
     {
@@ -159,7 +161,7 @@ class ReferenceListMigrator
     /**
      * @param ReferenceGeneratorSource $referenceSource
      *
-     * @return string[]
+     * @return void
      */
     private function addReference(ReferenceGeneratorSource $referenceSource)
     {
@@ -168,7 +170,7 @@ class ReferenceListMigrator
 
         // add column statements
         foreach ($referenceSource->getReferencedColumnList() as $column) {
-            $this->addStatementList[] = $this->columnMigrator->createAddColumnStatement($column);
+            $this->addColumnStatementList[] = $this->columnMigrator->createAddColumnStatement($column);
         }
 
     }
@@ -176,7 +178,7 @@ class ReferenceListMigrator
     /**
      * @param ReferenceSource $referenceSource
      *
-     * @return string[]
+     * @return void
      */
     private function dropReference(ReferenceSource $referenceSource)
     {
@@ -184,13 +186,15 @@ class ReferenceListMigrator
 
         // drop columns
         foreach ($referenceSource->getReferencedColumnList() as $column) {
-            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($column);
+            $this->dropColumnStatementList[] = $this->columnMigrator->createDropColumnStatement($column);
         }
     }
 
     /**
      * @param ReferenceSource $asIs
      * @param ReferenceGeneratorSource $toBe
+     *
+     * @return void
      */
     private function modifyReference(ReferenceSource $asIs, ReferenceGeneratorSource $toBe)
     {
@@ -267,12 +271,12 @@ class ReferenceListMigrator
     private function modifyReferencedColumn($asIs, $toBe)
     {
         if ($asIs === null) {
-            $this->addStatementList[] = $this->columnMigrator->createAddColumnStatement($toBe);
+            $this->addColumnStatementList[] = $this->columnMigrator->createAddColumnStatement($toBe);
             return true;
         }
 
         if ($toBe === null) {
-            $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($asIs);
+            $this->dropColumnStatementList[] = $this->columnMigrator->createDropColumnStatement($asIs);
             return true;
         }
 
@@ -282,7 +286,7 @@ class ReferenceListMigrator
         }
 
         // changing required or type does not required a drop/add foreign key statement
-        $this->modifiyStatementList[] = $this->columnMigrator->createModifiyColumnStatement($toBe);
+        $this->modifiyColumnStatementList[] = $this->columnMigrator->createModifiyColumnStatement($toBe);
         return false;
 
     }
@@ -338,25 +342,25 @@ class ReferenceListMigrator
     /**
      * @return string[]
      */
-    public function getAddStatementList()
+    public function getAddColumnStatementList()
     {
-        return $this->addStatementList;
+        return $this->addColumnStatementList;
     }
 
     /**
      * @return string[]
      */
-    public function getModifyStatementList()
+    public function getModifyColumnStatementList()
     {
-        return $this->modifiyStatementList;
+        return $this->modifiyColumnStatementList;
     }
 
     /**
      * @return string[]
      */
-    public function getDropStatementList()
+    public function getDropColumnStatementList()
     {
-        return $this->dropStatementList;
+        return $this->dropColumnStatementList;
     }
 
 }

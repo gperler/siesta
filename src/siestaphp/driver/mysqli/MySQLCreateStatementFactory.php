@@ -3,6 +3,7 @@
 namespace siestaphp\driver\mysqli;
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
+use siestaphp\driver\CreateStatementFactory;
 use siestaphp\driver\mysqli\storedprocedures\CustomStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteStoredProcedure;
@@ -11,7 +12,6 @@ use siestaphp\driver\mysqli\storedprocedures\MySQLStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\UpdateStoredProcedure;
-use siestaphp\driver\CreateStatementFactory;
 use siestaphp\util\File;
 
 /**

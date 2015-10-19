@@ -47,6 +47,8 @@ class XMLBuilder
      *
      * @param string $name
      * @param string $value
+     *
+     * @return void
      */
     protected function setAttribute($name, $value)
     {
@@ -58,6 +60,8 @@ class XMLBuilder
      *
      * @param string $name
      * @param string $value
+     *
+     * @return void^
      */
     protected function setAttributeAsBool($name, $value)
     {

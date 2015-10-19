@@ -2,7 +2,6 @@
 
 namespace siestaphp\driver\mysqli;
 
-
 use siestaphp\driver\ResultSet;
 use siestaphp\runtime\DateTime;
 use siestaphp\runtime\Factory;
@@ -15,13 +14,11 @@ use siestaphp\util\Util;
 class SimpleResultSet implements ResultSet
 {
     /**
-     *
      * @var array
      */
     protected $next;
 
     /**
-     *
      * @var \mysqli_result
      */
     protected $resultSet;
@@ -62,12 +59,13 @@ class SimpleResultSet implements ResultSet
         }
     }
 
-
     /**
      * @param $key
+     *
      * @return bool|null
      */
-    public function getBooleanValue($key) {
+    public function getBooleanValue($key)
+    {
         $value = Util::getFromArray($this->next, $key);
         if (is_null($value)) {
             return null;
@@ -75,47 +73,51 @@ class SimpleResultSet implements ResultSet
         return ($value !== 0);
     }
 
-
     /**
      * @param $key
+     *
      * @return int|null
      */
-    public function getIntegerValue($key) {
+    public function getIntegerValue($key)
+    {
         $value = Util::getFromArray($this->next, $key);
         if (is_null($value)) {
             return null;
         }
-        return (integer) $value;
+        return (integer)$value;
     }
-
 
     /**
      * @param $key
+     *
      * @return float|null
      */
-    public function getFloatValue($key){
+    public function getFloatValue($key)
+    {
         $value = Util::getFromArray($this->next, $key);
         if (is_null($value)) {
             return null;
         }
-        return (float) $value;
+        return (float)$value;
     }
-
 
     /**
      * @param $key
+     *
      * @return null|string
      */
-    public function getStringValue($key){
+    public function getStringValue($key)
+    {
         return Util::getFromArray($this->next, $key);
     }
 
-
     /**
      * @param $key
+     *
      * @return null|DateTime
      */
-    public function getDateTime($key) {
+    public function getDateTime($key)
+    {
         $value = Util::getFromArray($this->next, $key);
         if (is_null($value)) {
             return null;

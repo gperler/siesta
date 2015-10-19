@@ -19,7 +19,7 @@ class Mapping implements MappingSource
      */
     public function getName()
     {
-        // TODO: Implement getName() method.
+        return null;
     }
 
     /**
@@ -27,7 +27,7 @@ class Mapping implements MappingSource
      */
     public function getDatabaseName()
     {
-        // TODO: Implement getDatabaseName() method.
+        return null;
     }
 
     /**
@@ -35,7 +35,15 @@ class Mapping implements MappingSource
      */
     public function getForeignName()
     {
-        // TODO: Implement getForeignName() method.
+        return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatabaseType()
+    {
+        return null;
     }
 
 }

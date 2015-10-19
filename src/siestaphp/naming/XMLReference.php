@@ -46,7 +46,6 @@ class XMLReference
 
     const ATTRIBUTE_SP_REFERENCE_CREATOR_NEEDED = "referenceCretorNeeded";
 
-
     /* Referenced column */
     const ELEMENT_COLUMN = "column";
 

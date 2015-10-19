@@ -2,7 +2,8 @@
 <entityList>
     <entity name="Book" namespace="siestaphp\tests\functional\performance\gen" table="BOOK" targetPath="gen">
         <entity-mysql engine="MEMORY" replication="true"/>
-        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true"
+                   autoValue="autoincrement"/>
         <attribute name="title" type="bool" dbName="TITLE" dbType="VARCHAR(100)"/>
         <attribute name="price" type="float" dbName="PRICE" dbType="FLOAT"/>
     </entity>

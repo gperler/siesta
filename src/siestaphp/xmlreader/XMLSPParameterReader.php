@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\xmlreader;
 
 use siestaphp\datamodel\storedprocedure\SPParameterSource;

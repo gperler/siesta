@@ -26,7 +26,8 @@ class MySQLDriver implements Driver
      *
      * @return string
      */
-    public static function quote($name) {
+    public static function quote($name)
+    {
         return self::MYSQL_QUOTE . $name . self::MYSQL_QUOTE;
     }
 
@@ -40,7 +41,5 @@ class MySQLDriver implements Driver
     {
         return new MySQLConnection($connectionData);
     }
-
-
 
 }

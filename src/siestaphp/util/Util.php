@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\util;
 
 use siestaphp\driver\Connection;

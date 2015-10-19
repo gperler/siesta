@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\driver;
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
@@ -17,7 +16,6 @@ interface CreateStatementFactory
     const SEQUENCER_SP_NAME = "SEQUENCER_GETSEQUENCE";
 
     /**
-     *
      * @return string[]
      */
     public function setupSequencer();

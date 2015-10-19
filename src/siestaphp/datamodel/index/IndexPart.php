@@ -14,7 +14,7 @@ use siestaphp\naming\XMLIndexPart;
  * Class IndexPart
  * @package siestaphp\datamodel\index
  */
-class IndexPart implements Processable, IndexPartSource, IndexPartGeneratorSource
+class IndexPart implements Processable, IndexPartSource
 {
 
     const VALIDATION_ERROR_INVALID_NAME = 500;
@@ -36,9 +36,9 @@ class IndexPart implements Processable, IndexPartSource, IndexPartGeneratorSourc
     protected $indexPartSource;
 
     /**
-     * @var DatabaseColumn[]
+     * @var bool
      */
-    protected $databaseColumnList;
+    protected $columnExists;
 
     /**
      * @param Entity $entity
@@ -50,15 +50,15 @@ class IndexPart implements Processable, IndexPartSource, IndexPartGeneratorSourc
         $this->entity = $entity;
         $this->index = $index;
         $this->indexPartSource = $indexPartSource;
-        $this->databaseColumnList = array();
+        $this->columnExists = false;
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getColumnName()
     {
-        return $this->indexPartSource->getName();
+        return $this->indexPartSource->getColumnName();
     }
 
     /**
@@ -74,70 +74,68 @@ class IndexPart implements Processable, IndexPartSource, IndexPartGeneratorSourc
      */
     public function getLength()
     {
-        return $this->indexPartSource->getLength();
+        return (int) $this->indexPartSource->getLength();
     }
-
-    /**
-     * @return DatabaseColumn[]
-     */
-    public function getIndexColumnList() {
-        return $this->databaseColumnList;
-    }
-
 
     /**
      * @param DataModelContainer $container
+     *
+     * @return void
      */
     public function updateModel(DataModelContainer $container)
     {
         $this->checkIfIndexPartIsForAttribute();
         $this->checkIfIndexPartIsForReference();
 
-
     }
 
     /**
      * checks if the index part refers an attribute of the entity
+     * @return void
      */
-    private function checkIfIndexPartIsForAttribute() {
-        $attribute = $this->entity->getAttributeByName($this->getName());
-        if (!$attribute) {
-            return;
+    private function checkIfIndexPartIsForAttribute()
+    {
+        foreach($this->entity->getAttributeSourceList() as $attribute) {
+            if ($attribute->getDatabaseName() === $this->getColumnName()) {
+                $this->columnExists = true;
+                return;
+            }
         }
-        $this->databaseColumnList[] = $attribute;
     }
 
     /**
      * checks if the index part refers a reference of the entity
+     * @return void
      */
-    private function checkIfIndexPartIsForReference() {
+    private function checkIfIndexPartIsForReference()
+    {
 
-        $reference = $this->entity->getReferenceByName($this->getName());
+        $reference = $this->entity->getReferenceByColumnName($this->getColumnName());
         if (!$reference) {
             return;
         }
 
         // a reference might have several referenced columns
-        $referencedColumns = $reference->getReferencedColumnList();
+        $referencedColumns = $reference->getReferencedColumn($this->getColumnName());
         if (!$referencedColumns) {
             return;
         }
 
-        $this->databaseColumnList = array_merge($this->databaseColumnList, $referencedColumns);
+        $this->columnExists = true;
     }
-
 
     /**
      * @param ValidationLogger $log
+     *
+     * @return void
      */
     public function validate(ValidationLogger $log)
     {
-        $log->errorIfAttributeNotSet($this->getName(), XMLIndexPart::ATTRIBUTE_NAME, XMLIndexPart::ELEMENT_INDEX_PART_NAME, self::VALIDATION_ERROR_INVALID_NAME);
+        $log->errorIfAttributeNotSet($this->getColumnName(), XMLIndexPart::ATTRIBUTE_COLUMN_NAME, XMLIndexPart::ELEMENT_INDEX_PART_NAME, self::VALIDATION_ERROR_INVALID_NAME);
 
-        if (sizeof($this->databaseColumnList) === 0) {
-            $log->error("IndexPart " . $this->getName() . " from index " . $this->index->getName() . " does not refer an existing attribute or reference", self::VALIDATION_ERROR_INVALID_COLUMN);
+        if (!$this->columnExists) {
+            $log->error("IndexPart " . $this->getColumnName() . " from index " . $this->index->getName() . " does not refer an existing attribute or reference", self::VALIDATION_ERROR_INVALID_COLUMN);
         }
     }
-
 
 }

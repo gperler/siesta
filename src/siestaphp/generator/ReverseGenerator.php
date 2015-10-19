@@ -18,6 +18,8 @@ class ReverseGenerator
      * @param string $targetPath
      * @param string $targetNamespace
      * @param string $singleFile
+     *
+     * @return void
      */
     public function generateXML($databaseName, $targetPath, $targetNamespace, $singleFile)
     {
@@ -32,6 +34,8 @@ class ReverseGenerator
     /**
      * @param EntitySource $entitySource
      * @param $targetPath
+     *
+     * @return void
      */
     private function generateXMLFiles(EntitySource $entitySource, $targetPath)
     {

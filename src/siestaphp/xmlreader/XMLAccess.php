@@ -32,6 +32,8 @@ class XMLAccess
 
     /**
      * @param \DOMElement $sourceElement
+     *
+     * @return void
      */
     public function setSource(\DOMElement $sourceElement)
     {
@@ -57,6 +59,15 @@ class XMLAccess
     public function getAttributeAsBool($name)
     {
         return $this->sourceElement->getAttribute($name) === 'true';
+    }
+
+    /**
+     * @param $name
+     *
+     * @return int
+     */
+    public function getAttributeAsInt($name) {
+        return (int) $this->sourceElement->getAttribute($name);
     }
 
     /**
@@ -96,6 +107,8 @@ class XMLAccess
      * extract database specific data
      *
      * @param $tagPrefix
+     *
+     * @return void
      */
     protected function extractDatabaseSpecificData($tagPrefix)
     {

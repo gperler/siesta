@@ -2,7 +2,6 @@
 
 namespace siestaphp\driver;
 
-use Codeception\Util\Debug;
 use siestaphp\driver\exceptions\ConnectException;
 use siestaphp\driver\exceptions\DatabaseConfigurationException;
 use siestaphp\driver\mysqli\MySQLDriver;

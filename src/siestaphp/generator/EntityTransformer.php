@@ -2,7 +2,6 @@
 
 namespace siestaphp\generator;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\util\File;
 use siestaphp\xmlbuilder\XMLEntityBuilder;
@@ -33,10 +32,11 @@ class EntityTransformer implements Transformer
 
     /**
      * transforms the entity to the main php persistence class
-
      *
-*@param EntityGeneratorSource $entity
+     * @param EntityGeneratorSource $entity
      * @param string $baseDir
+     *
+     * @return void
      */
     public function transform(EntityGeneratorSource $entity, $baseDir)
     {

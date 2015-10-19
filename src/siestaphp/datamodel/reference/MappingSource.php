@@ -8,8 +8,6 @@
 
 namespace siestaphp\datamodel\reference;
 
-use siestaphp\datamodel\DatabaseColumn;
-
 /**
  * Interface MappingSource
  * @package siestaphp\datamodel\reference

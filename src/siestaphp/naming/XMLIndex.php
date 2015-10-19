@@ -1,11 +1,10 @@
 <?php
 
-
 namespace siestaphp\naming;
 
 /**
  * Class XMLIndex
- * <index name="indexName" unique="true" type="btree"/>
+ * <index columnName="indexName" unique="true" type="btree"/>
  * @package siestaphp\naming
  */
 class XMLIndex

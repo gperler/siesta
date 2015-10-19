@@ -2,6 +2,7 @@
 
 namespace siestaphp\driver\mysqli;
 
+use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\ColumnMigrator;
 use siestaphp\driver\Connection;
@@ -241,8 +242,11 @@ class MySQLConnection implements Connection
         $sequence = null;
         while ($result->hasNext()) {
             $sequence = $result->getIntegerValue("@sequence:=SEQUENCER.SEQ");
+            var_dump($result->getNext());
         }
         $result->close();
+
+        $r =($sequence) ? $sequence : 1;
 
         return ($sequence) ? $sequence : 1;
     }

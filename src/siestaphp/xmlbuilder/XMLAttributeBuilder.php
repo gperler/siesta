@@ -2,8 +2,8 @@
 
 namespace siestaphp\xmlbuilder;
 
-use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\attribute\AttributeGeneratorSource;
+use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\naming\XMLAttribute;
 
 /**
@@ -42,7 +42,9 @@ class XMLAttributeBuilder extends XMLBuilder
 
     /**
      * adds the default values for attributes
+     * @return void
      */
+
     private function addAttributeData()
     {
         $this->setAttribute(XMLAttribute::ATTRIBUTE_NAME, $this->attributeSource->getName());
@@ -59,9 +61,10 @@ class XMLAttributeBuilder extends XMLBuilder
 
     /**
      * adds additional values for transformation
-
      *
-*@param AttributeGeneratorSource $ats
+     * @param AttributeGeneratorSource $ats
+     *
+     * @return void
      */
     private function addGeneratorValues(AttributeGeneratorSource $ats)
     {

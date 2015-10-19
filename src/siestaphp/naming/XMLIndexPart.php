@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\naming;
 
 /**
@@ -13,7 +12,7 @@ class XMLIndexPart
 
     const ELEMENT_INDEX_PART_NAME = "indexPart";
 
-    const ATTRIBUTE_NAME = "name";
+    const ATTRIBUTE_COLUMN_NAME = "columnName";
 
     const ATTRIBUTE_SORT_ORDER = "sortOrder";
 

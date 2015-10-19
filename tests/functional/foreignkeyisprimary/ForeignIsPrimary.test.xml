@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
 
-    <entity name="Artist" namespace="siestaphp\tests\functional\foreignkeyisprimary\gen" table="ARTIST" targetPath="gen/">
+    <entity name="Artist" namespace="siestaphp\tests\functional\foreignkeyisprimary\gen" table="ARTIST"
+            targetPath="gen/">
         <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
         <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
 
         <collector name="artistSong" type="1n" foreignClass="ArtistSong" referenceName="artist"/>
     </entity>
 
-    <entity name="ArtistSong" namespace="siestaphp\tests\functional\foreignkeyisprimary\gen" table="ArtistSong" targetPath="gen/">
+    <entity name="ArtistSong" namespace="siestaphp\tests\functional\foreignkeyisprimary\gen" table="ArtistSong"
+            targetPath="gen/">
         <attribute name="sequence" type="int" dbName="sequence" dbType="INT"/>
 
         <reference name="artist" foreignClass="Artist" required="false" primaryKey="true"/>

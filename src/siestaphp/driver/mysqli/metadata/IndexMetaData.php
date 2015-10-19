@@ -2,7 +2,6 @@
 
 namespace siestaphp\driver\mysqli\metadata;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\index\IndexPartSource;
 use siestaphp\datamodel\index\IndexSource;
@@ -112,12 +111,13 @@ class IndexMetaData implements IndexSource
 
     /**
      * adds an index part to this index.
+     *
      * @param ResultSet $res
      */
     public function addIndexPart(ResultSet $res)
     {
         // get the column name
-        $columnName = IndexPartMetaData::getColumnName($res);
+        $columnName = IndexPartMetaData::getColumnNameFromResultSet($res);
 
         // this might be the name of a reference (and several column will be merged to this one)
         $referencedName = $this->getReferencedName($columnName);
@@ -128,7 +128,7 @@ class IndexMetaData implements IndexSource
         }
 
         // create a new index part (refering a reference)
-        $this->indexPartList[$referencedName] = new IndexPartMetaData($referencedName, $res);
+        $this->indexPartList[$referencedName] = new IndexPartMetaData($columnName, $res);
 
         // get list of columns that this index references
         $this->referencedColumnList = array_merge($this->referencedColumnList, $this->getReferencedDatabaseColumnList($columnName));
@@ -179,7 +179,7 @@ class IndexMetaData implements IndexSource
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -199,7 +199,7 @@ class IndexMetaData implements IndexSource
      */
     public function getType()
     {
-        return $this->type;
+        return strtoupper($this->type);
     }
 
     /**

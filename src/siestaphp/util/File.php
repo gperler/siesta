@@ -2,9 +2,7 @@
 
 namespace siestaphp\util;
 
-use Codeception\Util\Debug;
 use siestaphp\exceptions\XMLNotValidException;
-use siestaphp\util\StringUtil;
 
 /**
  * Class File is a Wrapper Class for file operations

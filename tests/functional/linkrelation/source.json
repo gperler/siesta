@@ -1,8 +1,8 @@
 {
   "name": "K7",
   "city": "Berlin",
-  "topSeller" : {
-    "name" : "Kruder and Dorfmeister"
+  "topSeller": {
+    "name": "Kruder and Dorfmeister"
   },
   "artistList": [
     {

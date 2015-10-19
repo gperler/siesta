@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\linkrelation\gen" table="ARTIST" targetPath="gen/">
+    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\linkrelation\gen" table="ARTIST"
+            targetPath="gen/">
         <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
         <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
-        <attribute name="dob" type="DateTime" dbName="D_DATETIME" dbType="DATETIME" />
+        <attribute name="dob" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"/>
 
         <reference name="label" foreignClass="LabelEntity" required="false"/>
     </entity>

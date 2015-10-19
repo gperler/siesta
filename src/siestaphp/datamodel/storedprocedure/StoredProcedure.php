@@ -9,8 +9,8 @@ use siestaphp\generator\ValidationLogger;
 use siestaphp\naming\XMLStoredProcedure;
 
 /**
- * Class MySQLStoredProcedure
- * @package siestaphp\datamodel
+ * Class StoredProcedure
+ * @package siestaphp\datamodel\storedprocedure
  */
 class StoredProcedure implements Processable, StoredProcedureSource
 {
@@ -46,6 +46,8 @@ class StoredProcedure implements Processable, StoredProcedureSource
     /**
      * @param StoredProcedureSource $source
      * @param Entity $entity
+     *
+     * @return void
      */
     public function setSource(StoredProcedureSource $source, Entity $entity)
     {
@@ -56,7 +58,7 @@ class StoredProcedure implements Processable, StoredProcedureSource
     }
 
     /**
-     *
+     * @return void
      */
     protected function storeSPParameter()
     {
@@ -69,6 +71,8 @@ class StoredProcedure implements Processable, StoredProcedureSource
 
     /**
      * @param DataModelContainer $container
+     *
+     * @return void
      */
     public function updateModel(DataModelContainer $container)
     {
@@ -77,10 +81,10 @@ class StoredProcedure implements Processable, StoredProcedureSource
         }
     }
 
-
-
     /**
      * @param ValidationLogger $log
+     *
+     * @return void
      */
     public function validate(ValidationLogger $log)
     {

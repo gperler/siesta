@@ -2,7 +2,6 @@
 
 namespace siestaphp\datamodel\index;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
@@ -13,7 +12,7 @@ use siestaphp\generator\ValidationLogger;
  * Class Index
  * @package siestaphp\datamodel\index
  */
-class Index implements Processable, IndexSource, IndexGeneratorSource
+class Index implements Processable, IndexSource
 {
 
     /**
@@ -42,32 +41,15 @@ class Index implements Processable, IndexSource, IndexGeneratorSource
         $this->extractIndexPartList();
     }
 
+    /**
+     * @return void
+     */
     private function extractIndexPartList()
     {
         $this->indexPartList = array();
         foreach ($this->indexSource->getIndexPartSourceList() as $indexPartSource) {
             $this->indexPartList[] = new IndexPart($this->entity, $this, $indexPartSource);
         }
-    }
-
-    /**
-     * @return IndexPartGeneratorSource[]
-     */
-    public function getIndexPartGeneratorSourceList()
-    {
-        return $this->indexPartList;
-    }
-
-    /**
-     * @return DatabaseColumn[]
-     */
-    public function getReferencedColumnList()
-    {
-        $columnList = array();
-        foreach ($this->indexPartList as $indexPart) {
-            $columnList = array_merge($columnList, $indexPart->getIndexColumnList());
-        }
-        return $columnList;
     }
 
     /**
@@ -82,7 +64,7 @@ class Index implements Processable, IndexSource, IndexGeneratorSource
 
         $indexName = $this->entity->getTable() . "_";
         foreach ($this->getIndexPartSourceList() as $indexPart) {
-            $indexName .= $indexPart->getName();
+            $indexName .= $indexPart->getColumnName();
         }
         $indexName .= "_index";
         return $indexName;
@@ -114,6 +96,8 @@ class Index implements Processable, IndexSource, IndexGeneratorSource
 
     /**
      * @param DataModelContainer $container
+     *
+     * @return void
      */
     public function updateModel(DataModelContainer $container)
     {
@@ -124,6 +108,8 @@ class Index implements Processable, IndexSource, IndexGeneratorSource
 
     /**
      * @param ValidationLogger $log
+     *
+     * @return void
      */
     public function validate(ValidationLogger $log)
     {

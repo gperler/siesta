@@ -2,8 +2,6 @@
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
-use siestaphp\driver\Connection;
-
 /**
  * Interface MySQLStoredProcedure
  * @package siestaphp\driver\mysqli\storedprocedures

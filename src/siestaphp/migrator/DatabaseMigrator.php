@@ -57,7 +57,7 @@ class DatabaseMigrator
         $this->connection = $connection;
         $this->columnMigrator = $connection->getColumnMigrator();
         $this->databaseModel = array();
-        $this->neededTableList = array( CreateStatementFactory::SEQUENCER_TABLE_NAME );
+        $this->neededTableList = array(CreateStatementFactory::SEQUENCER_TABLE_NAME);
         $this->alterStatementList = array();
     }
 
@@ -110,8 +110,8 @@ class DatabaseMigrator
         $this->addAlterStatements($statementList);
 
         // create stored procedures
-        $tableBuilder = $this->connection->getCreateStatementFactory();
-        $tableBuilder->setupStoredProcedures($modelSource);
+        $factory = $this->connection->getCreateStatementFactory();
+        $this->addAlterStatements($factory->setupStoredProcedures($modelSource));
 
     }
 
@@ -132,7 +132,7 @@ class DatabaseMigrator
     /**
      * @param $tableName
      *
-     * @return null|EntitySource
+     * @return EntitySource|null
      */
     private function getDatabaseEntityByTableName($tableName)
     {

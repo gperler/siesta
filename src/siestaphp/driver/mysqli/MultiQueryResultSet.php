@@ -2,9 +2,6 @@
 
 namespace siestaphp\driver\mysqli;
 
-
-use siestaphp\driver\ResultSet;
-
 /**
  * Class MultiQueryResultSet
  * @package siestaphp\driver\mysqli
@@ -16,7 +13,6 @@ class MultiQueryResultSet extends SimpleResultSet
      * @var \mysqli
      */
     private $connection;
-
 
     /**
      * @var \mysqli_result
@@ -68,7 +64,7 @@ class MultiQueryResultSet extends SimpleResultSet
      */
     public function close()
     {
-        while($this->connection->more_results()){
+        while ($this->connection->more_results()) {
             $this->connection->next_result();
             $this->connection->use_result();
         }

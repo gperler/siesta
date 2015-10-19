@@ -2,7 +2,6 @@
 
 namespace siestaphp\driver\mysqli\metadata;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\CollectorSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
@@ -116,7 +115,6 @@ class TableMetadata implements EntitySource
 
         $resultSet->close();
 
-
         $sql = sprintf(self::SQL_GET_REFERENTIAL_CONSTRAINTS, $this->connection->getDatabase(), $this->tableName);
         $resultSet = $this->connection->query($sql);
 
@@ -131,9 +129,7 @@ class TableMetadata implements EntitySource
         }
         $resultSet->close();
 
-
     }
-
 
     /**
      * extracts columns from table and create AttributeMetaData or ReferenceMetaData objects
@@ -157,8 +153,6 @@ class TableMetadata implements EntitySource
 
         $resultSet->close();
     }
-
-
 
     /**
      * @param $constraintName

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\datamodel\attribute;
 
 /**
@@ -19,7 +18,6 @@ interface AttributeGeneratorSource extends AttributeSource
      * @return int
      */
     public function getLength();
-
 
     /**
      * @return string

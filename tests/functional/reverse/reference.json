@@ -5,24 +5,24 @@
   "onDelete": "cascade",
   "onUpdate": "set null",
   "referenceSource": {
-    "person_id": {
+    "fk_person_id": {
       "dbType": "INT",
       "foreignColumn": "id"
     },
-    "person_name": {
+    "fk_person_name": {
       "dbType": "VARCHAR(36)",
       "foreignColumn": "name"
     }
   },
   "mappingSource": {
-    "person_id": {
+    "fk_person_id": {
       "foreignColumn": "id",
-      "databaseName": "person_id",
+      "databaseName": "fk_person_id",
       "databaseType": "INT"
     },
-    "person_name": {
+    "fk_person_name": {
       "foreignColumn": "name",
-      "databaseName": "person_name",
+      "databaseName": "fk_person_name",
       "databaseType": "VARCHAR(36)"
     }
   }

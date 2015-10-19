@@ -4,7 +4,6 @@ namespace siestaphp\tests\functional;
 
 use Codeception\Util\Debug;
 use Psr\Log\LoggerInterface;
-use siestaphp\generator\ValidationLogger;
 use siestaphp\util\Util;
 
 /**
@@ -103,8 +102,7 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function error($message, array $context = array())
     {
-
-        Debug::debug($message);
+        Debug::debug("<error>" . $message ."</error>");
         $code = Util::getFromArray($context, "code");
         if ($code) {
             $this->errorCodeList[] = $code;

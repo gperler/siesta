@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\runtime\impl;
 
 use siestaphp\runtime\UUIDGenerator;

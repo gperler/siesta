@@ -2,11 +2,9 @@
 
 namespace siestaphp\xmlreader;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\reference\MappingSource;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceSource;
-use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLMapping;
 use siestaphp\naming\XMLReference;
 
@@ -23,7 +21,7 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
     protected $mappingList;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -39,7 +37,7 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getForeignClass()
     {
@@ -55,7 +53,7 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getForeignAttribute()
     {
@@ -63,7 +61,7 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function isRequired()
     {
@@ -115,6 +113,9 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
 
     }
 
+    /**
+     * @return void
+     */
     private function readMappingList()
     {
         $this->mappingList = array();

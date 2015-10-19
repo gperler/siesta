@@ -90,7 +90,7 @@ class InitCommand extends Command
         $processor->setParameter("", "password", $cd->password);
         $processor->setParameter("", "charset", $cd->charSet);
 
-        $processor->transformToUri(new \DOMDocument(), $dir->getAbsoluteFileName() . "/SiestaConfig.php" );
+        $processor->transformToUri(new \DOMDocument(), $dir->getAbsoluteFileName() . "/SiestaConfig.php");
 
         $this->output->writeln("Config file generated in " . $targetPath . " Include : ");
         $this->output->writeln('include require_once "' . $targetPath . '/SiestaConfig.php";');

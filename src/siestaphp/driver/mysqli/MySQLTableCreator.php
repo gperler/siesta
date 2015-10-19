@@ -1,24 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 21.06.15
- * Time: 18:07
- */
 
 namespace siestaphp\driver\mysqli;
 
-use Codeception\Util\Debug;
-use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
-use siestaphp\datamodel\index\IndexGeneratorSource;
-use siestaphp\datamodel\index\IndexPartGeneratorSource;
+use siestaphp\datamodel\index\IndexPartSource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\Reference;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
-use siestaphp\driver\ConnectionFactory;
 
 /**
  * Class MySQLTableCreator
@@ -215,11 +205,11 @@ class MySQLTableCreator
     }
 
     /**
-     * @param IndexGeneratorSource $indexSource
+     * @param IndexSource $indexSource
      *
      * @return string
      */
-    private function buildIndex(IndexGeneratorSource $indexSource)
+    private function buildIndex(IndexSource $indexSource)
     {
         // check if unique index or index
         $sql = $indexSource->isUnique() ? " UNIQUE INDEX " : " INDEX ";
@@ -235,7 +225,7 @@ class MySQLTableCreator
         // open columns
         $sql .= " ( ";
 
-        foreach ($indexSource->getIndexPartGeneratorSourceList() as $indexPartSource) {
+        foreach ($indexSource->getIndexPartSourceList() as $indexPartSource) {
             $sql .= $this->buildIndexPart($indexPartSource) . ",";
         }
 
@@ -245,24 +235,21 @@ class MySQLTableCreator
     }
 
     /**
-     * @param IndexPartGeneratorSource $indexPartSource
+     * @param IndexPartSource $indexPartSource
      *
      * @return string
      */
-    private function buildIndexPart(IndexPartGeneratorSource $indexPartSource)
+    private function buildIndexPart(IndexPartSource $indexPartSource)
     {
-        $indexPartSQL = array();
-        foreach ($indexPartSource->getIndexColumnList() as $column) {
-            $sql = $this->quote($column->getDatabaseName());
-            if ($indexPartSource->getLength()) {
-                $sql .= " (" . $indexPartSource->getLength() . ")";
-            }
+        $sql = $this->quote($indexPartSource->getColumnName());
 
-            $sql .= " " . $indexPartSource->getSortOrder();
-            $indexPartSQL[] = $sql;
+        if ($indexPartSource->getLength()) {
+            $sql .= " (" . $indexPartSource->getLength() . ")";
         }
 
-        return implode(",", $indexPartSQL);
+        $sql .= " " . $indexPartSource->getSortOrder();
+
+        return $sql;
     }
 
     /**

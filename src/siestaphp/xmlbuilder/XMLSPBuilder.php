@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\xmlbuilder;
 
 use siestaphp\datamodel\storedprocedure\SPParameterSource;
@@ -38,6 +37,7 @@ class XMLSPBuilder extends XMLBuilder
 
     /**
      * adds standard information about name and result type
+     * @return void
      */
     private function addSpData()
     {
@@ -49,6 +49,7 @@ class XMLSPBuilder extends XMLBuilder
 
     /**
      * adds information about the used parameters in the stored procedure
+     * @return void
      */
     private function addParameterData()
     {
@@ -61,6 +62,8 @@ class XMLSPBuilder extends XMLBuilder
      * adds information about a parameter (name, type)
      *
      * @param SPParameterSource $source
+     *
+     * @return void
      */
     private function addParameter(SPParameterSource $source)
     {

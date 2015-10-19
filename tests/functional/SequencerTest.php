@@ -19,7 +19,6 @@ class SequencerTest extends SiestaTester
             $this->connection->query($statement);
         }
 
-
     }
 
     protected function tearDown()

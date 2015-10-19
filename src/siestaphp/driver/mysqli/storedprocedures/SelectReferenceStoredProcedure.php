@@ -5,7 +5,6 @@ namespace siestaphp\driver\mysqli\storedprocedures;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceDatabaseSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
-use siestaphp\driver\Connection;
 
 /**
  * Class SelectStoredProcedure

@@ -41,7 +41,7 @@ class XMLIndexReader extends XMLAccess implements IndexSource
      */
     public function getType()
     {
-        return $this->getAttribute(XMLIndex::ATTRIBUTE_TYPE);
+        return strtoupper($this->getAttribute(XMLIndex::ATTRIBUTE_TYPE));
     }
 
     /**
@@ -56,6 +56,9 @@ class XMLIndexReader extends XMLAccess implements IndexSource
 
     }
 
+    /**
+     * @return void
+     */
     private function readIndexPartList()
     {
         $this->indexPartList = array();

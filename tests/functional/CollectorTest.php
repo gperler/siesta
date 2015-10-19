@@ -2,6 +2,7 @@
 
 namespace siestaphp\tests\functional;
 
+use Codeception\Util\Debug;
 use siestaphp\tests\functional\collector1n\gen\ArtistEntity;
 use siestaphp\tests\functional\collector1n\gen\LabelEntity;
 
@@ -27,7 +28,7 @@ class CollectorTest extends SiestaTester
 
     protected function tearDown()
     {
-        $this->dropDatabase();
+        //$this->dropDatabase();
 
     }
 

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\runtime;
 
 /**
@@ -27,6 +26,8 @@ interface DateTime
 
     /**
      * @param string $dateString
+     *
+     * @return void
      */
     public function stringToTime($dateString);
 

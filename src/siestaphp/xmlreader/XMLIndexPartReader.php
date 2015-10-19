@@ -14,9 +14,9 @@ class XMLIndexPartReader extends XMLAccess implements IndexPartSource
     /**
      * @return string
      */
-    public function getName()
+    public function getColumnName()
     {
-        return $this->getAttribute(XMLIndexPart::ATTRIBUTE_NAME);
+        return $this->getAttribute(XMLIndexPart::ATTRIBUTE_COLUMN_NAME);
     }
 
     /**
@@ -32,7 +32,7 @@ class XMLIndexPartReader extends XMLAccess implements IndexPartSource
      */
     public function getLength()
     {
-        return $this->getAttribute(XMLIndexPart::ATTRIBUTE_LENGTH);
+        return $this->getAttributeAsInt(XMLIndexPart::ATTRIBUTE_LENGTH);
     }
 
 }

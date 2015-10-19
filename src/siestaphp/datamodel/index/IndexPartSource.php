@@ -6,12 +6,13 @@ namespace siestaphp\datamodel\index;
  * Interface IndexPartSource
  * @package siestaphp\datamodel\index
  */
-interface IndexPartSource {
+interface IndexPartSource
+{
 
     /**
      * @return string
      */
-    public function getName();
+    public function getColumnName();
 
     /**
      * @return string

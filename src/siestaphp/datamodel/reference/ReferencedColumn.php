@@ -2,7 +2,6 @@
 
 namespace siestaphp\datamodel\reference;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\attribute\Attribute;
 use siestaphp\datamodel\DatabaseColumn;
 

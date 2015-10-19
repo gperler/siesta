@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\storedprocedure\gen" table="ARTIST" delimit="false" targetPath="gen">
+    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\storedprocedure\gen" table="ARTIST"
+            delimit="false" targetPath="gen">
         <entity-mysql engine="InnoDB" charset="utf8" collate="utf8_unicode_ci"/>
 
         <storedProcedure name="getFirstArtistByCity" modifies="false" resultType="single">
@@ -33,9 +34,10 @@
         <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="uuid"/>
         <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>
         <attribute name="city" type="string" dbName="CITY" dbType="VARCHAR(100)"/>
-   </entity>
+    </entity>
 
-    <entity name="LabelEntity" namespace="siestaphp\tests\functional\storedprocedure\gen" table="LABEL" targetPath="gen">
+    <entity name="LabelEntity" namespace="siestaphp\tests\functional\storedprocedure\gen" table="LABEL"
+            targetPath="gen">
 
         <storedProcedure name="getFirstArtistByCity" modifies="false" resultType="single">
             <parameterList>

@@ -52,9 +52,8 @@ class DirectoryScanner
      * @param ValidationLogger $log
      * @param string $baseDir
      * @param string $suffix
-
      *
-*@return EntitySource[]
+     * @return EntitySource[]
      */
     public function scan(ValidationLogger $log, $baseDir, $suffix = self::DEFAULT_SUFFIX)
     {
@@ -85,6 +84,8 @@ class DirectoryScanner
 
     /**
      * @param File $directory
+     *
+     * @return void
      */
     private function handleDirectory(File $directory)
     {
@@ -101,9 +102,10 @@ class DirectoryScanner
         }
     }
 
-
     /**
      * @param File $file
+     *
+     * @return void
      */
     private function handleEntityFile(File $file)
     {

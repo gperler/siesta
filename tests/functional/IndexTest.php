@@ -2,10 +2,6 @@
 
 namespace siestaphp\tests\functional;
 
-use Codeception\Util\Debug;
-use siestaphp\tests\functional\multipk\gen\ArtistEntity;
-use siestaphp\tests\functional\multipk\gen\LabelEntity;
-
 /**
  * Class MultiPKTest
  */

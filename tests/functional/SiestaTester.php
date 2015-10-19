@@ -35,7 +35,6 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
      */
     protected $logger;
 
-
     protected function connectAndInstall()
     {
         $this->connection = ConnectionFactory::getConnection();

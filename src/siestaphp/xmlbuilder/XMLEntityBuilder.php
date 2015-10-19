@@ -2,8 +2,8 @@
 
 namespace siestaphp\xmlbuilder;
 
-use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
+use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\naming\StoredProcedureNaming;
 use siestaphp\naming\XMLAttribute;
@@ -58,6 +58,7 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * builds the XML document for the entity
+     * @return void
      */
     private function buildXML()
     {
@@ -77,6 +78,7 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * add the data on entity level
+     * @return void
      */
     private function addEntityData()
     {
@@ -92,6 +94,7 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * adds the attribute data to the xml
+     * @return void
      */
     private function addAttributeData()
     {
@@ -103,6 +106,7 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * adds the reference data to the xml
+     * @return void
      */
     private function addReferenceData()
     {
@@ -114,6 +118,7 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * add collector data to the xml
+     * @return void
      */
     private function addCollectorData()
     {
@@ -125,6 +130,7 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * adds the index list to the xml
+     * @return void
      */
     private function addIndexList()
     {
@@ -138,6 +144,8 @@ class XMLEntityBuilder extends XMLBuilder
      * adds data that is used for transformation
      *
      * @param EntityGeneratorSource $ets
+     *
+     * @return void
      */
     private function addTransformerData(EntityGeneratorSource $ets)
     {
@@ -155,6 +163,7 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * adds stored procedure names for default stored procedures to the XML
+     * @return void
      */
     private function addStoredProcedureNames()
     {
@@ -173,6 +182,8 @@ class XMLEntityBuilder extends XMLBuilder
      * adds all classes that a use statement is needed for
      *
      * @param EntityGeneratorSource $ets
+     *
+     * @return void
      */
     private function addReferencedClassUseNames(EntityGeneratorSource $ets)
     {
@@ -193,6 +204,8 @@ class XMLEntityBuilder extends XMLBuilder
      * adds information for custom stored procedures
      *
      * @param StoredProcedureSource[] $spSourceList
+     *
+     * @return void
      */
     private function addCustomStoredProcedureList($spSourceList)
     {
@@ -208,6 +221,8 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * @param EntityGeneratorSource $ets
+     *
+     * @return void
      */
     private function addPrimaryKeyColumns(EntityGeneratorSource $ets)
     {

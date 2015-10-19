@@ -39,13 +39,7 @@ class GeneratorCommand extends Command
         $suffix = $input->getOption('suffix');
         $basePath = $input->getOption("basePath") ? $input->getOption("basePath") : getcwd();
 
-        $driver = \siestaphp\runtime\ServiceLocator::getDriver(array(
-            "user" => "root",
-            "password" => "",
-            "port" => 3306,
-            "database" => "spryker2",
-            "host" => "127.0.0.1"
-        ));
+        $driver = \siestaphp\runtime\ServiceLocator::getDriver(array("user" => "root", "password" => "", "port" => 3306, "database" => "spryker2", "host" => "127.0.0.1"));
 
         // create symphony wrapper
         $log = new SymphonyConsoleOutputWrapper($output);
@@ -56,8 +50,7 @@ class GeneratorCommand extends Command
 
         $delta = $start + microtime(true);
 
-        $output->writeln($delta*1000);
-
+        $output->writeln($delta * 1000);
 
     }
 }

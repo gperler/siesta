@@ -1,153 +1,153 @@
 {
-  "id" : {
-      "type" : "INT",
-      "required" : true,
-      "phpType" : "int"
+  "id": {
+    "type": "INT",
+    "required": true,
+    "phpType": "int"
   },
-  "bit" : {
-    "type" : "BIT",
-    "required" : false,
-    "phpType" : "bool"
+  "bit": {
+    "type": "BIT",
+    "required": false,
+    "phpType": "bool"
   },
-  "smallInt" : {
-    "type" : "SMALLINT",
-    "required" : false,
-    "phpType" : "int"
+  "smallInt": {
+    "type": "SMALLINT",
+    "required": false,
+    "phpType": "int"
   },
-  "mediumInt" : {
-    "type" : "MEDIUMINT",
-    "required" : false,
-    "phpType" : "int"
+  "mediumInt": {
+    "type": "MEDIUMINT",
+    "required": false,
+    "phpType": "int"
   },
-  "int1" : {
-    "type" : "INT",
-    "required" : true,
-    "phpType" : "int"
+  "int1": {
+    "type": "INT",
+    "required": true,
+    "phpType": "int"
   },
-  "int2" : {
-    "type" : "INT(5)",
-    "required" : false,
-    "phpType" : "int"
+  "int2": {
+    "type": "INT(5)",
+    "required": false,
+    "phpType": "int"
   },
-  "bigInt" : {
-    "type" : "BIGINT",
-    "required" : false,
-    "phpType" : "int"
+  "bigInt": {
+    "type": "BIGINT",
+    "required": false,
+    "phpType": "int"
   },
-  "real" : {
-    "type" : "DOUBLE",
-    "required" : false,
-    "phpType" : "float"
+  "real": {
+    "type": "DOUBLE",
+    "required": false,
+    "phpType": "float"
   },
-  "double" : {
-    "type" : "DOUBLE",
-    "required" : false,
-    "phpType" : "float"
+  "double": {
+    "type": "DOUBLE",
+    "required": false,
+    "phpType": "float"
   },
-  "float" : {
-    "type" : "FLOAT",
-    "required" : false,
-    "phpType" : "float"
+  "float": {
+    "type": "FLOAT",
+    "required": false,
+    "phpType": "float"
   },
-  "decimal" : {
-    "type" : "DECIMAL",
-    "required" : false,
-    "phpType" : "float"
+  "decimal": {
+    "type": "DECIMAL",
+    "required": false,
+    "phpType": "float"
   },
-  "numeric" : {
-    "type" : "DECIMAL",
-    "required" : false,
-    "phpType" : "float"
+  "numeric": {
+    "type": "DECIMAL",
+    "required": false,
+    "phpType": "float"
   },
-  "date" : {
-    "type" : "DATE",
-    "required" : false,
-    "phpType" : "DateTime"
+  "date": {
+    "type": "DATE",
+    "required": false,
+    "phpType": "DateTime"
   },
-  "time" : {
-    "type" : "TIME",
-    "required" : false,
-    "phpType" : "DateTime"
+  "time": {
+    "type": "TIME",
+    "required": false,
+    "phpType": "DateTime"
   },
-  "timestamp" : {
-    "type" : "TIMESTAMP",
-    "required" : false,
-    "phpType" : "string"
+  "timestamp": {
+    "type": "TIMESTAMP",
+    "required": false,
+    "phpType": "string"
   },
-  "datetime" : {
-    "type" : "DATETIME",
-    "required" : false,
-    "phpType" : "DateTime"
+  "datetime": {
+    "type": "DATETIME",
+    "required": false,
+    "phpType": "DateTime"
   },
-  "year" : {
-    "type" : "YEAR",
-    "required" : false,
-    "phpType" : "string"
+  "year": {
+    "type": "YEAR",
+    "required": false,
+    "phpType": "string"
   },
-  "char" : {
-    "type" : "CHAR(100)",
-    "required" : false,
-    "phpType" : "string"
+  "char": {
+    "type": "CHAR(100)",
+    "required": false,
+    "phpType": "string"
   },
-  "varchar" : {
-    "type" : "VARCHAR(100)",
-    "required" : false,
-    "phpType" : "string"
+  "varchar": {
+    "type": "VARCHAR(100)",
+    "required": false,
+    "phpType": "string"
   },
-  "binary" : {
-    "type" : "BINARY(100)",
-    "required" : false,
-    "phpType" : "string"
+  "binary": {
+    "type": "BINARY(100)",
+    "required": false,
+    "phpType": "string"
   },
-  "tinyblob" : {
-    "type" : "TINYBLOB",
-    "required" : false,
-    "phpType" : "string"
+  "tinyblob": {
+    "type": "TINYBLOB",
+    "required": false,
+    "phpType": "string"
   },
-  "blob" : {
-    "type" : "BLOB",
-    "required" : false,
-    "phpType" : "string"
+  "blob": {
+    "type": "BLOB",
+    "required": false,
+    "phpType": "string"
   },
-  "mediumblob" : {
-    "type" : "MEDIUMBLOB",
-    "required" : false,
-    "phpType" : "string"
+  "mediumblob": {
+    "type": "MEDIUMBLOB",
+    "required": false,
+    "phpType": "string"
   },
-  "longblob" : {
-    "type" : "LONGBLOB",
-    "required" : false,
-    "phpType" : "string"
+  "longblob": {
+    "type": "LONGBLOB",
+    "required": false,
+    "phpType": "string"
   },
-  "tinytext" : {
-    "type" : "TINYTEXT",
-    "required" : false,
-    "phpType" : "string"
+  "tinytext": {
+    "type": "TINYTEXT",
+    "required": false,
+    "phpType": "string"
   },
-  "text" : {
-    "type" : "TEXT",
-    "required" : false,
-    "phpType" : "string"
+  "text": {
+    "type": "TEXT",
+    "required": false,
+    "phpType": "string"
   },
-  "mediumtext" : {
-    "type" : "MEDIUMTEXT",
-    "required" : false,
-    "phpType" : "string"
+  "mediumtext": {
+    "type": "MEDIUMTEXT",
+    "required": false,
+    "phpType": "string"
   },
-  "longtext" : {
-    "type" : "LONGTEXT",
-    "required" : false,
-    "phpType" : "string"
+  "longtext": {
+    "type": "LONGTEXT",
+    "required": false,
+    "phpType": "string"
   },
-  "enum" : {
-    "type" : "ENUM('A','B')",
-    "required" : false,
-    "phpType" : "string"
+  "enum": {
+    "type": "ENUM('A','B')",
+    "required": false,
+    "phpType": "string"
   },
-  "set" : {
-    "type" : "SET('X','Y')",
-    "required" : false,
-    "phpType" : "string"
+  "set": {
+    "type": "SET('X','Y')",
+    "required": false,
+    "phpType": "string"
   }
 }
 

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\driver\mysqli\installer;
 
 use siestaphp\driver\Connection;

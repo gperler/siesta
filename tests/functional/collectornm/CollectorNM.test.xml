@@ -8,7 +8,8 @@
         <collector name="AlbumList" type="nm" foreignClass="Album" referenceName="artist" mapperClass="ArtistSong"/>
     </entity>
 
-    <entity name="ArtistSong" namespace="siestaphp\tests\functional\collectornm\gen" table="ArtistSong" targetPath="gen/">
+    <entity name="ArtistSong" namespace="siestaphp\tests\functional\collectornm\gen" table="ArtistSong"
+            targetPath="gen/">
         <attribute name="sequence" type="int" dbName="sequence" dbType="INT"/>
 
         <reference name="artist" foreignClass="Artist" required="false" primaryKey="true"/>

@@ -3,7 +3,6 @@
 namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
-use siestaphp\driver\Connection;
 use siestaphp\naming\StoredProcedureNaming;
 
 /**
@@ -41,7 +40,6 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
         if (!$this->entityDatabaseSource->hasPrimaryKey()) {
             return null;
         }
-
 
         return parent::buildCreateProcedureStatement();
     }

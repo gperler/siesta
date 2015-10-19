@@ -2,7 +2,6 @@
 
 namespace siestaphp\driver;
 
-use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\exceptions\ConnectException;
 
 /**

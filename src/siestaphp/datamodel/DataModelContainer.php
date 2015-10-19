@@ -3,8 +3,8 @@
 namespace siestaphp\datamodel;
 
 use siestaphp\datamodel\entity\Entity;
-use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
+use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\generator\ValidationLogger;
 
 /**
@@ -36,6 +36,8 @@ class DataModelContainer
 
     /**
      * @param EntitySource[] $sourceList
+     *
+     * @return void
      */
     public function addEntitySourceList($sourceList)
     {
@@ -49,6 +51,8 @@ class DataModelContainer
 
     /**
      * @param EntitySource $source
+     *
+     * @return void
      */
     private function addEntitySource(EntitySource $source)
     {
@@ -62,7 +66,7 @@ class DataModelContainer
 
         if (isset($this->entityList[$entityClassName])) {
             $existingEntity = $this->entityList[$entityClassName];
-            $this->generatorLog->warn("Found Entity in 2 file(s)",0);
+            $this->generatorLog->warn("Found Entity in 2 file(s)", 0);
             return;
         }
 
@@ -73,7 +77,7 @@ class DataModelContainer
     }
 
     /**
-     * @return bool
+     * @return void
      */
     public function updateModel()
     {
@@ -83,7 +87,7 @@ class DataModelContainer
     }
 
     /**
-     *
+     * @return void
      */
     public function validate()
     {

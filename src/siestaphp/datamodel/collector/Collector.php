@@ -2,7 +2,6 @@
 
 namespace siestaphp\datamodel\collector;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\Processable;
@@ -46,6 +45,8 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
 
     /**
      * @param DataModelContainer $container
+     *
+     * @return void
      */
     public function updateModel(DataModelContainer $container)
     {
@@ -61,6 +62,8 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
 
     /**
      * @param DataModelContainer $container
+     *
+     * @return void
      */
     private function updateModel1N(DataModelContainer $container)
     {
@@ -73,6 +76,8 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
 
     /**
      * @param DataModelContainer $container
+     *
+     * @return void
      */
     private function updateModelNM(DataModelContainer $container)
     {
@@ -81,6 +86,8 @@ class Collector implements Processable, CollectorSource, CollectorTransformerSou
 
     /**
      * @param ValidationLogger $log
+     *
+     * @return void
      */
     public function validate(ValidationLogger $log)
     {

@@ -75,6 +75,7 @@ class AttributeListMigrator
 
     /**
      * compares both attribute list and request the needed alter statements
+     * @return void
      */
     public function createAlterStatementList()
     {
@@ -155,7 +156,7 @@ class AttributeListMigrator
     /**
      * @return string[]
      */
-    public function getAddStatementList()
+    public function getAddColumnStatementList()
     {
         return $this->addStatementList;
     }
@@ -163,7 +164,7 @@ class AttributeListMigrator
     /**
      * @return string[]
      */
-    public function getModifyStatementList()
+    public function getModifyColumnStatementList()
     {
         return $this->modifiyStatementList;
     }
@@ -171,7 +172,7 @@ class AttributeListMigrator
     /**
      * @return string[]
      */
-    public function getDropStatementList()
+    public function getDropColumnStatementList()
     {
         return $this->dropStatementList;
     }

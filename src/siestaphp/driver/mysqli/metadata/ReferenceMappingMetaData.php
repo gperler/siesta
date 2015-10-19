@@ -61,7 +61,8 @@ class ReferenceMappingMetaData implements MappingSource
     /**
      * @param string $databaseType
      */
-    public function setDatabaseType($databaseType) {
+    public function setDatabaseType($databaseType)
+    {
         $this->databaseType = $databaseType;
     }
 }

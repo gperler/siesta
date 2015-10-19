@@ -1,6 +1,5 @@
 <?php
 
-
 namespace siestaphp\driver\exceptions;
 
 use siestaphp\exceptions\SiestaException;
