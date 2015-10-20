@@ -16,13 +16,13 @@ class SelectReferenceStoredProcedure extends MySQLStoredProcedureBase
     protected $referenceSource;
 
     /**
-     * @param EntityGeneratorSource $eds
+     * @param EntityGeneratorSource $source
      * @param ReferenceGeneratorSource $referenceSource
      * @param bool $replication
      */
-    public function __construct(EntityGeneratorSource $eds, ReferenceGeneratorSource $referenceSource, $replication)
+    public function __construct(EntityGeneratorSource $source, ReferenceGeneratorSource $referenceSource, $replication)
     {
-        parent::__construct($eds, $replication);
+        parent::__construct($source, $replication);
         $this->referenceSource = $referenceSource;
     }
 

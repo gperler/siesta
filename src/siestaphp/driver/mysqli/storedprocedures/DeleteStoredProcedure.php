@@ -14,12 +14,12 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
 {
 
     /**
-     * @param EntityGeneratorSource $eds
+     * @param EntityGeneratorSource $source
      * @param $replication
      */
-    public function __construct(EntityGeneratorSource $eds, $replication)
+    public function __construct(EntityGeneratorSource $source, $replication)
     {
-        parent::__construct($eds, $replication);
+        parent::__construct($source, $replication);
     }
 
     /**
@@ -35,7 +35,7 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
 
         $this->buildStatement();
 
-        if (!$this->entityGeneratorSource->hasPrimaryKey()) {
+        if (!$this->entitySource->hasPrimaryKey()) {
             return null;
         }
 
@@ -53,14 +53,14 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
 
     protected function buildName()
     {
-        $this->name = StoredProcedureNaming::getSPDeleteByPrimaryKeyName($this->entityGeneratorSource->getTable());
+        $this->name = StoredProcedureNaming::getSPDeleteByPrimaryKeyName($this->entitySource->getTable());
     }
 
     protected function buildSignature()
     {
         $this->signature = "(";
 
-        foreach ($this->entityGeneratorSource->getPrimaryKeyColumns() as $pkColumn) {
+        foreach ($this->entitySource->getPrimaryKeyColumns() as $pkColumn) {
             $parameterName = $pkColumn->getSQLParameterName();
             $this->signature .= "IN $parameterName " . $pkColumn->getDatabaseType() . ",";
         }
@@ -70,10 +70,10 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
 
     protected function buildStatement()
     {
-        $this->statement = $this->buildDeleteSQL($this->entityGeneratorSource->getTable());
+        $this->statement = $this->buildDeleteSQL($this->entitySource->getTable());
 
         if ($this->replication) {
-            $table = Replication::getReplicationTableName($this->entityGeneratorSource->getTable());
+            $table = Replication::getReplicationTableName($this->entitySource->getTable());
             $this->statement .= $this->buildDeleteSQL($table);
         }
     }
@@ -87,7 +87,7 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
     {
         $where = "";
 
-        foreach ($this->entityGeneratorSource->getPrimaryKeyColumns() as $column) {
+        foreach ($this->entitySource->getPrimaryKeyColumns() as $column) {
             $where .= $this->quote($column->getDatabaseName()) . " = " . $column->getSQLParameterName() . " and ";
         }
         $tableName = $this->quote($tableName);

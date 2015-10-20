@@ -20,7 +20,7 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
     /**
      * @var EntityGeneratorSource
      */
-    protected $entityGeneratorSource;
+    protected $entitySource;
 
     /**
      * @var string
@@ -58,12 +58,12 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
     protected $replication;
 
     /**
-     * @param EntityGeneratorSource $eds
+     * @param EntityGeneratorSource $source
      * @param $replication
      */
-    public function __construct(EntityGeneratorSource $eds, $replication)
+    public function __construct(EntityGeneratorSource $source, $replication)
     {
-        $this->entityGeneratorSource = $eds;
+        $this->entitySource = $source;
         $this->replication = $replication;
     }
 
@@ -72,7 +72,7 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
      */
     protected function determineTableNames()
     {
-        $this->tableName = $this->entityGeneratorSource->getTable();
+        $this->tableName = $this->entitySource->getTable();
         $this->memoryTableName = Replication::getReplicationTableName($this->tableName);
     }
 

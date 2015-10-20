@@ -150,6 +150,7 @@ class MySQLTableCreator
     {
         $columnList = array();
 
+        // used for delimiter functionality
         foreach ($additionalColumns as $attribute) {
             if (!$attribute->isTransient()) {
                 $columnList[] = $this->buildColumnSQLSnippet($attribute);

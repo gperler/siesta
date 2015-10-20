@@ -3,6 +3,7 @@
 namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
+use siestaphp\driver\mysqli\MySQLDriver;
 use siestaphp\naming\StoredProcedureNaming;
 
 /**
@@ -12,20 +13,19 @@ use siestaphp\naming\StoredProcedureNaming;
 class SelectStoredProcedure extends MySQLStoredProcedureBase
 {
 
-    /**
-     * @param EntityGeneratorSource $eds
-     * @param $replication
-     */
-    public function __construct(EntityGeneratorSource $eds, $replication)
-    {
-        parent::__construct($eds, $replication);
-    }
+    const SP_PARAMETER = "IN %s %s";
+
+    const SELECT = "SELECT * FROM %s WHERE %s;";
+
+    const WHERE = "%s = %s";
 
     /**
-     * @return null|string
+     * @param EntityGeneratorSource $source
+     * @param $replication
      */
-    public function buildCreateProcedureStatement()
+    public function __construct(EntityGeneratorSource $source, $replication)
     {
+        parent::__construct($source, $replication);
 
         $this->modifies = false;
 
@@ -36,8 +36,14 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
         $this->buildSignature();
 
         $this->buildStatement();
+    }
 
-        if (!$this->entityGeneratorSource->hasPrimaryKey()) {
+    /**
+     * @return string
+     */
+    public function buildCreateProcedureStatement()
+    {
+        if (!$this->entitySource->hasPrimaryKey()) {
             return null;
         }
 
@@ -45,46 +51,40 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
     }
 
     /**
-     * @return string
-     */
-    public function buildProcedureDropStatement()
-    {
-        $this->buildName();
-        return parent::buildProcedureDropStatement();
-    }
-
-    /**
-     *
+     * @return void
      */
     protected function buildName()
     {
-        $this->name = StoredProcedureNaming::getSPFindByPrimaryKeyName($this->entityGeneratorSource->getTable());
+        $this->name = StoredProcedureNaming::getSPFindByPrimaryKeyName($this->entitySource->getTable());
     }
 
     /**
-     *
+     * @return void
      */
     protected function buildSignature()
     {
-        $this->signature = "(";
-        foreach ($this->entityGeneratorSource->getPrimaryKeyColumns() as $column) {
-            $this->signature .= "IN " . $column->getSQLParameterName() . " " . $column->getDatabaseType() . ",";
+        $parameterList = array();
+        foreach ($this->entitySource->getPrimaryKeyColumns() as $column) {
+            $parameterList[] = sprintf(self::SP_PARAMETER, $column->getSQLParameterName(), $column->getDatabaseType());
         }
-        $this->signature = rtrim($this->signature, ",");
-        $this->signature .= ")";
+        $this->signature = "(" . implode(",", $parameterList) . ")";
     }
 
+    /**
+     * @return void
+     */
     protected function buildStatement()
     {
-        $where = "";
-        foreach ($this->entityGeneratorSource->getPrimaryKeyColumns() as $column) {
-            $where .= $column->getDatabaseName() . " = " . $column->getSQLParameterName() . " AND ";
+        $whereList = array();
+        foreach ($this->entitySource->getPrimaryKeyColumns() as $column) {
+            $dbName = MySQLDriver::quote($column->getDatabaseName());
+            $whereList[] = sprintf(self::WHERE, $dbName, $column->getSQLParameterName());
         }
 
-        $where = substr($where, 0, -5);
         $tableName = $this->quote($this->tableName);
+        $where = implode(" AND ", $whereList);
 
-        $this->statement = "SELECT * FROM $tableName WHERE $where;";
+        $this->statement = sprintf(self::SELECT, $tableName, $where);
 
     }
 

@@ -13,11 +13,15 @@ class DelimitAttribute implements AttributeGeneratorSource
 {
 
     /**
-     * @return AttributeGeneratorSource[]
+     * @return DelimitAttribute[]
      */
     public static function getDelimitAttributes()
     {
-        return array(new DelimitAttribute("_validFrom", "DateTime", "_validFrom", "DATETIME", null, false), new DelimitAttribute("_validUntil", "DateTime", "_validUntil", "DATETIME", null, false), new DelimitAttribute("_delimit_id", "string", "_delimit_id", "VARCHAR(36)", "uuid", true), new DelimitAttribute("_changedBy", "string", "_changedBy", "VARCHAR(36)", null, false));
+        return array(
+            new DelimitAttribute("_delimit_id", "string", "_delimit_id", "VARCHAR(36)", "uuid", true, "UUID()"),
+            new DelimitAttribute("_validFrom", "DateTime", "_validFrom", "DATETIME", null, false, "NOW()"),
+            new DelimitAttribute("_validUntil", "DateTime", "_validUntil", "DATETIME", null, false, "NULL"),
+            new DelimitAttribute("_changedBy", "string", "_changedBy", "VARCHAR(36)", null, false, "NULL"));
     }
 
     protected $name;
@@ -25,6 +29,7 @@ class DelimitAttribute implements AttributeGeneratorSource
     protected $databaseType;
     protected $autoValue;
     protected $isPrimaryKey;
+    protected $insertDefault;
 
     /**
      * @param string $name
@@ -33,8 +38,9 @@ class DelimitAttribute implements AttributeGeneratorSource
      * @param string $databaseType
      * @param string $autoValue
      * @param bool $isPrimaryKey
+     * @param string $insertDefault
      */
-    public function __construct($name, $phpType, $databaseName, $databaseType, $autoValue, $isPrimaryKey)
+    public function __construct($name, $phpType, $databaseName, $databaseType, $autoValue, $isPrimaryKey, $insertDefault)
     {
         $this->name = $name;
         $this->phpType = $phpType;
@@ -42,6 +48,14 @@ class DelimitAttribute implements AttributeGeneratorSource
         $this->databaseType = $databaseType;
         $this->autoValue = $autoValue;
         $this->isPrimaryKey = $isPrimaryKey;
+        $this->insertDefault = $insertDefault;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInsertDefault() {
+        return $this->insertDefault;
     }
 
     /**

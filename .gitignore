@@ -5,5 +5,4 @@ composer.lock
 tests/xml/*
 vendor
 !**/.gitkeep
-!tests/functional/namespace.test/gen/ns2/Artist.php
-!tests/functional/namepsace.test/gen/ns4/Label.php
+

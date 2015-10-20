@@ -2,6 +2,8 @@
 
 namespace siestaphp\tests\functional;
 
+use siestaphp\tests\functional\delimit\gen\Artist;
+
 /**
  * Class MultiPKTest
  */
@@ -30,6 +32,19 @@ class DelimitTest extends SiestaTester
 
     public function testIndexList()
     {
+        $artist = new Artist();
+        $artist->setBool(true);
+        $artist->setInt(123);
+        $artist->setFloat(19.08);
+        $artist->save();
+
+        $artist->setString("Gregor");
+        $artist->save();
+
+        $artist->setString("Müller");
+        $artist->save();
+
+
 
     }
 
