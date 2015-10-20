@@ -13,7 +13,7 @@ class SequencerTest extends SiestaTester
 
         $factory = $this->connection->getCreateStatementFactory();
 
-        $statementList = $factory->setupSequencer();
+        $statementList = $factory->buildSequencer();
 
         foreach ($statementList as $statement) {
             $this->connection->query($statement);

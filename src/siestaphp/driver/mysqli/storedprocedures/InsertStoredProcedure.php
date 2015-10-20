@@ -51,38 +51,37 @@ class InsertStoredProcedure extends MySQLStoredProcedureBase
 
     protected function buildName()
     {
-        $this->name = StoredProcedureNaming::getSPInsertName($this->entityDatabaseSource->getTable());
+        $this->name = StoredProcedureNaming::getSPInsertName($this->entityGeneratorSource->getTable());
     }
 
     protected function buildSignature()
     {
-        $this->signature = "(";
+        $parameter = "IN %s %s";
+        $signature = array();
 
-        foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
+        foreach ($this->entityGeneratorSource->getReferenceGeneratorSourceList() as $reference) {
             foreach ($reference->getReferencedColumnList() as $column) {
-                $parameterName = $column->getSQLParameterName();
-                $this->signature .= "IN $parameterName " . $column->getDatabaseType() . ",";
+                $signature[] = sprintf($parameter, $column->getSQLParameterName(), $column->getDatabaseType());
             }
-
         }
 
-        foreach ($this->entityDatabaseSource->getAttributeGeneratorSourceList() as $attribute) {
+        foreach ($this->entityGeneratorSource->getAttributeGeneratorSourceList() as $attribute) {
             if ($attribute->isTransient()) {
                 continue;
             }
-            $parameterName = $attribute->getSQLParameterName();
-            $this->signature .= "IN $parameterName " . $attribute->getDatabaseType() . ",";
+            $signature[] = sprintf($parameter, $attribute->getSQLParameterName(), $attribute->getDatabaseType());
         }
-        $this->signature = rtrim($this->signature, ",");
-        $this->signature .= ")";
+
+        $this->signature = "(" . implode(",", $signature) . ")";
+
     }
 
     protected function buildStatement()
     {
-        $this->statement = $this->buildInsertSQL($this->entityDatabaseSource->getTable());
+        $this->statement = $this->buildInsertSQL($this->entityGeneratorSource->getTable());
 
         if ($this->replication) {
-            $table = Replication::getReplicationTableName($this->entityDatabaseSource->getTable());
+            $table = Replication::getReplicationTableName($this->entityGeneratorSource->getTable());
             $this->statement .= $this->buildInsertSQL($table);
         }
     }
@@ -97,33 +96,33 @@ class InsertStoredProcedure extends MySQLStoredProcedureBase
     protected function buildInsertSQL($tableName)
     {
         // initialize column and value list
-        $columnList = "";
-        $valueList = "";
+        $columnList = array();
+        $valueList = array();
 
         // iterate referenced columns first
-        foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
+        foreach ($this->entityGeneratorSource->getReferenceGeneratorSourceList() as $reference) {
             foreach ($reference->getReferencedColumnList() as $column) {
-                $columnList .= $this->quote($column->getDatabaseName()) . ",";
-                $valueList .= $column->getSQLParameterName() . ",";
+                $columnList[] = $this->quote($column->getDatabaseName());
+                $valueList[] = $column->getSQLParameterName();
             }
         }
 
         // iterate attributes
-        foreach ($this->entityDatabaseSource->getAttributeGeneratorSourceList() as $attribute) {
+        foreach ($this->entityGeneratorSource->getAttributeGeneratorSourceList() as $attribute) {
             if ($attribute->isTransient()) {
                 continue;
             }
-            $columnList .= $this->quote($attribute->getDatabaseName()) . ",";
-            $valueList .= $attribute->getSQLParameterName() . ",";
+            $columnList[] = $this->quote($attribute->getDatabaseName());
+            $valueList[] = $attribute->getSQLParameterName();
         }
 
         // finalize components
         $tableName = $this->quote($tableName);
-        $columnList = rtrim($columnList, ",");
-        $valueList = rtrim($valueList, ",");
+        $columnSQL = implode(",", $columnList);
+        $valueSQL = implode(",", $valueList);
 
         // done
-        return sprintf(self::INSERT_STATEMENT, $tableName, $columnList, $valueList);
+        return sprintf(self::INSERT_STATEMENT, $tableName, $columnSQL, $valueSQL);
     }
 
 }

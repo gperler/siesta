@@ -18,19 +18,27 @@ interface CreateStatementFactory
     /**
      * @return string[]
      */
-    public function setupSequencer();
+    public function buildSequencer();
 
     /**
      * @param EntityGeneratorSource $entity
      *
      * @return string[]
      */
-    public function setupTables(EntityGeneratorSource $entity);
+    public function buildCreateTable(EntityGeneratorSource $entity);
+
+
+    /**
+     * @param EntityGeneratorSource $entity
+     *
+     * @return string[]
+     */
+    public function buildCreateDelimitTable(EntityGeneratorSource $entity);
 
     /**
      * @param EntityGeneratorSource $ets
      *
      * @return string[]
      */
-    public function setupStoredProcedures(EntityGeneratorSource $ets);
+    public function buildCreateStoredProcedures(EntityGeneratorSource $ets);
 }

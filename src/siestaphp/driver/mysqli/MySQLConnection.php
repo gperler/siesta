@@ -92,8 +92,9 @@ class MySQLConnection implements Connection
             $this->connection->set_charset($connectionData->charSet);
         }
 
-        $pcs = implode(";", $connectionData->postConnectStatements);
+        $pcs = implode(";", $connectionData->postConnectStatementList);
         if ($pcs) {
+            echo $pcs;
             $this->multiQuery($pcs);
         }
 

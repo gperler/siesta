@@ -1,0 +1,27 @@
+
+{
+    "version" : "1.0",
+    "connection": [ {
+        "name": "default",
+        "driver" : "mysql",
+        "isDefault": true,
+        "host": "127.0.0.1",
+        "port": 3306,
+        "database": "test",
+        "user": "root",
+        "password": "",
+        "charset": "utf8",
+        "postConnectStatementList": [
+            "SET NAMES UTF8"
+        ]
+    }],
+    "migration": {
+        "method": "direct",
+        "targetPath": "",
+        "dropUnusedTables": false
+    },
+    "reverse": {
+        "targetPath": "",
+        "targetNamespace": ""
+    }
+}

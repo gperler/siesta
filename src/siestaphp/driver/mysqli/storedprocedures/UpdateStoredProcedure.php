@@ -35,7 +35,7 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
 
         $this->buildStatement();
 
-        if (!$this->entityDatabaseSource->hasPrimaryKey()) {
+        if (!$this->entityGeneratorSource->hasPrimaryKey()) {
             return null;
         }
 
@@ -53,7 +53,7 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
 
     protected function buildName()
     {
-        $this->name = StoredProcedureNaming::getSPUpdateName($this->entityDatabaseSource->getTable());
+        $this->name = StoredProcedureNaming::getSPUpdateName($this->entityGeneratorSource->getTable());
     }
 
     /**
@@ -65,7 +65,7 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
         $this->signature = "(";
 
         // iterate references and their columns
-        foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
+        foreach ($this->entityGeneratorSource->getReferenceGeneratorSourceList() as $reference) {
             foreach ($reference->getReferencedColumnList() as $column) {
                 $parameterName = $column->getSQLParameterName();
                 $this->signature .= "IN $parameterName " . $column->getDatabaseType() . ",";
@@ -73,7 +73,7 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
         }
 
         // iterate attributes
-        foreach ($this->entityDatabaseSource->getAttributeGeneratorSourceList() as $attribute) {
+        foreach ($this->entityGeneratorSource->getAttributeGeneratorSourceList() as $attribute) {
             if ($attribute->isTransient()) {
                 continue;
             }
@@ -91,10 +91,10 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildStatement()
     {
-        $this->statement = $this->buildUpdateSQL($this->entityDatabaseSource->getTable());
+        $this->statement = $this->buildUpdateSQL($this->entityGeneratorSource->getTable());
 
         if ($this->replication) {
-            $table = Replication::getReplicationTableName($this->entityDatabaseSource->getTable());
+            $table = Replication::getReplicationTableName($this->entityGeneratorSource->getTable());
             $this->statement .= $this->buildUpdateSQL($table);
         }
     }
@@ -111,14 +111,14 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
         $values = "";
 
         // iterate references first
-        foreach ($this->entityDatabaseSource->getReferenceGeneratorSourceList() as $reference) {
+        foreach ($this->entityGeneratorSource->getReferenceGeneratorSourceList() as $reference) {
             foreach ($reference->getReferencedColumnList() as $referencedColumn) {
                 $values .= $this->quote($referencedColumn->getDatabaseName()) . " = " . $referencedColumn->getSQLParameterName() . ",";
             }
         }
 
         // iterate attributes next
-        foreach ($this->entityDatabaseSource->getAttributeGeneratorSourceList() as $attribute) {
+        foreach ($this->entityGeneratorSource->getAttributeGeneratorSourceList() as $attribute) {
             if ($attribute->isTransient()) {
                 continue;
             }
@@ -129,7 +129,7 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
 
         // build where statement
         $where = "";
-        foreach ($this->entityDatabaseSource->getPrimaryKeyColumns() as $column) {
+        foreach ($this->entityGeneratorSource->getPrimaryKeyColumns() as $column) {
             $where .= $this->quote($column->getDatabaseName()) . " = " . $column->getSQLParameterName() . " AND ";
         }
 

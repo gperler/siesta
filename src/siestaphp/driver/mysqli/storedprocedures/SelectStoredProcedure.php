@@ -37,7 +37,7 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
 
         $this->buildStatement();
 
-        if (!$this->entityDatabaseSource->hasPrimaryKey()) {
+        if (!$this->entityGeneratorSource->hasPrimaryKey()) {
             return null;
         }
 
@@ -58,7 +58,7 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildName()
     {
-        $this->name = StoredProcedureNaming::getSPFindByPrimaryKeyName($this->entityDatabaseSource->getTable());
+        $this->name = StoredProcedureNaming::getSPFindByPrimaryKeyName($this->entityGeneratorSource->getTable());
     }
 
     /**
@@ -67,7 +67,7 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
     protected function buildSignature()
     {
         $this->signature = "(";
-        foreach ($this->entityDatabaseSource->getPrimaryKeyColumns() as $column) {
+        foreach ($this->entityGeneratorSource->getPrimaryKeyColumns() as $column) {
             $this->signature .= "IN " . $column->getSQLParameterName() . " " . $column->getDatabaseType() . ",";
         }
         $this->signature = rtrim($this->signature, ",");
@@ -77,7 +77,7 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
     protected function buildStatement()
     {
         $where = "";
-        foreach ($this->entityDatabaseSource->getPrimaryKeyColumns() as $column) {
+        foreach ($this->entityGeneratorSource->getPrimaryKeyColumns() as $column) {
             $where .= $column->getDatabaseName() . " = " . $column->getSQLParameterName() . " AND ";
         }
 

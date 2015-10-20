@@ -28,7 +28,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
     /**
      * @return string[]
      */
-    public function setupSequencer()
+    public function buildSequencer()
     {
         $sequencerFile = new File(__DIR__ . "/installer/Sequencer.sql");
 
@@ -44,14 +44,28 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
      *
      * @return string[]
      */
-    public function setupTables(EntityGeneratorSource $ets)
+    public function buildCreateTable(EntityGeneratorSource $ets)
     {
         $statementList = array();
-        $tableBuilder = new MySQLTableCreator();
-        $statementList[] = $tableBuilder->setupTable($ets);
+        $tableBuilder = new MySQLTableCreator($ets);
+        $statementList[] = $tableBuilder->buildCreateTable();
 
         return $statementList;
 
+    }
+
+    /**
+     * @param EntityGeneratorSource $entity
+     *
+     * @return string[]
+     */
+    public function buildCreateDelimitTable(EntityGeneratorSource $entity)
+    {
+        $statementList = array();
+        $tableBuilder = new MySQLTableCreator($entity);
+        $statementList[] = $tableBuilder->buildCreateDelimitTable();
+
+        return $statementList;
     }
 
     /**
@@ -59,7 +73,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
      *
      * @return string[]
      */
-    public function setupStoredProcedures(EntityGeneratorSource $ets)
+    public function buildCreateStoredProcedures(EntityGeneratorSource $ets)
     {
         $statementList = array();
         foreach ($this->createStoredProcedureList($ets) as $sp) {

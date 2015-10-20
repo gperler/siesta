@@ -10,24 +10,32 @@
     <xsl:param name="password"/>
     <xsl:param name="charset"/>
 
-    <xsl:template match="/">&lt;?php
-
-        use \siestaphp\driver\ConnectionFactory;
-        use \siestaphp\driver\ConnectionData;
-
-        // connection Details
-        $name = "<xsl:value-of select="$name"/>";
-        $driver = "<xsl:value-of select="$driver"/>";
-        $host = "<xsl:value-of select="$host"/>";
-        $port = <xsl:value-of select="$port"/>;
-        $database = "<xsl:value-of select="$database"/>";
-        $user = "<xsl:value-of select="$user"/>";
-        $password = "<xsl:value-of select="$password"/>";
-        $charset = "<xsl:value-of select="$charset"/>";
-        $postConnectStatementList = array("SET NAMES UTF8");
-
-        $cd = new ConnectionData($name, $driver, $host, $port, $database, $user, $password, $charset,
-        $postConnectStatementList);
-        ConnectionFactory::addConnection($cd);
-    </xsl:template>
+<xsl:template match="/">
+{
+    "version" : "1.0",
+    "connection": [ {
+        "name": "<xsl:value-of select="$name"/>",
+        "driver" : "<xsl:value-of select="$driver"/>",
+        "isDefault": true,
+        "host": "<xsl:value-of select="$host"/>",
+        "port": <xsl:value-of select="$port"/>,
+        "database": "<xsl:value-of select="$database"/>",
+        "user": "<xsl:value-of select="$user"/>",
+        "password": "<xsl:value-of select="$password"/>",
+        "charset": "<xsl:value-of select="$charset"/>",
+        "postConnectStatementList": [
+            "SET NAMES UTF8"
+        ]
+    }],
+    "migration": {
+        "method": "direct",
+        "targetPath": "",
+        "dropUnusedTables": false
+    },
+    "reverse": {
+        "targetPath": "",
+        "targetNamespace": ""
+    }
+}
+</xsl:template>
 </xsl:stylesheet>

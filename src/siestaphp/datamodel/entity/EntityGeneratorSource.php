@@ -84,8 +84,8 @@ interface EntityGeneratorSource extends EntitySource
     public function getReferenceGeneratorSourceList();
 
     /**
-     * @return IndexGeneratorSource[]
+     * @return string
      */
-    public function getIndexGeneratorSourceList();
+    public function getDelimitTable();
 
 }

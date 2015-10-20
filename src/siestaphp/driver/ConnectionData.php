@@ -2,6 +2,8 @@
 
 namespace siestaphp\driver;
 
+use siestaphp\util\Util;
+
 /**
  * Class ConnectionData
  * @package siestaphp\driver
@@ -47,12 +49,17 @@ class ConnectionData
     /**
      * @var string[]
      */
-    public $postConnectStatements;
+    public $postConnectStatementList;
 
     /**
      * @var string
      */
     public $charSet;
+
+    /**
+     * @var bool
+     */
+    public $isDefault;
 
     /**
      * @param $name
@@ -67,7 +74,7 @@ class ConnectionData
      */
     public function __construct($name = null, $driver = null, $host = null, $port = null, $database = null, $user = null, $password = null, $charSet = null, array $postConnectStatements = null)
     {
-        $this->postConnectStatements = $postConnectStatements ? $postConnectStatements : array();
+        $this->postConnectStatementList = $postConnectStatements ? $postConnectStatements : array();
         $this->name = $name;
         $this->driver = $driver;
         $this->host = $host;
@@ -79,10 +86,26 @@ class ConnectionData
     }
 
     /**
+     * @param array $values
+     */
+    public function fromArray(array $values) {
+        $this->name = Util::getFromArray($values, "name");
+        $this->driver = Util::getFromArray($values, "driver");
+        $this->host = Util::getFromArray($values, "host");
+        $this->port = Util::getFromArray($values, "port");
+        $this->database = Util::getFromArray($values, "database");
+        $this->user = Util::getFromArray($values, "user");
+        $this->password = Util::getFromArray($values, "password");
+        $this->charSet = Util::getFromArray($values, "charSet");
+        $this->isDefault = Util::getFromArray($values, "isDefault");
+        $this->postConnectStatementList = Util::getFromArray($values, "postConnectStatementList" );
+    }
+
+    /**
      * @param string $statement
      */
     public function addPostConnectStatement($statement)
     {
-        $this->postConnectStatements[] = $statement;
+        $this->postConnectStatementList[] = $statement;
     }
 }

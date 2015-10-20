@@ -2,8 +2,10 @@
 
 namespace siestaphp\driver\mysqli;
 
-use siestaphp\datamodel\attribute\AttributeSource;
+use siestaphp\datamodel\attribute\AttributeGeneratorSource;
+use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DatabaseSpecificSource;
+use siestaphp\datamodel\delimit\DelimitAttribute;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\index\IndexPartSource;
 use siestaphp\datamodel\index\IndexSource;
@@ -17,15 +19,23 @@ use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 class MySQLTableCreator
 {
 
-    const CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
+    const CREATE_TABLE_SNIPPET = "CREATE TABLE IF NOT EXISTS ";
+
+    const COLUMN_SNIPPET = "%s %s %s NULL";
 
     const PRIMARY_KEY_SNIPPET = ",PRIMARY KEY (%s)";
+
+    const DEFAULT_CHARSET_SNIPPET = " DEFAULT CHARACTER SET %s ";
+
+    const COLALTE_SNIPPET = " COLLATE ";
+
+    const ENGINE_SNIPPET = " ENGINE = ";
+
+    const FOREIGN_KEY_SNIPPET = ",CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s";
 
     const REPLICATION = "replication";
 
     const MYSQL_ENGINE_ATTRIBUTE = "engine";
-
-    const MYSQL_ENGINE = " ENGINE = ";
 
     const MYSQL_COLLATE_ATTRIBUTE = "collate";
 
@@ -62,15 +72,15 @@ class MySQLTableCreator
      */
     protected $replication;
 
-    protected $tableName;
+    /**
+     * @var bool
+     */
+    protected $buildDelimiterTable;
 
     /**
      * @param EntityGeneratorSource $eds
-     *
-     * @return string
      */
-
-    public function setupTable(EntityGeneratorSource $eds)
+    public function __construct(EntityGeneratorSource $eds)
     {
         $this->entityGeneratorSource = $eds;
 
@@ -78,36 +88,32 @@ class MySQLTableCreator
 
         $this->replication = $this->getDatabaseSpecificAsBool(self::REPLICATION);
 
-        $this->tableName = $eds->getTable();
-
-        $sql = $this->buildTableCreateStatement($eds->getTable());
-
-        return $sql;
-
+        $this->buildDelimiterTable = false;
     }
 
     /**
-     * @param string $tableName
-     *
      * @return string
      */
-    private function buildTableCreateStatement($tableName)
+
+    public function buildCreateTable()
     {
-        $sql = self::CREATE_TABLE . $this->quote($tableName);
+        $this->buildDelimiterTable = false;
+
+        $sql = self::CREATE_TABLE_SNIPPET . $this->quote($this->entityGeneratorSource->getTable());
 
         $sql .= "(" . $this->buildColumnSQL();
 
-        $sql .= $this->buildPrimaryKeySnippet();
+        $sql .= $this->buildPrimaryKey();
 
-        $sql .= $this->buildIndexSnippet();
+        $sql .= $this->buildIndexList();
 
-        $sql .= $this->buildAllForeignKeyConstraint() . ")";
+        $sql .= $this->buildForeignConstraintList() . ")";
 
-        $sql .= $this->buildEngineSQL();
+        $sql .= $this->buildEngineDefinition();
 
-        $sql .= $this->buildCollateSQL();
+        $sql .= $this->buildCollateDefinition();
 
-        $sql .= $this->buildCharsetSQL();
+        $sql .= $this->buildCharsetDefinition();
 
         return $sql;
     }
@@ -115,67 +121,72 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    private function buildColumnSQL()
+    public function buildCreateDelimitTable()
+    {
+
+        $delimiterAttributes = DelimitAttribute::getDelimitAttributes();
+
+        $sql = self::CREATE_TABLE_SNIPPET . $this->quote($this->entityGeneratorSource->getDelimitTable());
+
+        $sql .= "(" . $this->buildColumnSQL($delimiterAttributes);
+
+        $sql .= $this->buildPrimaryKeyForDelimiter($delimiterAttributes) . ")";
+
+        $sql .= $this->buildEngineDefinition();
+
+        $sql .= $this->buildCollateDefinition();
+
+        $sql .= $this->buildCharsetDefinition();
+
+        return $sql;
+    }
+
+    /**
+     * @param AttributeGeneratorSource[] $additionalColumns
+     *
+     * @return string
+     */
+    private function buildColumnSQL(array $additionalColumns = array())
     {
         $columnList = array();
-        foreach ($this->entityGeneratorSource->getAttributeSourceList() as $attribute) {
+
+        foreach ($additionalColumns as $attribute) {
             if (!$attribute->isTransient()) {
-                $columnList[] = $this->buildAttributeColumnSQL($attribute);
+                $columnList[] = $this->buildColumnSQLSnippet($attribute);
             }
         }
+
+        // iterate all attributes
+        foreach ($this->entityGeneratorSource->getAttributeGeneratorSourceList() as $attribute) {
+            if (!$attribute->isTransient()) {
+                $columnList[] = $this->buildColumnSQLSnippet($attribute);
+            }
+        }
+
+        // iterate all references including referenced columns
         foreach ($this->entityGeneratorSource->getReferenceGeneratorSourceList() as $reference) {
-            $columnList[] = $this->buildReferenceColumnSQL($reference);
+            foreach ($reference->getReferencedColumnList() as $column) {
+                $columnList[] = $this->buildColumnSQLSnippet($column);
+            }
         }
         return implode(",", $columnList);
     }
 
     /**
-     * @param AttributeSource $attribute
+     * @param DatabaseColumn $column
      *
      * @return string
      */
-    private function buildAttributeColumnSQL(AttributeSource $attribute)
+    private function buildColumnSQLSnippet(DatabaseColumn $column)
     {
-        return $this->buildColumnSQLSnippet($attribute->getDatabaseName(), $attribute->getDatabaseType(), $attribute->isRequired());
-    }
-
-    /**
-     * @param ReferenceGeneratorSource $reference
-     *
-     * @return string
-     */
-    private function buildReferenceColumnSQL(ReferenceGeneratorSource $reference)
-    {
-        $columnList = array();
-        foreach ($reference->getReferencedColumnList() as $column) {
-            $columnList[] = $this->buildColumnSQLSnippet($column->getDatabaseName(), $column->getDatabaseType(), $reference->isRequired());
-        }
-
-        return implode(",", $columnList);
-    }
-
-    /**
-     * @param string $name
-     * @param string $type
-     * @param bool $required
-     *
-     * @return string
-     */
-    private function buildColumnSQLSnippet($name, $type, $required)
-    {
-        $sql = $this->quote($name) . " " . $type;
-        if ($required) {
-            $sql .= " NOT NULL";
-        } else {
-            $sql .= " NULL";
-        }
-        return $sql;
+        $not = ($column->isRequired()) ? "NOT" : "";
+        return sprintf(self::COLUMN_SNIPPET, $this->quote($column->getDatabaseName()), $column->getDatabaseType(), $not);
     }
 
     /**
      * @return string
      */
-    private function buildPrimaryKeySnippet()
+    private function buildPrimaryKey()
     {
         $pkColumnList = $this->entityGeneratorSource->getPrimaryKeyColumns();
         if (sizeof($pkColumnList) === 0) {
@@ -191,13 +202,31 @@ class MySQLTableCreator
     }
 
     /**
+     * @param AttributeGeneratorSource[] $delimiterAttributes
+     *
      * @return string
      */
-    private function buildIndexSnippet()
+    private function buildPrimaryKeyForDelimiter(array $delimiterAttributes)
+    {
+
+        $sqlColumnList = array();
+        foreach ($delimiterAttributes as $column) {
+            if ($column->isPrimaryKey()) {
+                $sqlColumnList[] = $this->quote($column->getDatabaseName());
+            }
+        }
+        return sprintf(self::PRIMARY_KEY_SNIPPET, implode(",", $sqlColumnList));
+
+    }
+
+    /**
+     * @return string
+     */
+    private function buildIndexList()
     {
 
         $sql = "";
-        foreach ($this->entityGeneratorSource->getIndexGeneratorSourceList() as $indexSource) {
+        foreach ($this->entityGeneratorSource->getIndexSourceList() as $indexSource) {
             $sql .= "," . $this->buildIndex($indexSource);
         }
 
@@ -224,11 +253,9 @@ class MySQLTableCreator
 
         // open columns
         $sql .= " ( ";
-
         foreach ($indexSource->getIndexPartSourceList() as $indexPartSource) {
             $sql .= $this->buildIndexPart($indexPartSource) . ",";
         }
-
         $sql = rtrim($sql, ",") . ")";
 
         return $sql;
@@ -255,11 +282,11 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    private function buildAllForeignKeyConstraint()
+    private function buildForeignConstraintList()
     {
         $sql = "";
         foreach ($this->entityGeneratorSource->getReferenceGeneratorSourceList() as $reference) {
-            $sql .= $this->buildForeignKeyConstraintSQL($reference);
+            $sql .= $this->buildForeignKeyConstraint($reference);
         }
         return $sql;
     }
@@ -269,7 +296,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildForeignKeyConstraintSQL(ReferenceGeneratorSource $rds)
+    private function buildForeignKeyConstraint(ReferenceGeneratorSource $rds)
     {
         $columnList = array();
         $foreignColumnList = array();
@@ -279,36 +306,15 @@ class MySQLTableCreator
             $foreignColumnList[] = $this->quote($column->getReferencedDatabaseName());
         }
 
-        $columnNames = implode(",", $columnList);
-        $referencedColumnNames = implode(",", $foreignColumnList);
-
         $constraintName = $rds->getConstraintName();
+        $columnNames = implode(",", $columnList);
+        $tableName = $rds->getReferencedTableName();
+        $referencedColumnNames = implode(",", $foreignColumnList);
         $onDelete = $this->getReferenceOption($rds->getOnDelete());
         $onUpdate = $this->getReferenceOption($rds->getOnUpdate());
 
-        $sql = $this->buildConstraintSnippet($constraintName, $columnNames, $rds->getReferencedTableName(), $referencedColumnNames, $onDelete, $onUpdate);
+        return sprintf(self::FOREIGN_KEY_SNIPPET, $constraintName, $columnNames, $tableName, $referencedColumnNames, $onDelete, $onUpdate);
 
-        return $sql;
-    }
-
-    /**
-     * @param string $constraintName
-     * @param string $columnNames
-     * @param string $tableName
-     * @param string $referencedNames
-     * @param string $onDelete
-     * @param string $onSetNull
-     *
-     * @return string
-     */
-    private function buildConstraintSnippet($constraintName, $columnNames, $tableName, $referencedNames, $onDelete, $onSetNull)
-    {
-        $constraintName = $this->quote($constraintName);
-        $tableName = $this->quote($tableName);
-
-        $constraintSQL = ",CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s";
-
-        return sprintf($constraintSQL, $constraintName, $columnNames, $tableName, $referencedNames, $onDelete, $onSetNull);
     }
 
     /**
@@ -333,11 +339,11 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    private function buildEngineSQL()
+    private function buildEngineDefinition()
     {
         $engine = $this->getDatabaseSpecific(self::MYSQL_ENGINE_ATTRIBUTE);
         if ($engine) {
-            return self::MYSQL_ENGINE . $engine;
+            return self::ENGINE_SNIPPET . $engine;
         }
         return "";
     }
@@ -345,11 +351,11 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    private function buildCollateSQL()
+    private function buildCollateDefinition()
     {
         $collate = $this->getDatabaseSpecific(self::MYSQL_COLLATE_ATTRIBUTE);
         if ($collate) {
-            return " COLLATE " . $collate;
+            return self::COLALTE_SNIPPET . $collate;
         }
         return "";
     }
@@ -357,11 +363,11 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    private function buildCharsetSQL()
+    private function buildCharsetDefinition()
     {
         $charset = $this->getDatabaseSpecific(self::MYSQL_CHARSET_ATTRIBUTE);
         if ($charset) {
-            return " DEFAULT CHARACTER SET " . $charset;
+            return sprintf(self::DEFAULT_CHARSET_SNIPPET, $charset);
         }
         return "";
     }
@@ -399,7 +405,7 @@ class MySQLTableCreator
      */
     private function quote($name)
     {
-        return MySQLConnection::quote($name);
+        return MySQLDriver::quote($name);
     }
 
 }

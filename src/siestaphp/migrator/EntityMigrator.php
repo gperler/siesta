@@ -184,7 +184,7 @@ class EntityMigrator
      */
     private function migrateIndexList()
     {
-        $this->indexListMigrator = new IndexListMigrator($this->columnMigrator, $this->databaseEntity->getIndexSourceList(), $this->modelEntity->getIndexGeneratorSourceList());
+        $this->indexListMigrator = new IndexListMigrator($this->columnMigrator, $this->databaseEntity->getIndexSourceList(), $this->modelEntity->getIndexSourceList());
         $this->indexListMigrator->createAlterStatementList();
     }
 

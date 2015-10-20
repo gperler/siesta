@@ -69,7 +69,7 @@ class DatabaseMigrator
     public function createAlterStatementList($dropUnusedTables = false)
     {
         $factory = $this->connection->getCreateStatementFactory();
-        $this->addAlterStatements($factory->setupSequencer());
+        $this->addAlterStatements($factory->buildSequencer());
 
         // retrieve entity list as currently setup in the database
         $this->databaseModel = $this->connection->getEntitySourceList();
@@ -111,7 +111,7 @@ class DatabaseMigrator
 
         // create stored procedures
         $factory = $this->connection->getCreateStatementFactory();
-        $this->addAlterStatements($factory->setupStoredProcedures($modelSource));
+        $this->addAlterStatements($factory->buildCreateStoredProcedures($modelSource));
 
     }
 
@@ -124,9 +124,12 @@ class DatabaseMigrator
     {
         $factory = $this->connection->getCreateStatementFactory();
 
-        $this->addAlterStatements($factory->setupTables($source));
-        $this->addAlterStatements($factory->setupStoredProcedures($source));
+        $this->addAlterStatements($factory->buildCreateTable($source));
+        $this->addAlterStatements($factory->buildCreateStoredProcedures($source));
 
+        if ($source->isDelimit()) {
+            $this->addAlterStatements($factory->buildCreateDelimitTable($source, $source->getTable() . "_delimit"));
+        }
     }
 
     /**

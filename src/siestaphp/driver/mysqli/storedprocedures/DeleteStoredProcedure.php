@@ -35,7 +35,7 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
 
         $this->buildStatement();
 
-        if (!$this->entityDatabaseSource->hasPrimaryKey()) {
+        if (!$this->entityGeneratorSource->hasPrimaryKey()) {
             return null;
         }
 
@@ -53,14 +53,14 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
 
     protected function buildName()
     {
-        $this->name = StoredProcedureNaming::getSPDeleteByPrimaryKeyName($this->entityDatabaseSource->getTable());
+        $this->name = StoredProcedureNaming::getSPDeleteByPrimaryKeyName($this->entityGeneratorSource->getTable());
     }
 
     protected function buildSignature()
     {
         $this->signature = "(";
 
-        foreach ($this->entityDatabaseSource->getPrimaryKeyColumns() as $pkColumn) {
+        foreach ($this->entityGeneratorSource->getPrimaryKeyColumns() as $pkColumn) {
             $parameterName = $pkColumn->getSQLParameterName();
             $this->signature .= "IN $parameterName " . $pkColumn->getDatabaseType() . ",";
         }
@@ -70,10 +70,10 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
 
     protected function buildStatement()
     {
-        $this->statement = $this->buildDeleteSQL($this->entityDatabaseSource->getTable());
+        $this->statement = $this->buildDeleteSQL($this->entityGeneratorSource->getTable());
 
         if ($this->replication) {
-            $table = Replication::getReplicationTableName($this->entityDatabaseSource->getTable());
+            $table = Replication::getReplicationTableName($this->entityGeneratorSource->getTable());
             $this->statement .= $this->buildDeleteSQL($table);
         }
     }
@@ -87,7 +87,7 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
     {
         $where = "";
 
-        foreach ($this->entityDatabaseSource->getPrimaryKeyColumns() as $column) {
+        foreach ($this->entityGeneratorSource->getPrimaryKeyColumns() as $column) {
             $where .= $this->quote($column->getDatabaseName()) . " = " . $column->getSQLParameterName() . " and ";
         }
         $tableName = $this->quote($tableName);

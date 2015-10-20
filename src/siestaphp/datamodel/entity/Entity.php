@@ -11,7 +11,6 @@ use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\index\Index;
-use siestaphp\datamodel\index\IndexGeneratorSource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\Processable;
 use siestaphp\datamodel\reference\Reference;
@@ -163,7 +162,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     /**
      * @return void
      */
-    private function storeEntityData()
+    protected function storeEntityData()
     {
         $this->className = $this->entitySource->getClassName();
         $this->classNamespace = $this->entitySource->getClassNamespace();
@@ -177,7 +176,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     /**
      * @return void
      */
-    private function storeAttributeData()
+    protected function storeAttributeData()
     {
         foreach ($this->entitySource->getAttributeSourceList() as $attributeSource) {
             $attribute = new Attribute();
@@ -190,7 +189,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     /**
      * @return void
      */
-    private function storeReferenceData()
+    protected function storeReferenceData()
     {
         foreach ($this->entitySource->getReferenceSourceList() as $referenceSource) {
             $reference = new Reference();
@@ -202,7 +201,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     /**
      * @return void
      */
-    private function storeCollectorData()
+    protected function storeCollectorData()
     {
         foreach ($this->entitySource->getCollectorSourceList() as $collectorSource) {
             $collector = new Collector();
@@ -214,7 +213,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     /**
      * @return void
      */
-    private function storeStoredProcedureData()
+    protected function storeStoredProcedureData()
     {
         foreach ($this->entitySource->getStoredProcedureSourceList() as $storedProcedureSource) {
             $storedProcedure = new StoredProcedure();
@@ -226,7 +225,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     /**
      * @return void
      */
-    private function storeIndexData()
+    protected function storeIndexData()
     {
         foreach ($this->entitySource->getIndexSourceList() as $indexSource) {
             $this->indexList[] = new Index($this, $indexSource);
@@ -504,14 +503,6 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     }
 
     /**
-     * @return IndexGeneratorSource[]
-     */
-    public function getIndexGeneratorSourceList()
-    {
-        return $this->indexList;
-    }
-
-    /**
      * @return bool
      */
     public function hasReferences()
@@ -565,6 +556,14 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     public function getTable()
     {
         return $this->table;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDelimitTable()
+    {
+        return $this->table . "_delimit";
     }
 
     /**
@@ -650,5 +649,15 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     public function getDatabaseSpecific($database)
     {
         return $this->entitySource->getDatabaseSpecific($database);
+    }
+
+    /**
+     * @return DelimiterEntity
+     */
+    public function getDelimiterEntity()
+    {
+        $delimiterEntity = new DelimiterEntity();
+        $delimiterEntity->setSource($this->entitySource);
+        return $delimiterEntity;
     }
 }

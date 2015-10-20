@@ -14,6 +14,12 @@ use siestaphp\util\Util;
 class ConnectionFactory
 {
 
+    const EXCEPTION_NO_DEFAULT = "No default connection available";
+
+    const EXCEPTION_NOT_CONFIGURED = "Connection with name %s is not configured";
+
+    const EXCEPTION_DRIVER_NOT_IMPLEMENTD = "Driver for %s is not implemented";
+
     /**
      * @var ConnectionFactory
      */
@@ -28,7 +34,7 @@ class ConnectionFactory
      */
     public static function addConnection(ConnectionData $connectionData)
     {
-        return self::getInstance()->_getConnection($connectionData);
+        return self::getInstance()->_addConnection($connectionData);
     }
 
     /**
@@ -39,7 +45,7 @@ class ConnectionFactory
      */
     public static function getConnection($name = null)
     {
-        return self::getInstance()->_getConnectionByName($name);
+        return self::getInstance()->_getConnection($name);
     }
 
     /**
@@ -83,16 +89,17 @@ class ConnectionFactory
      * @return Connection
      * @throws DatabaseConfigurationException
      */
-    protected function _getConnectionByName($name = null)
+    protected function _getConnection($name = null)
     {
         if ($name === null) {
             return $this->getDefaultConnection();
         }
 
         $connection = Util::getFromArray($this->connectionList, $name);
-        if (!$connection) {
-            throw new DatabaseConfigurationException(null, "Connection with name " . $name . " is not configured");
+        if ($connection === null) {
+            throw new DatabaseConfigurationException(null, sprintf(self::EXCEPTION_NOT_CONFIGURED, $name));
         }
+
         return $connection;
     }
 
@@ -102,8 +109,8 @@ class ConnectionFactory
      */
     protected function getDefaultConnection()
     {
-        if (!$this->defaultConnection) {
-            throw new DatabaseConfigurationException(null, "No default connection available");
+        if ($this->defaultConnection === null) {
+            throw new DatabaseConfigurationException(null, self::EXCEPTION_NO_DEFAULT);
         }
         return $this->defaultConnection;
     }
@@ -115,18 +122,21 @@ class ConnectionFactory
      * @throws DatabaseConfigurationException
      * @return Connection
      */
-    protected function _getConnection(ConnectionData $connectionData)
+    protected function _addConnection(ConnectionData $connectionData)
     {
         $connection = Util::getFromArray($this->connectionList, $connectionData->name);
-        if (!$connection) {
-            $driver = $this->_getDriver($connectionData);
-            $connection = $driver->connect($connectionData);
-            $this->connectionList[$connectionData->name] = $connection;
-            if (!$this->defaultConnection) {
-                $this->defaultConnection = $connection;
-            }
+        if ($connection !== null) {
+            return $connection;
         }
-        return $this->connectionList[$connectionData->name];
+        $driver = $this->_getDriver($connectionData);
+        $connection = $driver->connect($connectionData);
+
+        $this->connectionList[$connectionData->name] = $connection;
+        if ($this->defaultConnection === null or $connectionData->isDefault) {
+            $this->defaultConnection = $connection;
+        }
+
+        return $connection;
     }
 
     /**
@@ -138,7 +148,7 @@ class ConnectionFactory
     protected function _getDriver(ConnectionData $connectionData)
     {
         $driver = Util::getFromArray($this->driverList, $connectionData->database);
-        if (!$driver) {
+        if ($driver === null) {
             $this->driverList[$connectionData->database] = $this->instantiateDriver($connectionData);
         }
         return $this->driverList[$connectionData->database];
@@ -156,7 +166,7 @@ class ConnectionFactory
             case "mysql":
                 return new MySQLDriver();
             default:
-                throw new DatabaseConfigurationException($connectionData, "Driver for " . $connectionData->driver . " is not implemented");
+                throw new DatabaseConfigurationException($connectionData, sprintf(self::EXCEPTION_DRIVER_NOT_IMPLEMENTD, $connectionData->driver));
         }
     }
 

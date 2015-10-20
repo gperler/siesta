@@ -2,7 +2,7 @@
 <entityList>
     <entity name="ArtistEntity" namespace="siestaphp\tests\functional\attribute\gen" table="ARTIST" targetPath="gen/">
         <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
-        <attribute name="bool" type="bool" dbName="D_BOOLEAN" dbType="SMALLINT" defaultValue="true"/>
+        <attribute name="bool" type="bool" dbName="_D_BOOLEAN" dbType="SMALLINT" defaultValue="true"/>
         <attribute name="int" type="int" dbName="D_INTEGER" dbType="INT" defaultValue="42"/>
         <attribute name="float" type="float" dbName="D_FLOAT" dbType="FLOAT" defaultValue="42.42"/>
         <attribute name="string" type="string" dbName="D_STRING" dbType="VARCHAR(100)" defaultValue="'Traveling Salesman'"/>

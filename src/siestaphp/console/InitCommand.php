@@ -2,6 +2,7 @@
 
 namespace siestaphp\console;
 
+use siestaphp\Config;
 use siestaphp\driver\Connection;
 use siestaphp\driver\ConnectionData;
 use siestaphp\driver\ConnectionFactory;
@@ -90,11 +91,9 @@ class InitCommand extends Command
         $processor->setParameter("", "password", $cd->password);
         $processor->setParameter("", "charset", $cd->charSet);
 
-        $processor->transformToUri(new \DOMDocument(), $dir->getAbsoluteFileName() . "/SiestaConfig.php");
+        $processor->transformToUri(new \DOMDocument(), $dir->getAbsoluteFileName() . "/" . Config::CONFIG_FILE_NAME);
 
-        $this->output->writeln("Config file generated in " . $targetPath . " Include : ");
-        $this->output->writeln('include require_once "' . $targetPath . '/SiestaConfig.php";');
-        $this->output->writeln("to use Siesta.");
+        $this->output->writeln("Config file generated in " . $targetPath);
     }
 
     /**
