@@ -4,6 +4,7 @@ namespace siestaphp\xmlreader;
 
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\exceptions\XMLNotValidException;
+use siestaphp\generator\GeneratorConfig;
 use siestaphp\generator\ValidationLogger;
 use siestaphp\util\File;
 
@@ -18,13 +19,6 @@ class DirectoryScanner
 
     const VALIDATION_ERROR_INVALID_BASE_DIR = 1001;
 
-    const DEFAULT_SUFFIX = "entity.xml";
-
-    /**
-     * @var File
-     */
-    protected $baseDirFile;
-
     /**
      * @var ValidationLogger
      */
@@ -36,9 +30,9 @@ class DirectoryScanner
     protected $entitySourceList;
 
     /**
-     * @var string
+     * @var GeneratorConfig
      */
-    protected $fileSuffix;
+    protected $config;
 
     /**
      *
@@ -50,34 +44,33 @@ class DirectoryScanner
 
     /**
      * @param ValidationLogger $log
-     * @param string $baseDir
-     * @param string $suffix
+     * @param GeneratorConfig $config
      *
      * @return EntitySource[]
      */
-    public function scan(ValidationLogger $log, $baseDir, $suffix = self::DEFAULT_SUFFIX)
+    public function scan(ValidationLogger $log, GeneratorConfig $config)
     {
 
-        $this->fileSuffix = $suffix;
+        $this->config = $config;
 
         $this->generatorLog = $log;
 
-        $this->baseDirFile = new File($baseDir);
+        $baseDirFile = new File($config->getBaseDir());
 
-        if (!$this->baseDirFile->exists()) {
-            $log->error("Basedir " . $baseDir . " does not exist", self::VALIDATION_ERROR_INVALID_BASE_DIR);
+        if (!$baseDirFile->exists()) {
+            $log->error("Basedir " . $baseDirFile . " does not exist", self::VALIDATION_ERROR_INVALID_BASE_DIR);
             return null;
         }
 
-        if (!$this->baseDirFile->isDir()) {
-            $log->error("Basedir " . $baseDir . " is not a directory", self::VALIDATION_ERROR_INVALID_BASE_DIR);
+        if (!$baseDirFile->isDir()) {
+            $log->error("Basedir " . $baseDirFile . " is not a directory", self::VALIDATION_ERROR_INVALID_BASE_DIR);
             return null;
 
         }
 
-        $log->info("Searching in " . $baseDir . " for *." . $this->fileSuffix);
+        $log->info("I'm searching in " . $baseDirFile . " for *." . $this->config->getEntityFileSuffix());
 
-        $this->handleDirectory($this->baseDirFile);
+        $this->handleDirectory($baseDirFile);
 
         return $this->entitySourceList;
     }
@@ -109,7 +102,7 @@ class DirectoryScanner
      */
     private function handleEntityFile(File $file)
     {
-        if (!$file->isType($this->fileSuffix)) {
+        if (!$file->isType($this->config->getEntityFileSuffix())) {
             return;
         }
 

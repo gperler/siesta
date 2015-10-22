@@ -23,72 +23,51 @@ class DeleteReferenceStoredProcedure extends MySQLStoredProcedureBase
     {
         parent::__construct($source, $replication);
         $this->referenceSource = $referenceSource;
+
+        $this->buildElements();
     }
 
     /**
-     * @return string
+     * @return void
      */
-    public function buildCreateProcedureStatement()
+    protected function buildElements()
     {
-
         $this->modifies = true;
 
-        $this->determineTableNames();
+        $this->name = $this->referenceSource->getStoredProcedureDeleterName();
 
-        $this->buildName();
+        $this->determineTableNames();
 
         $this->buildSignature();
 
         $this->buildStatement();
-
-        return parent::buildCreateProcedureStatement();
     }
 
     /**
-     * @return string
-     */
-    public function buildProcedureDropStatement()
-    {
-        $this->buildName();
-        return parent::buildProcedureDropStatement();
-    }
-
-    /**
-     *
-     */
-    protected function buildName()
-    {
-        $this->name = $this->referenceSource->getStoredProcedureDeleterName();
-
-    }
-
-    /**
-     *
+     * @return void
      */
     protected function buildSignature()
     {
-        $this->signature = "(";
-
+        $sqlList = array();
         foreach ($this->referenceSource->getReferencedColumnList() as $column) {
-            $this->signature .= "IN " . $column->getSQLParameterName() . " " . $column->getDatabaseType() . ",";
+            $sqlList[] = $this->buildSignatureParameterPart($column);
         }
-
-        $this->signature = rtrim($this->signature, ",");
-        $this->signature .= ")";
+        $this->signature = $this->buildSignatureSnippet($sqlList);
     }
 
+    /**
+     * @return void
+     */
     protected function buildStatement()
     {
-        $where = "";
+        $whereList = array();
         foreach ($this->referenceSource->getReferencedColumnList() as $column) {
-            $where .= $column->getDatabaseName() . " = " . $column->getSQLParameterName() . " AND ";
+            $whereList[] = $this->buildWherePart($column);
         }
 
-        $where = substr($where, 0, -5);
-        $tableName = $this->quote($this->tableName);
+        $where = $this->buildWhereSnippet($whereList);
 
-        $this->statement = "DELETE FROM $tableName WHERE $where;";
-
+        $this->statement = sprintf(self::DELETE_WHERE, $this->tableName, $where);
     }
 
 }

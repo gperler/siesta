@@ -62,14 +62,15 @@ class XMLAttributeBuilder extends XMLBuilder
     /**
      * adds additional values for transformation
      *
-     * @param AttributeGeneratorSource $ats
+     * @param AttributeGeneratorSource $source
      *
      * @return void
      */
-    private function addGeneratorValues(AttributeGeneratorSource $ats)
+    private function addGeneratorValues(AttributeGeneratorSource $source)
     {
-        $this->setAttribute(XMLAttribute::ATTRIBUTE_METHOD_NAME, $ats->getMethodName());
-        $this->setAttribute(XMLAttribute::ATTRIBUTE_DATABASE_LENGTH, $ats->getLength());
+        $this->setAttribute(XMLAttribute::ATTRIBUTE_METHOD_NAME, $source->getMethodName());
+        $this->setAttribute(XMLAttribute::ATTRIBUTE_DATABASE_LENGTH, $source->getLength());
+        $this->setAttribute(XMLAttribute::ATTRIBUTE_CONST_DB_NAME, strtoupper($source->getName()));
     }
 
 }

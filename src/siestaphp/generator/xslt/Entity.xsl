@@ -32,6 +32,8 @@
          */
         class <xsl:value-of select="/entity/@name"/> implements ORMEntity {
 
+            <xsl:call-template name="dbConstants"/>
+
             <xsl:call-template name="getEntityByPrimaryKey"/>
 
             <xsl:call-template name="referenceFinder"/>
@@ -74,6 +76,26 @@
 
             <xsl:call-template name="arePrimaryKeyIdentical"/>
         }
+    </xsl:template>
+
+
+    <xsl:template name="dbConstants">
+        const TABLE_NAME = "<xsl:value-of select="/entity/@table"/>";
+        <xsl:if test="/entity/@delimit = 'true'">
+            const DELIMIT_TABLE_NAME = "<xsl:value-of select="/entity/@delimitTableName"/>";
+        </xsl:if>
+
+        <!-- iterate attributes -->
+        <xsl:for-each select="/entity/attribute">
+            const COLUMN_<xsl:value-of select="@DBColumnConstant"/> = "<xsl:value-of select="@dbName"/>";
+        </xsl:for-each>
+
+        <!-- iterate references -->
+        <xsl:for-each select="/entity/reference">
+            <xsl:for-each select="column">
+                const COLUMN_<xsl:value-of select="@DBColumnConstant"/> = "<xsl:value-of select="@databaseName"/>";
+            </xsl:for-each>
+        </xsl:for-each>
     </xsl:template>
 
 

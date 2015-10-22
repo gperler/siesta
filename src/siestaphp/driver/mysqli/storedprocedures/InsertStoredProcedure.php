@@ -30,6 +30,9 @@ class InsertStoredProcedure extends MySQLStoredProcedureBase
         $this->buildElements();
     }
 
+    /**
+     * @return void
+     */
     protected function buildElements()
     {
 
@@ -41,11 +44,9 @@ class InsertStoredProcedure extends MySQLStoredProcedureBase
 
         $this->statement = $this->insertStatement->buildInsert();
 
-        if (!$this->entitySource->isDelimit()) {
-           return;
+        if ($this->entitySource->isDelimit()) {
+            $this->statement .= $this->insertStatement->buildDelimitInsert();
         }
-
-        $this->statement .= $this->insertStatement->buildDelimitInsert();
 
     }
 

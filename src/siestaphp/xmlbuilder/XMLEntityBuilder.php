@@ -142,22 +142,27 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * adds data that is used for transformation
+
      *
-     * @param EntityGeneratorSource $ets
+*@param EntityGeneratorSource $source
      *
-     * @return void
+*@return void
      */
-    private function addTransformerData(EntityGeneratorSource $ets)
+    private function addTransformerData(EntityGeneratorSource $source)
     {
-        $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_DATETIME_IN_USE, $ets->isDateTimeUsed());
-        $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_REFERENCES, $ets->hasReferences());
-        $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_ATTRIBUTES, $ets->hasAttributes());
-        $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_PRIMARY_KEY, $ets->hasPrimaryKey());
+
+        $this->setAttribute(XMLEntity::ATTRIBUTE_DELIMIT_TABLE_NAME, $source->getDelimitTable());
+
+        $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_DATETIME_IN_USE, $source->isDateTimeUsed());
+        $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_REFERENCES, $source->hasReferences());
+        $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_ATTRIBUTES, $source->hasAttributes());
+        $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_PRIMARY_KEY, $source->hasPrimaryKey());
+
 
         $this->addStoredProcedureNames();
-        $this->addReferencedClassUseNames($ets);
-        $this->addCustomStoredProcedureList($ets->getStoredProcedureSourceList());
-        $this->addPrimaryKeyColumns($ets);
+        $this->addReferencedClassUseNames($source);
+        $this->addCustomStoredProcedureList($source->getStoredProcedureSourceList());
+        $this->addPrimaryKeyColumns($source);
 
     }
 

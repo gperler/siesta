@@ -50,11 +50,11 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
 
         $this->statement = $this->updateStatement->buildUpdate();
 
-        if (!$this->entitySource->isDelimit()) {
-            return;
+        if ($this->entitySource->isDelimit()) {
+            $this->statement .= $this->updateStatement->buildDelimitUpdate();
+            $this->statement .= $this->insertStatement->buildDelimitInsert();
         }
-        $this->statement .= $this->updateStatement->buildDelimitUpdate();
-        $this->statement .= $this->insertStatement->buildDelimitInsert();
+
 
     }
 

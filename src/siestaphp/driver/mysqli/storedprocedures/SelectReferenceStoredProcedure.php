@@ -3,7 +3,6 @@
 namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
-use siestaphp\datamodel\reference\ReferenceDatabaseSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 
 /**
@@ -23,72 +22,53 @@ class SelectReferenceStoredProcedure extends MySQLStoredProcedureBase
     public function __construct(EntityGeneratorSource $source, ReferenceGeneratorSource $referenceSource, $replication)
     {
         parent::__construct($source, $replication);
+
         $this->referenceSource = $referenceSource;
+
+        $this->buildElements();
     }
 
     /**
-     * @return string
+     * @return void
      */
-    public function buildCreateProcedureStatement()
+    protected function buildElements()
     {
-
         $this->modifies = false;
 
-        $this->determineTableNames();
+        $this->name = $this->referenceSource->getStoredProcedureFinderName();
 
-        $this->buildName();
+        $this->determineTableNames();
 
         $this->buildSignature();
 
         $this->buildStatement();
-
-        return parent::buildCreateProcedureStatement();
     }
 
     /**
-     * @return string
-     */
-    public function buildProcedureDropStatement()
-    {
-        $this->buildName();
-        return parent::buildProcedureDropStatement();
-    }
-
-    /**
-     *
-     */
-    protected function buildName()
-    {
-        $this->name = $this->referenceSource->getStoredProcedureFinderName();
-
-    }
-
-    /**
-     *
+     * @return void
      */
     protected function buildSignature()
     {
-        $this->signature = "(";
-
+        $signatureList = array();
         foreach ($this->referenceSource->getReferencedColumnList() as $column) {
-            $this->signature .= "IN " . $column->getSQLParameterName() . " " . $column->getDatabaseType() . ",";
+            $signatureList[] = $this->buildSignatureParameterPart($column);
         }
 
-        $this->signature = rtrim($this->signature, ",");
-        $this->signature .= ")";
+        $this->signature = $this->buildSignatureSnippet($signatureList);
     }
 
+    /**
+     * @return void
+     */
     protected function buildStatement()
     {
-        $where = "";
+        $whereList = array();
         foreach ($this->referenceSource->getReferencedColumnList() as $column) {
-            $where .= $column->getDatabaseName() . " = " . $column->getSQLParameterName() . " AND ";
+            $whereList[] = $this->buildWherePart($column);
         }
 
-        $where = substr($where, 0, -5);
-        $tableName = $this->quote($this->tableName);
-
-        $this->statement = "SELECT * FROM $tableName WHERE $where;";
+        $where = $this->buildWhereSnippet($whereList);
+        $this->statement = sprintf(self::SELECT_WHERE, $this->tableName, $where);
 
     }
 

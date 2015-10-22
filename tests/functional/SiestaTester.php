@@ -3,6 +3,7 @@
 namespace siestaphp\tests\functional;
 
 use Codeception\Util\Debug;
+use siestaphp\Config;
 use siestaphp\driver\Connection;
 use siestaphp\driver\ConnectionFactory;
 use siestaphp\generator\Generator;
@@ -56,9 +57,10 @@ class SiestaTester extends \PHPUnit_Framework_TestCase
      */
     protected function generateEntityFile($assetPath, $srcXML)
     {
+        Config::getInstance()->getGeneratorConfig()->setBaseDir(__DIR__ . $assetPath);
         $this->logger = new CodeceptionLogger();
         $generator = new Generator($this->logger);
-        $generator->generateFile(__DIR__ . $assetPath, __DIR__ . $assetPath . $srcXML);
+        $generator->generateFile( __DIR__ . $assetPath . $srcXML);
 
     }
 

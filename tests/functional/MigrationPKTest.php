@@ -2,6 +2,7 @@
 
 namespace siestaphp\tests\functional;
 
+use siestaphp\Config;
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\generator\ValidationLogger;
@@ -50,7 +51,7 @@ class MigrationPKTest extends SiestaTester
         $this->assertNotNull($artistEntiy);
 
         // migrate the current database
-        $migrator = new Migrator($dmc, $this->connection, $this->logger);
+        $migrator = new Migrator($dmc, Config::getInstance()->getGeneratorConfig(), $this->logger);
         $migrator->migrate();
 
         // read meta data from database and find ArtistEntity

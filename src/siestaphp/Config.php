@@ -1,18 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 20.10.15
- * Time: 00:25
- */
 
 namespace siestaphp;
 
 use siestaphp\driver\ConnectionData;
 use siestaphp\driver\ConnectionFactory;
-use siestaphp\driver\exceptions\DatabaseConfigurationException;
+use siestaphp\driver\exceptions\ConnectException;
 use siestaphp\exceptions\InvalidConfiguration;
-use siestaphp\exceptions\NoConfigFileException;
+use siestaphp\generator\GeneratorConfig;
+use siestaphp\generator\ReverseGeneratorConfig;
 use siestaphp\util\File;
 use siestaphp\util\Util;
 
@@ -26,6 +21,10 @@ class Config
     const CONFIG_FILE_NAME = "siesta.config.json";
 
     const CONFIG_CONNECTION = "connection";
+
+    const CONFIG_GENERATOR = "generator";
+
+    const CONFIG_REVERSE_GENERATOR = "reverse";
 
     const CONFIG_CONNECTION_POST_CONNECT = "postConnectStatementList";
 
@@ -42,13 +41,13 @@ class Config
      * @param string $configFileName
      *
      * @return Config
-     * @throws NoConfigFileException
-     * @throws DatabaseConfigurationException
+     * @throws InvalidConfiguration
+     * @throws ConnectException
      */
     public static function getInstance($configFileName = null)
     {
         if (self::$instance === null) {
-            self::$instance = new Config();
+            self::$instance = new Config($configFileName);
         }
         return self::$instance;
     }
@@ -59,44 +58,102 @@ class Config
     protected $jsonConfig;
 
     /**
+     * @var string
+     */
+    protected $configFilePath;
+
+    /**
+     * @var GeneratorConfig
+     */
+    protected $generatorConfig;
+
+    /**
+     * @var ReverseGeneratorConfig
+     */
+    protected $reverseGeneratorConfig;
+
+    /**
      * @param string $configFileName
      *
-     * @throws NoConfigFileException
-     * @throws DatabaseConfigurationException
+     * @throws InvalidConfiguration
+     * @throws ConnectException
      */
     public function __construct($configFileName = null)
     {
-        $this->findConfigFile($configFileName);
+        $this->findConfig($configFileName);
 
         $this->configureConnections();
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigFileName()
+    {
+        return $this->configFilePath;
     }
 
     /**
      * @param string $configFileName
      *
      * @return void
-     * @throws NoConfigFileException
+     * @throws InvalidConfiguration
      */
-    private function findConfigFile($configFileName = null)
+    private function findConfig($configFileName = null)
     {
-        $configFile = new File($configFileName);
-        if ($configFile->exists()) {
+        $configFile = null;
+
+        if ($configFileName !== null) {
+            $configFile = $this->findConfigFile($configFileName);
+        }
+
+        if ($configFile !== null) {
             $this->jsonConfig = $configFile->loadAsJSONArray();
+            $this->configFilePath = $configFile->getAbsoluteFileName();
             return;
         }
+
         $currentWorkDir = new File(getcwd());
         $configFile = $currentWorkDir->findFile(self::CONFIG_FILE_NAME);
         if ($configFile) {
             $this->jsonConfig = $configFile->loadAsJSONArray();
+            $this->configFilePath = $configFile->getAbsoluteFileName();
             return;
         }
-        throw new NoConfigFileException(sprintf(self::EXCEPTION_NO_CONFIG, getcwd(), self::CONFIG_FILE_NAME));
+        throw new InvalidConfiguration(sprintf(self::EXCEPTION_NO_CONFIG, getcwd(), self::CONFIG_FILE_NAME));
+    }
+
+    /**
+     * checks if configFileName is absolute or relative
+     *
+     * @param $configFileName
+     *
+     * @return File
+     */
+    private function findConfigFile($configFileName)
+    {
+        // try as absolute file
+        $configFileAbsolute = new File($configFileName);
+        if ($configFileAbsolute->exists()) {
+            return $configFileAbsolute;
+        }
+        // try as relative filename
+        $configFileRelative = new File(getcwd() . "/" . trim($configFileName, "/"));
+        if ($configFileRelative->exists()) {
+            return $configFileRelative;
+        }
+
+        // try as filename
+        $currentWorkDir = new File(getcwd());
+        return $currentWorkDir->findFile($configFileName);
     }
 
     /**
      * @throws InvalidConfiguration
+     * @throws ConnectException
      */
-    private function configureConnections() {
+    private function configureConnections()
+    {
         $connectionList = Util::getFromArray($this->jsonConfig, self::CONFIG_CONNECTION);
         if ($connectionList === null) {
             throw new InvalidConfiguration(sprintf(self::EXCEPTION_MISSING_CONNECTION, self::CONFIG_CONNECTION));
@@ -110,6 +167,28 @@ class Config
             $connectionData->fromArray($connection);
             ConnectionFactory::addConnection($connectionData);
         }
+    }
+
+    /**
+     * @return GeneratorConfig
+     */
+    public function getGeneratorConfig()
+    {
+        if ($this->generatorConfig === null) {
+            $this->generatorConfig = new GeneratorConfig(Util::getFromArray($this->jsonConfig, self::CONFIG_GENERATOR));
+        }
+        return $this->generatorConfig;
+    }
+
+    /**
+     * @return ReverseGeneratorConfig
+     */
+    public function getReverseGeneratorConfig()
+    {
+        if ($this->reverseGeneratorConfig === null) {
+            $this->reverseGeneratorConfig = new ReverseGeneratorConfig(Util::getFromArray($this->jsonConfig, self::CONFIG_REVERSE_GENERATOR));
+        }
+        return $this->reverseGeneratorConfig;
     }
 
 }

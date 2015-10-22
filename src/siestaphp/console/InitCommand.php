@@ -7,7 +7,7 @@ use siestaphp\driver\Connection;
 use siestaphp\driver\ConnectionData;
 use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\exceptions\ConnectException;
-use siestaphp\driver\exceptions\DatabaseConfigurationException;
+use siestaphp\exceptions\InvalidConfiguration;
 use siestaphp\util\File;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -150,7 +150,7 @@ class InitCommand extends Command
             ConnectionFactory::addConnection($cd);
             $this->output->writeln("Connection successful");
             return true;
-        } catch (DatabaseConfigurationException $e) {
+        } catch (InvalidConfiguration $e) {
             $this->output->writeln("Error " . $e->getMessage());
             return false;
         } catch (ConnectException $e) {

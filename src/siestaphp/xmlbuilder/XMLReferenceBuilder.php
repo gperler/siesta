@@ -5,6 +5,7 @@ namespace siestaphp\xmlbuilder;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
+use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLMapping;
 use siestaphp\naming\XMLReference;
 
@@ -116,6 +117,9 @@ class XMLReferenceBuilder extends XMLBuilder
         $xmlReferencedColumn->setAttribute(XMLReference::ATTRIBUTE_COLUMN_METHODNAME, $referencedColumn->getMethodName());
         $xmlReferencedColumn->setAttribute(XMLReference::ATTRIBUTE_COLUMN_DATABASE_NAME, $referencedColumn->getDatabaseName());
         $xmlReferencedColumn->setAttribute(XMLReference::ATTRIBUTE_COLUMN_REFERENCED_METHOD_NAME, $referencedColumn->getReferencedColumnMethodName());
+
+        $xmlReferencedColumn->setAttribute(XMLAttribute::ATTRIBUTE_CONST_DB_NAME, strtoupper($referencedColumn->getDatabaseName()));
+
     }
 
 }

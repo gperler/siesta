@@ -2,6 +2,7 @@
 
 namespace siestaphp\generator;
 
+use Psr\Log\LoggerInterface;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\ConnectionFactory;
 use siestaphp\xmlbuilder\XMLEntityBuilder;
@@ -14,20 +15,29 @@ class ReverseGenerator
 {
 
     /**
-     * @param string $databaseName
-     * @param string $targetPath
-     * @param string $targetNamespace
-     * @param string $singleFile
-     *
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
+     * @param ReverseGeneratorConfig $config
      * @return void
      */
-    public function generateXML($databaseName, $targetPath, $targetNamespace, $singleFile)
+    public function generateXML(ReverseGeneratorConfig $config)
     {
         $connection = ConnectionFactory::getConnection();
 
-        $entitySourceList = $connection->getEntitySourceList($databaseName, $targetNamespace, $targetPath);
+        $entitySourceList = $connection->getEntitySourceList($config->getConnectionName(), $config->getTargetPath(), $config->getTargetPath());
         foreach ($entitySourceList as $entitySource) {
-            $this->generateXMLFiles($entitySource, $targetPath);
+            $this->generateXMLFiles($entitySource, $config->getTargetPath());
         }
     }
 
@@ -40,6 +50,8 @@ class ReverseGenerator
     private function generateXMLFiles(EntitySource $entitySource, $targetPath)
     {
         $entityBuilder = new XMLEntityBuilder($entitySource);
+
+        $this->logger->info("Found " . $entitySource->getTable());
 
         $domDocument = $entityBuilder->getDOMDocument();
 

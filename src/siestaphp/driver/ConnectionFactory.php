@@ -3,8 +3,8 @@
 namespace siestaphp\driver;
 
 use siestaphp\driver\exceptions\ConnectException;
-use siestaphp\driver\exceptions\DatabaseConfigurationException;
 use siestaphp\driver\mysqli\MySQLDriver;
+use siestaphp\exceptions\InvalidConfiguration;
 use siestaphp\util\Util;
 
 /**
@@ -29,7 +29,7 @@ class ConnectionFactory
      * @param ConnectionData $connectionData
      *
      * @throws ConnectException
-     * @throws DatabaseConfigurationException
+     * @throws InvalidConfiguration
      * @return Connection
      */
     public static function addConnection(ConnectionData $connectionData)
@@ -41,7 +41,7 @@ class ConnectionFactory
      * @param null $name
      *
      * @return Connection
-     * @throws DatabaseConfigurationException
+     * @throws InvalidConfiguration
      */
     public static function getConnection($name = null)
     {
@@ -87,7 +87,7 @@ class ConnectionFactory
      * @param $name
      *
      * @return Connection
-     * @throws DatabaseConfigurationException
+     * @throws InvalidConfiguration
      */
     protected function _getConnection($name = null)
     {
@@ -97,7 +97,7 @@ class ConnectionFactory
 
         $connection = Util::getFromArray($this->connectionList, $name);
         if ($connection === null) {
-            throw new DatabaseConfigurationException(null, sprintf(self::EXCEPTION_NOT_CONFIGURED, $name));
+            throw new InvalidConfiguration(null, sprintf(self::EXCEPTION_NOT_CONFIGURED, $name));
         }
 
         return $connection;
@@ -105,12 +105,12 @@ class ConnectionFactory
 
     /**
      * @return Connection
-     * @throws DatabaseConfigurationException
+     * @throws InvalidConfiguration
      */
     protected function getDefaultConnection()
     {
         if ($this->defaultConnection === null) {
-            throw new DatabaseConfigurationException(null, self::EXCEPTION_NO_DEFAULT);
+            throw new InvalidConfiguration(null, self::EXCEPTION_NO_DEFAULT);
         }
         return $this->defaultConnection;
     }
@@ -119,7 +119,7 @@ class ConnectionFactory
      * @param ConnectionData $connectionData
      *
      * @throws ConnectException
-     * @throws DatabaseConfigurationException
+     * @throws InvalidConfiguration
      * @return Connection
      */
     protected function _addConnection(ConnectionData $connectionData)
@@ -143,7 +143,7 @@ class ConnectionFactory
      * @param ConnectionData $connectionData
      *
      * @return Driver
-     * @throws DatabaseConfigurationException
+     * @throws InvalidConfiguration
      */
     protected function _getDriver(ConnectionData $connectionData)
     {
@@ -158,7 +158,7 @@ class ConnectionFactory
      * @param ConnectionData $connectionData
      *
      * @return Driver
-     * @throws DatabaseConfigurationException
+     * @throws InvalidConfiguration
      */
     protected function instantiateDriver(ConnectionData $connectionData)
     {
@@ -166,7 +166,7 @@ class ConnectionFactory
             case "mysql":
                 return new MySQLDriver();
             default:
-                throw new DatabaseConfigurationException($connectionData, sprintf(self::EXCEPTION_DRIVER_NOT_IMPLEMENTD, $connectionData->driver));
+                throw new InvalidConfiguration(sprintf(self::EXCEPTION_DRIVER_NOT_IMPLEMENTD, $connectionData->driver));
         }
     }
 

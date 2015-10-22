@@ -131,6 +131,7 @@ class File
 
     /**
      * Finds the first occurence of the given filename
+     *
      * @param string $fileName
      *
      * @return null|File
@@ -157,8 +158,6 @@ class File
         }
         return null;
     }
-
-
 
     /**
      * loads the file as XSLT Processor
@@ -203,6 +202,16 @@ class File
     public function getContents()
     {
         return file_get_contents($this->absoluteFileName);
+    }
+
+    /**
+     * @param $data
+     *
+     * @return void
+     */
+    public function putContents($data)
+    {
+        file_put_contents($this->absoluteFileName, $data);
     }
 
     /**

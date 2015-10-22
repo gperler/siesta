@@ -21,6 +21,8 @@ class MySQLDriver implements Driver
 {
     const MYSQL_QUOTE = "`";
 
+    const MYSQL_DRIVER_NAME = "mysql";
+
     /**
      * @param $name
      *

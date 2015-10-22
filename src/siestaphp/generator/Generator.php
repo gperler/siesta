@@ -3,10 +3,10 @@
 namespace siestaphp\generator;
 
 use Psr\Log\LoggerInterface;
+use siestaphp\Config;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\ConnectionFactory;
-use siestaphp\driver\exceptions\SQLException;
 use siestaphp\migrator\Migrator;
 use siestaphp\util\File;
 use siestaphp\xmlreader\DirectoryScanner;
@@ -52,35 +52,18 @@ class Generator
     protected $transformerList;
 
     /**
-     * @var string
+     * @var GeneratorConfig
      */
-    protected $baseDir;
+    protected $generatorConfig;
 
-    /**
-     * @var string
-     */
-    protected $entityFileSuffix;
-
-    /**
-     * @var string
-     */
-    protected $conncectionName;
-
-    /**
-     * @var bool
-     */
-    protected $dropUnusedTables;
-
-    /**
-     * @var int
-     */
-    protected $migrationMode;
 
     /**
      * @param LoggerInterface $logger
+     * @param GeneratorConfig $config
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, $config = null)
     {
+        $this->generatorConfig = ($config) ? $config : Config::getInstance()->getGeneratorConfig();
 
         $this->logger = $logger;
 
@@ -91,59 +74,19 @@ class Generator
         $this->directoryScanner = new DirectoryScanner();
 
         $this->transformerList = array(new EntityTransformer());
-
-        $this->dropUnusedTables = false;
-
-        $this->conncectionName = null;
-
-        $this->entityFileSuffix = DirectoryScanner::DEFAULT_SUFFIX;
-
     }
 
-    /**
-     * @param string $suffix
-     *
-     * @return void
-     */
-    public function setEntityFileSuffix($suffix)
-    {
-        $this->entityFileSuffix = $suffix;
-    }
-
-    /**
-     * @param bool $drop
-     *
-     * @return void
-     */
-    public function dropUnusedTables($drop)
-    {
-        $this->dropUnusedTables = $drop;
-    }
-
-    /**
-     * @param string $connectionName
-     *
-     * @return void
-     */
-    public function setConnectionName($connectionName)
-    {
-        $this->conncectionName = $connectionName;
-    }
 
     /**
      * scans the given base dir for entity files and generates them
      *
-     * @param string $baseDir
-     *
      * @return void
      */
-    public function generate($baseDir)
+    public function generate()
     {
         $time = -microtime(true);
 
-        $this->baseDir = $baseDir;
-
-        $entitySourceList = $this->directoryScanner->scan($this->validationLogger, $this->baseDir, $this->entityFileSuffix);
+        $entitySourceList = $this->directoryScanner->scan($this->validationLogger, $this->generatorConfig);
 
         $this->dataModelContainer->addEntitySourceList($entitySourceList);
 
@@ -157,14 +100,12 @@ class Generator
     /**
      * generates artifacts for a single file
      *
-     * @param string $baseDir
      * @param string $fileName
      *
      * @return void
      */
-    public function generateFile($baseDir, $fileName)
+    public function generateFile($fileName)
     {
-        $this->baseDir = $baseDir;
 
         $xmlReader = new XMLReader(new File($fileName));
 
@@ -197,16 +138,12 @@ class Generator
      */
     private function handleDatabaseMigration()
     {
-        try {
-            $connection = ConnectionFactory::getConnection($this->conncectionName);
-            $connection->disableForeignKeyChecks();
+        $connection = ConnectionFactory::getConnection($this->generatorConfig->getConnectionName());
+        $connection->disableForeignKeyChecks();
 
-            $this->migrator = new Migrator($this->dataModelContainer, $connection, $this->logger);
-            $this->migrator->migrate();
-            $connection->enableForeignKeyChecks();
-        } catch (SQLException $s) {
-            $this->validationLogger->error("SQL Exception " . $s->getMessage(), self::ERROR_SQL_EXCEPTION);
-        }
+        $this->migrator = new Migrator($this->dataModelContainer, $this->generatorConfig, $this->logger);
+        $this->migrator->migrate();
+        $connection->enableForeignKeyChecks();
 
     }
 
@@ -231,7 +168,7 @@ class Generator
     private function applyTransformerToEntity(EntityGeneratorSource $ets)
     {
         foreach ($this->transformerList as $transformer) {
-            $transformer->transform($ets, $this->baseDir);
+            $transformer->transform($ets, $this->generatorConfig->getBaseDir());
         }
     }
 

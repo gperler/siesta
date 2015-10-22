@@ -2,6 +2,7 @@
 
 namespace siestaphp\tests\functional;
 
+use Codeception\Util\Debug;
 use siestaphp\tests\functional\delimit\gen\Artist;
 
 /**
@@ -33,18 +34,23 @@ class DelimitTest extends SiestaTester
     public function testIndexList()
     {
         $artist = new Artist();
-        $artist->setBool(true);
-        $artist->setInt(123);
-        $artist->setFloat(19.08);
-        $artist->save();
 
-        $artist->setString("Gregor");
-        $artist->save();
+        for($i=0;$i<3;$i++) {
+            $artist->setInt($i);
+            $artist->setFloat($i);
+            $artist->setString("s" . $i);
+            $artist->save();
+        }
 
-        $artist->setString("Müller");
-        $artist->save();
+        $resultSet = $this->connection->query("SELECT * FROM " . Artist::DELIMIT_TABLE_NAME);
+        $i = 0;
+        while($resultSet->hasNext()) {
+            $this->assertSame($resultSet->getIntegerValue(Artist::COLUMN_INT), $i);
+            $this->assertSame($resultSet->getFloatValue(Artist::COLUMN_FLOAT), (float) $i);
+            $this->assertSame($resultSet->getStringValue(ARTIST::COLUMN_STRING), "s" . $i);
 
-
+            $i++;
+        }
 
     }
 

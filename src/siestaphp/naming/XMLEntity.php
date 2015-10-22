@@ -27,6 +27,8 @@ class XMLEntity
 
     /* derived data for generator purpose */
 
+    const ATTRIBUTE_DELIMIT_TABLE_NAME = "delimitTableName";
+
     const ATTRIBUTE_DATETIME_IN_USE = "dateTimeInUse";
 
     const ATTRIBUTE_HAS_REFERENCES = "hasReferences";

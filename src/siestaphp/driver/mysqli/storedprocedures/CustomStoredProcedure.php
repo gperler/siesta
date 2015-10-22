@@ -4,6 +4,8 @@ namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
+use siestaphp\driver\ColumnMigrator;
+use siestaphp\driver\mysqli\MySQLDriver;
 
 /**
  * Class CustomStoredProcedure
@@ -11,8 +13,6 @@ use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
  */
 class CustomStoredProcedure extends MySQLStoredProcedureBase
 {
-
-    const TABLE_PLACE_HOLDER = "!TABLE!";
 
     /**
      * @var StoredProcedureSource
@@ -30,66 +30,47 @@ class CustomStoredProcedure extends MySQLStoredProcedureBase
 
         $this->storedProcedureSource = $source;
 
-        $this->modifies = $this->storedProcedureSource->modifies();
+        $this->buildElements();
+
     }
 
     /**
-     * @return string[]
+     * @return void
      */
-    public function buildCreateProcedureStatement()
+    protected function buildElements()
     {
 
-        $this->determineTableNames();
+        $this->modifies = $this->storedProcedureSource->modifies();
 
-        $this->buildName();
+        $this->name = $this->storedProcedureSource->getDatabaseName();
+
+        $this->determineTableNames();
 
         $this->buildSignature();
 
         $this->buildStatement();
-
-        return parent::buildCreateProcedureStatement();
     }
 
     /**
-     * @return string
+     * @return void
      */
-    public function buildProcedureDropStatement()
-    {
-        $this->buildName();
-        return parent::buildProcedureDropStatement();
-    }
-
-    protected function buildName()
-    {
-        $this->name = $this->storedProcedureSource->getDatabaseName();
-    }
-
     protected function buildSignature()
     {
-        $this->signature = "(";
+        $parameterList = array();
         foreach ($this->storedProcedureSource->getParameterList() as $parameter) {
-            $this->signature .= "IN " . $parameter->getStoredProcedureName() . " " . $parameter->getDatabaseType() . ",";
+            $parameterList[] .= sprintf(parent::SP_PARAMETER, $parameter->getStoredProcedureName(), $parameter->getDatabaseType());
         }
-        $this->signature = rtrim($this->signature, ",") . ")";
-    }
-
-    protected function buildStatement()
-    {
-        $sql = $this->storedProcedureSource->getSql("mysql");
-
-        $this->statement = $this->replaceTable($sql, $this->tableName);
-
+        $this->signature = $this->buildSignatureSnippet($parameterList);
     }
 
     /**
-     * @param $sql
-     * @param $tableName
-     *
-     * @return string
+     * @return void
      */
-    protected function replaceTable($sql, $tableName)
+    protected function buildStatement()
     {
-        return str_replace(self::TABLE_PLACE_HOLDER, $tableName, $sql);
+        $sql = $this->storedProcedureSource->getSql(MySQLDriver::MYSQL_DRIVER_NAME);
+
+        $this->statement = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->tableName, $sql);
     }
 
 }

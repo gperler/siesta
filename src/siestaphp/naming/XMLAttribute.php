@@ -37,6 +37,8 @@ class XMLAttribute
 
     const ATTRIBUTE_METHOD_NAME = "methodName";
 
+    const ATTRIBUTE_CONST_DB_NAME = "DBColumnConstant";
+
     const ELEMENT_PK_COLUMN_NAME = "pkColumn";
 
 }

@@ -13,12 +13,6 @@ use siestaphp\naming\StoredProcedureNaming;
 class SelectStoredProcedure extends MySQLStoredProcedureBase
 {
 
-    const SP_PARAMETER = "IN %s %s";
-
-    const SELECT = "SELECT * FROM %s WHERE %s;";
-
-    const WHERE = "%s = %s";
-
     /**
      * @param EntityGeneratorSource $source
      * @param $replication
@@ -27,11 +21,19 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
     {
         parent::__construct($source, $replication);
 
+        $this->buildElements();
+    }
+
+    /**
+     * @return void
+     */
+    protected function buildElements()
+    {
         $this->modifies = false;
 
-        $this->determineTableNames();
+        $this->name = StoredProcedureNaming::getSPFindByPrimaryKeyName($this->entitySource->getTable());
 
-        $this->buildName();
+        $this->determineTableNames();
 
         $this->buildSignature();
 
@@ -53,21 +55,13 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildName()
-    {
-        $this->name = StoredProcedureNaming::getSPFindByPrimaryKeyName($this->entitySource->getTable());
-    }
-
-    /**
-     * @return void
-     */
     protected function buildSignature()
     {
         $parameterList = array();
         foreach ($this->entitySource->getPrimaryKeyColumns() as $column) {
-            $parameterList[] = sprintf(self::SP_PARAMETER, $column->getSQLParameterName(), $column->getDatabaseType());
+            $parameterList[] = $this->buildSignatureParameterPart($column);
         }
-        $this->signature = "(" . implode(",", $parameterList) . ")";
+        $this->signature = $this->buildSignatureSnippet($parameterList);
     }
 
     /**
@@ -77,14 +71,13 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
     {
         $whereList = array();
         foreach ($this->entitySource->getPrimaryKeyColumns() as $column) {
-            $dbName = MySQLDriver::quote($column->getDatabaseName());
-            $whereList[] = sprintf(self::WHERE, $dbName, $column->getSQLParameterName());
+            $whereList[] = $this->buildWherePart($column);
         }
 
-        $tableName = $this->quote($this->tableName);
-        $where = implode(" AND ", $whereList);
+        $tableName = $this->tableName;
+        $where = $this->buildWhereSnippet($whereList);
 
-        $this->statement = sprintf(self::SELECT, $tableName, $where);
+        $this->statement = sprintf(self::SELECT_WHERE, $tableName, $where);
 
     }
 

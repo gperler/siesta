@@ -27,14 +27,20 @@
             "SET NAMES UTF8"
         ]
     }],
-    "migration": {
-        "method": "direct",
-        "targetPath": "",
-        "dropUnusedTables": false
+    "generator": {
+        "migrationMethod": "direct",
+        "migrationTargetPath" : null,
+        "entityFileSuffix": null,
+        "dropUnusedTables": false,
+        "connectionName" : null,
+        "baseDir" : null
     },
     "reverse": {
-        "targetPath": "",
-        "targetNamespace": ""
+        "connectionName" : null,
+        "targetPath": null,
+        "targetNamespace": null,
+        "singleFile" : false,
+        "entityFileSuffix" : null
     }
 }
 </xsl:template>

@@ -2,6 +2,7 @@
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
+use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\mysqli\MySQLConnection;
 use siestaphp\driver\mysqli\replication\Replication;
@@ -14,8 +15,18 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
 {
 
     const CREATE_PROCEDURE = "CREATE PROCEDURE";
+
     const READS_DATA = " NOT DETERMINISTIC READS SQL DATA SQL SECURITY INVOKER ";
+
     const MODIFIES_DATA = " NOT DETERMINISTIC MODIFIES SQL DATA SQL SECURITY INVOKER ";
+
+    const SELECT_WHERE = "SELECT * FROM %s WHERE %s;";
+
+    const DELETE_WHERE = "DELETE FROM %s WHERE %s;";
+
+    const SP_PARAMETER = "IN %s %s";
+
+    const WHERE = "%s = %s";
 
     /**
      * @var EntityGeneratorSource
@@ -50,6 +61,11 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
     /**
      * @var string
      */
+    protected $delimitTable;
+
+    /**
+     * @var string
+     */
     protected $memoryTableName;
 
     /**
@@ -68,12 +84,13 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
     }
 
     /**
-     *
+     * @return void
      */
     protected function determineTableNames()
     {
-        $this->tableName = $this->entitySource->getTable();
-        $this->memoryTableName = Replication::getReplicationTableName($this->tableName);
+        $this->tableName = $this->quote($this->entitySource->getTable());
+        $this->delimitTable = $this->quote($this->entitySource->getDelimitTable());
+        $this->memoryTableName = $this->quote(Replication::getReplicationTableName($this->tableName));
     }
 
     /**
@@ -94,6 +111,47 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
     public function buildProcedureDropStatement()
     {
         return "DROP PROCEDURE IF EXISTS " . $this->quote($this->name);
+    }
+
+    /**
+     * @param DatabaseColumn $column
+     *
+     * @return string
+     */
+    protected function buildSignatureParameterPart(DatabaseColumn $column)
+    {
+        return sprintf(self::SP_PARAMETER, $column->getSQLParameterName(), $column->getDatabaseType());
+    }
+
+    /**
+     * @param string[] $parameterList
+     *
+     * @return string
+     */
+    protected function buildSignatureSnippet(array $parameterList)
+    {
+        return "(" . implode(",", $parameterList) . ")";
+    }
+
+    /**
+     * @param string[] $whereList
+     *
+     * @return string
+     */
+    public function buildWhereSnippet(array $whereList)
+    {
+        return implode(" AND ", $whereList);
+    }
+
+    /**
+     * @param DatabaseColumn $column
+     *
+     * @return string
+     */
+    public function buildWherePart(DatabaseColumn $column)
+    {
+        $c = $this->quote($column->getDatabaseName());
+        return sprintf(self::WHERE, $c, $column->getSQLParameterName());
     }
 
     /**

@@ -6,8 +6,5 @@
         <attribute name="int" type="int" dbType="INT"/>
         <attribute name="float" type="float" dbType="FLOAT"/>
         <attribute name="string" type="string" dbType="VARCHAR(100)"/>
-        <attribute name="dateTime" type="DateTime" dbType="DATETIME"/>
-        <attribute name="pDate" type="DateTime" dbType="DATE"/>
-        <attribute name="pTime" type="DateTime" dbType="TIME"/>
     </entity>
 </entityList>
