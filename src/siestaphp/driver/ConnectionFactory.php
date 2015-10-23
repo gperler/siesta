@@ -97,7 +97,7 @@ class ConnectionFactory
 
         $connection = Util::getFromArray($this->connectionList, $name);
         if ($connection === null) {
-            throw new InvalidConfiguration(null, sprintf(self::EXCEPTION_NOT_CONFIGURED, $name));
+            throw new InvalidConfiguration(sprintf(self::EXCEPTION_NOT_CONFIGURED, $name));
         }
 
         return $connection;
@@ -110,7 +110,7 @@ class ConnectionFactory
     protected function getDefaultConnection()
     {
         if ($this->defaultConnection === null) {
-            throw new InvalidConfiguration(null, self::EXCEPTION_NO_DEFAULT);
+            throw new InvalidConfiguration(self::EXCEPTION_NO_DEFAULT);
         }
         return $this->defaultConnection;
     }

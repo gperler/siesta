@@ -96,9 +96,10 @@ class UpdateStatement
         foreach ($this->entity->getReferenceGeneratorSourceList() as $reference) {
             foreach ($reference->getReferencedColumnList() as $column) {
                 if (!$reference->isPrimaryKey()) {
-                    $columnName = MySQLDriver::quote($column->getDatabaseName());
-                    $this->setList[] = sprintf(self::SET, $columnName, $column->getSQLParameterName());
+
                 }
+                $columnName = MySQLDriver::quote($column->getDatabaseName());
+                $this->setList[] = sprintf(self::SET, $columnName, $column->getSQLParameterName());
                 $this->parameterList[] = sprintf(self::SP_PARAMETER, $column->getSQLParameterName(), $column->getDatabaseType());
             }
         }
@@ -113,9 +114,10 @@ class UpdateStatement
 
             // create set only for non primary keys
             if (!$attribute->isPrimaryKey()) {
-                $columnName = MySQLDriver::quote($attribute->getDatabaseName());
-                $this->setList[] = sprintf(self::SET, $columnName, $attribute->getSQLParameterName());
+
             }
+            $columnName = MySQLDriver::quote($attribute->getDatabaseName());
+            $this->setList[] = sprintf(self::SET, $columnName, $attribute->getSQLParameterName());
             $this->parameterList[] = sprintf(self::SP_PARAMETER, $attribute->getSQLParameterName(), $attribute->getDatabaseType());
         }
 

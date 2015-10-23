@@ -2,6 +2,7 @@
 
 namespace siestaphp\datamodel\index;
 
+use siestaphp\console\GeneratorCommand;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
@@ -109,6 +110,7 @@ class IndexPart implements Processable, IndexPartSource
      */
     private function checkIfIndexPartIsForReference()
     {
+
 
         $reference = $this->entity->getReferenceByColumnName($this->getColumnName());
         if (!$reference) {

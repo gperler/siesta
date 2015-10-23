@@ -84,16 +84,12 @@ class Generator
      */
     public function generate()
     {
-        $time = -microtime(true);
 
         $entitySourceList = $this->directoryScanner->scan($this->validationLogger, $this->generatorConfig);
 
         $this->dataModelContainer->addEntitySourceList($entitySourceList);
 
         $this->generateDataModelContainer();
-
-        $time = (microtime(true) + $time) / 1000;
-        $this->validationLogger->info(sprintf("%0.3fms", $time));
 
     }
 
@@ -142,7 +138,7 @@ class Generator
         $connection->disableForeignKeyChecks();
 
         $this->migrator = new Migrator($this->dataModelContainer, $this->generatorConfig, $this->logger);
-        $this->migrator->migrate();
+        $this->migrator->migrate($this->generatorConfig);
         $connection->enableForeignKeyChecks();
 
     }

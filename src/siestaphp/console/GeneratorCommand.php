@@ -3,6 +3,7 @@
 namespace siestaphp\console;
 
 use siestaphp\Config;
+use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\exceptions\ConnectException;
 use siestaphp\exceptions\InvalidConfiguration;
 use siestaphp\generator\Generator;
@@ -61,10 +62,12 @@ class GeneratorCommand extends Command
         $this->addOption(GeneratorConfig::OPTION_DROP_UNUSED_TABLES, null, InputOption::VALUE_OPTIONAL, "tell if unused tables should be dropped. Default no.");
         $this->addOption(GeneratorConfig::OPTION_BASE_DIR, null, InputOption::VALUE_OPTIONAL, "use this basepath for finding entity files.");
         $this->addOption(GeneratorConfig::OPTION_CONNECTION_NAME, null, InputOption::VALUE_OPTIONAL, "name of the database connection to use.");
+        $this->addOption(GeneratorConfig::OPTION_ENTITY_FILE_SUFFX, null, InputOption::VALUE_OPTIONAL, "suffix of schema/entity files");
 
         $this->addOption(GeneratorConfig::OPTION_MIGRATION_METHOD, null, InputOption::VALUE_OPTIONAL, "migration method can be: direct, sql or php");
         $this->addOption(GeneratorConfig::OPTION_MIGRATION_TARGET_PATH, null, InputOption::VALUE_OPTIONAL, "path where sql or php file are written to");
     }
+
 
     /**
      * @param InputInterface $input
@@ -95,6 +98,9 @@ class GeneratorCommand extends Command
             $this->endTimer();
         } catch (ConnectException $ce) {
             $this->output->writeln($ce->getMessage());
+            $this->output->writeln("Config file used " . Config::getInstance()->getConfigFileName());
+            $this->output->writeln("Connection Configuration");
+            $this->output->writeln((string) $ce->getConnectionData());
         } catch (InvalidConfiguration $ic) {
             $this->output->writeln($ic->getMessage());
         }
@@ -147,6 +153,6 @@ class GeneratorCommand extends Command
      */
     protected function endTimer() {
         $delta = (microtime(true) - $this->startTime) * 1000;
-        $this->output->writeln(sprintf("Generation complete in %0.2fms", $delta));
+        $this->output->writeln(sprintf("Generation complete in %0.1fms", $delta));
     }
 }

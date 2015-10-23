@@ -10,6 +10,7 @@ use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\exceptions\SQLException;
 use siestaphp\generator\GeneratorConfig;
 use siestaphp\util\File;
+use siestaphp\util\StringUtil;
 
 /**
  * Class Migrator
@@ -59,11 +60,14 @@ class Migrator
     }
 
     /**
-     * @param bool $dropUnUsedTables
+     * @return void
      */
-    public function migrate($dropUnUsedTables = false)
+    public function migrate()
     {
-        $statementList = $this->databaseMigrator->createAlterStatementList($dropUnUsedTables);
+        $statementList = $this->databaseMigrator->createAlterStatementList(null,null, $this->config->isDropUnusedTables());
+
+        $alterStatementList = $this->databaseMigrator->getAlterStatementList();
+        $this->logger->info(implode(PHP_EOL, $alterStatementList));
 
         switch($this->config->getMigrationMethod()) {
             case GeneratorConfig::MIGRATION_DIRECT_EXECUTION:
@@ -86,10 +90,12 @@ class Migrator
             $datbase = $this->connection->getDatabase();
             $this->logger->info("Direct migration of database " . $datbase);
 
+            $this->connection->disableForeignKeyChecks();
             foreach ($statementList as $statement) {
                 $this->logger->debug("Executing " . $statement);
                 $this->connection->query($statement);
             }
+            $this->connection->enableForeignKeyChecks();
 
         } catch (SQLException $e) {
             $this->logger->error("SQL Exception : " . $e->getMessage() . " (" . $e->getCode() . ")");

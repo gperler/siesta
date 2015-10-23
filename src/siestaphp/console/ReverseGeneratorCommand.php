@@ -3,7 +3,8 @@
 namespace siestaphp\console;
 
 use siestaphp\Config;
-use siestaphp\driver\ConnectionFactory;
+use siestaphp\driver\exceptions\ConnectException;
+use siestaphp\exceptions\InvalidConfiguration;
 use siestaphp\generator\GeneratorConfig;
 use siestaphp\generator\ReverseGenerator;
 use siestaphp\generator\ReverseGeneratorConfig;
@@ -21,7 +22,6 @@ class ReverseGeneratorCommand extends Command
 {
 
     const NO_CONFIG_FILE = "<error>No config file found. Run 'vendor/bin/siesta init' to generate one. </error>";
-
 
     /**
      * @var Config
@@ -58,6 +58,8 @@ class ReverseGeneratorCommand extends Command
         $this->addOption(ReverseGeneratorConfig::OPTION_ENTITY_FILE_SUFFX, null, InputOption::VALUE_OPTIONAL, "Suffix of Entitiy definition files. Default is " . GeneratorConfig::DEFAULT_ENTITY_SUFFIX);
         $this->addOption(ReverseGeneratorConfig::OPTION_SINGLE_FILE, null, InputOption::VALUE_OPTIONAL, "Indicates if all entities should be stored in a single file");
         $this->addOption(ReverseGeneratorConfig::OPTION_TARGET_PATH, null, InputOption::VALUE_OPTIONAL, "Targetpath to where the reverse engineered XML are stored to.");
+        $this->addOption(ReverseGeneratorConfig::OPTION_TARGET_NAMESPACE, null, InputOption::VALUE_OPTIONAL, "Target namespace for generated classes.");
+
     }
 
     /**
@@ -86,40 +88,24 @@ class ReverseGeneratorCommand extends Command
 
             // do the work
             $generator = new ReverseGenerator($log);
-            $generator->generateXML($database, $targetPath, "", $singleFile);
 
+            $generator->generateXML($this->reverseConfig);
 
             $this->endTimer();
         } catch (ConnectException $ce) {
             $this->output->writeln($ce->getMessage());
+            $this->output->writeln("Config file used " . Config::getInstance()->getConfigFileName());
+            $this->output->writeln("Connection Configuration");
+            $this->output->writeln((string) $ce->getConnectionData());
         } catch (InvalidConfiguration $ic) {
             $this->output->writeln($ic->getMessage());
         }
-
-
-        // get input
-        $database = $input->getOption("connection");
-        echo $database;
-        $targetPath = $input->getOption("targetPath") ? $input->getOption("targetPath") : getcwd();
-        $singleFile = true;
-
-        return;
-
-        $configFileName = Config::getInstance()->getConfigFileName();
-        $output->writeln("I'm using configfile " . $configFileName);
-
-        $connection = ConnectionFactory::getConnection();
-        $output->writeln("Reverse engineering database " . $connection->getDatabase());
-
-        // create symphony wrapper
-        $log = new SymphonyConsoleOutputWrapper($output);
-
 
     }
 
     protected function configureGenerator()
     {
-        foreach (GeneratorConfig::$OPTION_LIST as $option) {
+        foreach (ReverseGeneratorConfig::$OPTION_LIST as $option) {
             $this->reverseConfig->setValue($option, $this->input->getOption($option));
         }
     }

@@ -4,6 +4,7 @@ namespace siestaphp\driver;
 
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\exceptions\ConnectException;
+use siestaphp\generator\ReverseGeneratorConfig;
 
 /**
  * Interface Connection
@@ -85,13 +86,12 @@ interface Connection
     public function disableForeignKeyChecks();
 
     /**
-     * @param string $databaseName
      * @param string $targetNamespace
      * @param string $targetPath
      *
      * @return EntitySource[]
      */
-    public function getEntitySourceList($databaseName = null, $targetNamespace = null, $targetPath = null);
+    public function getEntitySourceList($targetNamespace, $targetPath);
 
     /**
      * @return ColumnMigrator

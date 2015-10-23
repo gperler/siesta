@@ -8,6 +8,8 @@ use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\ColumnMigrator;
 use siestaphp\driver\Connection;
 use siestaphp\driver\CreateStatementFactory;
+use siestaphp\generator\GeneratorConfig;
+use siestaphp\generator\ReverseGeneratorConfig;
 
 /**
  * Class DatabaseMigrator allows to retrieve alter statement by comparing model/schema with current database setup
@@ -45,6 +47,11 @@ class DatabaseMigrator
     /**
      * @var String[]
      */
+    protected $statementList;
+
+    /**
+     * @var String[]
+     */
     protected $alterStatementList;
 
     /**
@@ -59,20 +66,23 @@ class DatabaseMigrator
         $this->databaseModel = array();
         $this->neededTableList = array(CreateStatementFactory::SEQUENCER_TABLE_NAME);
         $this->alterStatementList = array();
+        $this->statementList = array();
     }
 
     /**
+     * @param string $targetNamespace
+     * @param string $targetPath
      * @param bool $dropUnusedTables
      *
-     * @return string[]
+     * @return String[]
      */
-    public function createAlterStatementList($dropUnusedTables = false)
+    public function createAlterStatementList($targetNamespace, $targetPath, $dropUnusedTables)
     {
         $factory = $this->connection->getCreateStatementFactory();
-        $this->addAlterStatements($factory->buildSequencer());
+        $this->addStatementList($factory->buildSequencer());
 
         // retrieve entity list as currently setup in the database
-        $this->databaseModel = $this->connection->getEntitySourceList();
+        $this->databaseModel = $this->connection->getEntitySourceList($targetNamespace, $targetPath);
 
         // iterate database entities and migrate entity
         foreach ($this->dataModelContainer->getEntityList() as $entity) {
@@ -85,7 +95,7 @@ class DatabaseMigrator
         }
 
         // done, return list of needed statements
-        return $this->alterStatementList;
+        return $this->statementList;
 
     }
 
@@ -100,18 +110,20 @@ class DatabaseMigrator
 
         // if database entity does not exist, create it
         if ($databaseEntity === null) {
+
             $this->setupEntityInDatabase($modelSource);
             return;
         }
 
         // compare database with current model/schema
         $entityMigrator = new EntityMigrator($this->columnMigrator, $databaseEntity, $modelSource);
-        $statementList = $entityMigrator->createAlterStatementList();
-        $this->addAlterStatements($statementList);
+        $this->alterStatementList = $entityMigrator->createAlterStatementList();
+
+        $this->addStatementList($this->alterStatementList);
 
         // create stored procedures
         $factory = $this->connection->getCreateStatementFactory();
-        $this->addAlterStatements($factory->buildCreateStoredProcedures($modelSource));
+        $this->addStatementList($factory->buildCreateStoredProcedures($modelSource));
 
     }
 
@@ -124,11 +136,11 @@ class DatabaseMigrator
     {
         $factory = $this->connection->getCreateStatementFactory();
 
-        $this->addAlterStatements($factory->buildCreateTable($source));
-        $this->addAlterStatements($factory->buildCreateStoredProcedures($source));
+        $this->addStatementList($factory->buildCreateTable($source));
+        $this->addStatementList($factory->buildCreateStoredProcedures($source));
 
         if ($source->isDelimit()) {
-            $this->addAlterStatements($factory->buildCreateDelimitTable($source, $source->getTable() . "_delimit"));
+            $this->addStatementList($factory->buildCreateDelimitTable($source, $source->getTable() . "_delimit"));
         }
     }
 
@@ -159,7 +171,7 @@ class DatabaseMigrator
             if (in_array($databaseModel->getTable(), $this->neededTableList)) {
                 continue;
             }
-            $this->alterStatementList[] = $this->columnMigrator->getDropTableStatement($databaseModel);
+            $this->statementList[] = $this->columnMigrator->getDropTableStatement($databaseModel);
         }
     }
 
@@ -168,9 +180,17 @@ class DatabaseMigrator
      *
      * @return void
      */
-    private function addAlterStatements(array $alterStatementList)
+    private function addStatementList(array $alterStatementList)
     {
-        $this->alterStatementList = array_merge($this->alterStatementList, $alterStatementList);
+        $this->statementList = array_merge($this->statementList, $alterStatementList);
+    }
+
+    /**
+     * @return String[]
+     */
+    public function getAlterStatementList()
+    {
+        return $this->alterStatementList;
     }
 
 }

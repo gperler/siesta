@@ -108,4 +108,20 @@ class ConnectionData
     {
         $this->postConnectStatementList[] = $statement;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString() {
+        return implode(PHP_EOL, array(
+            "Name " . $this->name,
+            "Driver " . $this->driver,
+            "Host " . $this->host,
+            "Port " . $this->port,
+            "Database " . $this->database,
+            "User " . $this->user,
+            "Charset " . $this->user,
+            "Post Connect statement " . implode(";", $this->postConnectStatementList)
+        ));
+    }
 }

@@ -48,6 +48,7 @@ class Config
     {
         if (self::$instance === null) {
             self::$instance = new Config($configFileName);
+            self::$instance->configureConnections();
         }
         return self::$instance;
     }
@@ -81,9 +82,9 @@ class Config
     public function __construct($configFileName = null)
     {
         $this->findConfig($configFileName);
-
-        $this->configureConnections();
     }
+
+
 
     /**
      * @return string
@@ -152,7 +153,7 @@ class Config
      * @throws InvalidConfiguration
      * @throws ConnectException
      */
-    private function configureConnections()
+    protected function configureConnections()
     {
         $connectionList = Util::getFromArray($this->jsonConfig, self::CONFIG_CONNECTION);
         if ($connectionList === null) {

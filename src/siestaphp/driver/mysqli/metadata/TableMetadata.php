@@ -64,10 +64,10 @@ class TableMetadata implements EntitySource
     /**
      * @param Connection $connection
      * @param TableDTO $tableDTO
-     * @param string $targetPath
      * @param string $targetNamespace
+     * @param string $targetPath
      */
-    public function __construct(Connection $connection, TableDTO $tableDTO, $targetPath, $targetNamespace)
+    public function __construct(Connection $connection, TableDTO $tableDTO, $targetNamespace, $targetPath )
     {
         $this->tableName = $tableDTO->name;
         $this->targetPath = $targetPath;
@@ -329,7 +329,7 @@ class TableMetadata implements EntitySource
      */
     public function getTargetPath()
     {
-        return "sql/gen";
+        return "sql/gen2";
     }
 
     /**

@@ -5,6 +5,7 @@ namespace siestaphp\driver\mysqli\metadata;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\Connection;
 use siestaphp\driver\CreateStatementFactory;
+use siestaphp\generator\ReverseGeneratorConfig;
 
 /**
  * Class DatabaseMetaData
@@ -34,16 +35,13 @@ class DatabaseMetaData
     }
 
     /**
-     * @param string $databaseName
      * @param string $targetNamespace
      * @param string $targetPath
      *
      * @return EntitySource[]
      */
-    public function getEntitySourceList($databaseName, $targetNamespace, $targetPath)
+    public function getEntitySourceList($targetNamespace, $targetPath)
     {
-
-        $this->connection->useDatabase($databaseName);
 
         $this->extractEntitySourceList($targetNamespace, $targetPath);
 
@@ -74,7 +72,7 @@ class DatabaseMetaData
             if ($tableDTO->name === CreateStatementFactory::SEQUENCER_TABLE_NAME) {
                 continue;
             }
-            $this->entitySourceList[] = new TableMetadata($this->connection, $tableDTO, $targetPath, $targetNamespace);
+            $this->entitySourceList[] = new TableMetadata($this->connection, $tableDTO, $targetNamespace, $targetPath);
         }
     }
 

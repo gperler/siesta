@@ -67,7 +67,7 @@ class IndexPartMetaData implements IndexPartSource
      */
     public function getLength()
     {
-        return $this->length;
+        return (int) $this->length;
     }
 
 }

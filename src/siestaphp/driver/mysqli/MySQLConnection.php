@@ -17,6 +17,7 @@ use siestaphp\driver\exceptions\TableDoesNotExistException;
 use siestaphp\driver\exceptions\UniqueConstraintViolationException;
 use siestaphp\driver\mysqli\metadata\DatabaseMetaData;
 use siestaphp\driver\ResultSet;
+use siestaphp\generator\ReverseGeneratorConfig;
 
 /**
  * Class MySQLConnection
@@ -83,7 +84,7 @@ class MySQLConnection implements Connection
 
         // check for errors
         if ($this->connection->connect_errno) {
-            throw new ConnectException ("Can't connect to " . $connectionData->host . " : " . $this->connection->connect_error, $this->connection->connect_errno);
+            throw new ConnectException ($connectionData, "Can't connect to " . $connectionData->host . " : " . $this->connection->connect_error, $this->connection->connect_errno);
         }
 
         // switch character set
@@ -279,18 +280,15 @@ class MySQLConnection implements Connection
     }
 
     /**
-     * @param string $databaseName
      * @param string $targetNamespace
      * @param string $targetPath
      *
      * @return EntitySource[]
      */
-    public function getEntitySourceList($databaseName = null, $targetNamespace = null, $targetPath = null)
+    public function getEntitySourceList($targetNamespace, $targetPath)
     {
-
-        $databaseName = ($databaseName) ? $databaseName : $this->getDatabase();
         $databaseMetaData = new DatabaseMetaData($this);
-        return $databaseMetaData->getEntitySourceList($databaseName, $targetNamespace, $targetPath);
+        return $databaseMetaData->getEntitySourceList($targetNamespace, $targetPath);
     }
 
     /**

@@ -118,6 +118,8 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
 
         $this->referenceSource = $source;
 
+        $this->referenceColumnList = array();
+
         $this->storeReferenceData();
 
     }
@@ -178,6 +180,33 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
 
         // build list with referenced columns
         $this->referenceColumnList = array();
+        // no mappings > use the primary key columns
+        if (sizeof($this->getMappingSourceList()) === 0) {
+            $this->updateReferencedColumnFromPK();
+        } else {
+            $this->updateReferencedColumnFromMapping();
+        }
+
+
+
+
+    }
+
+    private function updateReferencedColumnFromMapping() {
+        foreach($this->getMappingSourceList() as $mapping) {
+            foreach($this->referencedEntity->getAttributeSourceList() as $attribute) {
+                if ($mapping->getForeignName() === $attribute->getName()) {
+                    $referencedSource = new ReferencedColumn();
+                    $referencedSource->fromAttributeSource($attribute, $this, $mapping);
+                    $this->referenceColumnList[] = $referencedSource;
+                }
+            }
+        }
+    }
+
+
+
+    private function updateReferencedColumnFromPK() {
         $pkAttributeList = $this->referencedEntity->getPrimaryKeyAttributeList();
 
         foreach ($pkAttributeList as $pkAttribute) {
@@ -186,8 +215,8 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
             $referencedSource->fromAttributeSource($pkAttribute, $this, $mapping);
             $this->referenceColumnList[] = $referencedSource;
         }
-
     }
+
 
     /**
      * @param $foreignName
