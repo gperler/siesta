@@ -40,6 +40,6 @@
   "type": "library",
   "homepage": "http://siesta.gm314.de",
   "bin": [
-    "src/siestaphp/console/siesta"
+    "siesta"
   ]
 }
