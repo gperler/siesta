@@ -38,7 +38,7 @@
   },
   "license": "MIT",
   "type": "library",
-  "homepage": "http://siesta.gm314.de",
+  "homepage": "https://gperler.github.io",
   "bin": [
     "src/siestaphp/console/siesta"
   ]
