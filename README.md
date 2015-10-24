@@ -4,7 +4,7 @@ Installation with composer`
 
 ```
 composer require gm314/siesta
-``
+```
 
 # Documentation:
 [https://gperler.github.io](https://gperler.github.io)
