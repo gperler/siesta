@@ -2,9 +2,9 @@
 
 namespace siestaphp\xmlreader;
 
+use Psr\Log\LoggerInterface;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\exceptions\XMLNotValidException;
-use siestaphp\generator\GeneratorConfig;
 use siestaphp\generator\ValidationLogger;
 use siestaphp\util\File;
 
@@ -20,9 +20,9 @@ class DirectoryScanner
     const VALIDATION_ERROR_INVALID_BASE_DIR = 1001;
 
     /**
-     * @var ValidationLogger
+     * @var LoggerInterface
      */
-    protected $generatorLog;
+    protected $logger;
 
     /**
      * @var EntitySource[]
@@ -30,45 +30,44 @@ class DirectoryScanner
     protected $entitySourceList;
 
     /**
-     * @var GeneratorConfig
+     * @var string
      */
-    protected $config;
+    protected $fileSuffix;
 
     /**
-     *
+     * @param LoggerInterface|null $logger
      */
-    public function __construct()
+    public function __construct(LoggerInterface $logger)
     {
         $this->entitySourceList = array();
+        $this->logger = $logger;
     }
 
     /**
-     * @param ValidationLogger $log
-     * @param GeneratorConfig $config
+     * @param string $basedir
+     * @param string $fileSuffix
      *
      * @return EntitySource[]
      */
-    public function scan(ValidationLogger $log, GeneratorConfig $config)
+    public function scan($basedir, $fileSuffix = null)
     {
+        $this->fileSuffix = $fileSuffix;
 
-        $this->config = $config;
 
-        $this->generatorLog = $log;
-
-        $baseDirFile = new File($config->getBaseDir());
+        $baseDirFile = new File($basedir);
 
         if (!$baseDirFile->exists()) {
-            $log->error("Basedir " . $baseDirFile . " does not exist", self::VALIDATION_ERROR_INVALID_BASE_DIR);
-            return null;
+            $this->logger->error("Basedir " . $baseDirFile . " does not exist", array("code" => self::VALIDATION_ERROR_INVALID_BASE_DIR));
+            return array();
         }
 
         if (!$baseDirFile->isDir()) {
-            $log->error("Basedir " . $baseDirFile . " is not a directory", self::VALIDATION_ERROR_INVALID_BASE_DIR);
-            return null;
+            $this->logger->error("Basedir " . $baseDirFile . " is not a directory", array("code" => self::VALIDATION_ERROR_INVALID_BASE_DIR));
+            return array();
 
         }
 
-        $log->info("I'm searching in " . $baseDirFile . " for *." . $this->config->getEntityFileSuffix());
+        $this->logger->info("I'm searching in " . $baseDirFile . " for *." . $fileSuffix);
 
         $this->handleDirectory($baseDirFile);
 
@@ -102,20 +101,20 @@ class DirectoryScanner
      */
     private function handleEntityFile(File $file)
     {
-        if (!$file->isType($this->config->getEntityFileSuffix())) {
+        if (!$file->isType($this->fileSuffix)) {
             return;
         }
 
-        $this->generatorLog->info("Found " . $file->getAbsoluteFileName());
+        $this->logger->info("Found " . $file->getAbsoluteFileName());
 
         try {
             $xmlReader = new XMLReader($file);
             $this->entitySourceList = array_merge($this->entitySourceList, $xmlReader->getEntitySourceList());
         } catch (XMLNotValidException $e) {
 
-            $this->generatorLog->error("Parsing file " . $e->getFileName(), self::VALIDATION_ERROR_INVALID_XML);
+            $this->logger->error("Parsing file " . $e->getFileName(), array("code" => self::VALIDATION_ERROR_INVALID_XML));
             foreach ($e->getErrorList() as $error) {
-                $this->generatorLog->error($error, self::VALIDATION_ERROR_INVALID_XML);
+                $this->logger->error($error, array("code" => self::VALIDATION_ERROR_INVALID_XML));
             }
 
         }

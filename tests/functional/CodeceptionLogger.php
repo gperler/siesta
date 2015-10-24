@@ -23,12 +23,18 @@ class CodeceptionLogger implements LoggerInterface
     protected $warningCodeList;
 
     /**
-     *
+     * @var bool
      */
-    public function __construct()
+    protected $silent;
+
+    /**
+     * @param bool $silent
+     */
+    public function __construct($silent = false)
     {
         $this->errorCodeList = array();
         $this->warningCodeList = array();
+        $this->silent = $silent;
     }
 
     /**
@@ -46,7 +52,7 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function isErrorCodeSet($errorCode)
     {
-        return in_array($this->errorCodeList, $errorCode);
+        return in_array($errorCode, $this->errorCodeList);
     }
 
     /**
@@ -59,7 +65,10 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function emergency($message, array $context = array())
     {
-        Debug::debug($message);
+        if (!$this->silent) {
+            Debug::debug($message);
+        }
+
     }
 
     /**
@@ -74,7 +83,9 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function alert($message, array $context = array())
     {
-        Debug::debug($message);
+        if (!$this->silent) {
+            Debug::debug($message);
+        }
     }
 
     /**
@@ -88,7 +99,9 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function critical($message, array $context = array())
     {
-        Debug::debug($message);
+        if (!$this->silent) {
+            Debug::debug($message);
+        }
     }
 
     /**
@@ -102,7 +115,10 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function error($message, array $context = array())
     {
-        Debug::debug("<error>" . $message ."</error>");
+        if (!$this->silent) {
+            Debug::debug("<error>" . $message . "</error>");
+        }
+
         $code = Util::getFromArray($context, "code");
         if ($code) {
             $this->errorCodeList[] = $code;
@@ -122,7 +138,9 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function warning($message, array $context = array())
     {
-        Debug::debug($message);
+        if (!$this->silent) {
+            Debug::debug($message);
+        }
     }
 
     /**
@@ -135,7 +153,9 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function notice($message, array $context = array())
     {
-        Debug::debug($message);
+        if (!$this->silent) {
+            Debug::debug($message);
+        }
     }
 
     /**
@@ -149,7 +169,9 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function info($message, array $context = array())
     {
-        Debug::debug($message);
+        if (!$this->silent) {
+            Debug::debug($message);
+        }
     }
 
     /**
@@ -162,7 +184,9 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function debug($message, array $context = array())
     {
-        Debug::debug($message);
+        if (!$this->silent) {
+            Debug::debug($message);
+        }
     }
 
     /**
@@ -176,7 +200,9 @@ class CodeceptionLogger implements LoggerInterface
      */
     public function log($level, $message, array $context = array())
     {
-        Debug::debug($message);
+        if (!$this->silent) {
+            Debug::debug($message);
+        }
     }
 
 }

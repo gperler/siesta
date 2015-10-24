@@ -71,7 +71,7 @@ class Generator
 
         $this->dataModelContainer = new DataModelContainer($this->validationLogger);
 
-        $this->directoryScanner = new DirectoryScanner();
+        $this->directoryScanner = new DirectoryScanner($logger);
 
         $this->transformerList = array(new EntityTransformer());
     }
@@ -85,7 +85,7 @@ class Generator
     public function generate()
     {
 
-        $entitySourceList = $this->directoryScanner->scan($this->validationLogger, $this->generatorConfig);
+        $entitySourceList = $this->directoryScanner->scan($this->generatorConfig->getBaseDir(), $this->generatorConfig->getEntityFileSuffix());
 
         $this->dataModelContainer->addEntitySourceList($entitySourceList);
 

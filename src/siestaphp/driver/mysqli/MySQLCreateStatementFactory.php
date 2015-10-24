@@ -4,6 +4,7 @@ namespace siestaphp\driver\mysqli;
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\CreateStatementFactory;
+use siestaphp\driver\mysqli\replication\Replication;
 use siestaphp\driver\mysqli\storedprocedures\CustomStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteStoredProcedure;
@@ -48,10 +49,8 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
     {
         $statementList = array();
         $tableBuilder = new MySQLTableCreator($ets);
-        $statementList[] = $tableBuilder->buildCreateTable();
-
+        $statementList = array_merge($tableBuilder->buildCreateTable(), $statementList);
         return $statementList;
-
     }
 
     /**
@@ -73,7 +72,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
      *
      * @return string[]
      */
-    public function buildCreateStoredProcedures(EntityGeneratorSource $ets)
+    public function buildStoredProceduresStatements(EntityGeneratorSource $ets)
     {
         $statementList = array();
         foreach ($this->createStoredProcedureList($ets) as $sp) {
@@ -93,27 +92,27 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
     }
 
     /**
-     * @param EntityGeneratorSource $ets
+     * @param EntityGeneratorSource $source
      *
      * @return MySQLStoredProcedure[]
      */
-    private function createStoredProcedureList(EntityGeneratorSource $ets)
+    private function createStoredProcedureList(EntityGeneratorSource $source)
     {
+        $replication = Replication::isReplication($source);
         $spList = array();
 
-        $spList[] = new InsertStoredProcedure($ets, false);
+        $spList[] = new InsertStoredProcedure($source, $replication);
+        $spList[] = new SelectStoredProcedure($source, $replication);
+        $spList[] = new UpdateStoredProcedure($source, $replication);
+        $spList[] = new DeleteStoredProcedure($source, $replication);
 
-        $spList[] = new SelectStoredProcedure($ets, false);
-        $spList[] = new UpdateStoredProcedure($ets, false);
-        $spList[] = new DeleteStoredProcedure($ets, false);
-
-        foreach ($ets->getReferenceGeneratorSourceList() as $reference) {
-            $spList[] = new SelectReferenceStoredProcedure($ets, $reference, false);
-            $spList[] = new DeleteReferenceStoredProcedure($ets, $reference, false);
+        foreach ($source->getReferenceGeneratorSourceList() as $reference) {
+            $spList[] = new SelectReferenceStoredProcedure($source, $reference, $replication);
+            $spList[] = new DeleteReferenceStoredProcedure($source, $reference, $replication);
         }
 
-        foreach ($ets->getStoredProcedureSourceList() as $sp) {
-            $spList[] = new CustomStoredProcedure($sp, $ets, false);
+        foreach ($source->getStoredProcedureSourceList() as $sp) {
+            $spList[] = new CustomStoredProcedure($sp, $source, $replication);
         }
 
         return $spList;

@@ -123,7 +123,7 @@ class DatabaseMigrator
 
         // create stored procedures
         $factory = $this->connection->getCreateStatementFactory();
-        $this->addStatementList($factory->buildCreateStoredProcedures($modelSource));
+        $this->addStatementList($factory->buildStoredProceduresStatements($modelSource));
 
     }
 
@@ -137,7 +137,7 @@ class DatabaseMigrator
         $factory = $this->connection->getCreateStatementFactory();
 
         $this->addStatementList($factory->buildCreateTable($source));
-        $this->addStatementList($factory->buildCreateStoredProcedures($source));
+        $this->addStatementList($factory->buildStoredProceduresStatements($source));
 
         if ($source->isDelimit()) {
             $this->addStatementList($factory->buildCreateDelimitTable($source, $source->getTable() . "_delimit"));

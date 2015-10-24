@@ -71,6 +71,11 @@ class CustomStoredProcedure extends MySQLStoredProcedureBase
         $sql = $this->storedProcedureSource->getSql(MySQLDriver::MYSQL_DRIVER_NAME);
 
         $this->statement = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->tableName, $sql);
+
+        if ($this->isReplication) {
+            $this->statement .=  str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->replicationTableName, $sql);
+        }
+
     }
 
 }

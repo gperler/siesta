@@ -32,6 +32,8 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
     {
         parent::__construct($source, $replication);
 
+        $this->determineTableNames();
+
         $this->updateStatement = new UpdateStatement($source);
 
         $this->insertStatement = new InsertStatement($source);
@@ -48,11 +50,15 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
 
         $this->signature = $this->updateStatement->buildSignature();
 
-        $this->statement = $this->updateStatement->buildUpdate();
+        $this->statement = $this->updateStatement->buildUpdate($this->tableName);
 
         if ($this->entitySource->isDelimit()) {
             $this->statement .= $this->updateStatement->buildDelimitUpdate();
             $this->statement .= $this->insertStatement->buildDelimitInsert();
+        }
+
+        if ($this->isReplication) {
+            $this->statement .= $this->updateStatement->buildUpdate($this->replicationTableName);
         }
 
 

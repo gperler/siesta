@@ -27,6 +27,8 @@ class InsertStoredProcedure extends MySQLStoredProcedureBase
 
         $this->insertStatement = new InsertStatement($this->entitySource);
 
+        $this->determineTableNames();
+
         $this->buildElements();
     }
 
@@ -42,11 +44,16 @@ class InsertStoredProcedure extends MySQLStoredProcedureBase
 
         $this->signature = $this->insertStatement->buildSignature();
 
-        $this->statement = $this->insertStatement->buildInsert();
+        $this->statement = $this->insertStatement->buildInsert($this->tableName);
 
         if ($this->entitySource->isDelimit()) {
             $this->statement .= $this->insertStatement->buildDelimitInsert();
         }
+
+        if ($this->isReplication) {
+            $this->statement .= $this->insertStatement->buildInsert($this->replicationTableName);
+        }
+
 
     }
 

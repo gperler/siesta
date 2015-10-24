@@ -11,6 +11,7 @@ use siestaphp\datamodel\index\IndexPartSource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\Reference;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
+use siestaphp\driver\mysqli\replication\Replication;
 
 /**
  * Class MySQLTableCreator
@@ -33,7 +34,7 @@ class MySQLTableCreator
 
     const FOREIGN_KEY_SNIPPET = ",CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s";
 
-    const REPLICATION = "replication";
+
 
     const MYSQL_ENGINE_ATTRIBUTE = "engine";
 
@@ -72,10 +73,6 @@ class MySQLTableCreator
      */
     protected $replication;
 
-    /**
-     * @var bool
-     */
-    protected $buildDelimiterTable;
 
     /**
      * @param EntityGeneratorSource $eds
@@ -83,23 +80,35 @@ class MySQLTableCreator
     public function __construct(EntityGeneratorSource $eds)
     {
         $this->entityGeneratorSource = $eds;
-
-        $this->databaseSpecific = $eds->getDatabaseSpecific(MySQLConnection::NAME);
-
-        $this->replication = $this->getDatabaseSpecificAsBool(self::REPLICATION);
-
-        $this->buildDelimiterTable = false;
     }
 
     /**
-     * @return string
+     * @return string[]
      */
 
     public function buildCreateTable()
     {
-        $this->buildDelimiterTable = false;
+        $tableName = $this->entityGeneratorSource->getTable();
+        $result = array(
+          $this->buildCreateTableForTable($tableName, false)
+        );
 
-        $sql = self::CREATE_TABLE_SNIPPET . $this->quote($this->entityGeneratorSource->getTable());
+        if (Replication::isReplication($this->entityGeneratorSource)) {
+            $tableName = Replication::getReplicationTableName($tableName);
+            $result[] =  $this->buildCreateTableForTable($tableName, true);
+        }
+        return $result;
+    }
+
+    /**
+     * @param string $tableName
+     * @param bool $replication
+     *
+     * @return string
+     */
+    public function buildCreateTableForTable($tableName, $replication) {
+
+        $sql = self::CREATE_TABLE_SNIPPET . $this->quote($tableName);
 
         $sql .= "(" . $this->buildColumnSQL();
 
@@ -109,7 +118,7 @@ class MySQLTableCreator
 
         $sql .= $this->buildForeignConstraintList() . ")";
 
-        $sql .= $this->buildEngineDefinition();
+        $sql .= $this->buildEngineDefinition($replication);
 
         $sql .= $this->buildCollateDefinition();
 
@@ -117,6 +126,9 @@ class MySQLTableCreator
 
         return $sql;
     }
+
+
+
 
     /**
      * @return string
@@ -338,10 +350,15 @@ class MySQLTableCreator
     }
 
     /**
+     * @param bool $replication
      * @return string
      */
-    private function buildEngineDefinition()
+    private function buildEngineDefinition($replication = false)
     {
+        if ($replication) {
+            return self::ENGINE_SNIPPET . "MEMORY";
+        }
+
         $engine = $this->getDatabaseSpecific(self::MYSQL_ENGINE_ATTRIBUTE);
         if ($engine) {
             return self::ENGINE_SNIPPET . $engine;
@@ -384,19 +401,6 @@ class MySQLTableCreator
             return null;
         }
         return $this->databaseSpecific->getAttribute($key);
-    }
-
-    /**
-     * @param $key
-     *
-     * @return bool
-     */
-    private function getDatabaseSpecificAsBool($key)
-    {
-        if (!$this->databaseSpecific) {
-            return null;
-        }
-        return $this->databaseSpecific->getAttributeAsBool($key);
     }
 
     /**

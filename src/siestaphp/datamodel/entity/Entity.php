@@ -273,6 +273,10 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         foreach ($this->indexList as $index) {
             $index->updateModel($container);
         }
+
+        foreach($this->storedProcedureList as $sp) {
+            $sp->updateModel($container);
+        }
     }
 
     /**
@@ -312,6 +316,10 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
 
         foreach ($this->indexList as $index) {
             $index->validate($log);
+        }
+
+        foreach ($this->storedProcedureList as $sp) {
+            $sp->validate($log);
         }
     }
 

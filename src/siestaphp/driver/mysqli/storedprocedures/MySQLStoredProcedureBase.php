@@ -66,12 +66,12 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
     /**
      * @var string
      */
-    protected $memoryTableName;
+    protected $replicationTableName;
 
     /**
      * @var bool
      */
-    protected $replication;
+    protected $isReplication;
 
     /**
      * @param EntityGeneratorSource $source
@@ -80,7 +80,7 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
     public function __construct(EntityGeneratorSource $source, $replication)
     {
         $this->entitySource = $source;
-        $this->replication = $replication;
+        $this->isReplication = $replication;
     }
 
     /**
@@ -90,7 +90,7 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
     {
         $this->tableName = $this->quote($this->entitySource->getTable());
         $this->delimitTable = $this->quote($this->entitySource->getDelimitTable());
-        $this->memoryTableName = $this->quote(Replication::getReplicationTableName($this->tableName));
+        $this->replicationTableName = $this->quote(Replication::getReplicationTableName($this->entitySource->getTable()));
     }
 
     /**

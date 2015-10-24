@@ -68,11 +68,11 @@ class UpdateStatement
     }
 
     /**
+     * @param string $tableName
      * @return string
      */
-    public function buildUpdate()
+    public function buildUpdate($tableName)
     {
-        $tableName = MySQLDriver::quote($this->entity->getTable());
         $setList = implode(",", $this->setList);
         $where = implode(" AND ", $this->whereList);
         return sprintf(self::UPDATE, $tableName, $setList, $where);

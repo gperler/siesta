@@ -24,7 +24,7 @@ interface DatabaseSpecificSource
     /**
      * @param $name
      *
-     * @return string
+     * @return bool
      */
     public function getAttributeAsBool($name);
 

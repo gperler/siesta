@@ -2,15 +2,17 @@
 
 namespace siestaphp\tests\functional;
 
+use siestaphp\tests\functional\replication\gen\Book;
+
 /**
  * Class PerformanceTest
  */
-class PerformanceTest extends SiestaTester
+class ReplicationTest extends SiestaTester
 {
 
-    const ASSET_PATH = "/performance";
+    const ASSET_PATH = "/replication";
 
-    const SRC_XML = "/Performance.test.xml";
+    const SRC_XML = "/Replication.test.xml";
 
     protected function setUp()
     {
@@ -24,11 +26,20 @@ class PerformanceTest extends SiestaTester
 
     protected function tearDown()
     {
-        $this->dropDatabase();
+        //$this->dropDatabase();
     }
 
     public function testInsert()
     {
+        $book1 = new Book();
+        $book1->setPrice(19.80);
+        $book1->setTitle("Zieh Dich aus du alte Hippe");
+        $book1->save();
+
+
+        $bookReloaded = Book::getEntityByPrimaryKey($book1->getId());
+        $this->assertNotNull($bookReloaded, "make sure book can be reloaded from memory table");
+
 
     }
 

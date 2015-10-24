@@ -43,7 +43,7 @@ class ReverseTest extends SiestaTester
     {
         $attributeJSONList = $this->loadJSON(__DIR__ . self::ASSET_PATH . self::ATTRIBUTE_DATA);
 
-        $entitySourcelist = $this->connection->getEntitySourceList();
+        $entitySourcelist = $this->connection->getEntitySourceList(null, null);
 
         foreach ($entitySourcelist as $entitySource) {
             $builder = new XMLEntityBuilder($entitySource);
@@ -68,7 +68,7 @@ class ReverseTest extends SiestaTester
     public function testReverseReferenceList()
     {
 
-        $entitySourcelist = $this->connection->getEntitySourceList();
+        $entitySourcelist = $this->connection->getEntitySourceList(null,null);
 
         $addressEntity = $this->findEntityByTableName($entitySourcelist, "Address");
         $this->assertNotNull($addressEntity, "Address entity not found");

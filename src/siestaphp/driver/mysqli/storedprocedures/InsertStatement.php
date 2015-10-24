@@ -11,6 +11,7 @@ namespace siestaphp\driver\mysqli\storedprocedures;
 use siestaphp\datamodel\delimit\DelimitAttribute;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\mysqli\MySQLDriver;
+use siestaphp\driver\mysqli\replication\Replication;
 
 /**
  * Class InsertStatement
@@ -56,11 +57,12 @@ class InsertStatement
     }
 
     /**
+     * @param string $tableName
      * @return string
      */
-    public function buildInsert()
+    public function buildInsert($tableName)
     {
-        return $this->buildStatement($this->entity->getTable(), $this->columnList, $this->valueList);
+        return $this->buildStatement($tableName, $this->columnList, $this->valueList);
     }
 
     /**
@@ -96,7 +98,6 @@ class InsertStatement
      */
     protected function buildStatement($tableName, array $columnList, array $valueList)
     {
-        $tableName = MySQLDriver::quote($tableName);
         $columnSQL = implode(",", $columnList);
         $valueSQL = implode(",", $valueList);
         return sprintf(self::INSERT_STATEMENT, $tableName, $columnSQL, $valueSQL);

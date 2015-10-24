@@ -68,6 +68,11 @@ class DeleteReferenceStoredProcedure extends MySQLStoredProcedureBase
         $where = $this->buildWhereSnippet($whereList);
 
         $this->statement = sprintf(self::DELETE_WHERE, $this->tableName, $where);
+
+        if ($this->isReplication) {
+            $this->statement .= sprintf(self::DELETE_WHERE, $this->delimitTable, $where);
+        }
+
     }
 
 }

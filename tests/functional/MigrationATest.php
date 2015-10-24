@@ -55,7 +55,7 @@ class MigrationATest extends SiestaTester
         $migrator->migrate();
 
         // read meta data from database and find ArtistEntity
-        $entitySourceList = $this->connection->getEntitySourceList();
+        $entitySourceList = $this->connection->getEntitySourceList(null, null);
 
         $artistDatabaseEntity = null;
         foreach ($entitySourceList as $entity) {

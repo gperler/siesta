@@ -40,5 +40,5 @@ interface CreateStatementFactory
      *
      * @return string[]
      */
-    public function buildCreateStoredProcedures(EntityGeneratorSource $ets);
+    public function buildStoredProceduresStatements(EntityGeneratorSource $ets);
 }

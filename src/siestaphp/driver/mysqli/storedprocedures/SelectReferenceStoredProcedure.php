@@ -68,8 +68,11 @@ class SelectReferenceStoredProcedure extends MySQLStoredProcedureBase
         }
 
         $where = $this->buildWhereSnippet($whereList);
-        $this->statement = sprintf(self::SELECT_WHERE, $this->tableName, $where);
-
+        if ($this->isReplication) {
+            $this->statement = sprintf(self::SELECT_WHERE, $this->delimitTable, $where);
+        } else {
+            $this->statement = sprintf(self::SELECT_WHERE, $this->tableName, $where);
+        }
     }
 
 }
