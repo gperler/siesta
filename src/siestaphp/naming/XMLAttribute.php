@@ -23,8 +23,6 @@ class XMLAttribute
 
     const ATTRIBUTE_DATABASE_LENGTH = "length";
 
-    const ATTRIBUTE_UNIQUE = "unique";
-
     const ATTRIBUTE_PRIMARY_KEY = "primaryKey";
 
     const ATTRIBUTE_DEFAULT_VALUE = "defaultValue";

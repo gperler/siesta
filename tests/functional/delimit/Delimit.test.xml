@@ -2,9 +2,7 @@
 <entityList>
     <entity name="Artist" namespace="siestaphp\tests\functional\delimit\gen" targetPath="gen/" delimit="true">
         <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
-        <attribute name="bool" type="bool" dbType="SMALLINT"/>
-        <attribute name="int" type="int" dbType="INT"/>
-        <attribute name="float" type="float" dbType="FLOAT"/>
-        <attribute name="string" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="city" type="string" dbType="VARCHAR(100)"/>
     </entity>
 </entityList>
