@@ -242,7 +242,6 @@ class MySQLConnection implements Connection
         $sequence = null;
         while ($result->hasNext()) {
             $sequence = $result->getIntegerValue("@sequence:=SEQUENCER.SEQ");
-            var_dump($result->getNext());
         }
         $result->close();
 

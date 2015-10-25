@@ -2,10 +2,13 @@
 
 namespace siestaphp\driver;
 
+use siestaphp\Config;
 use siestaphp\driver\exceptions\ConnectException;
 use siestaphp\driver\mysqli\MySQLDriver;
 use siestaphp\exceptions\InvalidConfiguration;
 use siestaphp\util\Util;
+
+Config::getInstance();
 
 /**
  * Class ConnectionFactory
@@ -54,6 +57,7 @@ class ConnectionFactory
     public static function getInstance()
     {
         if (!self::$connectionFactory) {
+
             self::$connectionFactory = new static();
         }
         return self::$connectionFactory;
@@ -171,3 +175,4 @@ class ConnectionFactory
     }
 
 }
+
