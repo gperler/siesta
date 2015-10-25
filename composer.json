@@ -1,7 +1,6 @@
 {
   "name": "gm314/siesta",
   "description": "PHP ORM Library",
-  "version": "0.3.1",
   "require": {
     "php": ">=5.3.9",
     "lib-xsl": "*",

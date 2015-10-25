@@ -6,6 +6,7 @@ use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\generator\ValidationLogger;
+use siestaphp\util\Util;
 
 /**
  * Class DataModelContainer contains the entire defined data model
@@ -103,7 +104,7 @@ class DataModelContainer
      */
     public function getEntityByClassname($entityName)
     {
-        return $this->entityList[$entityName];
+        return Util::getFromArray($this->entityList, $entityName);
     }
 
     /**
