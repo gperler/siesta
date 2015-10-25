@@ -5,9 +5,7 @@
         <entity-mysql engine="InnoDB" charset="utf8" collate="utf8_unicode_ci"/>
 
         <storedProcedure name="getFirstArtistByCity" modifies="false" resultType="single">
-            <parameterList>
                 <parameter name="test" spName="P_CITY" type="string" dbType="VARCHAR(100)"/>
-            </parameterList>
             <sql>
                 SELECT !TABLE!.* FROM !TABLE! WHERE CITY = P_CITY LIMIT 1;
             </sql>
