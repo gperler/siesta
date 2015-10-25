@@ -103,6 +103,7 @@ class GeneratorCommand extends Command
             $this->output->writeln((string) $ce->getConnectionData());
         } catch (InvalidConfiguration $ic) {
             $this->output->writeln($ic->getMessage());
+            $this->output->writeln("Please run 'vendor/bin/siesta init' to generate a config file");
         }
     }
 
