@@ -2,6 +2,7 @@
 
 namespace siestaphp\driver\mysqli;
 
+use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\CreateStatementFactory;
 use siestaphp\driver\mysqli\replication\Replication;
@@ -10,6 +11,7 @@ use siestaphp\driver\mysqli\storedprocedures\DeleteReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\InsertStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\MySQLStoredProcedure;
+use siestaphp\driver\mysqli\storedprocedures\SelectDelimitStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\UpdateStoredProcedure;
@@ -98,21 +100,26 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
      */
     private function createStoredProcedureList(EntityGeneratorSource $source)
     {
-        $replication = Replication::isReplication($source);
+        $isReplication = Replication::isReplication($source);
+
         $spList = array();
 
-        $spList[] = new InsertStoredProcedure($source, $replication);
-        $spList[] = new SelectStoredProcedure($source, $replication);
-        $spList[] = new UpdateStoredProcedure($source, $replication);
-        $spList[] = new DeleteStoredProcedure($source, $replication);
+        $spList[] = new InsertStoredProcedure($source, $isReplication);
+        $spList[] = new SelectStoredProcedure($source, $isReplication);
+        $spList[] = new UpdateStoredProcedure($source, $isReplication);
+        $spList[] = new DeleteStoredProcedure($source, $isReplication);
 
         foreach ($source->getReferenceGeneratorSourceList() as $reference) {
-            $spList[] = new SelectReferenceStoredProcedure($source, $reference, $replication);
-            $spList[] = new DeleteReferenceStoredProcedure($source, $reference, $replication);
+            $spList[] = new SelectReferenceStoredProcedure($source, $reference, $isReplication);
+            $spList[] = new DeleteReferenceStoredProcedure($source, $reference, $isReplication);
         }
 
         foreach ($source->getStoredProcedureSourceList() as $sp) {
-            $spList[] = new CustomStoredProcedure($sp, $source, $replication);
+            $spList[] = new CustomStoredProcedure($sp, $source, $isReplication);
+        }
+
+        if ($source->isDelimit()) {
+            $spList[] = new SelectDelimitStoredProcedure($source);
         }
 
         return $spList;

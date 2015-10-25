@@ -596,6 +596,10 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function isDateTimeUsed()
     {
+        if ($this->isDelimit()) {
+            return true;
+        }
+
         foreach ($this->attributeList as $attribute) {
             if ($attribute->isDateTime()) {
                 return true;

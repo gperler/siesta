@@ -4,11 +4,13 @@ namespace siestaphp\xmlbuilder;
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
+use siestaphp\datamodel\storedprocedure\StoredProcedure;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\naming\StoredProcedureNaming;
 use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLEntity;
 use siestaphp\naming\XMLStoredProcedure;
+use siestaphp\runtime\Factory;
 
 /**
  * Class XMLEntityBuilder builds the Entity XML for transformation or reverse engineering
@@ -180,7 +182,7 @@ class XMLEntityBuilder extends XMLBuilder
         $xmlSP->setAttribute(XMLEntity::ATTRIBUTE_SSP_DELETE_BY_PK, StoredProcedureNaming::getSPDeleteByPrimaryKeyName($tableName));
         $xmlSP->setAttribute(XMLEntity::ATTRIBUTE_SSP_INSERT, StoredProcedureNaming::getSPInsertName($tableName));
         $xmlSP->setAttribute(XMLEntity::ATTRIBUTE_SSP_UPDATE, StoredProcedureNaming::getSPUpdateName($tableName));
-
+        $xmlSP->setAttribute(XMLEntity::ATTRIBUTE_SSP_FIND_BY_PK_DELIMIT, StoredProcedureNaming::getSPFindByPrimaryKeyDelimitName($tableName));
     }
 
     /**

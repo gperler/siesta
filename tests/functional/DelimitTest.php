@@ -27,7 +27,7 @@ class DelimitTest extends SiestaTester
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
 
     }
 

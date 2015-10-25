@@ -121,7 +121,37 @@
             $resultList = self::executeStoredProcedure("CALL <xsl:value-of select="/entity/standardStoredProcedures/@findByPrimaryKey"/>(<xsl:for-each select="/entity/pkColumn">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
             return Util::getFromArray($resultList, 0);
         }
+
+            <xsl:if test="/entity/@delimit = 'true'">
+                /**
+                 * @param DateTime $validAt
+                <xsl:for-each select="/entity/pkColumn">
+                    * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
+                </xsl:for-each>
+                * @param string $connectionName
+                * @return <xsl:value-of select="/entity/@constructClass"/>
+                */
+                public static function getEntityByPrimaryKeyAtTime(DateTime $validAt, <xsl:for-each select="/entity/pkColumn">$<xsl:value-of select="@name"/>,</xsl:for-each> $connectionName=null)
+                {
+                    if ($validAt === null or <xsl:for-each select="/entity/pkColumn">$<xsl:value-of select="@name"/> === null <xsl:if test="position() != last()"> or </xsl:if></xsl:for-each>) {
+                        return null;
+                    }
+
+                    $connection = ConnectionFactory::getConnection($connectionName);
+
+                    <xsl:for-each select="/entity/pkColumn">
+                        $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
+                    </xsl:for-each>
+                    $validAt = $validAt->getSQLDateTime();
+
+                    $resultList = self::executeStoredProcedure("CALL <xsl:value-of select="/entity/standardStoredProcedures/@findByPrimaryKeyDelimit"/>('$validAt',<xsl:for-each select="/entity/pkColumn">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
+                    return Util::getFromArray($resultList, 0);
+                }
+
+
+            </xsl:if>
         </xsl:if>
+
     </xsl:template>
 
 

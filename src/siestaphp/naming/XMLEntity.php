@@ -43,6 +43,8 @@ class XMLEntity
 
     const ATTRIBUTE_SSP_FIND_BY_PK = "findByPrimaryKey";
 
+    const ATTRIBUTE_SSP_FIND_BY_PK_DELIMIT = "findByPrimaryKeyDelimit";
+
     const ATTRIBUTE_SSP_DELETE_BY_PK = "deleteByPrimaryKey";
 
     const ATTRIBUTE_SSP_UPDATE = "update";

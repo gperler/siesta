@@ -11,6 +11,8 @@ class StoredProcedureNaming
 
     const FIND_BY_PRIMARY_KEY_SUFFIX = "_FBPK";
 
+    const FIND_BY_PRIMARY_KEY_DELIMIT = "_FBPK_D";
+
     const FIND_BY_REFERENCE = "_FBR_";
 
     const DELETE_BY_REFERENCE = "_DBR_";
@@ -47,6 +49,15 @@ class StoredProcedureNaming
     public static function getSPFindByPrimaryKeyName($tableName)
     {
         return self::GI()->getUniqueName($tableName . self::FIND_BY_PRIMARY_KEY_SUFFIX);
+    }
+
+    /**
+     * @param string $tableName
+     *
+     * @return string
+     */
+    public static function getSPFindByPrimaryKeyDelimitName($tableName) {
+        return self::GI()->getUniqueName($tableName . self::FIND_BY_PRIMARY_KEY_DELIMIT);
     }
 
     /**
