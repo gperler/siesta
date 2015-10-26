@@ -6,7 +6,8 @@ use Codeception\Util\Debug;
 use siestaphp\tests\functional\delimit\gen\Artist;
 
 /**
- * Class MultiPKTest
+ * Class DelimitTest
+ * @package siestaphp\tests\functional
  */
 class DelimitTest extends SiestaTester
 {

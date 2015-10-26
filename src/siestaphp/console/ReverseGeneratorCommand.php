@@ -106,7 +106,11 @@ class ReverseGeneratorCommand extends Command
     protected function configureGenerator()
     {
         foreach (ReverseGeneratorConfig::$OPTION_LIST as $option) {
-            $this->reverseConfig->setValue($option, $this->input->getOption($option));
+            $optionValue = $this->input->getOption($option);
+            if ($optionValue !== null) {
+                $this->reverseConfig->setValue($option, $optionValue);
+            }
+
         }
     }
 

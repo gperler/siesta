@@ -107,10 +107,16 @@ class GeneratorCommand extends Command
         }
     }
 
+    /**
+     * @return void
+     */
     protected function configureGenerator()
     {
         foreach (GeneratorConfig::$OPTION_LIST as $option) {
-            $this->generatorConfig->setValue($option, $this->input->getOption($option));
+            $optionValue = $this->input->getOption($option);
+            if ($optionValue !== null) {
+                $this->generatorConfig->setValue($option, $optionValue);
+            }
         }
     }
 
