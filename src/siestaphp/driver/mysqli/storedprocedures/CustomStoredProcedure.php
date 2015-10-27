@@ -70,12 +70,30 @@ class CustomStoredProcedure extends MySQLStoredProcedureBase
     {
         $sql = $this->storedProcedureSource->getSql(MySQLDriver::MYSQL_DRIVER_NAME);
 
-        $this->statement = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->tableName, $sql);
-
         if ($this->isReplication) {
-            $this->statement .=  str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->replicationTableName, $sql);
+            $this->buildStatementForReplication($sql);
+            return;
         }
 
+        $this->statement = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->tableName, $sql);
+
+    }
+
+    /**
+     * @param string $sql
+     *
+     * @return void
+     */
+    protected function buildStatementForReplication($sql)
+    {
+        // in case of modifying procedures execute on both tables
+        if ($this->modifies) {
+            $this->statement = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->tableName, $sql);
+            $this->statement .= str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->memoryTableName, $sql);
+            return;
+        }
+        // in case of non modifying read from memory table only
+        $this->statement = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->memoryTableName, $sql);
     }
 
 }

@@ -51,7 +51,7 @@ class InsertStoredProcedure extends MySQLStoredProcedureBase
         }
 
         if ($this->isReplication) {
-            $this->statement .= $this->insertStatement->buildInsert($this->replicationTableName);
+            $this->statement .= $this->insertStatement->buildInsert($this->memoryTableName);
         }
 
 

@@ -66,7 +66,7 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
     /**
      * @var string
      */
-    protected $replicationTableName;
+    protected $memoryTableName;
 
     /**
      * @var bool
@@ -90,7 +90,7 @@ abstract class MySQLStoredProcedureBase implements MySQLStoredProcedure
     {
         $this->tableName = $this->quote($this->entitySource->getTable());
         $this->delimitTable = $this->quote($this->entitySource->getDelimitTable());
-        $this->replicationTableName = $this->quote(Replication::getReplicationTableName($this->entitySource->getTable()));
+        $this->memoryTableName = $this->quote(Replication::getReplicationTableName($this->entitySource->getTable()));
     }
 
     /**

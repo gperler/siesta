@@ -64,7 +64,7 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
     {
         $this->statement = $this->buildDeleteSQL($this->tableName);
         if ($this->isReplication) {
-            $this->statement .= $this->buildDeleteSQL($this->replicationTableName);
+            $this->statement .= $this->buildDeleteSQL($this->memoryTableName);
         }
     }
 

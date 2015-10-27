@@ -203,7 +203,8 @@ class EntityMigrator
 
             // handle delimited table
             if ($this->databaseEntity->isDelimit() and $isAttribute) {
-
+                // TODO : handle delimit table
+                // TODO : handle replication table
             }
         }
     }

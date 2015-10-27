@@ -74,7 +74,7 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
             $whereList[] = $this->buildWherePart($column);
         }
 
-        $tableName = $this->isReplication ? $this->replicationTableName : $this->tableName;
+        $tableName = $this->isReplication ? $this->memoryTableName : $this->tableName;
         $where = $this->buildWhereSnippet($whereList);
 
         $this->statement = sprintf(self::SELECT_WHERE, $tableName, $where);

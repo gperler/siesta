@@ -137,6 +137,7 @@ class DatabaseMigrator
         $factory = $this->connection->getCreateStatementFactory();
 
         $this->addStatementList($factory->buildCreateTable($source));
+
         $this->addStatementList($factory->buildStoredProceduresStatements($source));
 
         if ($source->isDelimit()) {
@@ -171,7 +172,14 @@ class DatabaseMigrator
             if (in_array($databaseModel->getTable(), $this->neededTableList)) {
                 continue;
             }
-            $this->statementList[] = $this->columnMigrator->getDropTableStatement($databaseModel);
+            $statement = $this->columnMigrator->getDropTableStatement($databaseModel);
+            $this->statementList[] = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $databaseModel->getTable(), $statement);
+
+            if ($databaseModel->isDelimit()) {
+                // TODO : drop delimit table
+                // TODO : drop replication table
+            }
+
         }
     }
 

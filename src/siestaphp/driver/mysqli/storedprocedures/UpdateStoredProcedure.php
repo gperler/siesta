@@ -58,7 +58,7 @@ class UpdateStoredProcedure extends MySQLStoredProcedureBase
         }
 
         if ($this->isReplication) {
-            $this->statement .= $this->updateStatement->buildUpdate($this->replicationTableName);
+            $this->statement .= $this->updateStatement->buildUpdate($this->memoryTableName);
         }
 
 
