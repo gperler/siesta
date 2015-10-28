@@ -402,7 +402,7 @@
          * @param string $connectionName
          * @return string
          */
-        protected function createSaveStoredProcedureCall($connectionName = null)
+        public function createSaveStoredProcedureCall($connectionName = null)
         {
             <!-- make sure ids are given -->
             <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">

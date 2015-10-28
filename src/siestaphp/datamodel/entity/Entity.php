@@ -12,6 +12,8 @@ use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\index\Index;
 use siestaphp\datamodel\index\IndexSource;
+use siestaphp\datamodel\manager\EntityManager;
+use siestaphp\datamodel\manager\EntityManagerSource;
 use siestaphp\datamodel\Processable;
 use siestaphp\datamodel\reference\Reference;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
@@ -65,6 +67,11 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      * @var StoredProcedure[]
      */
     protected $storedProcedureList;
+
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
 
     /**
      * @var string[]
@@ -171,6 +178,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         $this->table = $this->entitySource->getTable();
         $this->delimit = $this->entitySource->isDelimit();
         $this->targetPath = $this->entitySource->getTargetPath();
+
+        $this->entityManager = new EntityManager($this, $this->entitySource->getEntityManagerSource());
+
     }
 
     /**
@@ -508,6 +518,14 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     public function getIndexSourceList()
     {
         return $this->indexList;
+    }
+
+    /**
+     * @return EntityManagerSource
+     */
+    public function getEntityManagerSource()
+    {
+        return $this->entityManager;
     }
 
     /**

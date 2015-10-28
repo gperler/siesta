@@ -7,6 +7,8 @@ use siestaphp\datamodel\collector\CollectorSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\index\IndexSource;
+use siestaphp\datamodel\manager\EntityManager;
+use siestaphp\datamodel\manager\EntityManagerSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\driver\Connection;
@@ -274,6 +276,14 @@ class TableMetadata implements EntitySource
     public function getIndexSourceList()
     {
         return $this->indexMetaList;
+    }
+
+    /**
+     * @return EntityManagerSource
+     */
+    public function getEntityManagerSource()
+    {
+        return new EntityManager($this, null);
     }
 
     /**

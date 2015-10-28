@@ -71,6 +71,8 @@ class XMLEntityBuilder extends XMLBuilder
 
         $this->addIndexList();
 
+        $managerXMLBuilder = new XMLEntityManagerBuilder($this->entitySource->getEntityManagerSource(), $this->domDocument, $this->domElement);
+
         // if this is used for transformation (and not reverse engineering) add transformation relevant data
         if ($this->entitySource instanceof EntityGeneratorSource) {
             $this->addTransformerData($this->entitySource);

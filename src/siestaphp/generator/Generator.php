@@ -73,7 +73,7 @@ class Generator
 
         $this->directoryScanner = new DirectoryScanner($logger);
 
-        $this->transformerList = array(new EntityTransformer());
+        $this->transformerList = array(new EntityTransformer(), new EntityManagerTransformer());
     }
 
 

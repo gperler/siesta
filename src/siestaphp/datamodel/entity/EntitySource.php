@@ -6,6 +6,7 @@ use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\CollectorSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\index\IndexSource;
+use siestaphp\datamodel\manager\EntityManagerSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 
@@ -39,6 +40,11 @@ interface EntitySource
      * @return IndexSource[]
      */
     public function getIndexSourceList();
+
+    /**
+     * @return EntityManagerSource
+     */
+    public function getEntityManagerSource();
 
     /**
      * @return string

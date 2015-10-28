@@ -6,11 +6,13 @@ use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\CollectorSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\index\IndexSource;
+use siestaphp\datamodel\manager\EntityManagerSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLCollector;
 use siestaphp\naming\XMLEntity;
+use siestaphp\naming\XMLEntityManager;
 use siestaphp\naming\XMLIndex;
 use siestaphp\naming\XMLReference;
 use siestaphp\naming\XMLStoredProcedure;
@@ -46,6 +48,11 @@ class XMLEntityReader extends XMLAccess implements EntitySource
      * @var IndexSource[]
      */
     protected $indexList;
+
+    /**
+     * @var EntityManagerSource
+     */
+    protected $entityManagerSource;
 
     /**
      *
@@ -183,6 +190,30 @@ class XMLEntityReader extends XMLAccess implements EntitySource
             $indexReader = new XMLIndexReader();
             $indexReader->setSource($indexXML);
             $this->indexList[] = $indexReader;
+        }
+    }
+
+    /**
+     * @return EntityManagerSource
+     */
+    public function getEntityManagerSource()
+    {
+        if ($this->entityManagerSource === null) {
+            $this->readEntityManager();
+        }
+        return $this->entityManagerSource;
+    }
+
+    /**
+     * @return void
+     */
+    private function readEntityManager()
+    {
+        $managerXMLList = $this->getXMLChildElementListByName(XMLEntityManager::ELEMENT_NAME);
+        foreach ($managerXMLList as $managerXML) {
+            $this->entityManagerSource = new XMLEntityManagerReader();
+            $this->entityManagerSource->setSource($managerXML);
+            return;
         }
     }
 
