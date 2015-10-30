@@ -13,7 +13,7 @@ use siestaphp\naming\XMLAttribute;
  */
 class Attribute implements Processable, AttributeSource, AttributeGeneratorSource
 {
-    private static $ALLOWED_PHP_TYPES = array("bool", "int", "float", "string", "DateTime");
+    private static $ALLOWED_PHP_TYPES = array("bool", "int", "float", "string", "DateTime", "json");
 
     private static $ALLOWED_AUTO_VALUE = array("", "autoincrement", "uuid");
 

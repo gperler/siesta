@@ -355,10 +355,21 @@
 
         <!-- iterate attributes -->
         <xsl:for-each select="/entity/attribute">
-            /**
-             * @var <xsl:value-of select="@type"/>
-             */
-            protected $<xsl:value-of select="@name"/>;
+            <xsl:choose>
+                <xsl:when test="@type='json'">
+                    /**
+                     * @var array
+                     */
+                    protected $<xsl:value-of select="@name"/>;
+                </xsl:when>
+                <xsl:otherwise>
+                    /**
+                     * @var <xsl:value-of select="@type"/>
+                     */
+                    protected $<xsl:value-of select="@name"/>;
+                </xsl:otherwise>
+            </xsl:choose>
+
         </xsl:for-each>
 
         <!-- iterate references -->
@@ -412,9 +423,16 @@
 
             <!-- iterate attributes -->
             <xsl:for-each select="/entity/attribute">
-                <xsl:if test="@defaultValue != ''">
-                    $this-><xsl:value-of select="@name"/> = <xsl:value-of select="@defaultValue"/>;
-                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="@type='json'">
+                        $this-><xsl:value-of select="@name"/> = null;
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:if test="@defaultValue != ''">
+                            $this-><xsl:value-of select="@name"/> = <xsl:value-of select="@defaultValue"/>;
+                        </xsl:if>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:for-each>
 
             <!-- iterate references -->
@@ -500,6 +518,9 @@
                                 . Util::quoteTime($this-><xsl:value-of select="@name"/>)
                             </xsl:when>
                         </xsl:choose>
+                    </xsl:when>
+                    <xsl:when test="@type='json'">
+                        . Util::quoteEscape($connection, json_encode($this-><xsl:value-of select="@name"/>))
                     </xsl:when>
                 </xsl:choose>
             </xsl:for-each>. ");";
@@ -641,6 +662,9 @@
                     <xsl:when test="@type='DateTime'">
                         $this-><xsl:value-of select="@name"/> = $res->getDateTime('<xsl:value-of select="@dbName"/>');
                     </xsl:when>
+                    <xsl:when test="@type='json'">
+                        $this-><xsl:value-of select="@name"/> = json_decode($res->getStringValue('<xsl:value-of select="@dbName"/>'), true);
+                    </xsl:when>
                 </xsl:choose>
             </xsl:for-each>
 
@@ -702,6 +726,9 @@
                     </xsl:when>
                     <xsl:when test="@type='DateTime'">
                         $this-><xsl:value-of select="@name"/> = $req->getDateTime('<xsl:value-of select="@name"/>');
+                    </xsl:when>
+                    <xsl:when test="@type='json'">
+                        $this-><xsl:value-of select="@name"/> = json_decode($req->getStringValue('<xsl:value-of select="@name"/>'), true);
                     </xsl:when>
                 </xsl:choose>
             </xsl:for-each>
@@ -840,6 +867,9 @@
                     <xsl:when test="@type='DateTime'">
                         "<xsl:value-of select="@name"/>" => $this-><xsl:value-of select="@name"/>
                     </xsl:when>
+                    <xsl:when test="@type='json'">
+                        "<xsl:value-of select="@name"/>" => $this-><xsl:value-of select="@name"/>
+                    </xsl:when>
                 </xsl:choose>
                 <xsl:if test="position() != last()">,</xsl:if>
             </xsl:for-each>);
@@ -906,38 +936,82 @@
 
     <xsl:template name="attributeGetterSetter">
         <xsl:for-each select="/entity/attribute">
-            /**
-             * @param <xsl:if test="@primaryKey = 'true'">bool $generateKey</xsl:if>
-             * @param string $connectionName
-             * @return <xsl:value-of select="@type"/>
-             */
-            public function get<xsl:value-of select="@methodName"/>(<xsl:if test="@primaryKey = 'true'">$generateKey=false,</xsl:if>$connectionName = null)
-            {
-                <xsl:if test="@primaryKey = 'true' and @autoValue != ''">
-                    if ($generateKey and !$this-><xsl:value-of select="@name"/>) {
+            <xsl:choose>
+                <xsl:when test="@type='json'">
+                    /**
+                     * @return null|array
+                     */
+                    public function get<xsl:value-of select="@methodName"/>() {
+                        return $this-><xsl:value-of select="@name"/>;
+                    }
+
+                    /**
+                     * @param string $key;
+                     * @return mixed
+                     */
+                    public function getFrom<xsl:value-of select="@methodName"/>($key) {
+                        return Util::getFromArray($this-><xsl:value-of select="@name"/>, $key);
+                    }
+
+
+
+                    /**
+                     * @param string $key;
+                     * @param mixed $value;
+                     * @return void
+                     */
+                    public function addTo<xsl:value-of select="@methodName"/>($key, $value) {
+                        if ($this-><xsl:value-of select="@name"/> === null) {
+                            $this-><xsl:value-of select="@name"/> = array();
+                        }
+                        $this-><xsl:value-of select="@name"/>[$key] = $value;
+                    }
+
+                    /**
+                     * @param mixed $values;
+                     * @return void
+                     */
+                    public function set<xsl:value-of select="@methodName"/>($values) {
+                        $this-><xsl:value-of select="@name"/> = $values;
+                    }
+
+                </xsl:when>
+                <xsl:otherwise>
+                    /**
+                     * @param <xsl:if test="@primaryKey = 'true'">bool $generateKey</xsl:if>
+                     * @param string $connectionName
+                     * @return <xsl:value-of select="@type"/>
+                     */
+                    public function get<xsl:value-of select="@methodName"/>(<xsl:if test="@primaryKey = 'true'">$generateKey=false,</xsl:if>$connectionName = null)
+                    {
+                        <xsl:if test="@primaryKey = 'true' and @autoValue != ''">
+                            if ($generateKey and !$this-><xsl:value-of select="@name"/>) {
+                                <xsl:choose>
+                                    <xsl:when test="@autoValue='uuid'">
+                                        $this-><xsl:value-of select="@name"/> = ServiceLocator::getUUIDGenerator()->uuid();
+                                    </xsl:when>
+                                    <xsl:when test="@autoValue='autoincrement'">
+                                        $this-><xsl:value-of select="@name"/> = ConnectionFactory::getConnection($connectionName)->getSequence("<xsl:value-of select="/entity/@table"/>");
+                                    </xsl:when>
+                                </xsl:choose>
+                            }
+                        </xsl:if>
+                        return $this-><xsl:value-of select="@name"/>;
+                    }
+
+                    /**
+                     * @param <xsl:value-of select="@type"/> $value
+                     * @return void
+                     */
+                    public function set<xsl:value-of select="@methodName"/>($value)
+                    {
                         <xsl:choose>
-                            <xsl:when test="@autoValue='uuid'">
-                                $this-><xsl:value-of select="@name"/> = ServiceLocator::getUUIDGenerator()->uuid();
-                            </xsl:when>
-                            <xsl:when test="@autoValue='autoincrement'">
-                                $this-><xsl:value-of select="@name"/> = ConnectionFactory::getConnection($connectionName)->getSequence("<xsl:value-of select="/entity/@table"/>");
-                            </xsl:when>
+                            <xsl:when test="@type='string'">$this-><xsl:value-of select="@name"/> = StringUtil::trimToNull($value, <xsl:value-of select="@length"/>);</xsl:when>
+                            <xsl:otherwise>$this-><xsl:value-of select="@name"/> = $value;</xsl:otherwise>
                         </xsl:choose>
                     }
-                </xsl:if>
-                return $this-><xsl:value-of select="@name"/>;
-            }
-
-            /**
-             * @param <xsl:value-of select="@type"/> $value
-             */
-            public function set<xsl:value-of select="@methodName"/>($value)
-            {
-                <xsl:choose>
-                    <xsl:when test="@type='string'">$this-><xsl:value-of select="@name"/> = StringUtil::trimToNull($value, <xsl:value-of select="@length"/>);</xsl:when>
-                    <xsl:otherwise>$this-><xsl:value-of select="@name"/> = $value;</xsl:otherwise>
-                </xsl:choose>
-            }
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:for-each>
     </xsl:template>
 

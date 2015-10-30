@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="Album" namespace="siestaphp\tests\functional\jsonattribute\gen" targetPath="gen">
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="attributeList" type="json" dbType="TEXT"/>
+    </entity>
+
+</entityList>
