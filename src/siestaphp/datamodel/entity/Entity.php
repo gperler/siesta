@@ -7,6 +7,7 @@ use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\Collector;
 use siestaphp\datamodel\collector\CollectorSource;
+use siestaphp\datamodel\collector\NMMapping;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\DataModelContainer;
@@ -62,6 +63,11 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      * @var Collector[]
      */
     protected $collectorList;
+
+    /**
+     * @var NMMapping[]
+     */
+    protected $neededNMLookupList;
 
     /**
      * @var StoredProcedure[]
@@ -129,6 +135,8 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function __construct()
     {
+        $this->neededNMLookupList = array();
+
         $this->attributeList = array();
 
         $this->referenceList = array();
@@ -215,7 +223,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     {
         foreach ($this->entitySource->getCollectorSourceList() as $collectorSource) {
             $collector = new Collector();
-            $collector->setSource($collectorSource);
+            $collector->setSource($this, $collectorSource);
             $this->collectorList[] = $collector;
         }
     }
@@ -284,7 +292,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
             $index->updateModel($container);
         }
 
-        foreach($this->storedProcedureList as $sp) {
+        foreach ($this->storedProcedureList as $sp) {
             $sp->updateModel($container);
         }
     }
@@ -303,33 +311,47 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     }
 
     /**
-     * @param ValidationLogger $log
+     * @param NMMapping $nmMapping
+     */
+    public function addNMMapping(NMMapping $nmMapping) {
+        $this->neededNMLookupList[] = $nmMapping;
+    }
+
+    /**
+     * @return NMMapping[]
+     */
+    public function getNMMappingSourceList() {
+        return $this->neededNMLookupList;
+    }
+
+    /**
+     * @param ValidationLogger $logger
      *
      * @return void
      */
-    public function validate(ValidationLogger $log)
+    public function validate(ValidationLogger $logger)
     {
 
-        $this->validateEntity($log);
+        $this->validateEntity($logger);
 
         foreach ($this->attributeList as $attribute) {
-            $attribute->validate($log);
+            $attribute->validate($logger);
         }
 
         foreach ($this->referenceList as $reference) {
-            $reference->validate($log);
+            $reference->validate($logger);
         }
 
         foreach ($this->collectorList as $collector) {
-            $collector->validate($log);
+            $collector->validate($logger);
         }
 
         foreach ($this->indexList as $index) {
-            $index->validate($log);
+            $index->validate($logger);
         }
 
         foreach ($this->storedProcedureList as $sp) {
-            $sp->validate($log);
+            $sp->validate($logger);
         }
     }
 

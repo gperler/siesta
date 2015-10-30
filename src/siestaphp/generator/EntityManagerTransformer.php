@@ -62,9 +62,7 @@ class EntityManagerTransformer implements Transformer
         $path->createDir();
 
         $managerFileName = $baseDir . "/" . $entityManager->getTargetPath() . "/" . $entityManager->getClassName() . ".php";
-
-        Debug::debug($managerFileName);
-
+        
         // transform xml to php class
         $this->xsltProcessor->transformToUri($domDocument, $managerFileName);
     }

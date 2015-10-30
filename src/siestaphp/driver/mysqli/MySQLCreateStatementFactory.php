@@ -11,6 +11,7 @@ use siestaphp\driver\mysqli\storedprocedures\DeleteReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\InsertStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\MySQLStoredProcedure;
+use siestaphp\driver\mysqli\storedprocedures\SelectCollectorStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectDelimitStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectStoredProcedure;
@@ -121,6 +122,11 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
         if ($source->isDelimit()) {
             $spList[] = new SelectDelimitStoredProcedure($source);
         }
+
+        foreach($source->getNMMappingSourceList() as $nmMapping) {
+            $spList[] = new SelectCollectorStoredProcedure($source, $nmMapping, $isReplication);
+        }
+
 
         return $spList;
     }

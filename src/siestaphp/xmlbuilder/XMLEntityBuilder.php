@@ -167,8 +167,19 @@ class XMLEntityBuilder extends XMLBuilder
         $this->addReferencedClassUseNames($source);
         $this->addCustomStoredProcedureList($source->getStoredProcedureSourceList());
         $this->addPrimaryKeyColumns($source);
+        $this->addNMMappingData($source);
 
     }
+
+    /**
+     * @param EntityGeneratorSource $source
+     */
+    protected function addNMMappingData(EntityGeneratorSource $source) {
+        foreach($source->getNMMappingSourceList() as $nmMapping) {
+            $xmlNMMapping = new XMLNMMappingBuilder($nmMapping, $this->domDocument, $this->domElement);
+        }
+    }
+
 
     /**
      * adds stored procedure names for default stored procedures to the XML

@@ -127,16 +127,16 @@ class IndexPart implements Processable, IndexPartSource
     }
 
     /**
-     * @param ValidationLogger $log
+     * @param ValidationLogger $logger
      *
-     * @return void
+*@return void
      */
-    public function validate(ValidationLogger $log)
+    public function validate(ValidationLogger $logger)
     {
-        $log->errorIfAttributeNotSet($this->getColumnName(), XMLIndexPart::ATTRIBUTE_COLUMN_NAME, XMLIndexPart::ELEMENT_INDEX_PART_NAME, self::VALIDATION_ERROR_INVALID_NAME);
+        $logger->errorIfAttributeNotSet($this->getColumnName(), XMLIndexPart::ATTRIBUTE_COLUMN_NAME, XMLIndexPart::ELEMENT_INDEX_PART_NAME, self::VALIDATION_ERROR_INVALID_NAME);
 
         if (!$this->columnExists) {
-            $log->error("IndexPart " . $this->getColumnName() . " from index " . $this->index->getName() . " does not refer an existing attribute or reference", self::VALIDATION_ERROR_INVALID_COLUMN);
+            $logger->error("IndexPart " . $this->getColumnName() . " from index " . $this->index->getName() . " does not refer an existing attribute or reference", self::VALIDATION_ERROR_INVALID_COLUMN);
         }
     }
 

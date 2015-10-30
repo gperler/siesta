@@ -46,7 +46,7 @@ class XMLCollectorReader extends XMLAccess implements CollectorSource
     /**
      * @return string
      */
-    public function getMapperClass()
+    public function getMappingClass()
     {
         return $this->getAttribute(XMLCollector::ATTRIBUTE_MAPPER_CLASS);
     }

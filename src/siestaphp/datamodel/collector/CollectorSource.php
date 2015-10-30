@@ -32,6 +32,6 @@ interface CollectorSource
     /**
      * @return string
      */
-    public function getMapperClass();
+    public function getMappingClass();
 
 }

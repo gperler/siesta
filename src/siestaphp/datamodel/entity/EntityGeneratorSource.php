@@ -3,6 +3,7 @@
 namespace siestaphp\datamodel\entity;
 
 use siestaphp\datamodel\attribute\AttributeGeneratorSource;
+use siestaphp\datamodel\collector\NMMappingSource;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\index\IndexGeneratorSource;
@@ -87,5 +88,11 @@ interface EntityGeneratorSource extends EntitySource
      * @return string
      */
     public function getDelimitTable();
+
+
+    /**
+     * @return NMMappingSource[]
+     */
+    public function getNMMappingSourceList();
 
 }

@@ -2,8 +2,8 @@
 
 namespace siestaphp\xmlbuilder;
 
+use siestaphp\datamodel\collector\CollectorGeneratorSource;
 use siestaphp\datamodel\collector\CollectorSource;
-use siestaphp\datamodel\collector\CollectorTransformerSource;
 use siestaphp\naming\XMLCollector;
 
 /**
@@ -33,7 +33,7 @@ class XMLCollectorBuilder extends XMLBuilder
 
         $this->addCollectorData();
 
-        if ($collectorSource instanceof CollectorTransformerSource) {
+        if ($collectorSource instanceof CollectorGeneratorSource) {
             $this->addCollectorTransformerData($collectorSource);
         }
 
@@ -49,21 +49,26 @@ class XMLCollectorBuilder extends XMLBuilder
         $this->setAttribute(XMLCollector::ATTRIBUTE_TYPE, $this->collectorSource->getType());
         $this->setAttribute(XMLCollector::ATTRIBUTE_FOREIGN_CLASS, $this->collectorSource->getForeignClass());
         $this->setAttribute(XMLCollector::ATTRIBUTE_REFERENCE_NAME, $this->collectorSource->getReferenceName());
-        $this->setAttribute(XMLCollector::ATTRIBUTE_MAPPER_CLASS, $this->collectorSource->getMapperClass());
+        $this->setAttribute(XMLCollector::ATTRIBUTE_MAPPER_CLASS, $this->collectorSource->getMappingClass());
     }
 
     /**
      * adds additional information for transformation
      *
-     * @param CollectorTransformerSource $transformerSource
+     * @param CollectorGeneratorSource $generatorSource
      *
      * @return void
      */
-    private function addCollectorTransformerData(CollectorTransformerSource $transformerSource)
+    private function addCollectorTransformerData(CollectorGeneratorSource $generatorSource)
     {
-        $this->setAttribute(XMLCollector::ATTRIBUTE_METHOD_NAME, $transformerSource->getMethodName());
-        $this->setAttribute(XMLCollector::ATTRIBUTE_FOREIGN_CONSTRUCT_CLASS, $transformerSource->getForeignConstructClass());
-        $this->setAttribute(XMLCollector::ATTRIBUTE_REFERENCE_METHOD_NAME, $transformerSource->getReferenceMethodName());
+        $this->setAttribute(XMLCollector::ATTRIBUTE_METHOD_NAME, $generatorSource->getMethodName());
+        $this->setAttribute(XMLCollector::ATTRIBUTE_FOREIGN_CONSTRUCT_CLASS, $generatorSource->getForeignConstructClass());
+        $this->setAttribute(XMLCollector::ATTRIBUTE_REFERENCE_METHOD_NAME, $generatorSource->getReferenceMethodName());
+        $this->setAttribute(XMLCollector::ATTRIBUTE_NM_MAPPING_METHOD_NAME, $generatorSource->getNMMappingMethodName());
+        $this->setAttribute(XMLCollector::ATTRIBUTE_NM_FOREIGN_METHOD_NAME, $generatorSource->getNMForeignMethodName());
+        $this->setAttribute(XMLCollector::ATTRIBUTE_NM_THIS_METHOD_NAME, $generatorSource->getNMThisMethodName());
+
+
     }
 
 }

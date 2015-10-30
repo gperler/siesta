@@ -3,7 +3,7 @@
 namespace siestaphp\tests\functional;
 
 use siestaphp\datamodel\attribute\AttributeGeneratorSource;
-use siestaphp\datamodel\collector\CollectorTransformerSource;
+use siestaphp\datamodel\collector\CollectorGeneratorSource;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\index\IndexGeneratorSource;
 use siestaphp\datamodel\index\IndexPartGeneratorSource;
@@ -184,9 +184,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param CollectorTransformerSource $collectorSource
+     * @param CollectorGeneratorSource $collectorSource
      */
-    private function testCollector(CollectorTransformerSource $collectorSource)
+    private function testCollector(CollectorGeneratorSource $collectorSource)
     {
         // get name
         $name = $collectorSource->getName();

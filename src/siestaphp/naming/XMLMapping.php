@@ -12,7 +12,7 @@ class XMLMapping
 
     const ELEMENT_MAPPING_NAME = "mapping";
 
-    const ATTRIBUTE_NAME = "name";
+    const ATTRIBUTE_METHOD_NAME = "methodNam";
 
     const ATTRIBUTE_DATABASE_NAME = "dbName";
 

@@ -82,17 +82,17 @@ class StoredProcedure implements Processable, StoredProcedureSource
     }
 
     /**
-     * @param ValidationLogger $log
+     * @param ValidationLogger $logger
      *
-     * @return void
+*@return void
      */
-    public function validate(ValidationLogger $log)
+    public function validate(ValidationLogger $logger)
     {
-        $log->errorIfAttributeNotSet($this->getName(), XMLStoredProcedure::ATTRIBUTE_NAME, XMLStoredProcedure::ATTRIBUTE_NAME, self::VALIDATION_ERROR_INVALID_NAME);
-        $log->errorIfNotInList($this->getResultType(), self::$ALLOWED_RESULT_TYPES, XMLStoredProcedure::ATTRIBUTE_RESULT_TYPE, XMLStoredProcedure::ELEMENT_STORED_PROCEDURE, self::VALIDATION_ERROR_INVALID_RESULT_TYPE);
+        $logger->errorIfAttributeNotSet($this->getName(), XMLStoredProcedure::ATTRIBUTE_NAME, XMLStoredProcedure::ATTRIBUTE_NAME, self::VALIDATION_ERROR_INVALID_NAME);
+        $logger->errorIfNotInList($this->getResultType(), self::$ALLOWED_RESULT_TYPES, XMLStoredProcedure::ATTRIBUTE_RESULT_TYPE, XMLStoredProcedure::ELEMENT_STORED_PROCEDURE, self::VALIDATION_ERROR_INVALID_RESULT_TYPE);
 
         foreach ($this->parameterList as $parameter) {
-            $parameter->validate($log);
+            $parameter->validate($logger);
         }
     }
 

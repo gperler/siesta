@@ -27,4 +27,10 @@ class XMLCollector
     const ATTRIBUTE_FOREIGN_CONSTRUCT_CLASS = "foreignConstructClass";
 
     const ATTRIBUTE_REFERENCE_METHOD_NAME = "referenceMethodName";
+
+    const ATTRIBUTE_NM_MAPPING_METHOD_NAME = "nmMethodName";
+
+    const ATTRIBUTE_NM_THIS_METHOD_NAME = "nmThisMethodName";
+
+    const ATTRIBUTE_NM_FOREIGN_METHOD_NAME = "nmForeignMethodName";
 }

@@ -19,10 +19,10 @@ interface Processable
     public function updateModel(DataModelContainer $container);
 
     /**
-     * @param ValidationLogger $log
+     * @param ValidationLogger $logger
      *
-     * @return void
+*@return void
      */
-    public function validate(ValidationLogger $log);
+    public function validate(ValidationLogger $logger);
 
 }

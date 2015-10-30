@@ -2,6 +2,8 @@
 
 namespace siestaphp\naming;
 
+use siestaphp\datamodel\collector\NMMapping;
+
 /**
  * Class StoredProcedureNaming
  * @package siestaphp\naming
@@ -22,6 +24,8 @@ class StoredProcedureNaming
     const UPDATE_SUFFIX = "_U";
 
     const INSERT_SUFFIX = "_I";
+
+
 
     /**
      * @var StoredProcedureNaming
@@ -58,6 +62,17 @@ class StoredProcedureNaming
      */
     public static function getSPFindByPrimaryKeyDelimitName($tableName) {
         return self::GI()->getUniqueName($tableName . self::FIND_BY_PRIMARY_KEY_DELIMIT);
+    }
+
+    /**
+     * @param NMMapping $nmMapping
+     *
+     * @return string
+     */
+    public static function getSPJoinCollectorNMName(NMMapping $nmMapping) {
+        $name = $nmMapping->entity->getTable() . "_" . $nmMapping->collector->getName() . "_" . $nmMapping->mappingEntity->getTable();
+
+        return self::GI()->getUniqueName($name);
     }
 
     /**

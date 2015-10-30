@@ -8,9 +8,6 @@
             namespace <xsl:value-of select="/entity/manager/@namespace"/>;
         </xsl:if>
 
-
-        use <xsl:value-of select="/entity/@constructNamespace"/>\<xsl:value-of select="/entity/@constructClass"/>;
-
         use siestaphp\driver\ConnectionFactory;
         use siestaphp\driver\ResultSet;
         use siestaphp\util\Util;
@@ -58,7 +55,7 @@
         */
         public static function getInstance() {
             if (self::$instance === null) {
-                self::$instance = new <xsl:value-of select="/entity/manager/@name"/>();
+                self::$instance = new static();
             }
             return self::$instance;
         }

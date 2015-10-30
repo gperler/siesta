@@ -49,17 +49,17 @@ class SPParameter implements Processable, SPParameterSource
     }
 
     /**
-     * @param ValidationLogger $log
+     * @param ValidationLogger $logger
      *
-     * @return void
+*@return void
      */
-    public function validate(ValidationLogger $log)
+    public function validate(ValidationLogger $logger)
 
     {
-        $log->errorIfAttributeNotSet($this->getName(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_NAME, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_NAME);
-        $log->errorIfAttributeNotSet($this->getStoredProcedureName(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_SP_NAME, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_SP_NAME);
-        $log->errorIfAttributeNotSet($this->getPHPType(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_TYPE, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_PHP_TYPE);
-        $log->errorIfAttributeNotSet($this->getDatabaseType(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_DATABASE_TYPE, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_DATABASE_TYPE);
+        $logger->errorIfAttributeNotSet($this->getName(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_NAME, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_NAME);
+        $logger->errorIfAttributeNotSet($this->getStoredProcedureName(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_SP_NAME, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_SP_NAME);
+        $logger->errorIfAttributeNotSet($this->getPHPType(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_TYPE, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_PHP_TYPE);
+        $logger->errorIfAttributeNotSet($this->getDatabaseType(), XMLStoredProcedure::ATTRIBUTE_PARAMETER_DATABASE_TYPE, XMLStoredProcedure::ELEMENT_PARAMETER, self::VALIDATION_ERROR_INVALID_DATABASE_TYPE);
 
     }
 

@@ -107,14 +107,14 @@ class Index implements Processable, IndexSource
     }
 
     /**
-     * @param ValidationLogger $log
+     * @param ValidationLogger $logger
      *
-     * @return void
+*@return void
      */
-    public function validate(ValidationLogger $log)
+    public function validate(ValidationLogger $logger)
     {
         foreach ($this->indexPartList as $indexPart) {
-            $indexPart->validate($log);
+            $indexPart->validate($logger);
         }
     }
 

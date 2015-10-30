@@ -6,6 +6,7 @@
         <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
 
         <collector name="AlbumList" type="nm" foreignClass="Album" referenceName="artist" mapperClass="ArtistSong"/>
+
     </entity>
 
     <entity name="ArtistSong" namespace="siestaphp\tests\functional\collectornm\gen" table="ArtistSong"
@@ -20,6 +21,6 @@
         <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
         <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>
 
-        <collector name="ArtistList" type="nm" foreignClass="Artist" referenceName="album" mapperClass="ArtistSong"/>
+        <collector name="artistList" type="nm" foreignClass="Artist" referenceName="album" mapperClass="ArtistSong"/>
     </entity>
 </entityList>

@@ -141,24 +141,24 @@ class Attribute implements Processable, AttributeSource, AttributeGeneratorSourc
     }
 
     /**
-     * @param ValidationLogger $log
+     * @param ValidationLogger $logger
      *
-     * @return void
+*@return void
      */
-    public function validate(ValidationLogger $log)
+    public function validate(ValidationLogger $logger)
     {
-        $log->errorIfAttributeNotSet($this->name, XMLAttribute::ATTRIBUTE_NAME, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_NAME);
+        $logger->errorIfAttributeNotSet($this->name, XMLAttribute::ATTRIBUTE_NAME, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_NAME);
 
-        $log->errorIfNotInList($this->phpType, self::$ALLOWED_PHP_TYPES, XMLAttribute::ATTRIBUTE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_PHP_TYPE);
+        $logger->errorIfNotInList($this->phpType, self::$ALLOWED_PHP_TYPES, XMLAttribute::ATTRIBUTE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_PHP_TYPE);
 
-        $log->errorIfNotInList($this->autoValue, self::$ALLOWED_AUTO_VALUE, XMLAttribute::ATTRIBUTE_AUTO_VALUE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_INVALID_AUTOVALUE);
+        $logger->errorIfNotInList($this->autoValue, self::$ALLOWED_AUTO_VALUE, XMLAttribute::ATTRIBUTE_AUTO_VALUE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_INVALID_AUTOVALUE);
 
         if (!$this->isTransient()) {
-            $log->errorIfAttributeNotSet($this->databaseType, XMLAttribute::ATTRIBUTE_DATABASE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_DATABASE_TYPE);
+            $logger->errorIfAttributeNotSet($this->databaseType, XMLAttribute::ATTRIBUTE_DATABASE_TYPE, XMLAttribute::ELEMENT_ATTRIBUTE_NAME, self::VALIDATION_ERROR_NO_DATABASE_TYPE);
         }
 
         if ($this->isPrimaryKey() and !$this->autoValue) {
-            $log->warn("Primary key '" . $this->name . "' does not have an autovalue attribute.", self::VALIDATION_ERROR_PK_WITHOUT_AUTOVALUE);
+            $logger->warn("Primary key '" . $this->name . "' does not have an autovalue attribute.", self::VALIDATION_ERROR_PK_WITHOUT_AUTOVALUE);
         }
     }
 

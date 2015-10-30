@@ -234,24 +234,24 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     }
 
     /**
-     * @param ValidationLogger $log
+     * @param ValidationLogger $logger
      *
-     * @return void
+*@return void
      */
-    public function validate(ValidationLogger $log)
+    public function validate(ValidationLogger $logger)
     {
-        $log->errorIfAttributeNotSet($this->name, XMLReference::ATTRIBUTE_NAME, XMLReference::ELEMENT_REFERENCE_NAME, self::VALIDATION_ERROR_INVALID_REFERENCE_NAME);
+        $logger->errorIfAttributeNotSet($this->name, XMLReference::ATTRIBUTE_NAME, XMLReference::ELEMENT_REFERENCE_NAME, self::VALIDATION_ERROR_INVALID_REFERENCE_NAME);
 
-        $log->errorIfNotInList($this->onDelete, self::$ALLOWED_ON_X, XMLReference::ATTRIBUTE_ON_DELETE, XMLReference::ELEMENT_REFERENCE_NAME, self::VALIDATION_ERROR_INVALID_ON_DELETE);
+        $logger->errorIfNotInList($this->onDelete, self::$ALLOWED_ON_X, XMLReference::ATTRIBUTE_ON_DELETE, XMLReference::ELEMENT_REFERENCE_NAME, self::VALIDATION_ERROR_INVALID_ON_DELETE);
 
-        $log->errorIfNotInList($this->onUpdate, self::$ALLOWED_ON_X, XMLReference::ATTRIBUTE_ON_UPDATE, XMLReference::ELEMENT_REFERENCE_NAME, self::VALIDATION_ERROR_INVALID_ON_UPDATE);
+        $logger->errorIfNotInList($this->onUpdate, self::$ALLOWED_ON_X, XMLReference::ATTRIBUTE_ON_UPDATE, XMLReference::ELEMENT_REFERENCE_NAME, self::VALIDATION_ERROR_INVALID_ON_UPDATE);
 
         if ($this->onDelete === self::ON_X_SET_NULL and $this->required) {
-            $log->error("Reference '" . $this->name . "' has required='true' but onDelete='setnull'. Either change onDelete or required", self::VALIDATION_ERROR_ON_DELETE_NULL_AND_REQUIRED);
+            $logger->error("Reference '" . $this->name . "' has required='true' but onDelete='setnull'. Either change onDelete or required", self::VALIDATION_ERROR_ON_DELETE_NULL_AND_REQUIRED);
         }
 
         if (!$this->referencedEntity) {
-            $log->error("Reference '" . $this->name . "' refers to unknown entity " . $this->foreignClass, self::VALIDATION_ERROR_REFERENCED_ENTITY_NOT_FOUND);
+            $logger->error("Reference '" . $this->name . "' refers to unknown entity " . $this->foreignClass, self::VALIDATION_ERROR_REFERENCED_ENTITY_NOT_FOUND);
         }
     }
 
