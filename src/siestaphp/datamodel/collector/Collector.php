@@ -127,6 +127,9 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      * @return string
      */
     public function getNMThisMethodName() {
+        if ($this->mappingClassEntity === null) {
+            return null;
+        }
         $reference = $this->mappingClassEntity->getReferenceByName($this->getReferenceName());
         return $reference->getMethodName();
     }
@@ -135,6 +138,9 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      * @return string
      */
     public function getNMForeignMethodName() {
+        if ($this->mappingClassEntity === null) {
+            return null;
+        }
         foreach($this->mappingClassEntity->getReferenceGeneratorSourceList() as $reference) {
             if ($reference->getForeignTable() === $this->foreignClassEntity->getTable()) {
                 return $reference->getMethodName();
