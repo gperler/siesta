@@ -8,7 +8,7 @@ use siestaphp\driver\mysqli\MySQLDriver;
 use siestaphp\exceptions\InvalidConfiguration;
 use siestaphp\util\Util;
 
-Config::getInstance();
+
 
 /**
  * Class ConnectionFactory

@@ -34,4 +34,9 @@ interface CollectorSource
      */
     public function getMappingClass();
 
+
+    /**
+     * @return CollectorFilterSource[]
+     */
+    public function getCollectorFilterSourceList();
 }

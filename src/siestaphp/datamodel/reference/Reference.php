@@ -2,6 +2,8 @@
 
 namespace siestaphp\datamodel\reference;
 
+use siestaphp\datamodel\collector\CollectorFilter;
+use siestaphp\datamodel\collector\CollectorFilterSource;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\entity\EntitySource;
@@ -102,6 +104,11 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     protected $referenceColumnList;
 
     /**
+     * @var CollectorFilter[]
+     */
+    protected $collectorFilterList;
+
+    /**
      * @var bool
      */
     protected $referenceCreatorNeeded;
@@ -119,6 +126,8 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
         $this->referenceSource = $source;
 
         $this->referenceColumnList = array();
+
+        $this->collectorFilterList = array();
 
         $this->storeReferenceData();
 
@@ -187,14 +196,12 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
             $this->updateReferencedColumnFromMapping();
         }
 
-
-
-
     }
 
-    private function updateReferencedColumnFromMapping() {
-        foreach($this->getMappingSourceList() as $mapping) {
-            foreach($this->referencedEntity->getAttributeSourceList() as $attribute) {
+    private function updateReferencedColumnFromMapping()
+    {
+        foreach ($this->getMappingSourceList() as $mapping) {
+            foreach ($this->referencedEntity->getAttributeSourceList() as $attribute) {
                 if ($mapping->getForeignName() === $attribute->getName()) {
                     $referencedSource = new ReferencedColumn();
                     $referencedSource->fromAttributeSource($attribute, $this, $mapping);
@@ -204,9 +211,8 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
         }
     }
 
-
-
-    private function updateReferencedColumnFromPK() {
+    private function updateReferencedColumnFromPK()
+    {
         $pkAttributeList = $this->referencedEntity->getPrimaryKeyAttributeList();
 
         foreach ($pkAttributeList as $pkAttribute) {
@@ -216,7 +222,6 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
             $this->referenceColumnList[] = $referencedSource;
         }
     }
-
 
     /**
      * @param $foreignName
@@ -236,7 +241,7 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     /**
      * @param ValidationLogger $logger
      *
-*@return void
+     * @return void
      */
     public function validate(ValidationLogger $logger)
     {
@@ -253,6 +258,8 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
         if (!$this->referencedEntity) {
             $logger->error("Reference '" . $this->name . "' refers to unknown entity " . $this->foreignClass, self::VALIDATION_ERROR_REFERENCED_ENTITY_NOT_FOUND);
         }
+
+
     }
 
     /**
@@ -280,6 +287,8 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
         return $this->referenceColumnList;
     }
 
+
+
     /**
      * @param string $columnName
      *
@@ -301,6 +310,20 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     public function getMappingSourceList()
     {
         return $this->referenceSource->getMappingSourceList();
+    }
+
+    /**
+     * @param CollectorFilter[] $collectorFilterList
+     */
+    public function addCollectorFilter(array $collectorFilterList) {
+        $this->collectorFilterList = array_merge($this->collectorFilterList, $collectorFilterList);
+    }
+
+    /**
+     * @return CollectorFilterSource[]
+     */
+    public function getCollectorFilterSourceList() {
+        return $this->collectorFilterList;
     }
 
     /**

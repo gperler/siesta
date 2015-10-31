@@ -2,6 +2,7 @@
 
 namespace siestaphp\xmlreader;
 
+use siestaphp\datamodel\reference\CollectorFilterSource;
 use siestaphp\datamodel\reference\MappingSource;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceSource;

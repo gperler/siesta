@@ -2,6 +2,8 @@
 
 namespace siestaphp\datamodel\reference;
 
+use siestaphp\datamodel\collector\CollectorFilterSource;
+
 /**
  * Interface ReferenceGeneratorSource
  * @package siestaphp\datamodel
@@ -48,5 +50,10 @@ interface ReferenceGeneratorSource extends ReferenceSource
      * @return string
      */
     public function getReferencedTableName();
+
+    /**
+     * @return CollectorFilterSource[]
+     */
+    public function getCollectorFilterSourceList();
 
 }

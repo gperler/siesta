@@ -58,6 +58,12 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     protected $reference;
 
+
+    /**
+     * @var CollectorFilter[]
+     */
+    protected $collectorFilterList;
+
     /**
      * @param Entity $entity
      * @param CollectorSource $source
@@ -66,6 +72,9 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     {
         $this->entity = $entity;
         $this->collectorSource = $source;
+        $this->collectorFilterList = array();
+
+
     }
 
     /**
@@ -75,6 +84,8 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     public function updateModel(DataModelContainer $container)
     {
+
+
         switch ($this->getType()) {
             case self::ONE_N:
                 $this->updateModel1N($container);
@@ -82,6 +93,10 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
             case self::N_M:
                 $this->updateModelNM($container);
                 break;
+        }
+
+        foreach ($this->collectorFilterList as $filter) {
+            $filter->updateModel($container);
         }
     }
 
@@ -96,6 +111,15 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
 
         if ($this->foreignClassEntity) {
             $this->reference = $this->foreignClassEntity->getReferenceByName($this->getReferenceName());
+
+
+            foreach ($this->collectorSource->getCollectorFilterSourceList() as $filterSource) {
+                $this->collectorFilterList[] = new CollectorFilter($this->foreignClassEntity, $this, $filterSource);
+            }
+        }
+
+        if ($this->reference) {
+            $this->reference->addCollectorFilter($this->collectorFilterList);
         }
     }
 
@@ -157,6 +181,10 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     public function validate(ValidationLogger $logger)
     {
+        foreach ($this->collectorFilterList as $filter) {
+            $filter->validate($logger);
+        }
+
         if (!$this->getName()) {
             $logger->error("Collector without name found", self::VALIDATION_ERROR_INVALID_NAME);
         }
@@ -199,6 +227,14 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         if (!$this->mappingClassEntity) {
             $logger->error("Collector '" . $this->getName() . "' refers to unknown mapping entity " . $this->getMappingClass(), self::VALIDATION_ERROR_INVALID_MAPPING_CLASS);
         }
+    }
+
+    /**
+     * @return CollectorFilterSource[]
+     */
+    public function getCollectorFilterSourceList()
+    {
+        return $this->collectorFilterList;
     }
 
     /**

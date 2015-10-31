@@ -173,6 +173,35 @@
                 </xsl:for-each>
                 return self::executeStoredProcedure("CALL <xsl:value-of select="@spFinderName"/>(<xsl:for-each select="column">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
             }
+
+            <xsl:variable name="referenceMethodName" select="@methodName"/>
+            <xsl:variable name="columnList" select="column"/>
+            <xsl:for-each select="filter">
+                /**
+                 * <xsl:for-each select="$columnList">
+                 * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
+                 * </xsl:for-each>
+                 * <xsl:for-each select="parameter">
+                 * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
+                 * </xsl:for-each>
+                 * @param string $connectionName
+                 * @return <xsl:value-of select="/entity/@constructClass"/>[]
+                 */
+                public static function getEntityBy<xsl:value-of select="$referenceMethodName"/>Filter<xsl:value-of select="@name"/>(<xsl:for-each select="$columnList">$<xsl:value-of select="@name"/>,</xsl:for-each><xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
+                {
+                    $connection = ConnectionFactory::getConnection($connectionName);
+                    <xsl:for-each select="$columnList">
+                        $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
+                    </xsl:for-each>
+                    return self::executeStoredProcedure("CALL <xsl:value-of select="@spName"/>(<xsl:for-each select="$columnList">'$<xsl:value-of select="@name"/>',</xsl:for-each><xsl:for-each select="parameter">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
+                }
+            </xsl:for-each>
+            <!--
+             <filter name="ByName" filter="name = P_NAME" spName="LABEL_FBC_artistListByName">
+      <parameter name="name" type="string"/>
+    </filter>
+            -->
+
         </xsl:for-each>
     </xsl:template>
 
@@ -953,8 +982,6 @@
                         return Util::getFromArray($this-><xsl:value-of select="@name"/>, $key);
                     }
 
-
-
                     /**
                      * @param string $key;
                      * @param mixed $value;
@@ -978,11 +1005,13 @@
                 </xsl:when>
                 <xsl:otherwise>
                     /**
-                     * @param <xsl:if test="@primaryKey = 'true'">bool $generateKey</xsl:if>
-                     * @param string $connectionName
+                     * <xsl:if test="@primaryKey = 'true'">
+                     * @param bool $generateKey
+                     * @param string $connectionName</xsl:if>
+                     *
                      * @return <xsl:value-of select="@type"/>
                      */
-                    public function get<xsl:value-of select="@methodName"/>(<xsl:if test="@primaryKey = 'true'">$generateKey=false,</xsl:if>$connectionName = null)
+                    public function get<xsl:value-of select="@methodName"/>(<xsl:if test="@primaryKey = 'true'">$generateKey=false, $connectionName = null</xsl:if>)
                     {
                         <xsl:if test="@primaryKey = 'true' and @autoValue != ''">
                             if ($generateKey and !$this-><xsl:value-of select="@name"/>) {
@@ -1097,15 +1126,16 @@
                 <xsl:when test="@type='1n'">
                     /**
                      * @param bool $forceReload
+                     * @param string $connectionName
                      * @return <xsl:value-of select="@foreignConstructClass"/>[]
                      */
-                    public function get<xsl:value-of select="@methodName"/>($forceReload=false)
+                    public function get<xsl:value-of select="@methodName"/>($forceReload=false, $connectionName = null)
                     {
                         if ($this-><xsl:value-of select="@name"/> === null or $forceReload) {
                             $this-><xsl:value-of select="@name"/> = <xsl:value-of select="@foreignConstructClass"/>::getEntityBy<xsl:value-of select="@referenceMethodName"/>Reference(
                              <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
-                                $this->get<xsl:value-of select="@methodName"/>(true)<xsl:if test="position() != last()">,</xsl:if>
-                            </xsl:for-each>);
+                                $this->get<xsl:value-of select="@methodName"/>(true),
+                            </xsl:for-each>$connectionName);
 
                             foreach($this-><xsl:value-of select="@name"/> as $e) {
                                 $e->set<xsl:value-of select="@referenceMethodName"/>($this);
@@ -1113,6 +1143,23 @@
                         }
                         return $this-><xsl:value-of select="@name"/>;
                     }
+
+                    <xsl:variable name="methodName" select="@methodName"/>
+                    <xsl:variable name="referenceMethodName" select="@referenceMethodName"/>
+                    <xsl:variable name="foreignConstructClass" select="@foreignConstructClass"/>
+                    <xsl:for-each select="filter">
+                        /**
+                         * <xsl:for-each select="parameter">
+                         * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
+                         * </xsl:for-each>
+                         * @param string $connectionName
+                         * @return <xsl:value-of select="$foreignConstructClass"/>[]
+                         */
+                        public function get<xsl:value-of select="$methodName"/>Filter<xsl:value-of select="@name"/>(<xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
+                        {
+                            return <xsl:value-of select="$foreignConstructClass"/>::getEntityBy<xsl:value-of select="$referenceMethodName"/>Filter<xsl:value-of select="@name"/>(<xsl:for-each select="/entity/attribute[@primaryKey = 'true']">$this->get<xsl:value-of select="@methodName"/>(true), </xsl:for-each><xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName);
+                        }
+                    </xsl:for-each>
 
                     /**
                      *

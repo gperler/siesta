@@ -13,6 +13,7 @@ use siestaphp\driver\mysqli\storedprocedures\InsertStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\MySQLStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectCollectorStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectDelimitStoredProcedure;
+use siestaphp\driver\mysqli\storedprocedures\SelectReferenceFilterStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\SelectStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\UpdateStoredProcedure;
@@ -113,6 +114,10 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
         foreach ($source->getReferenceGeneratorSourceList() as $reference) {
             $spList[] = new SelectReferenceStoredProcedure($source, $reference, $isReplication);
             $spList[] = new DeleteReferenceStoredProcedure($source, $reference, $isReplication);
+
+            foreach ($reference->getCollectorFilterSourceList() as $filter) {
+                $spList[] = new SelectReferenceFilterStoredProcedure($source,$reference,$filter, $isReplication);
+            }
         }
 
         foreach ($source->getStoredProcedureSourceList() as $sp) {
@@ -126,6 +131,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
         foreach($source->getNMMappingSourceList() as $nmMapping) {
             $spList[] = new SelectCollectorStoredProcedure($source, $nmMapping, $isReplication);
         }
+
 
 
         return $spList;

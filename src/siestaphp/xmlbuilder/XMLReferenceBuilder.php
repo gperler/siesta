@@ -2,12 +2,17 @@
 
 namespace siestaphp\xmlbuilder;
 
+use siestaphp\datamodel\collector\CollectorFilterSource;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
+use siestaphp\datamodel\storedprocedure\SPParameterSource;
 use siestaphp\naming\XMLAttribute;
+use siestaphp\naming\XMLCollector;
+use siestaphp\naming\XMLCollectorFilter;
 use siestaphp\naming\XMLMapping;
 use siestaphp\naming\XMLReference;
+use siestaphp\naming\XMLStoredProcedure;
 
 /**
  * Class XMLAttributeBuilder
@@ -75,27 +80,31 @@ class XMLReferenceBuilder extends XMLBuilder
     /**
      * adds information about the reference for transformation including referenced columns
      *
-     * @param ReferenceGeneratorSource $referenceTransformerSource
+     * @param ReferenceGeneratorSource $referenceGeneratorSource
      *
      * @return void
      */
-    protected function addGeneratorData(ReferenceGeneratorSource $referenceTransformerSource)
+    protected function addGeneratorData(ReferenceGeneratorSource $referenceGeneratorSource)
     {
 
         // add derived data
-        $this->setAttribute(XMLReference::ATTRIBUTE_METHOD_NAME, $referenceTransformerSource->getMethodName());
-        $this->setAttribute(XMLReference::ATTRIBUTE_FOREIGN_CONSTRUCT_CLASS, $referenceTransformerSource->getReferencedConstructClass());
-        $this->setAttribute(XMLReference::ATTRIBUTE_SP_FINDER_NAME, $referenceTransformerSource->getStoredProcedureFinderName());
-        $this->setAttribute(XMLReference::ATTRIBUTE_SP_DELETER_NAME, $referenceTransformerSource->getStoredProcedureDeleterName());
-        $this->setAttribute(XMLReference::ATTRIBUTE_FOREIGN_METHOD_NAME, $referenceTransformerSource->getForeignMethodName());
-        $this->setAttributeAsBool(XMLReference::ATTRIBUTE_SP_REFERENCE_CREATOR_NEEDED, $referenceTransformerSource->isReferenceCreatorNeeded());
+        $this->setAttribute(XMLReference::ATTRIBUTE_METHOD_NAME, $referenceGeneratorSource->getMethodName());
+        $this->setAttribute(XMLReference::ATTRIBUTE_FOREIGN_CONSTRUCT_CLASS, $referenceGeneratorSource->getReferencedConstructClass());
+        $this->setAttribute(XMLReference::ATTRIBUTE_SP_FINDER_NAME, $referenceGeneratorSource->getStoredProcedureFinderName());
+        $this->setAttribute(XMLReference::ATTRIBUTE_SP_DELETER_NAME, $referenceGeneratorSource->getStoredProcedureDeleterName());
+        $this->setAttribute(XMLReference::ATTRIBUTE_FOREIGN_METHOD_NAME, $referenceGeneratorSource->getForeignMethodName());
+        $this->setAttributeAsBool(XMLReference::ATTRIBUTE_SP_REFERENCE_CREATOR_NEEDED, $referenceGeneratorSource->isReferenceCreatorNeeded());
 
         // attach referenced columns to xml
-        $referencedColumnList = $referenceTransformerSource->getReferencedColumnList();
+        $referencedColumnList = $referenceGeneratorSource->getReferencedColumnList();
         foreach ($referencedColumnList as $referencedColumn) {
             $this->addReferencedColumn($this->domElement, $referencedColumn);
         }
 
+        // attach collector filter
+        foreach($referenceGeneratorSource->getCollectorFilterSourceList() as $filter) {
+            $this->addCollectorFilter($filter);
+        }
     }
 
     /**
@@ -119,6 +128,40 @@ class XMLReferenceBuilder extends XMLBuilder
         $xmlReferencedColumn->setAttribute(XMLReference::ATTRIBUTE_COLUMN_REFERENCED_METHOD_NAME, $referencedColumn->getReferencedColumnMethodName());
 
         $xmlReferencedColumn->setAttribute(XMLAttribute::ATTRIBUTE_CONST_DB_NAME, strtoupper($referencedColumn->getDatabaseName()));
+
+    }
+
+    /**
+     * @param CollectorFilterSource $filterSource
+     */
+    protected function addCollectorFilter(CollectorFilterSource $filterSource)
+    {
+        $xmlCollectorFilter = $this->createElement($this->domElement, XMLCollectorFilter::ELEMENT_FILTER_NAME);
+        $xmlCollectorFilter->setAttribute(XMLCollectorFilter::ATTRIBUTE_FILTER_NAME, $filterSource->getName());
+        $xmlCollectorFilter->setAttribute(XMLCollectorFilter::ATTRIBUTE_FILTER_FILTER, $filterSource->getFilter());
+        $xmlCollectorFilter->setAttribute(XMLCollectorFilter::ATTRIBUTE_SP_NAME, $filterSource->getSPName());
+
+        foreach ($filterSource->getSPParameterList() as $parameter) {
+            $this->addParameter($xmlCollectorFilter, $parameter);
+        }
+    }
+
+    /**
+     * adds information about a parameter (name, type)
+     *
+     * @param \DOMElement $parent
+     * @param SPParameterSource $source
+     *
+     * @return void
+     */
+    private function addParameter(\DOMElement $parent, SPParameterSource $source)
+    {
+        // create xml container
+        $xmlParameter = $this->createElement($parent, XMLStoredProcedure::ELEMENT_PARAMETER);
+
+        // add attributes
+        $xmlParameter->setAttribute(XMLStoredProcedure::ATTRIBUTE_PARAMETER_NAME, $source->getName());
+        $xmlParameter->setAttribute(XMLStoredProcedure::ATTRIBUTE_PARAMETER_TYPE, $source->getPHPType());
 
     }
 

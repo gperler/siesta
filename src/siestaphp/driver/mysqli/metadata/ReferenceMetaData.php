@@ -288,5 +288,4 @@ class ReferenceMetaData implements ReferenceSource
     {
         return $this->isPrimaryKey;
     }
-
 }

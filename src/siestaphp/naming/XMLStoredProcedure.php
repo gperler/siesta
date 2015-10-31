@@ -25,7 +25,6 @@ class XMLStoredProcedure
     const ATTRIBUTE_DATABASE_NAME = "databaseName";
 
     // <parameter name="" spName="" type="" dbType="" referenceType/>
-    const ELEMENT_PARAMETER_LIST = "parameter";
 
     const ELEMENT_PARAMETER = "parameter";
 

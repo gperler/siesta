@@ -5091,7 +5091,7 @@
         <line num="51" type="stmt" count="15"/>
         <line num="52" type="stmt" count="15"/>
         <line num="53" type="stmt" count="15"/>
-        <line num="62" type="method" name="addCollectorTransformerData" crap="1" count="15"/>
+        <line num="62" type="method" name="addCollectorGeneratorData" crap="1" count="15"/>
         <line num="64" type="stmt" count="15"/>
         <line num="65" type="stmt" count="15"/>
         <line num="66" type="stmt" count="15"/>

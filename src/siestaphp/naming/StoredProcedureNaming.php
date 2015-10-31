@@ -17,6 +17,8 @@ class StoredProcedureNaming
 
     const FIND_BY_REFERENCE = "_FBR_";
 
+    const FIND_BY_COLLECTOR = "_FBC_";
+
     const DELETE_BY_REFERENCE = "_DBR_";
 
     const DELETE_BY_PRIMARY_KEY_SUFFIX = "_DBPK";
@@ -98,6 +100,17 @@ class StoredProcedureNaming
     public static function getSPFindByReferenceName($tableName, $referenceName)
     {
         return self::GI()->getUniqueName($tableName . self::FIND_BY_REFERENCE . $referenceName);
+    }
+
+    /**
+     * @param string $tableName
+     * @param string $referenceName
+     * @param string $filerName
+     *
+     * @return string
+     */
+    public static function getSPFinByCollectorFilterName($tableName, $referenceName, $filerName) {
+        return self::GI()->getUniqueName($tableName . self::FIND_BY_COLLECTOR . $referenceName . $filerName);
     }
 
     /**
