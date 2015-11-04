@@ -1,13 +1,28 @@
 # Siesta
 Stored procedure based ORM for php
-Installation with composer`
+Installation with composer
 
 ```
 composer require gm314/siesta
 ```
+# Example
+In this example we create an Artist and Label entity, and configure the relationship between them:
 
-# Documentation:
-[https://gperler.github.io](https://gperler.github.io)
+```php
+$artist = new Artist();
+$artist->setName("Jamie Woon");
+
+$label = new Label();
+$label->setName("PMR");
+$label->setCity("London");
+$label->addToArtistList($artist);
+
+// save with cascade. will store both label and artist
+$label->save(true);
+```
+
+# Documentation
+For full documentation, please visit [https://gperler.github.io](https://gperler.github.io)
 
 
 # Console Commands
