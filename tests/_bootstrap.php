@@ -6,3 +6,5 @@ require_once 'vendor/autoload.php';
 
 // configure database
 \siestaphp\Config::getInstance(__DIR__ . "/siesta.test.config.json");
+
+\siestaphp\driver\ConnectionFactory::getConnection()->enableForeignKeyChecks();

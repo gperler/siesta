@@ -2,6 +2,7 @@
 
 namespace siestaphp\tests\functional;
 
+use siestaphp\driver\ConnectionFactory;
 use siestaphp\tests\functional\bidirectional\gen\Address;
 use siestaphp\tests\functional\bidirectional\gen\Customer;
 
@@ -34,7 +35,6 @@ class BidirectionalTest extends SiestaTester
 
     public function testAssignment()
     {
-        $this->markTestSkipped();
 
         $customer = new Customer();
         $customer->setName("Columbo");
@@ -47,7 +47,10 @@ class BidirectionalTest extends SiestaTester
         $this->assertSame($address->getId(), $customer->getAddressId(), "Bidirectional IDs not set");
         $this->assertSame($customer->getId(), $address->getCustomerId(), "Bidirectional IDs not set");
 
+        $connection = ConnectionFactory::getInstance()->getConnection();
+        $connection->disableForeignKeyChecks();
         $customer->save(true);
+        $connection->enableForeignKeyChecks();
 
         // load customer
         $customer = Customer::getEntityByPrimaryKey(1);

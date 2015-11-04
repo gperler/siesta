@@ -2,6 +2,7 @@
 
 namespace siestaphp\tests\functional;
 
+use Codeception\Util\Debug;
 use siestaphp\tests\functional\reference\gen\ArtistEntity;
 use siestaphp\tests\functional\reference\gen\LabelEntity;
 
@@ -27,7 +28,7 @@ class ReferenceTest extends SiestaTester
 
     protected function tearDown()
     {
-        $this->dropDatabase();
+        //$this->dropDatabase();
 
     }
 
@@ -42,8 +43,8 @@ class ReferenceTest extends SiestaTester
         $artist->setName("Richard Dorfmeister");
         $artist->setDob(\siestaphp\runtime\Factory::newDateTime());
 
-        $artist->save();
-        $label->save();
+        // save artist cascading
+        $artist->save(true);
 
         // check that the entity can be loaded again
         $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId());

@@ -5,9 +5,7 @@
         <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
         <attribute name="dob" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"/>
 
-        <reference name="address" foreignClass="Address" relationName="_customer_address_">
-            <column foreignColumn="id" name="FK_LALAL"/>
-        </reference>
+        <reference name="address" foreignClass="Address" relationName="_customer_address_"/>
     </entity>
 
     <entity name="Address" namespace="siestaphp\tests\functional\bidirectional\gen" table="Address" targetPath="gen">

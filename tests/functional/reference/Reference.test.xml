@@ -7,15 +7,14 @@
         <attribute name="dob" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"/>
 
         <reference name="label" foreignClass="LabelEntity" required="false">
-            <mapping name="localName" dbName="dbLocalName" foreignName="id"/>
         </reference>
 
     </entity>
 
     <entity name="LabelEntity" table="LABEL" namespace="siestaphp\tests\functional\reference\gen" targetPath="gen">
-        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
-        <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>
-        <attribute name="city" type="string" dbName="CITY" dbType="VARCHAR(100)"/>
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="city" type="string" dbType="VARCHAR(100)"/>
     </entity>
 
 </entityList>

@@ -196,12 +196,6 @@
                     return self::executeStoredProcedure("CALL <xsl:value-of select="@spName"/>(<xsl:for-each select="$columnList">'$<xsl:value-of select="@name"/>',</xsl:for-each><xsl:for-each select="parameter">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
                 }
             </xsl:for-each>
-            <!--
-             <filter name="ByName" filter="name = P_NAME" spName="LABEL_FBC_artistListByName">
-      <parameter name="name" type="string"/>
-    </filter>
-            -->
-
         </xsl:for-each>
     </xsl:template>
 
@@ -233,6 +227,7 @@
              * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
              * </xsl:for-each>
              * @param string $connectionName
+             * @return void
              */
             public static function deleteEntityBy<xsl:value-of select="@methodName"/>Reference(<xsl:for-each select="column">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
             {
@@ -352,6 +347,7 @@
        /**
         * @param $objectList <xsl:value-of select="/entity/@constructClass"/>[]
         * @param string $connectionName
+        * @return void
         */
         public static function batchSave(array $objectList, $connectionName = null)
         {
@@ -560,6 +556,7 @@
          * @param bool $cascade
          * @param Passport $passport
          * @param string $connectionName
+         * @return void
          */
         public function save($cascade = false, $passport=null, $connectionName=null)
         {
@@ -579,7 +576,7 @@
 
             <!-- start cascade for referenced entities -->
             <xsl:for-each select="/entity/reference">
-                if ($this-><xsl:value-of select="@name"/>Obj !== null) {
+                if ($cascade and $this-><xsl:value-of select="@name"/>Obj !== null) {
                     $this-><xsl:value-of select="@name"/>Obj->save($cascade, $passport,$connectionName);
                 }
             </xsl:for-each>
@@ -667,6 +664,7 @@
     <xsl:template name="fromResultSet">
        /**
         * @param ResultSet $res
+        * @return void
         */
         public function initializeFromResultSet(ResultSet $res)
         {
@@ -733,8 +731,9 @@
 
     <xsl:template name="fromHttpRequest">
         /**
-        * @param HttpRequest $req
-        */
+         * @param HttpRequest $req
+         * @return void
+         */
         public function initializeFromHttpRequest(HttpRequest $req)
         {
             $this->_existing = $req->getBooleanValue("_existing");
@@ -780,6 +779,7 @@
     <xsl:template name="fromArray">
         /**
          * @param string $jsonString
+         * @return void
          */
         public function fromJSON($jsonString)
         {
@@ -797,6 +797,7 @@
 
         /**
          * @param array $data
+         * @return void
          */
         public function fromArray(array $data)
         {
@@ -975,6 +976,13 @@
                     }
 
                     /**
+                     * @return string
+                     */
+                    public function get<xsl:value-of select="@methodName"/>JSON() {
+                        return json_encode($this-><xsl:value-of select="@name"/>);
+                    }
+
+                    /**
                      * @param string $key;
                      * @return mixed
                      */
@@ -1082,6 +1090,7 @@
             /**
              * @param <xsl:value-of select="@foreignConstructClass"/> $object
              * <xsl:if test="@referenceCretorNeeded='true'">@param bool $backlink</xsl:if>
+             * @return void
              */
             public function set<xsl:value-of select="@methodName"/>($object<xsl:if test="@referenceCretorNeeded='true'">, $backlink=true</xsl:if>)
             {
@@ -1108,6 +1117,7 @@
             <xsl:for-each select="column">
                 /**
                 * @param <xsl:value-of select="@type"/> $id
+                * @return void
                 */
                 public function set<xsl:value-of select="@methodName"/>($id)
                 {
@@ -1162,7 +1172,7 @@
                     </xsl:for-each>
 
                     /**
-                     *
+                     * @return void
                      */
                     public function deleteAll<xsl:value-of select="@methodName"/>()
                     {
@@ -1176,6 +1186,7 @@
 
                     /**
                      * @param <xsl:value-of select="@foreignConstructClass"/> $object
+                     * @return void
                      */
                     public function addTo<xsl:value-of select="@methodName"/>(<xsl:value-of select="@foreignConstructClass"/> $object)
                     {
@@ -1206,6 +1217,7 @@
 
                     /**
                      * @param <xsl:value-of select="@foreignConstructClass"/> $object
+                     * @return void
                      */
                     public function addTo<xsl:value-of select="@methodName"/>(<xsl:value-of select="@foreignConstructClass"/> $object) {
                         $mappingElement = new <xsl:value-of select="@mapperClass"/>();

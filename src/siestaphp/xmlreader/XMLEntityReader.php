@@ -252,6 +252,14 @@ class XMLEntityReader extends XMLAccess implements EntitySource
     /**
      * @return string
      */
+    public function getConstructFactory()
+    {
+        return $this->getAttribute(XMLEntity::ATTRIBUTE_CONSTRUCTOR_NAMESPACE);
+    }
+
+    /**
+     * @return string
+     */
     public function getTable()
     {
         return $this->getAttribute(XMLEntity::ATTRIBUTE_TABLE);
