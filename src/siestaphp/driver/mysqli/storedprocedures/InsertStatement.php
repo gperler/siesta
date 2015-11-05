@@ -1,17 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 20.10.15
- * Time: 22:56
- */
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
 use siestaphp\datamodel\delimit\DelimitAttribute;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\mysqli\MySQLDriver;
-use siestaphp\driver\mysqli\replication\Replication;
 
 /**
  * Class InsertStatement
@@ -58,6 +51,7 @@ class InsertStatement
 
     /**
      * @param string $tableName
+     *
      * @return string
      */
     public function buildInsert($tableName)

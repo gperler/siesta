@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 14.10.15
- * Time: 15:20
- */
 
 namespace siestaphp\migrator;
 

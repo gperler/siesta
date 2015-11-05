@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 20.10.15
- * Time: 00:42
- */
 
 namespace siestaphp\exceptions;
 

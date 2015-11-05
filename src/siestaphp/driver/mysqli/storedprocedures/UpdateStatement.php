@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gregor
- * Date: 20.10.15
- * Time: 23:28
- */
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
@@ -69,6 +63,7 @@ class UpdateStatement
 
     /**
      * @param string $tableName
+     *
      * @return string
      */
     public function buildUpdate($tableName)
@@ -81,7 +76,8 @@ class UpdateStatement
     /**
      * @return string
      */
-    public function buildDelimitUpdate() {
+    public function buildDelimitUpdate()
+    {
         $tableName = MySQLDriver::quote($this->entity->getDelimitTable());
         $where = implode(" AND ", $this->whereList);
         return sprintf(self::DELIMTER_UPDATE, $tableName, $where);
