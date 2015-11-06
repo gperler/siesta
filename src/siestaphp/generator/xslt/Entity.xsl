@@ -290,7 +290,7 @@
 
                 $spCall = "CALL <xsl:value-of select="@databaseName"/>("
                 <xsl:for-each select="parameter">
-                    . "'$<xsl:value-of select="@name"/>'"
+                    . "'$<xsl:value-of select="@name"/>'"<xsl:if test="position() != last()">.","</xsl:if>
                 </xsl:for-each>.")";
 
                 <xsl:choose>
