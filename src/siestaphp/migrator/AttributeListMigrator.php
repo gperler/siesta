@@ -128,12 +128,15 @@ class AttributeListMigrator
     {
         // no as-is create the column
         if ($asIs === null) {
+            if ($toBe !== null and $toBe->isTransient()) {
+                return;
+            }
             $this->addStatementList[] = $this->columnMigrator->createAddColumnStatement($toBe);
             return;
         }
 
         // no to-be drop the column
-        if ($toBe === null) {
+        if ($toBe === null or $toBe->isTransient()) {
             $this->dropStatementList[] = $this->columnMigrator->createDropColumnStatement($asIs);
             return;
         }
