@@ -336,7 +336,15 @@
          */
         public static function createInstanceFromResultSet(ResultSet $res)
         {
-            $entity = new <xsl:value-of select="/entity/@constructClass"/>();
+            <xsl:choose>
+                <xsl:when test="/entity/@constructFactory != ''">
+                    $entity = <xsl:value-of select="/entity/@constructFactory"/>;
+                </xsl:when>
+                <xsl:otherwise>
+                    $entity = new <xsl:value-of select="/entity/@constructClass"/>();
+                </xsl:otherwise>
+            </xsl:choose>
+
             $entity->initializeFromResultSet($res);
             return $entity;
         }

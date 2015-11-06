@@ -69,7 +69,7 @@ class TableMetadata implements EntitySource
      * @param string $targetNamespace
      * @param string $targetPath
      */
-    public function __construct(Connection $connection, TableDTO $tableDTO, $targetNamespace, $targetPath )
+    public function __construct(Connection $connection, TableDTO $tableDTO, $targetNamespace, $targetPath)
     {
         $this->tableName = $tableDTO->name;
         $this->targetPath = $targetPath;
@@ -316,6 +316,22 @@ class TableMetadata implements EntitySource
     public function getConstructorNamespace()
     {
         return "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getConstructFactory()
+    {
+        return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConstructFactoryFqn()
+    {
+        return null;
     }
 
     /**

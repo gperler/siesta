@@ -21,6 +21,8 @@ class XMLEntity
 
     const ATTRIBUTE_CONSTRUCT_FACTORY = "constructFactory";
 
+    const ATTRIBUTE_CONSTRUCT_FACTORY_FQN = "constructFactoryFqn";
+
     const ATTRIBUTE_TABLE = "table";
 
     const ATTRIBUTE_DELIMIT = "delimit";

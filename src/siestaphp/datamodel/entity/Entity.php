@@ -272,7 +272,11 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     public function updateModel(DataModelContainer $container)
     {
         if ($this->constructorClass !== $this->className) {
-            $this->usedFQNClassNameList[] = $this->getFullyQualifiedClassName();
+            $this->addToUsedFQClassNames($this->getFullyQualifiedClassName());
+        }
+
+        if ($this->entitySource->getConstructFactoryFqn()) {
+            $this->addToUsedFQClassNames($this->entitySource->getConstructFactoryFqn());
         }
 
         foreach ($this->attributeList as $attribute) {
@@ -304,6 +308,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     private function addToUsedFQClassNames($fqClassName)
     {
+
         if (!in_array($fqClassName, $this->usedFQNClassNameList)) {
             $this->usedFQNClassNameList[] = $fqClassName;
         }
@@ -313,14 +318,16 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     /**
      * @param NMMapping $nmMapping
      */
-    public function addNMMapping(NMMapping $nmMapping) {
+    public function addNMMapping(NMMapping $nmMapping)
+    {
         $this->neededNMLookupList[] = $nmMapping;
     }
 
     /**
      * @return NMMapping[]
      */
-    public function getNMMappingSourceList() {
+    public function getNMMappingSourceList()
+    {
         return $this->neededNMLookupList;
     }
 
@@ -596,6 +603,22 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     public function getConstructorNamespace()
     {
         return $this->constructorNamespace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConstructFactory()
+    {
+        $this->entitySource->getConstructFactory();
+    }
+
+    /**
+     * @return string
+     */
+    public function getConstructFactoryFqn()
+    {
+        return $this->entitySource->getConstructFactoryFqn();
     }
 
     /**

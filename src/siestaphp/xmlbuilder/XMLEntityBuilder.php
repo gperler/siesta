@@ -4,13 +4,11 @@ namespace siestaphp\xmlbuilder;
 
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
-use siestaphp\datamodel\storedprocedure\StoredProcedure;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\naming\StoredProcedureNaming;
 use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLEntity;
 use siestaphp\naming\XMLStoredProcedure;
-use siestaphp\runtime\Factory;
 
 /**
  * Class XMLEntityBuilder builds the Entity XML for transformation or reverse engineering
@@ -92,6 +90,7 @@ class XMLEntityBuilder extends XMLBuilder
         $this->setAttribute(XMLEntity::ATTRIBUTE_CONSTRUCTOR_NAMESPACE, $this->entitySource->getConstructorNamespace());
         $this->setAttribute(XMLEntity::ATTRIBUTE_TARGET_PATH, $this->entitySource->getTargetPath());
         $this->setAttribute(XMLEntity::ATTRIBUTE_TABLE, $this->entitySource->getTable());
+        $this->setAttribute(XMLEntity::ATTRIBUTE_CONSTRUCT_FACTORY, $this->entitySource->getConstructFactory());
         $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_DELIMIT, $this->entitySource->isDelimit());
 
     }
@@ -146,11 +145,10 @@ class XMLEntityBuilder extends XMLBuilder
 
     /**
      * adds data that is used for transformation
-
      *
-*@param EntityGeneratorSource $source
+     * @param EntityGeneratorSource $source
      *
-*@return void
+     * @return void
      */
     private function addTransformerData(EntityGeneratorSource $source)
     {
@@ -161,7 +159,6 @@ class XMLEntityBuilder extends XMLBuilder
         $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_REFERENCES, $source->hasReferences());
         $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_ATTRIBUTES, $source->hasAttributes());
         $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_HAS_PRIMARY_KEY, $source->hasPrimaryKey());
-
 
         $this->addStoredProcedureNames();
         $this->addReferencedClassUseNames($source);
@@ -174,12 +171,12 @@ class XMLEntityBuilder extends XMLBuilder
     /**
      * @param EntityGeneratorSource $source
      */
-    protected function addNMMappingData(EntityGeneratorSource $source) {
-        foreach($source->getNMMappingSourceList() as $nmMapping) {
+    protected function addNMMappingData(EntityGeneratorSource $source)
+    {
+        foreach ($source->getNMMappingSourceList() as $nmMapping) {
             $xmlNMMapping = new XMLNMMappingBuilder($nmMapping, $this->domDocument, $this->domElement);
         }
     }
-
 
     /**
      * adds stored procedure names for default stored procedures to the XML

@@ -69,6 +69,16 @@ interface EntitySource
     /**
      * @return string
      */
+    public function getConstructFactory();
+
+    /**
+     * @return string
+     */
+    public function getConstructFactoryFqn();
+
+    /**
+     * @return string
+     */
     public function getTable();
 
     /**
