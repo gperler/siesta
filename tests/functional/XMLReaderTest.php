@@ -60,13 +60,16 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         $definition = XMLReaderXML::getEntityDefinition();
         $artistEntity = $this->loadArtistEntity();
 
-        $this->assertSame($artistEntity->getClassName(), $definition["name"], "name is not correct");
-        $this->assertSame($artistEntity->getClassNamespace(), $definition["namespace"], "namespace is not correct");
-        $this->assertSame($artistEntity->getConstructorClass(), $definition["constructClass"], "constructClass is not correct");
-        $this->assertSame($artistEntity->getConstructorNamespace(), $definition["constructNamespace"], "constructNamespace is not correct");
-        $this->assertSame($artistEntity->getTable(), $definition["table"], "table is not correct");
-        $this->assertSame($artistEntity->isDelimit(), $definition["delimit"], "delimit is not correct");
-        $this->assertSame($artistEntity->getTargetPath(), $definition["targetPath"], "targetPath is not correct");
+        $this->assertSame($definition["name"], $artistEntity->getClassName(), "name is not correct");
+        $this->assertSame($definition["namespace"], $artistEntity->getClassNamespace(), "namespace is not correct");
+        $this->assertSame($definition["constructClass"], $artistEntity->getConstructorClass(), "constructClass is not correct");
+        $this->assertSame($definition["constructNamespace"], $artistEntity->getConstructorNamespace(), "constructNamespace is not correct");
+        $this->assertSame($definition["table"], $artistEntity->getTable(), "table is not correct");
+        $this->assertSame($definition["delimit"], $artistEntity->isDelimit(), "delimit is not correct");
+        $this->assertSame($definition["targetPath"], $artistEntity->getTargetPath(), "targetPath is not correct");
+        $this->assertSame($definition["constructFactory"], $artistEntity->getConstructFactory(), "constructFactory is not correct");
+        $this->assertSame($definition["constructFactoryFqn"], $artistEntity->getConstructFactoryFqn(), "constructFactoryFqn is not correct");
+
     }
 
     public function testAttributeList()

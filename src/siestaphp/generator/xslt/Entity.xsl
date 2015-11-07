@@ -268,6 +268,7 @@
              * <xsl:for-each select="parameter">
              *     @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
              * </xsl:for-each>
+             * @param string $connectionName
                 <xsl:choose>
                     <xsl:when test="@resultType='single'">
                         * @return <xsl:value-of select="/entity/@constructClass"/>
@@ -279,7 +280,6 @@
                         * @return ResultSet
                     </xsl:when>
                 </xsl:choose>
-             * @param string $connectionName
              */
             public static function <xsl:value-of select="@name"/>(<xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
             {

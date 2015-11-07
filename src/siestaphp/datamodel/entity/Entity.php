@@ -610,7 +610,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function getConstructFactory()
     {
-        $this->entitySource->getConstructFactory();
+        return $this->entitySource->getConstructFactory();
     }
 
     /**

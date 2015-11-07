@@ -187,6 +187,7 @@
              * <xsl:for-each select="parameter">
              *     @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
              * </xsl:for-each>
+            * @param string $connectionName
                 <xsl:choose>
                     <xsl:when test="@resultType='single'">
                         * @return <xsl:value-of select="/entity/@constructClass"/>
@@ -198,7 +199,6 @@
                         * @return ResultSet
                     </xsl:when>
                 </xsl:choose>
-             * @param string $connectionName
              */
             public function <xsl:value-of select="@name"/>(<xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
             {
@@ -255,7 +255,14 @@
          */
         public function createInstanceFromResultSet(ResultSet $res)
         {
-            $entity = new <xsl:value-of select="/entity/@constructClass"/>();
+            <xsl:choose>
+                <xsl:when test="/entity/@constructFactory != ''">
+                    $entity = <xsl:value-of select="/entity/@constructFactory"/>;
+                </xsl:when>
+                <xsl:otherwise>
+                    $entity = new <xsl:value-of select="/entity/@constructClass"/>();
+                </xsl:otherwise>
+            </xsl:choose>
             $entity->initializeFromResultSet($res);
             return $entity;
         }

@@ -14,7 +14,7 @@ class TransformerXML
      */
     public static function getEntityDefinition()
     {
-        return array("name" => "ArtistEntity", "namespace" => "tests\\gen\\gen", "constructClass" => "Artist", "constructNamespace" => "tests\\gen", "table" => "ARTIST", "delimit" => false, "targetPath" => "tests/gen");
+        return array("name" => "ArtistEntity", "namespace" => "tests\\gen\\gen", "constructClass" => "Artist", "constructNamespace" => "tests\\gen", "table" => "ARTIST", "delimit" => false, "targetPath" => "tests/gen", "constructFactory" => "constructFactory", "constructFactoryFqn" => "constructFactoryFqn");
     }
 
     /**

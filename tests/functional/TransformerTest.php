@@ -57,23 +57,26 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $entity = $this->loadEntitySource();
         $definition = TransformerXML::getEntityTransformerDefinition();
 
-        $this->assertSame($entity->getClassName(), $definition["name"], "name is not correct");
-        $this->assertSame($entity->getClassNamespace(), $definition["namespace"], "namespace is not correct");
-        $this->assertSame($entity->getConstructorClass(), $definition["constructClass"], "constructClass is not correct");
-        $this->assertSame($entity->getConstructorNamespace(), $definition["constructNamespace"], "constructNamespace is not correct");
-        $this->assertSame($entity->getTable(), $definition["table"], "table is not correct");
-        $this->assertSame($entity->isDelimit(), $definition["delimit"], "delimit is not correct");
-        $this->assertSame($entity->getTargetPath(), $definition["targetPath"], "targetPath is not correct");
+        $this->assertSame($definition["name"], $entity->getClassName(), "name is not correct");
+        $this->assertSame($definition["namespace"], $entity->getClassNamespace(), "namespace is not correct");
+        $this->assertSame($definition["constructClass"], $entity->getConstructorClass(), "constructClass is not correct");
+        $this->assertSame($definition["constructNamespace"], $entity->getConstructorNamespace(), "constructNamespace is not correct");
+        $this->assertSame($definition["table"], $entity->getTable(), "table is not correct");
+        $this->assertSame($definition["delimit"], $entity->isDelimit(), "delimit is not correct");
+        $this->assertSame($definition["targetPath"], $entity->getTargetPath(), "targetPath is not correct");
 
-        $this->assertSame($entity->isDateTimeUsed(), $definition["dateTimeInUse"], "dateTimeInUse is not correct");
-        $this->assertSame($entity->hasReferences(), $definition["hasReferences"], "hasReferences is not correct");
-        $this->assertSame($entity->hasAttributes(), $definition["hasAttributes"], "hasAttributes is not correct");
+        $this->assertSame($definition["constructFactory"], $entity->getConstructFactory(), "constructFactory is not correct");
+        $this->assertSame($definition["constructFactoryFqn"], $entity->getConstructFactoryFqn(), "constructFactoryFqn is not correct");
+
+        $this->assertSame($definition["dateTimeInUse"], $entity->isDateTimeUsed(), "dateTimeInUse is not correct");
+        $this->assertSame($definition["hasReferences"], $entity->hasReferences(), "hasReferences is not correct");
+        $this->assertSame($definition["hasAttributes"], $entity->hasAttributes(), "hasAttributes is not correct");
     }
 
     public function testAttributeList()
     {
         $entity = $this->loadEntitySource();
-        foreach ($entity->getAttributeSourceList() as $attributeSource) {
+        foreach ($entity->getAttributeGeneratorSourceList() as $attributeSource) {
             $this->testAttribute($attributeSource);
         }
     }
