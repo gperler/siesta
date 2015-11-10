@@ -5,6 +5,7 @@ namespace siestaphp\tests\functional;
 use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\collector\CollectorGeneratorSource;
 use siestaphp\datamodel\DataModelContainer;
+use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\index\IndexGeneratorSource;
 use siestaphp\datamodel\index\IndexPartGeneratorSource;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
@@ -26,7 +27,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     const ASSET_PATH = "/transformer";
 
     /**
-     * @return \siestaphp\datamodel\entity\Entity
+     * @return Entity
      */
     private function loadEntitySource()
     {
@@ -114,7 +115,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     public function testReferenceList()
     {
         $entity = $this->loadEntitySource();
-        foreach ($entity->getReferenceSourceList() as $reference) {
+        foreach ($entity->getReferenceGeneratorSourceList() as $reference) {
             $this->testReference($reference);
         }
     }
@@ -138,7 +139,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($definition, "Reference " . $referenceName . " not in definition list");
 
         // check reference values
-        $this->assertSame($referenceSource->getForeignClass(), $definition["foreignClass"], "Reference $referenceName foreignClass is not correct");
+        $this->assertSame($definition["foreignClass"], $referenceSource->getForeignClass(),  "Reference $referenceName foreignClass is not correct");
         $this->assertSame($referenceSource->isRequired(), $definition["required"], "Reference $referenceName required is not correct");
         $this->assertSame($referenceSource->getOnDelete(), $definition["onDelete"], "Reference $referenceName onDelete is not correct");
         $this->assertSame($referenceSource->getOnUpdate(), $definition["onUpdate"], "Reference $referenceName onUpdate is not correct");
@@ -212,9 +213,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $entity = $this->loadEntitySource();
 
         $this->assertSame(sizeof($entity->getIndexSourceList()), 2, "Not 2 indexes found");
-        $this->assertSame(sizeof($entity->getIndexGeneratorSourceList()), 2, "Not 2 indexes found");
 
-        foreach ($entity->getIndexGeneratorSourceList() as $indexDatabaseSource) {
+        foreach ($entity->getIndexSourceList() as $indexDatabaseSource) {
             $this->testIndex($indexDatabaseSource);
         }
     }

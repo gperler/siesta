@@ -7,5 +7,4 @@ vendor
 reverse/
 helloworld/
 !**/.gitkeep
-.DS_Store
 

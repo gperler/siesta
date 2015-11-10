@@ -56,7 +56,7 @@ class TransformerXML
      */
     public static function getReferenceDefinition()
     {
-        return array("label" => array("name" => "label", "foreignClass" => "LabelEntity", "required" => false, "onDelete" => "set null", "onUpdate" => "set null", "relationName" => "_label_artist_", "primaryKey" => true));
+        return array("label" => array("name" => "label", "foreignClass" => "Label", "required" => false, "onDelete" => "set null", "onUpdate" => "set null", "relationName" => "_label_artist_", "primaryKey" => true));
     }
 
     /**

@@ -20,9 +20,13 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
 {
 
     const VALIDATION_ERROR_INVALID_REFERENCE_NAME = 300;
+
     const VALIDATION_ERROR_INVALID_ON_DELETE = 302;
+
     const VALIDATION_ERROR_INVALID_ON_UPDATE = 303;
+
     const VALIDATION_ERROR_ON_DELETE_NULL_AND_REQUIRED = 304;
+
     const VALIDATION_ERROR_REFERENCED_ENTITY_NOT_FOUND = 305;
 
     private static $ALLOWED_ON_X = array("restrict", "cascade", "set null", "no action");
@@ -30,6 +34,7 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     const PARAMETER_PREFIX = "P_";
 
     const ON_X_RESTRICT = "restrict";
+
     const ON_X_CASCADE = "cascade";
 
     const ON_X_SET_NULL = "set null";
@@ -382,7 +387,7 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
      */
     public function getForeignClass()
     {
-        return $this->foreignClass;
+        return $this->referencedEntity->getConstructorClass();
     }
 
     /**

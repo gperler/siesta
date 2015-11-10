@@ -107,7 +107,7 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     protected function updateModel1N(DataModelContainer $container)
     {
-        $this->foreignClassEntity = $container->getEntityByClassname($this->getForeignClass());
+        $this->foreignClassEntity = $container->getEntityByClassname($this->collectorSource->getForeignClass());
 
         if ($this->foreignClassEntity) {
             $this->reference = $this->foreignClassEntity->getReferenceByName($this->getReferenceName());
@@ -130,7 +130,7 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     protected function updateModelNM(DataModelContainer $container)
     {
-        $this->foreignClassEntity = $container->getEntityByClassname($this->getForeignClass());
+        $this->foreignClassEntity = $container->getEntityByClassname($this->collectorSource->getForeignClass());
 
         $this->mappingClassEntity = $container->getEntityByClassname($this->getMappingClass());
 
@@ -269,7 +269,10 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     public function getForeignClass()
     {
-        return $this->collectorSource->getForeignClass();
+        if ($this->foreignClassEntity === null) {
+            return $this->collectorSource->getForeignClass();
+        }
+        return $this->foreignClassEntity->getConstructorClass();
     }
 
     /**
