@@ -82,12 +82,13 @@ class ArrayAccessor
 
     /**
      * @param string $key
+     * @param int $maxlength
      *
      * @return string|null
      */
-    public function getStringValue($key)
+    public function getStringValue($key, $maxlength = null)
     {
-        return $this->get($key);
+        return ($maxlength === null) ? $this->get($key) : substr($this->get($key), 0, $maxlength);
     }
 
     /**

@@ -825,7 +825,8 @@
                         $this-><xsl:value-of select="@name"/> = $arrayAccessor->getFloatValue('<xsl:value-of select="@name"/>');
                     </xsl:when>
                     <xsl:when test="@type='string'">
-                        $this-><xsl:value-of select="@name"/> = $arrayAccessor->getStringValue('<xsl:value-of select="@name"/>', <xsl:value-of select="@length"/>);
+
+                        $this-><xsl:value-of select="@name"/> = $arrayAccessor->getStringValue('<xsl:value-of select="@name"/>'<xsl:if test="@transient='false'">, <xsl:value-of select="@length"/></xsl:if>);
                     </xsl:when>
                     <xsl:when test="@type='DateTime'">
                         $this-><xsl:value-of select="@name"/> = $arrayAccessor->getDateTime('<xsl:value-of select="@name"/>');
