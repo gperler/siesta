@@ -56,7 +56,7 @@ class TransformerXML
      */
     public static function getReferenceDefinition()
     {
-        return array("label" => array("name" => "label", "foreignClass" => "Label", "required" => false, "onDelete" => "set null", "onUpdate" => "set null", "relationName" => "_label_artist_", "primaryKey" => true));
+        return array("label" => array("name" => "label", "foreignClass" => "LabelEntity", "required" => false, "onDelete" => "set null", "onUpdate" => "set null", "relationName" => "_label_artist_", "primaryKey" => true));
     }
 
     /**
@@ -79,7 +79,7 @@ class TransformerXML
      */
     public static function getCollectorDefinition()
     {
-        return array("name" => array("type" => "type", "foreignClass" => "LabelEntity", "referenceName" => "referenceName",));
+        return array("name" => array("type" => "type", "foreignClass" => "Label", "referenceName" => "referenceName",));
     }
 
     /**

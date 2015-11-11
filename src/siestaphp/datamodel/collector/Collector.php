@@ -58,7 +58,6 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     protected $reference;
 
-
     /**
      * @var CollectorFilter[]
      */
@@ -73,8 +72,6 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         $this->entity = $entity;
         $this->collectorSource = $source;
         $this->collectorFilterList = array();
-
-
     }
 
     /**
@@ -85,13 +82,15 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     public function updateModel(DataModelContainer $container)
     {
 
-
         switch ($this->getType()) {
-            case self::ONE_N:
-                $this->updateModel1N($container);
-                break;
+
             case self::N_M:
                 $this->updateModelNM($container);
+                break;
+
+            case self::ONE_N:
+            default:
+                $this->updateModel1N($container);
                 break;
         }
 
@@ -111,7 +110,6 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
 
         if ($this->foreignClassEntity) {
             $this->reference = $this->foreignClassEntity->getReferenceByName($this->getReferenceName());
-
 
             foreach ($this->collectorSource->getCollectorFilterSourceList() as $filterSource) {
                 $this->collectorFilterList[] = new CollectorFilter($this->foreignClassEntity, $this, $filterSource);
@@ -150,7 +148,8 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     /**
      * @return string
      */
-    public function getNMThisMethodName() {
+    public function getNMThisMethodName()
+    {
         if ($this->mappingClassEntity === null) {
             return null;
         }
@@ -161,18 +160,17 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     /**
      * @return string
      */
-    public function getNMForeignMethodName() {
+    public function getNMForeignMethodName()
+    {
         if ($this->mappingClassEntity === null) {
             return null;
         }
-        foreach($this->mappingClassEntity->getReferenceGeneratorSourceList() as $reference) {
+        foreach ($this->mappingClassEntity->getReferenceGeneratorSourceList() as $reference) {
             if ($reference->getForeignTable() === $this->foreignClassEntity->getTable()) {
                 return $reference->getMethodName();
             }
         }
     }
-
-
 
     /**
      * @param ValidationLogger $logger
@@ -190,11 +188,13 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         }
 
         switch ($this->getType()) {
-            case self::ONE_N:
-                $this->validate1N($logger);
-                break;
             case self::N_M:
                 $this->validateNM($logger);
+                break;
+
+            case self::ONE_N:
+            default:
+                $this->validate1N($logger);
                 break;
         }
 
@@ -206,11 +206,11 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     protected function validate1N(ValidationLogger $logger)
     {
 
-        if (!$this->foreignClassEntity) {
+        if ($this->foreignClassEntity === null) {
             $logger->error("Collector '" . $this->getName() . "' refers to unknown entity " . $this->getForeignClass(), self::VALIDATION_ERROR_INVALID_ENTITY_REFERENCED);
         }
 
-        if (!$this->reference) {
+        if ($this->reference === null) {
             $logger->error("Collector '" . $this->getName() . "' refers to unknown reference " . $this->getReferenceName(), self::VALIDATION_ERROR_INVALID_REFERENCE);
         }
     }
@@ -220,11 +220,11 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     protected function validateNM(ValidationLogger $logger)
     {
-        if (!$this->foreignClassEntity) {
+        if ($this->foreignClassEntity === null) {
             $logger->error("Collector '" . $this->getName() . "' refers to unknown entity " . $this->getForeignClass(), self::VALIDATION_ERROR_INVALID_ENTITY_REFERENCED);
         }
 
-        if (!$this->mappingClassEntity) {
+        if ($this->mappingClassEntity === null) {
             $logger->error("Collector '" . $this->getName() . "' refers to unknown mapping entity " . $this->getMappingClass(), self::VALIDATION_ERROR_INVALID_MAPPING_CLASS);
         }
 
@@ -248,10 +248,7 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     public function getReferencedFullyQualifiedClassName()
     {
-        if ($this->foreignClassEntity) {
-            return $this->foreignClassEntity->getFullyQualifiedClassName();
-        }
-        return "";
+        return $this->foreignClassEntity->getFullyQualifiedClassName();
     }
 
     /**
@@ -275,9 +272,6 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     public function getForeignClass()
     {
-        if ($this->foreignClassEntity === null) {
-            return $this->collectorSource->getForeignClass();
-        }
         return $this->foreignClassEntity->getConstructorClass();
     }
 
@@ -292,7 +286,8 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     /**
      * @return null|string
      */
-    public function getNMMappingMethodName() {
+    public function getNMMappingMethodName()
+    {
         if ($this->nmMapping === null) {
             return null;
         }

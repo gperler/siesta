@@ -1122,7 +1122,7 @@
                 }
                 </xsl:if>
             }
-
+            <xsl:variable name="referenceName" select="@name"/>
             <xsl:for-each select="column">
                 /**
                 * @param <xsl:value-of select="@type"/> $id
@@ -1131,7 +1131,7 @@
                 public function set<xsl:value-of select="@methodName"/>($id)
                 {
                     $this-><xsl:value-of select="@name"/> = $id;
-                    $this-><xsl:value-of select="@name"/>Obj = null;
+                    $this-><xsl:value-of select="$referenceName"/>Obj = null;
                 }
             </xsl:for-each>
 

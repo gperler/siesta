@@ -387,7 +387,7 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
      */
     public function getForeignClass()
     {
-        return $this->referencedEntity->getConstructorClass();
+        return $this->referencedEntity->getClassName();
     }
 
     /**

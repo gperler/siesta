@@ -6,8 +6,8 @@ use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\collector\CollectorGeneratorSource;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
-use siestaphp\datamodel\index\IndexGeneratorSource;
-use siestaphp\datamodel\index\IndexPartGeneratorSource;
+use siestaphp\datamodel\index\IndexPartSource;
+use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
 use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\storedprocedure\SPParameterSource;
@@ -41,7 +41,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         // create datamodel
         $dataModelContainer = new DataModelContainer(new ValidationLogger(new CodeceptionLogger()));
         $dataModelContainer->addEntitySourceList($entitySourceList);
+
         $dataModelContainer->updateModel();
+        $dataModelContainer->validate();
 
         // get artist entity
         $entitySource = $dataModelContainer->getEntityByClassname("ArtistEntity");
@@ -53,6 +55,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * tests the entity attributes
+     */
     public function testEntity()
     {
         $entity = $this->loadEntitySource();
@@ -74,6 +79,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($definition["hasAttributes"], $entity->hasAttributes(), "hasAttributes is not correct");
     }
 
+    /**
+     * tests the attributes defined in the xml
+     */
     public function testAttributeList()
     {
         $entity = $this->loadEntitySource();
@@ -98,20 +106,23 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($definition, "Attribute " . $attributeName . " not in definition list");
 
         // check attribute values
-        $this->assertSame($ats->getPHPType(), $definition["type"], "Attribute $attributeName type is not correct : " . $ats->getPHPType() . " vs " . $definition["type"]);
-        $this->assertSame($ats->getDatabaseName(), $definition["dbName"], "Attribute $attributeName dbName is not correct");
-        $this->assertSame($ats->getDatabaseType(), $definition["dbType"], "Attribute $attributeName dbType is not correct");
-        $this->assertSame($ats->isPrimaryKey(), $definition["primaryKey"], "Attribute $attributeName primaryKey is not correct");
-        $this->assertSame($ats->isRequired(), $definition["required"], "Attribute $attributeName required is not correct");
-        $this->assertSame($ats->getDefaultValue(), $definition["defaultValue"], "Attribute $attributeName defaultValue is not correct");
-        $this->assertSame($ats->getAutoValue(), $definition["autoValue"], "Attribute $attributeName autoValue is not correct");
-        $this->assertSame($ats->getLength(), $definition["length"], "Attribute $attributeName length is not correct");
+        $this->assertSame($definition["type"], $ats->getPHPType(), "Attribute $attributeName type is not correct : " . $ats->getPHPType() . " vs " . $definition["type"]);
+        $this->assertSame($definition["dbName"], $ats->getDatabaseName(), "Attribute $attributeName dbName is not correct");
+        $this->assertSame($definition["dbType"], $ats->getDatabaseType(), "Attribute $attributeName dbType is not correct");
+        $this->assertSame($definition["primaryKey"], $ats->isPrimaryKey(), "Attribute $attributeName primaryKey is not correct");
+        $this->assertSame($definition["required"], $ats->isRequired(), "Attribute $attributeName required is not correct");
+        $this->assertSame($definition["defaultValue"], $ats->getDefaultValue(), "Attribute $attributeName defaultValue is not correct");
+        $this->assertSame($definition["autoValue"], $ats->getAutoValue(), "Attribute $attributeName autoValue is not correct");
+        $this->assertSame($definition["length"], $ats->getLength(), "Attribute $attributeName length is not correct");
 
         // derived data
-        $this->assertSame($ats->getMethodName(), $definition["methodName"], "Attribute $attributeName methodName is not correct");
+        $this->assertSame($definition["methodName"], $ats->getMethodName(), "Attribute $attributeName methodName is not correct");
 
     }
 
+    /**
+     * tests the references defined in the xml
+     */
     public function testReferenceList()
     {
         $entity = $this->loadEntitySource();
@@ -139,15 +150,15 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($definition, "Reference " . $referenceName . " not in definition list");
 
         // check reference values
-        $this->assertSame($definition["foreignClass"], $referenceSource->getForeignClass(),  "Reference $referenceName foreignClass is not correct");
-        $this->assertSame($referenceSource->isRequired(), $definition["required"], "Reference $referenceName required is not correct");
-        $this->assertSame($referenceSource->getOnDelete(), $definition["onDelete"], "Reference $referenceName onDelete is not correct");
-        $this->assertSame($referenceSource->getOnUpdate(), $definition["onUpdate"], "Reference $referenceName onUpdate is not correct");
-        $this->assertSame($referenceSource->getReferencedConstructClass(), $definition["foreignConstructClass"], "Reference $referenceName foreignConstructClass is not correct");
-        $this->assertSame($referenceSource->getStoredProcedureFinderName(), $definition["storedProcedureFinderName"], "Reference $referenceName storedProcedureFinderName is not correct");
-        $this->assertSame($referenceSource->getRelationName(), $definition["relationName"], "Reference $referenceName storedProcedureFinderName is not correct");
-        $this->assertSame($referenceSource->isReferenceCreatorNeeded(), true, "Reference $referenceName isReferenceCreator is not correct");
-        $this->assertSame($referenceSource->isPrimaryKey(), $definition["primaryKey"], "Reference $referenceName primaryKey is not correct");
+        $this->assertSame($definition["foreignClass"], $referenceSource->getForeignClass(), "Reference $referenceName foreignClass is not correct");
+        $this->assertSame($definition["required"], $referenceSource->isRequired(), "Reference $referenceName required is not correct");
+        $this->assertSame($definition["onDelete"], $referenceSource->getOnDelete(), "Reference $referenceName onDelete is not correct");
+        $this->assertSame($definition["onUpdate"], $referenceSource->getOnUpdate(), "Reference $referenceName onUpdate is not correct");
+        $this->assertSame($definition["foreignConstructClass"], $referenceSource->getReferencedConstructClass(), "Reference $referenceName foreignConstructClass is not correct");
+        $this->assertSame($definition["storedProcedureFinderName"], $referenceSource->getStoredProcedureFinderName(), "Reference $referenceName storedProcedureFinderName is not correct");
+        $this->assertSame($definition["relationName"], $referenceSource->getRelationName(), "Reference $referenceName storedProcedureFinderName is not correct");
+        $this->assertSame(true, $referenceSource->isReferenceCreatorNeeded(), "Reference $referenceName isReferenceCreator is not correct");
+        $this->assertSame($definition["primaryKey"], $referenceSource->isPrimaryKey(), "Reference $referenceName primaryKey is not correct");
 
         // iterate referenced columns
         foreach ($referenceSource->getReferencedColumnList() as $column) {
@@ -168,17 +179,18 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
         // get data
         $definition = Util::getFromArray($data, $columnName);
-
-        // check that data exists
         $this->assertNotNull($definition, "Referenced Column " . $columnName . " not in definition list");
 
         // check values are right
-        $this->assertSame($column->getPHPType(), $definition["type"], "Referenced Column $columnName type is not correct");
-        $this->assertSame($column->getMethodName(), $definition["methodName"], "Referenced Column $columnName methodName is not correct");
-        $this->assertSame($column->getDatabaseName(), $definition["databaseName"], "Referenced Column $columnName databaseName is not correct");
+        $this->assertSame($definition["type"], $column->getPHPType(), "Referenced Column $columnName type is not correct");
+        $this->assertSame($definition["methodName"], $column->getMethodName(), "Referenced Column $columnName methodName is not correct");
+        $this->assertSame($definition["databaseName"], $column->getDatabaseName(), "Referenced Column $columnName databaseName is not correct");
 
     }
 
+    /**
+     * tests the collectors defined in the xml
+     */
     public function testCollectorList()
     {
         $entity = $this->loadEntitySource();
@@ -200,10 +212,10 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $definition = Util::getFromArray($definitionList, $name);
         $this->assertNotNull($definition, "Collector " . $name . " not in definition list");
 
-        $this->assertSame($collectorSource->getReferenceName(), $definition["referenceName"]);
-        $this->assertSame($collectorSource->getForeignClass(), $definition["foreignClass"]);
-        $this->assertSame($collectorSource->getType(), $definition["type"]);
-        $this->assertSame($collectorSource->getMethodName(), $definition["methodName"]);
+        $this->assertSame($definition["referenceName"], $collectorSource->getReferenceName());
+        $this->assertSame($definition["foreignClass"], $collectorSource->getForeignClass());
+        $this->assertSame($definition["type"], $collectorSource->getType());
+        $this->assertSame($definition["methodName"], $collectorSource->getMethodName());
 
     }
 
@@ -220,9 +232,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param IndexGeneratorSource $index
+     * @param IndexSource $index
      */
-    private function testIndex(IndexGeneratorSource $index)
+    private function testIndex(IndexSource $index)
     {
         $indexName = $index->getName();
 
@@ -233,8 +245,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($index->isUnique(), $definition["unique"]);
         $this->assertSame($index->getType(), $definition["type"]);
 
-        $this->assertSame(sizeof($index->getIndexPartGeneratorSourceList()), 2, " not to indexParts found");
-        foreach ($index->getIndexPartGeneratorSourceList() as $indexPartSource) {
+        $this->assertSame(sizeof($index->getIndexPartSourceList()), 2, " not to indexParts found");
+        foreach ($index->getIndexPartSourceList() as $indexPartSource) {
             $this->testIndexPart($indexName, $indexPartSource);
         }
 
@@ -242,9 +254,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $indexName
-     * @param IndexPartGeneratorSource $indexPart
+     * @param IndexPartSource $indexPart
      */
-    private function testIndexPart($indexName, IndexPartGeneratorSource $indexPart)
+    private function testIndexPart($indexName, IndexPartSource $indexPart)
     {
         $indexPartName = $indexPart->getColumnName();
 
@@ -252,16 +264,17 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $indexPartListDefinition = Util::getFromArray($definitionList, $indexName);
         $this->assertNotNull($indexPartListDefinition, "Definition for " . $indexName . " not in definition list");
 
-        $indexPartDefinition = Util::getFromArray($indexPartListDefinition, $indexPartName);
-        $this->assertNotNull($indexPartDefinition, "Definition for " . $indexPartName . " not in definition list");
+        $definition = Util::getFromArray($indexPartListDefinition, $indexPartName);
+        $this->assertNotNull($definition, "Definition for " . $indexPartName . " not in definition list");
 
-        $this->assertSame($indexPart->getSortOrder(), $indexPartDefinition["sortOrder"]);
-        $this->assertSame($indexPart->getLength(), $indexPartDefinition["length"]);
-
-        $indexPart->getIndexColumnList();
+        $this->assertSame($definition["sortOrder"], $indexPart->getSortOrder(), "Sort order of indexPart is not correct " . $indexPartName);
+        $this->assertSame($definition["length"], $indexPart->getLength(), "Length of indexPart is not correct " . $indexPartName);
 
     }
 
+    /**
+     * tests the stored procedures defined
+     */
     public function testStoredProcedureList()
     {
         $entity = $this->loadEntitySource();
@@ -276,19 +289,18 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
      */
     private function testStoredProcedure(StoredProcedureSource $spSource)
     {
-        $spDefinition = TransformerXML::getSPDefinition();
+        $definition = TransformerXML::getSPDefinition();
 
-        $this->assertSame($spSource->getName(), $spDefinition["name"]);
-        $this->assertSame($spSource->modifies(), $spDefinition["modifies"]);
-        $this->assertSame($spSource->getSql(), $spDefinition["sql"]);
-        $this->assertSame($spSource->getSql("mysql"), $spDefinition["mysql-sql"]);
-        $this->assertSame($spSource->getResultType(), $spDefinition["resultType"]);
+        $this->assertSame($definition["name"], $spSource->getName(), "Stored procedure name is not correct");
+        $this->assertSame($definition["modifies"], $spSource->modifies(), "Stored procedure modifies is not correct");
+        $this->assertSame($definition["sql"], $spSource->getSql(), "Stored procedure sql is not correct");
+        $this->assertSame($definition["mysql-sql"], $spSource->getSql("mysql"), "Stored procedure mysql-sql is not correct");
+        $this->assertSame($definition["resultType"], $spSource->getResultType(), "Stored procedure resultType is not correct");
 
         $this->assertSame(sizeof($spSource->getParameterList()), 2, "not 2 parameters found");
         foreach ($spSource->getParameterList() as $param) {
             $this->testSPParameter($param);
         }
-
     }
 
     /**
@@ -302,9 +314,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $definition = Util::getFromArray($definitionList, $spParameterSource->getName());
         $this->assertNotNull($definition, "no definition for parameter " . $spParameterSource->getName() . " found");
 
-        $this->assertSame($spParameterSource->getStoredProcedureName(), $definition["spName"]);
-        $this->assertSame($spParameterSource->getDatabaseType(), $definition["dbType"]);
-        $this->assertSame($spParameterSource->getPHPType(), $definition["type"]);
+        $this->assertSame($definition["spName"], $spParameterSource->getStoredProcedureName(), "spName is not correct");
+        $this->assertSame($definition["dbType"], $spParameterSource->getDatabaseType(), "dbType is not correct");
+        $this->assertSame($definition["type"], $spParameterSource->getPHPType(), "type is not correct");
     }
 
 }

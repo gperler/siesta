@@ -35,12 +35,12 @@
         </storedProcedure>
 
         <index name="indexName" unique="true" type="btree">
-            <indexPart columnName="bool" sortOrder="ASC" length="123"/>
-            <indexPart columnName="int" sortOrder="ASC" length="123"/>
+            <indexPart columnName="D_BOOLEAN" sortOrder="ASC" length="123"/>
+            <indexPart columnName="D_INTEGER" sortOrder="ASC" length="123"/>
         </index>
         <index name="indexName2" unique="false" type="hash">
-            <indexPart columnName="float" sortOrder="DESC" length="1"/>
-            <indexPart columnName="string" sortOrder="DESC" length="2"/>
+            <indexPart columnName="D_FLOAT" sortOrder="DESC" length="1"/>
+            <indexPart columnName="D_STRING" sortOrder="DESC" length="2"/>
         </index>
     </entity>
 

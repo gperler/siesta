@@ -6,7 +6,7 @@ use siestaphp\datamodel\attribute\Attribute;
 use siestaphp\datamodel\attribute\AttributeGeneratorSource;
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\Collector;
-use siestaphp\datamodel\collector\CollectorSource;
+use siestaphp\datamodel\collector\CollectorGeneratorSource;
 use siestaphp\datamodel\collector\NMMapping;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DatabaseSpecificSource;
@@ -271,13 +271,6 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function updateModel(DataModelContainer $container)
     {
-        if ($this->constructorClass !== $this->className) {
-            $this->addToUsedFQClassNames($this->getFullyQualifiedClassName());
-        }
-
-        if ($this->entitySource->getConstructFactoryFqn()) {
-            $this->addToUsedFQClassNames($this->entitySource->getConstructFactoryFqn());
-        }
 
         foreach ($this->attributeList as $attribute) {
             $attribute->updateModel($container);
@@ -285,11 +278,10 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         }
         foreach ($this->referenceList as $reference) {
             $reference->updateModel($container);
-            $this->addToUsedFQClassNames($reference->getReferencedFullyQualifiedClassName());
         }
+
         foreach ($this->collectorList as $collector) {
             $collector->updateModel($container);
-            $this->addToUsedFQClassNames($collector->getReferencedFullyQualifiedClassName());
         }
 
         foreach ($this->indexList as $index) {
@@ -299,6 +291,33 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         foreach ($this->storedProcedureList as $sp) {
             $sp->updateModel($container);
         }
+
+        $this->assembleUsedClasses();
+    }
+
+    /**
+     * creates a list with all classes that are need a use statement
+     */
+    private function assembleUsedClasses()
+    {
+
+        if ($this->constructorClass !== $this->className) {
+            $this->addToUsedFQClassNames($this->getFullyQualifiedClassName());
+        }
+
+        if ($this->entitySource->getConstructFactoryFqn()) {
+            $this->addToUsedFQClassNames($this->entitySource->getConstructFactoryFqn());
+        }
+
+        foreach ($this->referenceList as $reference) {
+            $this->addToUsedFQClassNames($reference->getReferencedFullyQualifiedClassName());
+        }
+
+        foreach ($this->collectorList as $collector) {
+
+            $this->addToUsedFQClassNames($collector->getReferencedFullyQualifiedClassName());
+        }
+
     }
 
     /**
@@ -308,11 +327,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     private function addToUsedFQClassNames($fqClassName)
     {
-
         if (!in_array($fqClassName, $this->usedFQNClassNameList)) {
             $this->usedFQNClassNameList[] = $fqClassName;
         }
-
     }
 
     /**
@@ -526,7 +543,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     }
 
     /**
-     * @return CollectorSource[]
+     * @return CollectorGeneratorSource[]
      */
     public function getCollectorSourceList()
     {
