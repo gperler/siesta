@@ -227,6 +227,12 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         if (!$this->mappingClassEntity) {
             $logger->error("Collector '" . $this->getName() . "' refers to unknown mapping entity " . $this->getMappingClass(), self::VALIDATION_ERROR_INVALID_MAPPING_CLASS);
         }
+
+        if ($this->mappingClassEntity->getReferenceByName($this->getReferenceName()) === null) {
+            $logger->error("Collector '" . $this->getName() . "' mapping entity does not refer this mapping class " . $this->getMappingClass() . " reference name " . $this->getReferenceName(), self::VALIDATION_ERROR_INVALID_MAPPING_CLASS);
+
+        }
+
     }
 
     /**
