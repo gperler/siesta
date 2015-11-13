@@ -22,7 +22,7 @@
         "database": "<xsl:value-of select="$database"/>",
         "user": "<xsl:value-of select="$user"/>",
         "password": "<xsl:value-of select="$password"/>",
-        "charset": "<xsl:value-of select="$charset"/>",
+        "charSet": "<xsl:value-of select="$charset"/>",
         "postConnectStatementList": [
             "SET NAMES UTF8"
         ]

@@ -83,7 +83,7 @@ class InitCommand extends Command
         $processor = $xsl->loadAsXSLTProcessor();
 
         $processor->setParameter("", "name", $cd->name);
-        $processor->setParameter("", "driver", $cd->driver);
+        $processor->setParameter("", "driver", "siestaphp\\driver\\mysqli\\MySQLDriver");
         $processor->setParameter("", "host", $cd->host);
         $processor->setParameter("", "port", $cd->port);
         $processor->setParameter("", "database", $cd->database);

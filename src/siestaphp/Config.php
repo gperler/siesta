@@ -44,7 +44,7 @@ class Config
      * @throws InvalidConfiguration
      * @throws ConnectException
      */
-    public static function getInstance($configFileName = null)
+    public static function getInstance($configFileName)
     {
         if (self::$instance === null) {
             self::$instance = new Config($configFileName);
@@ -117,6 +117,12 @@ class Config
             $this->jsonConfig = $configFile->loadAsJSONArray();
             $this->configFilePath = $configFile->getAbsoluteFileName();
             return;
+        }
+
+        $currentWorkDir = new File(getcwd());
+        $configFile =  $currentWorkDir->findFile(self::CONFIG_FILE_NAME);
+        if ($configFile !== null) {
+            return $configFile;
         }
 
         throw new InvalidConfiguration(sprintf(self::EXCEPTION_NO_CONFIG, getcwd(), self::CONFIG_FILE_NAME));
