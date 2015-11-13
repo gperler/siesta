@@ -94,16 +94,16 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         // get definition and check they exist
         $definitionList = XMLReaderXML::getAttributeDefinition();
         $definition = Util::getFromArray($definitionList, $attributeName);
-        $this->assertNotNull($definition, "Attribute " . $attributeName . " not in definition list");
+        $this->assertNotNull($definition, "Attribute $attributeName not in definition list");
 
         // check attribute values
-        $this->assertSame($ats->getPHPType(), $definition["type"], "Attribute $attributeName type is not correct");
-        $this->assertSame($ats->getDatabaseName(), $definition["dbName"], "Attribute $attributeName dbName is not correct");
-        $this->assertSame($ats->getDatabaseType(), $definition["dbType"], "Attribute $attributeName dbType is not correct");
-        $this->assertSame($ats->isPrimaryKey(), $definition["primaryKey"], "Attribute $attributeName primaryKey is not correct");
-        $this->assertSame($ats->isRequired(), $definition["required"], "Attribute $attributeName required is not correct");
-        $this->assertSame($ats->getDefaultValue(), $definition["defaultValue"], "Attribute $attributeName defaultValue is not correct");
-        $this->assertSame($ats->getAutoValue(), $definition["autoValue"], "Attribute $attributeName autoValue is not correct");
+        $this->assertSame($definition["type"], $ats->getPHPType(), "Attribute $attributeName type is not correct");
+        $this->assertSame($definition["dbName"], $ats->getDatabaseName(), "Attribute $attributeName dbName is not correct");
+        $this->assertSame($definition["dbType"], $ats->getDatabaseType(), "Attribute $attributeName dbType is not correct");
+        $this->assertSame($definition["primaryKey"], $ats->isPrimaryKey(), "Attribute $attributeName primaryKey is not correct");
+        $this->assertSame($definition["required"], $ats->isRequired(), "Attribute $attributeName required is not correct");
+        $this->assertSame($definition["defaultValue"], $ats->getDefaultValue(), "Attribute $attributeName defaultValue is not correct");
+        $this->assertSame($definition["autoValue"], $ats->getAutoValue(), "Attribute $attributeName autoValue is not correct");
     }
 
     public function testReferenceList()
@@ -128,22 +128,21 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         // find definition and check they exist
         $definitionList = XMLReaderXML::getReferenceDefinition();
         $definition = Util::getFromArray($definitionList, $referenceName);
-        $this->assertNotNull($definition, "Reference " . $referenceName . " not in definition list");
+        $this->assertNotNull($definition, "Reference $referenceName not in definition list");
 
         // check reference values
-        $this->assertSame($referenceSource->getForeignClass(), $definition["foreignClass"], "Reference $referenceName foreignClass is not correct");
-        $this->assertSame($referenceSource->isRequired(), $definition["required"], "Reference $referenceName required is not correct");
-        $this->assertSame($referenceSource->getOnDelete(), $definition["onDelete"], "Reference $referenceName onDelete is not correct");
-        $this->assertSame($referenceSource->getOnUpdate(), $definition["onUpdate"], "Reference $referenceName onUpdate is not correct");
-        $this->assertSame($referenceSource->getRelationName(), $definition["relationName"], "Reference $referenceName relationName is not correct");
-        $this->assertSame($referenceSource->isPrimaryKey(), $definition["primaryKey"], "Reference $referenceName primaryKey is not correct");
+        $this->assertSame($definition["foreignClass"], $referenceSource->getForeignClass(), "Reference $referenceName foreignClass is not correct");
+        $this->assertSame($definition["required"], $referenceSource->isRequired(), "Reference $referenceName required is not correct");
+        $this->assertSame($definition["onDelete"], $referenceSource->getOnDelete(), "Reference $referenceName onDelete is not correct");
+        $this->assertSame($definition["onUpdate"], $referenceSource->getOnUpdate(), "Reference $referenceName onUpdate is not correct");
+        $this->assertSame($definition["relationName"], $referenceSource->getRelationName(), "Reference $referenceName relationName is not correct");
+        $this->assertSame($definition["primaryKey"], $referenceSource->isPrimaryKey(), "Reference $referenceName primaryKey is not correct");
     }
 
     public function testCollectorList()
     {
 
         $artistEntity = $this->loadArtistEntity();
-
         foreach ($artistEntity->getCollectorSourceList() as $collector) {
             $this->testCollector($collector);
         }
@@ -160,11 +159,11 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         // find definition and check they exist
         $definitionList = XMLReaderXML::getCollectorDefinition();
         $definition = Util::getFromArray($definitionList, $name);
-        $this->assertNotNull($definition, "Collector " . $name . " not in definition list");
+        $this->assertNotNull($definition, "Collector $name not in definition list");
 
-        $this->assertSame($collectorSource->getReferenceName(), $definition["referenceName"]);
-        $this->assertSame($collectorSource->getForeignClass(), $definition["foreignClass"]);
-        $this->assertSame($collectorSource->getType(), $definition["type"]);
+        $this->assertSame($definition["referenceName"], $collectorSource->getReferenceName(), "Collector $name referenceName not correct");
+        $this->assertSame($definition["foreignClass"], $collectorSource->getForeignClass(), "Collector $name foreignClass not correct");
+        $this->assertSame($definition["type"], $collectorSource->getType(), "Collector $name type not correct");
 
     }
 
@@ -173,7 +172,7 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         $artistEntity = $this->loadArtistEntity();
         $indexList = $artistEntity->getIndexSourceList();
 
-        $this->assertSame(sizeof($indexList), 2, "indexes are missing");
+        $this->assertSame(2, sizeof($indexList), "indexes are missing");
         foreach ($indexList as $index) {
             $this->testIndex($index);
         }
@@ -190,10 +189,10 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         // find definition and check they exist
         $definitionList = XMLReaderXML::getIndexDefinition();
         $definition = Util::getFromArray($definitionList, $indexName);
-        $this->assertNotNull($definition, "Index " . $indexName . " not in definition list");
+        $this->assertNotNull($definition, "Index $indexName not in definition list");
 
-        $this->assertSame($index->isUnique(), $definition["unique"]);
-        $this->assertSame($index->getType(), $definition["type"]);
+        $this->assertSame($definition["unique"], $index->isUnique(), "Index $indexName unique not correct");
+        $this->assertSame($definition["type"], $index->getType(), "Index $indexName type not correct");
 
         foreach ($index->getIndexPartSourceList() as $indexPartSource) {
             $this->testIndexPart($indexName, $indexPartSource);
@@ -211,13 +210,13 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
 
         $definitionList = XMLReaderXML::getIndexPartDefinition();
         $indexPartListDefinition = Util::getFromArray($definitionList, $indexName);
-        $this->assertNotNull($indexPartListDefinition, "Definition for " . $indexName . " not in definition list");
+        $this->assertNotNull($indexPartListDefinition, "Definition for $indexName not in definition list");
 
         $indexPartDefinition = Util::getFromArray($indexPartListDefinition, $indexPartName);
-        $this->assertNotNull($indexPartDefinition, "Definition for " . $indexPartName . " not in definition list");
+        $this->assertNotNull($indexPartDefinition, "Definition for $indexPartName not in definition list");
 
-        $this->assertSame($indexPart->getSortOrder(), $indexPartDefinition["sortOrder"]);
-        $this->assertSame($indexPart->getLength(), $indexPartDefinition["length"]);
+        $this->assertSame($indexPartDefinition["sortOrder"], $indexPart->getSortOrder(), "sortOrder for indexPart $indexPartName not correct");
+        $this->assertSame($indexPartDefinition["length"], $indexPart->getLength(), "length for indexPart $indexPartName not correct");
 
     }
 
@@ -236,13 +235,13 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
     private function testStoredProcedure(StoredProcedureSource $spSource)
     {
         $spDefinition = XMLReaderXML::getSPDefinition();
-        $this->assertSame($spSource->getName(), $spDefinition["name"]);
-        $this->assertSame($spSource->modifies(), $spDefinition["modifies"]);
-        $this->assertSame($spSource->getSql(), $spDefinition["sql"]);
-        $this->assertSame($spSource->getSql("mysql"), $spDefinition["mysql-sql"]);
-        $this->assertSame($spSource->getResultType(), $spDefinition["resultType"]);
+        $this->assertSame($spDefinition["name"], $spSource->getName(), "name not correct");
+        $this->assertSame($spDefinition["modifies"], $spSource->modifies(), "modifies not correct");
+        $this->assertSame($spDefinition["sql"], $spSource->getSql(), "sql not correct");
+        $this->assertSame($spDefinition["mysql-sql"], $spSource->getSql("mysql"), "mysql-sql not correct");
+        $this->assertSame($spDefinition["resultType"], $spSource->getResultType(), "resultType not correct");
 
-        $this->assertSame(sizeof($spSource->getParameterList()), 2, "not 2 parameters found");
+        $this->assertSame(2, sizeof($spSource->getParameterList()), "not 2 parameters found");
         foreach ($spSource->getParameterList() as $param) {
             $this->testSPParameter($param);
         }
@@ -257,12 +256,13 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
         $definitionList = XMLReaderXML::getSPParameterDefinition();
 
         // find definition
-        $definition = Util::getFromArray($definitionList, $spParameterSource->getName());
-        $this->assertNotNull($definition, "no definition for parameter " . $spParameterSource->getName() . " found");
+        $paramName = $spParameterSource->getName();
+        $definition = Util::getFromArray($definitionList, $paramName);
+        $this->assertNotNull($definition, "no definition for parameter $paramName found");
 
-        $this->assertSame($spParameterSource->getStoredProcedureName(), $definition["spName"]);
-        $this->assertSame($spParameterSource->getDatabaseType(), $definition["dbType"]);
-        $this->assertSame($spParameterSource->getPHPType(), $definition["type"]);
+        $this->assertSame($definition["spName"], $spParameterSource->getStoredProcedureName(), "Param $paramName spName not correct");
+        $this->assertSame($definition["dbType"], $spParameterSource->getDatabaseType(), "Param $paramName dbType not correct");
+        $this->assertSame($definition["type"], $spParameterSource->getPHPType(), "Param $paramName type not correct");
     }
 
 }

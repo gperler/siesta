@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "connection": [
+    {
+      "name": "default",
+      "driver": "siestaphp\\tests\\unit\\connectionFactory\\TestDriver",
+      "isDefault": true,
+      "host": "127.0.0.1",
+      "port": 3306,
+      "database": "SIESTA_TEST",
+      "user": "user",
+      "password": "password",
+      "charSet": "utf8",
+      "postConnectStatementList": [
+        "SET NAMES UTF8"
+      ]
+    }
+  ],
+  "generator": {
+    "migrationMethod": "direct",
+    "migrationTargetPath": "migrationTargetPath",
+    "entityFileSuffix": "entityFileSuffix",
+    "dropUnusedTables": true,
+    "connectionName": "connectionName",
+    "baseDir": "baseDir"
+  },
+  "reverse": {
+    "targetPath": "targetPath",
+    "targetNamespace": "targetNamespace",
+    "connectionName": "connectionName",
+    "entityFileSuffix": "entityFileSuffix"
+  }
+}

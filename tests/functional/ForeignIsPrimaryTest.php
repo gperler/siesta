@@ -32,7 +32,7 @@ class ForeignIsPrimaryTest extends SiestaTester
 
     public function testForeignIsPrimary()
     {
-        Debug::debug("FOREIGN IS PRIAMRY");
+
     }
 
 }

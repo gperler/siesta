@@ -54,6 +54,13 @@ class Config
     }
 
     /**
+     *
+     */
+    public static function reset() {
+        self::$instance = null;
+    }
+
+    /**
      * @var array
      */
     protected $jsonConfig;
@@ -84,8 +91,6 @@ class Config
         $this->findConfig($configFileName);
     }
 
-
-
     /**
      * @return string
      */
@@ -114,13 +119,6 @@ class Config
             return;
         }
 
-        $currentWorkDir = new File(getcwd());
-        $configFile = $currentWorkDir->findFile(self::CONFIG_FILE_NAME);
-        if ($configFile) {
-            $this->jsonConfig = $configFile->loadAsJSONArray();
-            $this->configFilePath = $configFile->getAbsoluteFileName();
-            return;
-        }
         throw new InvalidConfiguration(sprintf(self::EXCEPTION_NO_CONFIG, getcwd(), self::CONFIG_FILE_NAME));
     }
 

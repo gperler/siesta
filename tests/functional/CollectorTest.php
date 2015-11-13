@@ -2,7 +2,6 @@
 
 namespace siestaphp\tests\functional;
 
-use Codeception\Util\Debug;
 use siestaphp\tests\functional\collector1n\gen\ArtistEntity;
 use siestaphp\tests\functional\collector1n\gen\LabelEntity;
 
@@ -28,7 +27,7 @@ class CollectorTest extends SiestaTester
 
     protected function tearDown()
     {
-        //$this->dropDatabase();
+        $this->dropDatabase();
 
     }
 
@@ -80,22 +79,21 @@ class CollectorTest extends SiestaTester
         $k7 = LabelEntity::getEntityByPrimaryKey($labelId);
 
         $artistList = $k7->getArtistList();
-
         $this->assertSame(sizeof($artistList), 3, "Not all artist loaded again");
     }
 
     private function loadLabelFromArtist()
     {
+        // test load of artist
         $artist = ArtistEntity::getEntityByPrimaryKey(1);
-
         $this->assertNotNull($artist, "Artist not found");
 
+        // test reference
         $label = $artist->getLabel();
-
         $this->assertNotNull($label, "Label for Artist " . $artist->getName() . " not found");
 
+        // test collection
         $artistList = $label->getArtistList();
-
         $this->assertSame(sizeof($artistList), 3, "Not all artist loaded again");
 
     }

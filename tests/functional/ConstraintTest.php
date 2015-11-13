@@ -42,10 +42,10 @@ class ConstraintTest extends SiestaTester
         $customer->save(true);
         try {
             Address::deleteEntityByPrimaryKey($standardAddress->getId());
+            $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
         } catch (ForeignKeyConstraintFailedException $e) {
-            return;
         }
-        $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
+
     }
 
     public function testRestrictUpdate()
@@ -63,10 +63,9 @@ class ConstraintTest extends SiestaTester
             // update address id
             $sql = "UPDATE Address SET ID=7 WHERE ID= " . $standardAddress->getId();
             $this->connection->query($sql);
+            $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
         } catch (ForeignKeyConstraintFailedException $e) {
-            return;
         }
-        $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
 
     }
 
@@ -159,10 +158,10 @@ class ConstraintTest extends SiestaTester
 
         try {
             Address::deleteEntityByPrimaryKey($holidyAddress->getId());
-        } catch (\siestaphp\driver\exceptions\ForeignKeyConstraintFailedException $e) {
-            return;
+            $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
+        } catch (ForeignKeyConstraintFailedException $e) {
         }
-        $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
+
     }
 
     public function testNoActionUpdate()
@@ -180,10 +179,10 @@ class ConstraintTest extends SiestaTester
             // update address id
             $sql = "UPDATE Address SET ID=7 WHERE ID= " . $holidyAddress->getId();
             $this->connection->query($sql);
-        } catch (\siestaphp\driver\exceptions\ForeignKeyConstraintFailedException $e) {
+            $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
+        } catch (ForeignKeyConstraintFailedException $e) {
             return;
         }
-        $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
 
     }
 

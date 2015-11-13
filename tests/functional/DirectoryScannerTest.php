@@ -33,7 +33,7 @@ class DirectoryScannerTest extends SiestaTester
         $this->assertFalse($file->exists(), "file should not exist anymore");
 
         // test scan dir
-        $assetDir = new File(__DIR__ . self::ASSET_PATH  );
+        $assetDir = new File(__DIR__ . self::ASSET_PATH);
         $fileList = $assetDir->scanDir();
         $this->assertSame(2, sizeof($fileList), "not 3 files found");
 
@@ -51,7 +51,7 @@ class DirectoryScannerTest extends SiestaTester
         $entitySourceList = $directoryScanner->scan(__DIR__ . self::ASSET_PATH, "scan.xml");
 
         $this->assertNotNull($entitySourceList, "No entity source list found");
-        $this->assertSame(sizeof($entitySourceList), 2, "not 2 entities found");
+        $this->assertSame(2, sizeof($entitySourceList), "not 2 entities found");
     }
 
     public function testInvalidDirectory()
@@ -61,12 +61,12 @@ class DirectoryScannerTest extends SiestaTester
 
         $entitySourceList = $directoryScanner->scan("/" . md5("Jamie Woon"), "scan.xml");
 
-        $this->assertSame(sizeof($entitySourceList), 0, "not 0 entities found");
+        $this->assertSame(0, sizeof($entitySourceList), "not 0 entities found");
         $logger->isErrorCodeSet(DirectoryScanner::VALIDATION_ERROR_INVALID_BASE_DIR);
 
         $entitySourceList = $directoryScanner->scan(__DIR__ . self::ASSET_PATH . self::SRC_FILE, "scan.xml");
 
-        $this->assertSame(sizeof($entitySourceList), 0, "not 0 entities found");
+        $this->assertSame(0, sizeof($entitySourceList), "not 0 entities found");
         $logger->isErrorCodeSet(DirectoryScanner::VALIDATION_ERROR_INVALID_BASE_DIR);
 
     }
@@ -79,7 +79,7 @@ class DirectoryScannerTest extends SiestaTester
         $entitySourceList = $directoryScanner->scan(__DIR__ . self::ASSET_PATH, "corrupt.xml");
 
         $this->assertNotNull($entitySourceList, "No entity source list found");
-        $this->assertSame(sizeof($entitySourceList), 0, "not 0 entities found");
+        $this->assertSame(0, sizeof($entitySourceList), "not 0 entities found");
 
         $this->assertTrue($logger->isErrorCodeSet(DirectoryScanner::VALIDATION_ERROR_INVALID_XML));
     }

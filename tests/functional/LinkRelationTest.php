@@ -3,6 +3,7 @@
 namespace siestaphp\tests\functional;
 
 use siestaphp\tests\functional\linkrelation\gen\LabelEntity;
+use siestaphp\util\File;
 
 /**
  * Class ReferenceTest
@@ -33,7 +34,7 @@ class LinkRelation extends SiestaTester
 
     public function testLinkRelations()
     {
-        $jsonFile = new \siestaphp\util\File(__DIR__ . self::TEST_JSON);
+        $jsonFile = new File(__DIR__ . self::TEST_JSON);
         $jsonString = $jsonFile->getContents();
 
         $label = new LabelEntity();
@@ -48,6 +49,8 @@ class LinkRelation extends SiestaTester
         // test the linking
         $this->assertNotNull($label->getId(), "ID must not be null");
         $this->assertSame($label->getTopSeller()->getId(), $label->getTopSellerId(), "1:1 not linked correctly");
+
+        // test artist list elements
         foreach ($label->getArtistList() as $artist) {
             $this->assertSame($label->getId(), $artist->getLabelId(), "Linking not succeeded");
         }

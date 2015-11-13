@@ -38,21 +38,24 @@ class JSONTest extends SiestaTester
         $jsonString = $jsonFile->getContents();
         $jsonArray = json_decode($jsonString, true);
 
+        // initialize from json
         $label = new LabelEntity();
         $label->fromJSON($jsonString);
 
-        $this->assertSame($label->getId(), $jsonArray["id"]);
-        $this->assertSame($label->getName(), $jsonArray["name"]);
-        $this->assertSame($label->getCity(), $jsonArray["city"]);
+        // test label
+        $this->assertSame($jsonArray["id"], $label->getId(), "label id not correct");
+        $this->assertSame($jsonArray["name"], $label->getName(), "label name not correct");
+        $this->assertSame($jsonArray["city"], $label->getCity(), "label city not correct");
 
+        // test artist list
         $artistList = $label->getArtistList();
         $definitionList = $jsonArray["artistList"];
-        $this->assertSame(sizeof($artistList), sizeof($jsonArray["artistList"]));
+        $this->assertSame(sizeof($jsonArray["artistList"]), sizeof($artistList), "not exactly 2 artist found");
 
         for ($i = 0; $i < sizeof($artistList); $i++) {
-            $this->assertSame($artistList[$i]->getId(), $definitionList[$i]["id"]);
-            $this->assertSame($artistList[$i]->getName(), $definitionList[$i]["name"]);
-            $this->assertSame($artistList[$i]->getTransient(), $definitionList[$i]["transient"]);
+            $this->assertSame($definitionList[$i]["id"], $artistList[$i]->getId(), "artist id not correct");
+            $this->assertSame($definitionList[$i]["name"], $artistList[$i]->getName(), "artist name not correct");
+            $this->assertSame($definitionList[$i]["transient"], $artistList[$i]->getTransient(), "artist transient not correct");
         }
 
     }

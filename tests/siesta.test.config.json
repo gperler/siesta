@@ -3,7 +3,7 @@
     "version" : "1.0",
     "connection": [ {
         "name": "default",
-        "driver" : "mysql",
+        "driver" : "siestaphp\\driver\\mysqli\\MySQLDriver",
         "isDefault": true,
         "host": "127.0.0.1",
         "port": 3306,

@@ -203,14 +203,11 @@
             public function <xsl:value-of select="@name"/>(<xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
             {
                 $connection = ConnectionFactory::getConnection($connectionName);
-                <xsl:for-each select="parameter">
-                    $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
-                </xsl:for-each>
 
-                $spCall = "CALL <xsl:value-of select="@databaseName"/>("
-                <xsl:for-each select="parameter">
-                    . "'$<xsl:value-of select="@name"/>'"<xsl:if test="position() != last()">.","</xsl:if>
-                </xsl:for-each>.")";
+                <xsl:call-template name="createSPCall">
+                    <xsl:with-param name="spName" select="@databaseName"/>
+                    <xsl:with-param name="parameterList" select="parameter"/>
+                </xsl:call-template>
 
                 <xsl:choose>
                     <xsl:when test="@resultType='single'">
@@ -225,6 +222,30 @@
                 </xsl:choose>
             }
         </xsl:for-each>
+    </xsl:template>
+
+
+    <xsl:template name="createSPCall">
+        <xsl:param name="spName"/>
+        <xsl:param name="parameterList"/>
+        <xsl:for-each select="$parameterList">
+            <xsl:choose>
+                <xsl:when test="@type = 'DateTime' and @dbType = 'DATETIME'">
+                    $<xsl:value-of select="@name"/> = Util::quoteDateTime($<xsl:value-of select="@name"/>)
+                </xsl:when>
+                <xsl:when test="@type = 'DateTime' and @dbType = 'DATE'">
+                    $<xsl:value-of select="@name"/> = Util::quoteDate($<xsl:value-of select="@name"/>)
+                </xsl:when>
+                <xsl:when test="@type = 'DateTime' and @dbType = 'TIME'">
+                    $<xsl:value-of select="@name"/> = Util::quoteTime($<xsl:value-of select="@name"/>)
+                </xsl:when>
+                <xsl:otherwise>
+                    $<xsl:value-of select="@name"/> = Util::quoteEscape($connection,$<xsl:value-of select="@name"/>);
+                </xsl:otherwise>
+
+            </xsl:choose>
+        </xsl:for-each>
+        $spCall = "CALL <xsl:value-of select="$spName"/>(<xsl:for-each select="$parameterList">$<xsl:value-of select="@name"/><xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)";
     </xsl:template>
 
 

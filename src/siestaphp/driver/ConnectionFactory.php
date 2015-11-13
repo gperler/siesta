@@ -2,13 +2,9 @@
 
 namespace siestaphp\driver;
 
-use siestaphp\Config;
 use siestaphp\driver\exceptions\ConnectException;
-use siestaphp\driver\mysqli\MySQLDriver;
 use siestaphp\exceptions\InvalidConfiguration;
 use siestaphp\util\Util;
-
-
 
 /**
  * Class ConnectionFactory
@@ -61,6 +57,13 @@ class ConnectionFactory
             self::$connectionFactory = new static();
         }
         return self::$connectionFactory;
+    }
+
+    /**
+     *
+     */
+    public static function reset() {
+        self::$connectionFactory = null;
     }
 
     /**
@@ -166,12 +169,13 @@ class ConnectionFactory
      */
     protected function instantiateDriver(ConnectionData $connectionData)
     {
-        switch ($connectionData->driver) {
-            case "mysql":
-                return new MySQLDriver();
-            default:
-                throw new InvalidConfiguration(sprintf(self::EXCEPTION_DRIVER_NOT_IMPLEMENTD, $connectionData->driver));
+        $class = $connectionData->driver;
+
+        if (!class_exists($class)) {
+            throw new InvalidConfiguration(sprintf(self::EXCEPTION_DRIVER_NOT_IMPLEMENTD, $connectionData->driver));
         }
+        return new $class;
+
     }
 
 }
