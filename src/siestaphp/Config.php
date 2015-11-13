@@ -44,7 +44,7 @@ class Config
      * @throws InvalidConfiguration
      * @throws ConnectException
      */
-    public static function getInstance($configFileName)
+    public static function getInstance($configFileName = null)
     {
         if (self::$instance === null) {
             self::$instance = new Config($configFileName);
