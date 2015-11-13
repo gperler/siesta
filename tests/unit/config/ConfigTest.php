@@ -17,7 +17,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         Config::reset();
         try {
             $config = Config::getInstance(null);
-            $this->assertTrue(false, "No Config Exception not found");
 
         } catch (InvalidConfiguration $e) {
 

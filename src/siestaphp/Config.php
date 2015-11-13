@@ -120,9 +120,11 @@ class Config
         }
 
         $currentWorkDir = new File(getcwd());
-        $configFile =  $currentWorkDir->findFile(self::CONFIG_FILE_NAME);
-        if ($configFile !== null) {
-            return $configFile;
+        $configFile = $currentWorkDir->findFile(self::CONFIG_FILE_NAME);
+        if ($configFile) {
+            $this->jsonConfig = $configFile->loadAsJSONArray();
+            $this->configFilePath = $configFile->getAbsoluteFileName();
+            return;
         }
 
         throw new InvalidConfiguration(sprintf(self::EXCEPTION_NO_CONFIG, getcwd(), self::CONFIG_FILE_NAME));
