@@ -160,6 +160,30 @@ class File
     }
 
     /**
+     * @param $fileSuffix
+     *
+     * @return File[]
+     */
+    public function findFileList($fileSuffix) {
+        if (!$this->isDir()) {
+            return null;
+        }
+
+        $result = array();
+        foreach ($this->scanDir() as $file) {
+
+            if ($file->isDir()) {
+                $result = array_merge($result, $file->findFileList($fileSuffix));
+                continue;
+            }
+            if ($file->isType($fileSuffix)) {
+                $result[] = $file;
+            }
+        }
+        return $result;
+    }
+
+    /**
      * loads the file as XSLT Processor
      * @return \XSLTProcessor
      */
