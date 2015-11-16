@@ -59,6 +59,9 @@ class EntityManager implements EntityManagerSource
      */
     public function getFullyQualifiedClassName()
     {
+        if (empty($this->getClassName())) {
+            return null;
+        }
         return $this->getClassNamespace() . "\\" . $this->getClassName();
     }
 
