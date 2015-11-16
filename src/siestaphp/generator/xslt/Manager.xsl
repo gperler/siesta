@@ -154,7 +154,7 @@
                  * @param string $connectionName
                  * @return <xsl:value-of select="/entity/@constructClass"/>[]
                  */
-                public static function getEntityBy<xsl:value-of select="$referenceMethodName"/>Filter<xsl:value-of select="@name"/>(<xsl:for-each select="$columnList">$<xsl:value-of select="@name"/>,</xsl:for-each><xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
+                public function getEntityBy<xsl:value-of select="$referenceMethodName"/>Filter<xsl:value-of select="@name"/>(<xsl:for-each select="$columnList">$<xsl:value-of select="@name"/>,</xsl:for-each><xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
                  {
                     $connection = ConnectionFactory::getConnection($connectionName);
                     <xsl:for-each select="$columnList">
@@ -176,7 +176,7 @@
             * @param string $connectionName
             * @return <xsl:value-of select="/entity/@constructClass"/>[]
             */
-            public static function <xsl:value-of select="@phpMethodName"/>(<xsl:for-each select="pkColumn">$<xsl:value-of select="@name"/></xsl:for-each>,$connectionName = null) {
+            public function <xsl:value-of select="@phpMethodName"/>(<xsl:for-each select="pkColumn">$<xsl:value-of select="@name"/></xsl:for-each>,$connectionName = null) {
             $connection = ConnectionFactory::getConnection($connectionName);
             <xsl:for-each select="pkColumn">
                 $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
