@@ -258,13 +258,11 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     public function getReferencedFullyQualifiedClassName()
     {
         $ems = $this->foreignClassEntity->getEntityManagerSource();
-        $fqnList = array($this->foreignClassEntity->getFullyQualifiedClassName(),
-            $ems->getFullyQualifiedClassName());
-        if ($ems->getConstructFactoryFqn() !== null) {
-            $fqnList[] = $ems->getConstructFactoryFqn();
-        }
-
-        return $fqnList;
+        return array(
+            $this->foreignClassEntity->getFullyQualifiedClassName(),
+            $ems->getFullyQualifiedClassName(),
+            $ems->getConstructFactoryFqn()
+        );
     }
 
     /**

@@ -330,6 +330,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     private function addToUsedFQClassNames($fqClassName)
     {
+        if (empty($fqClassName)) {
+            return;
+        }
         if (!in_array($fqClassName, $this->usedFQNClassNameList)) {
             $this->usedFQNClassNameList[] = $fqClassName;
         }

@@ -51,4 +51,12 @@ class XMLEntityManagerReader extends XMLAccess implements EntityManagerSource
         return $this->getAttribute(XMLEntityManager::ATTRIBUTE_CONSTRUCT_FACTORY_FQN);
     }
 
+    /**
+     * @return string
+     */
+    public function getFullyQualifiedClassName()
+    {
+        return null;
+    }
+
 }

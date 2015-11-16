@@ -2,7 +2,6 @@
 
 namespace siestaphp\datamodel\reference;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\collector\CollectorFilter;
 use siestaphp\datamodel\collector\CollectorFilterSource;
 use siestaphp\datamodel\DataModelContainer;
@@ -31,7 +30,12 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
 
     const VALIDATION_ERROR_REFERENCED_ENTITY_NOT_FOUND = 305;
 
-    private static $ALLOWED_ON_X = array("restrict", "cascade", "set null", "no action");
+    private static $ALLOWED_ON_X = array(
+        "restrict",
+        "cascade",
+        "set null",
+        "no action"
+    );
 
     const PARAMETER_PREFIX = "P_";
 
@@ -159,17 +163,14 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
      */
     public function getReferencedFullyQualifiedClassName()
     {
-        if ($this->referencedEntity === null) {
-            return "";
-        }
+
         $ems = $this->referencedEntity->getEntityManagerSource();
 
-
-        $usedFQN = array($this->referencedEntity->getFullyQualifiedClassName(), $ems->getFullyQualifiedClassName());
-        if ($ems->getConstructFactoryFqn()) {
-            $usedFQN[] = $ems->getConstructFactoryFqn();
-        }
-        return $usedFQN;
+        return array(
+            $this->referencedEntity->getFullyQualifiedClassName(),
+            $ems->getFullyQualifiedClassName(),
+            $ems->getConstructFactoryFqn()
+        );
     }
 
     /**
@@ -273,7 +274,6 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
             $logger->error("Reference '" . $this->name . "' refers to unknown entity " . $this->foreignClass, self::VALIDATION_ERROR_REFERENCED_ENTITY_NOT_FOUND);
         }
 
-
     }
 
     /**
@@ -296,7 +296,8 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     /**
      * @return EntityGeneratorSource
      */
-    public function getReferencedEntity() {
+    public function getReferencedEntity()
+    {
         return $this->referencedEntity;
     }
 
@@ -307,8 +308,6 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     {
         return $this->referenceColumnList;
     }
-
-
 
     /**
      * @param string $columnName
@@ -336,14 +335,16 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     /**
      * @param CollectorFilter[] $collectorFilterList
      */
-    public function addCollectorFilter(array $collectorFilterList) {
+    public function addCollectorFilter(array $collectorFilterList)
+    {
         $this->collectorFilterList = array_merge($this->collectorFilterList, $collectorFilterList);
     }
 
     /**
      * @return CollectorFilterSource[]
      */
-    public function getCollectorFilterSourceList() {
+    public function getCollectorFilterSourceList()
+    {
         return $this->collectorFilterList;
     }
 
