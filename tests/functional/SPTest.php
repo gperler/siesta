@@ -2,6 +2,7 @@
 namespace siestaphp\tests\functional;
 
 use siestaphp\tests\functional\storedprocedure\gen\ArtistEntity;
+use siestaphp\tests\functional\storedprocedure\gen\ArtistEntityManager;
 
 /**
  * Class ReferenceTest
@@ -46,7 +47,7 @@ class SPTest extends SiestaTester
 
     public function testSingleResultSP()
     {
-        $firstArtist = ArtistEntity::getFirstArtistByCity("Vienna");
+        $firstArtist = ArtistEntityManager::getInstance()->getFirstArtistByCity("Vienna");
 
         $this->assertNotNull($firstArtist);
         $this->assertInstanceOf("siestaphp\\tests\\functional\\storedprocedure\\gen\\ArtistEntity", $firstArtist, "Not instance of ArtistEntity");
@@ -55,7 +56,7 @@ class SPTest extends SiestaTester
 
     public function testListResultSP()
     {
-        $artistList = ArtistEntity::getArtistByCity("Vienna");
+        $artistList = ArtistEntityManager::getInstance()->getArtistByCity("Vienna");
 
         $this->assertSame(sizeof($artistList), 2, "not 2 artist found");
 
@@ -68,7 +69,7 @@ class SPTest extends SiestaTester
     public function testResultSetSP()
     {
         $count = null;
-        $countArtistResult = ArtistEntity::countArtistInCity("Vienna");
+        $countArtistResult = ArtistEntityManager::getInstance()->countArtistInCity("Vienna");
         while ($countArtistResult->hasNext()) {
             $count = $countArtistResult->getIntegerValue("COUNT(ID)");
         }

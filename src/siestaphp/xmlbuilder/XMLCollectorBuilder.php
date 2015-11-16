@@ -72,11 +72,22 @@ class XMLCollectorBuilder extends XMLBuilder
         $this->setAttribute(XMLCollector::ATTRIBUTE_NM_FOREIGN_METHOD_NAME, $generatorSource->getNMForeignMethodName());
         $this->setAttribute(XMLCollector::ATTRIBUTE_NM_THIS_METHOD_NAME, $generatorSource->getNMThisMethodName());
 
+        $this->addForeignEntityManagerData($generatorSource);
+
         foreach ($generatorSource->getCollectorFilterSourceList() as $filter) {
             $this->addCollectorFilter($filter);
         }
 
     }
+
+    /**
+     * @param CollectorGeneratorSource $generatorSource
+     */
+    protected function addForeignEntityManagerData(CollectorGeneratorSource $generatorSource) {
+        $referencedEntity = $generatorSource->getReferencedEntity();
+        new XMLEntityManagerBuilder($referencedEntity->getEntityManagerSource(), $this->domDocument, $this->domElement);
+    }
+
 
     /**
      * @param CollectorFilterSource $filterSource

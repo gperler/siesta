@@ -22,4 +22,21 @@ interface EntityManagerSource
      * @return string
      */
     public function getTargetPath();
+
+    /**
+     * @return string
+     */
+    public function getFullyQualifiedClassName();
+
+    /**
+     * @return string
+     */
+    public function getConstructFactory();
+
+    /**
+     * @return string
+     */
+    public function getConstructFactoryFqn();
+
+
 }

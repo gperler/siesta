@@ -33,12 +33,13 @@ class XMLEntityManagerBuilder extends XMLBuilder
         $this->addData();
     }
 
-
-
-    protected function addData() {
+    protected function addData()
+    {
         $this->setAttribute(XMLEntityManager::ATTRIBUTE_CLASS_NAME, $this->entityManagerSource->getClassName());
         $this->setAttribute(XMLEntityManager::ATTRIBUTE_CLASS_NAMESPACE, $this->entityManagerSource->getClassNamespace());
         $this->setAttribute(XMLEntityManager::ATTRIBUTE_TARGET_PATH, $this->entityManagerSource->getTargetPath());
+        $this->setAttribute(XMLEntityManager::ATTRIBUTE_CONSTRUCT_FACTORY, $this->entityManagerSource->getConstructFactory());
+        $this->setAttribute(XMLEntityManager::ATTRIBUTE_CONSTRUCT_FACTORY_FQN, $this->entityManagerSource->getConstructFactoryFqn());
 
     }
 

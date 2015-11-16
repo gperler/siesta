@@ -33,7 +33,7 @@
         class <xsl:value-of select="/entity/@name"/> implements ORMEntity {
 
             <xsl:call-template name="dbConstants"/>
-
+            <!--
             <xsl:call-template name="getEntityByPrimaryKey"/>
 
             <xsl:call-template name="nmMappingFinder"/>
@@ -50,7 +50,7 @@
 
             <xsl:call-template name="createInstanceFromResultSet"/>
 
-            <xsl:call-template name="batchSaver"/>
+            <xsl:call-template name="batchSaver"/>-->
 
             <xsl:call-template name="attributes"/>
 
@@ -148,8 +148,6 @@
                     $resultList = self::executeStoredProcedure("CALL <xsl:value-of select="/entity/standardStoredProcedures/@findByPrimaryKeyDelimit"/>('$validAt',<xsl:for-each select="/entity/pkColumn">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
                     return Util::getFromArray($resultList, 0);
                 }
-
-
             </xsl:if>
         </xsl:if>
 
@@ -1081,8 +1079,21 @@
         </xsl:for-each>
     </xsl:template>
 
+    <xsl:template name="managerAccess">
+        <xsl:param name="entityManager"/>
+        <xsl:choose>
+            <xsl:when test="$entityManager/@constructFactory = ''">
+                <xsl:value-of select="$entityManager/@name"/>::getInstance()
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$entityManager/@constructFactory"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
 
     <xsl:template name="referenceGetterSetter">
+
         <xsl:for-each select="/entity/reference">
             <!-- stores reference name for inner iteration -->
             <xsl:variable name="methodName" select="@methodName"/>
@@ -1093,7 +1104,7 @@
             public function get<xsl:value-of select="@methodName"/>($forceReload=false)
             {
                 if ($this-><xsl:value-of select="@name"/>Obj === null or $forceReload) {
-                    $this-><xsl:value-of select="@name"/>Obj = <xsl:value-of select="@foreignConstructClass"/>::getEntityByPrimaryKey(
+                    $this-><xsl:value-of select="@name"/>Obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->getEntityByPrimaryKey(
                     <xsl:for-each select="column">
                         $this-><xsl:value-of select="@name"/><xsl:if test="position() != last()">,</xsl:if>
                     </xsl:for-each>);
@@ -1171,7 +1182,7 @@
                     public function get<xsl:value-of select="@methodName"/>($forceReload=false, $connectionName = null)
                     {
                         if ($this-><xsl:value-of select="@name"/> === null or $forceReload) {
-                            $this-><xsl:value-of select="@name"/> = <xsl:value-of select="@foreignConstructClass"/>::getEntityBy<xsl:value-of select="@referenceMethodName"/>Reference(
+                            $this-><xsl:value-of select="@name"/> = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->getEntityBy<xsl:value-of select="@referenceMethodName"/>Reference(
                              <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
                                 $this->get<xsl:value-of select="@methodName"/>(true),
                             </xsl:for-each>$connectionName);
@@ -1186,6 +1197,7 @@
                     <xsl:variable name="methodName" select="@methodName"/>
                     <xsl:variable name="referenceMethodName" select="@referenceMethodName"/>
                     <xsl:variable name="foreignConstructClass" select="@foreignConstructClass"/>
+                    <xsl:variable name="foreignEntiyManager" select="manager"/>
                     <xsl:for-each select="filter">
                         /**
                          * <xsl:for-each select="parameter">
@@ -1196,7 +1208,7 @@
                          */
                         public function get<xsl:value-of select="$methodName"/>Filter<xsl:value-of select="@name"/>(<xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
                         {
-                            return <xsl:value-of select="$foreignConstructClass"/>::getEntityBy<xsl:value-of select="$referenceMethodName"/>Filter<xsl:value-of select="@name"/>(<xsl:for-each select="/entity/attribute[@primaryKey = 'true']">$this->get<xsl:value-of select="@methodName"/>(true), </xsl:for-each><xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName);
+                            return <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="$foreignEntiyManager"/></xsl:call-template>->getEntityBy<xsl:value-of select="$referenceMethodName"/>Filter<xsl:value-of select="@name"/>(<xsl:for-each select="/entity/attribute[@primaryKey = 'true']">$this->get<xsl:value-of select="@methodName"/>(true), </xsl:for-each><xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName);
                         }
                     </xsl:for-each>
 
@@ -1206,7 +1218,7 @@
                     public function deleteAll<xsl:value-of select="@methodName"/>()
                     {
                         $this-><xsl:value-of select="@name"/> = null;
-                        <xsl:value-of select="@foreignConstructClass"/>::deleteEntityBy<xsl:value-of select="@referenceMethodName"/>Reference(
+                    <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->deleteEntityBy<xsl:value-of select="@referenceMethodName"/>Reference(
                         <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
                             $this->get<xsl:value-of select="@methodName"/>(true)
                             <xsl:if test="position() != last()">,</xsl:if>
@@ -1235,7 +1247,7 @@
                     public function get<xsl:value-of select="@methodName"/>($forceReload=false)
                     {
                         if ($this-><xsl:value-of select="@name"/> === null or $forceReload) {
-                            $this-><xsl:value-of select="@name"/> = <xsl:value-of select="@foreignConstructClass"/>::<xsl:value-of select="@nmMethodName"/>(
+                            $this-><xsl:value-of select="@name"/> = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>-><xsl:value-of select="@nmMethodName"/>(
                                 <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
                                     $this->get<xsl:value-of select="@methodName"/>(true)<xsl:if test="position() != last()">,</xsl:if>
                                 </xsl:for-each>

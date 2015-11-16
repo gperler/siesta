@@ -3,6 +3,7 @@
 namespace siestaphp\datamodel\reference;
 
 use siestaphp\datamodel\collector\CollectorFilterSource;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 
 /**
  * Interface ReferenceGeneratorSource
@@ -55,5 +56,10 @@ interface ReferenceGeneratorSource extends ReferenceSource
      * @return CollectorFilterSource[]
      */
     public function getCollectorFilterSourceList();
+
+    /**
+     * @return EntityGeneratorSource
+     */
+    public function getReferencedEntity();
 
 }

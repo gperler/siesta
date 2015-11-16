@@ -4,6 +4,7 @@ namespace siestaphp\datamodel\collector;
 
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\Processable;
 use siestaphp\datamodel\reference\Reference;
@@ -236,6 +237,14 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     }
 
     /**
+     * @return EntityGeneratorSource
+     */
+    public function getReferencedEntity()
+    {
+        return $this->foreignClassEntity;
+    }
+
+    /**
      * @return CollectorFilterSource[]
      */
     public function getCollectorFilterSourceList()
@@ -244,11 +253,18 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     }
 
     /**
-     * @return string
+     * @return string[]
      */
     public function getReferencedFullyQualifiedClassName()
     {
-        return $this->foreignClassEntity->getFullyQualifiedClassName();
+        $ems = $this->foreignClassEntity->getEntityManagerSource();
+        $fqnList = array($this->foreignClassEntity->getFullyQualifiedClassName(),
+            $ems->getFullyQualifiedClassName());
+        if ($ems->getConstructFactoryFqn() !== null) {
+            $fqnList[] = $ems->getConstructFactoryFqn();
+        }
+
+        return $fqnList;
     }
 
     /**

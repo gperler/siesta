@@ -28,6 +28,8 @@
 
             <xsl:call-template name="referenceFinder"/>
 
+            <xsl:call-template name="nmMappingFinder"/>
+
             <xsl:call-template name="referenceDeleter"/>
 
             <xsl:call-template name="deleteByPrimaryKey"/>
@@ -136,9 +138,51 @@
                 </xsl:for-each>
                 return $this->executeStoredProcedure("CALL <xsl:value-of select="@spFinderName"/>(<xsl:for-each select="column">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
             }
+
+            <xsl:variable name="referenceMethodName" select="@methodName"/>
+            <xsl:variable name="columnList" select="column"/>
+            <xsl:for-each select="filter">
+                /**
+                 * <xsl:for-each select="$columnList">
+                 * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
+                 * </xsl:for-each>
+                 * <xsl:for-each select="parameter">
+                 * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
+                 * </xsl:for-each>
+                 * @param string $connectionName
+                 * @return <xsl:value-of select="/entity/@constructClass"/>[]
+                 */
+                public static function getEntityBy<xsl:value-of select="$referenceMethodName"/>Filter<xsl:value-of select="@name"/>(<xsl:for-each select="$columnList">$<xsl:value-of select="@name"/>,</xsl:for-each><xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
+                 {
+                    $connection = ConnectionFactory::getConnection($connectionName);
+                    <xsl:for-each select="$columnList">
+                        $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
+                    </xsl:for-each>
+                    return self::executeStoredProcedure("CALL <xsl:value-of select="@spName"/>(<xsl:for-each select="$columnList">'$<xsl:value-of select="@name"/>',</xsl:for-each><xsl:for-each select="parameter">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
+                }
+            </xsl:for-each>
+
         </xsl:for-each>
     </xsl:template>
 
+    <xsl:template name="nmMappingFinder">
+        <xsl:for-each select="/entity/nmMapping">
+            /**
+            * <xsl:for-each select="pkColumn">
+            * @param <xsl:value-of select="@phpType"/> $<xsl:value-of select="@name"/>
+            * </xsl:for-each>
+            * @param string $connectionName
+            * @return <xsl:value-of select="/entity/@constructClass"/>[]
+            */
+            public static function <xsl:value-of select="@phpMethodName"/>(<xsl:for-each select="pkColumn">$<xsl:value-of select="@name"/></xsl:for-each>,$connectionName = null) {
+            $connection = ConnectionFactory::getConnection($connectionName);
+            <xsl:for-each select="pkColumn">
+                $<xsl:value-of select="@name"/> = $connection->escape($<xsl:value-of select="@name"/>);
+            </xsl:for-each>
+            return self::executeStoredProcedure("CALL <xsl:value-of select="@spName"/>(<xsl:for-each select="pkColumn">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
+            }
+        </xsl:for-each>
+    </xsl:template>
 
     <xsl:template name="referenceDeleter">
         <xsl:for-each select="/entity/reference">

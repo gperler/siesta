@@ -57,12 +57,42 @@ class EntityManager implements EntityManagerSource
     /**
      * @return string
      */
+    public function getFullyQualifiedClassName()
+    {
+        return $this->getClassNamespace() . "\\" . $this->getClassName();
+    }
+
+    /**
+     * @return string
+     */
     public function getTargetPath()
     {
         if ($this->entityManagerSource !== null) {
             return $this->entityManagerSource->getTargetPath();
         }
         return $this->entity->getTargetPath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getConstructFactory()
+    {
+        if ($this->entityManagerSource !== null) {
+            return $this->entityManagerSource->getConstructFactory();
+        }
+        return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConstructFactoryFqn()
+    {
+        if ($this->entityManagerSource !== null) {
+            return $this->entityManagerSource->getConstructFactoryFqn();
+        }
+        return null;
     }
 
 }

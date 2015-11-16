@@ -2,6 +2,7 @@
 
 namespace siestaphp\datamodel\collector;
 
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\reference\ReferenceSource;
 
@@ -42,7 +43,6 @@ interface CollectorGeneratorSource extends CollectorSource
      */
     public function getNMMappingMethodName();
 
-
     /**
      * @return string
      */
@@ -52,4 +52,9 @@ interface CollectorGeneratorSource extends CollectorSource
      * @return string
      */
     public function getNMForeignMethodName();
+
+    /**
+     * @return EntityGeneratorSource
+     */
+    public function getReferencedEntity();
 }

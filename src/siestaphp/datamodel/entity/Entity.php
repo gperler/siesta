@@ -310,12 +310,15 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         }
 
         foreach ($this->referenceList as $reference) {
-            $this->addToUsedFQClassNames($reference->getReferencedFullyQualifiedClassName());
+            foreach ($reference->getReferencedFullyQualifiedClassName() as $usedClass) {
+                $this->addToUsedFQClassNames($usedClass);
+            }
         }
 
         foreach ($this->collectorList as $collector) {
-
-            $this->addToUsedFQClassNames($collector->getReferencedFullyQualifiedClassName());
+            foreach ($collector->getReferencedFullyQualifiedClassName() as $usedClass) {
+                $this->addToUsedFQClassNames($usedClass);
+            }
         }
 
     }

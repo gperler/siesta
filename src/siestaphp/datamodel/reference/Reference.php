@@ -2,10 +2,12 @@
 
 namespace siestaphp\datamodel\reference;
 
+use Codeception\Util\Debug;
 use siestaphp\datamodel\collector\CollectorFilter;
 use siestaphp\datamodel\collector\CollectorFilterSource;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
+use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\Processable;
 use siestaphp\generator\ValidationLogger;
@@ -153,14 +155,21 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     }
 
     /**
-     * @return string
+     * @return string[]
      */
     public function getReferencedFullyQualifiedClassName()
     {
-        if ($this->referencedEntity) {
-            return $this->referencedEntity->getFullyQualifiedClassName();
+        if ($this->referencedEntity === null) {
+            return "";
         }
-        return "";
+        $ems = $this->referencedEntity->getEntityManagerSource();
+
+
+        $usedFQN = array($this->referencedEntity->getFullyQualifiedClassName(), $ems->getFullyQualifiedClassName());
+        if ($ems->getConstructFactoryFqn()) {
+            $usedFQN[] = $ems->getConstructFactoryFqn();
+        }
+        return $usedFQN;
     }
 
     /**
@@ -282,6 +291,13 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
     public function isReferenceCreatorNeeded()
     {
         return $this->referenceCreatorNeeded;
+    }
+
+    /**
+     * @return EntityGeneratorSource
+     */
+    public function getReferencedEntity() {
+        return $this->referencedEntity;
     }
 
     /**

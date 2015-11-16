@@ -10,6 +10,7 @@ use siestaphp\datamodel\storedprocedure\SPParameterSource;
 use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLCollector;
 use siestaphp\naming\XMLCollectorFilter;
+use siestaphp\naming\XMLEntityManager;
 use siestaphp\naming\XMLMapping;
 use siestaphp\naming\XMLReference;
 use siestaphp\naming\XMLStoredProcedure;
@@ -95,6 +96,8 @@ class XMLReferenceBuilder extends XMLBuilder
         $this->setAttribute(XMLReference::ATTRIBUTE_FOREIGN_METHOD_NAME, $referenceGeneratorSource->getForeignMethodName());
         $this->setAttributeAsBool(XMLReference::ATTRIBUTE_SP_REFERENCE_CREATOR_NEEDED, $referenceGeneratorSource->isReferenceCreatorNeeded());
 
+        $this->addForeignEntityManagerData($referenceGeneratorSource);
+
         // attach referenced columns to xml
         $referencedColumnList = $referenceGeneratorSource->getReferencedColumnList();
         foreach ($referencedColumnList as $referencedColumn) {
@@ -106,6 +109,15 @@ class XMLReferenceBuilder extends XMLBuilder
             $this->addCollectorFilter($filter);
         }
     }
+
+    /**
+     * @param ReferenceGeneratorSource $referenceGeneratorSource
+     */
+    protected function addForeignEntityManagerData(ReferenceGeneratorSource $referenceGeneratorSource) {
+        $referencedEntity = $referenceGeneratorSource->getReferencedEntity();
+        new XMLEntityManagerBuilder($referencedEntity->getEntityManagerSource(), $this->domDocument, $this->domElement);
+    }
+
 
     /**
      * a referenced column refers to a primary key attribute in the referenced entity

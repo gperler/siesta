@@ -4,7 +4,9 @@ namespace siestaphp\tests\functional;
 
 use siestaphp\driver\exceptions\ForeignKeyConstraintFailedException;
 use siestaphp\tests\functional\constraint\gen\Address;
+use siestaphp\tests\functional\constraint\gen\AddressManager;
 use siestaphp\tests\functional\constraint\gen\Customer;
+use siestaphp\tests\functional\constraint\gen\CustomerManager;
 
 /**
  * Class ReferenceTest
@@ -33,6 +35,7 @@ class ConstraintTest extends SiestaTester
 
     public function testRestrictDelete()
     {
+        $manager = AddressManager::getInstance();
         $standardAddress = new Address();
         $standardAddress->setCity("Berlin");
         $standardAddress->setStreet("Kastanienallee");
@@ -41,7 +44,7 @@ class ConstraintTest extends SiestaTester
         $customer->setStandardAddress($standardAddress);
         $customer->save(true);
         try {
-            Address::deleteEntityByPrimaryKey($standardAddress->getId());
+            $manager->deleteEntityByPrimaryKey($standardAddress->getId());
             $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
         } catch (ForeignKeyConstraintFailedException $e) {
         }
@@ -80,10 +83,13 @@ class ConstraintTest extends SiestaTester
         $customer->setDeliveryAddress($deliveryAddress);
         $customer->save(true);
 
-        // delete address
-        Address::deleteEntityByPrimaryKey($deliveryAddress->getId());
+        $manager = AddressManager::getInstance();
 
-        $customerLoaded = Customer::getEntityByPrimaryKey($customer->getId());
+        // delete address
+        $manager->deleteEntityByPrimaryKey($deliveryAddress->getId());
+
+
+        $customerLoaded = CustomerManager::getInstance()->getEntityByPrimaryKey($customer->getId());
         $this->assertNull($customerLoaded, "On delete cascade failed");
     }
 
@@ -102,7 +108,7 @@ class ConstraintTest extends SiestaTester
         $sql = "UPDATE Address SET ID=7 WHERE ID= " . $deliveryAddress->getId();
         $this->connection->query($sql);
 
-        $customerLoaded = Customer::getEntityByPrimaryKey($customer->getId());
+        $customerLoaded = CustomerManager::getInstance()->getEntityByPrimaryKey($customer->getId());
 
         $this->assertSame($customerLoaded->getDeliveryAddressId(), 7, "On update cascade failed");
     }
@@ -117,9 +123,10 @@ class ConstraintTest extends SiestaTester
         $customer->setBillingAddress($billingAddress);
         $customer->save(true);
 
-        Address::deleteEntityByPrimaryKey($billingAddress->getId());
 
-        $customerLoaded = Customer::getEntityByPrimaryKey($customer->getId());
+        AddressManager::getInstance()->deleteEntityByPrimaryKey($billingAddress->getId());
+
+        $customerLoaded = CustomerManager::getInstance()->getEntityByPrimaryKey($customer->getId());
 
         $this->assertNull($customerLoaded->getBillingAddressId(), "On delete set null failed");
 
@@ -139,7 +146,7 @@ class ConstraintTest extends SiestaTester
         $sql = "UPDATE Address SET ID=7 WHERE ID= " . $billingAddress->getId();
         $this->connection->query($sql);
 
-        $customerLoaded = Customer::getEntityByPrimaryKey($customer->getId());
+        $customerLoaded = CustomerManager::getInstance()->getEntityByPrimaryKey($customer->getId());
 
         $this->assertNull($customerLoaded->getBillingAddressId(), "On update set null failed");
 
@@ -157,7 +164,7 @@ class ConstraintTest extends SiestaTester
         $customer->save(true);
 
         try {
-            Address::deleteEntityByPrimaryKey($holidyAddress->getId());
+            AddressManager::getInstance()->deleteEntityByPrimaryKey($holidyAddress->getId());
             $this->assertTrue(false, "Foreign key constraint failed exception not thrown");
         } catch (ForeignKeyConstraintFailedException $e) {
         }

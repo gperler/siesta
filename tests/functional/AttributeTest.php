@@ -5,6 +5,7 @@ namespace siestaphp\tests\functional;
 use siestaphp\runtime\Factory;
 use siestaphp\tests\functional\attribute\AttributeXML;
 use siestaphp\tests\functional\attribute\gen\ArtistEntity;
+use siestaphp\tests\functional\attribute\gen\ArtistEntityManager;
 
 /**
  * Class AttributeTest
@@ -35,7 +36,8 @@ class AttributeTest extends SiestaTester
      */
     public function testCreateEntity()
     {
-        echo "CREATE ENTITY";
+        $manager = ArtistEntityManager::getInstance();
+
         $artist = new ArtistEntity();
         $artist->setBool(true);
         $artist->setString("Test123");
@@ -62,7 +64,7 @@ class AttributeTest extends SiestaTester
         $this->stopTimer("Time to save entity %0.2fms");
 
         $this->startTimer();
-        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId());
+        $artistLoaded = $manager->getEntityByPrimaryKey($artist->getId());
         $this->stopTimer("Time to load entity %0.2fms");
 
         $this->assertSame($artist->getId(), $artistLoaded->getId(), "");
@@ -76,11 +78,11 @@ class AttributeTest extends SiestaTester
 
         // delete entity
         $this->startTimer();
-        ArtistEntity::deleteEntityByPrimaryKey($artist->getId());
+        $manager->deleteEntityByPrimaryKey($artist->getId());
         $this->stopTimer("Time to delete entity %0.2fms");
 
         // try to load it
-        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId());
+        $artistLoaded = $manager->getEntityByPrimaryKey($artist->getId());
 
         // check that it doesnt exist.
         $this->assertNull($artistLoaded);
@@ -91,6 +93,7 @@ class AttributeTest extends SiestaTester
      */
     public function testNull()
     {
+        $manager = ArtistEntityManager::getInstance();
         $artist = new ArtistEntity();
 
         $artist->setBool(null);
@@ -105,7 +108,7 @@ class AttributeTest extends SiestaTester
         $artist->save();
 
         // load it again
-        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId());
+        $artistLoaded = $manager->getEntityByPrimaryKey($artist->getId());
 
         // check that null is back
         $this->assertSame($artist->getId(), $artistLoaded->getId());
@@ -118,7 +121,7 @@ class AttributeTest extends SiestaTester
         $this->assertNull($artist->getPTime());
 
         // delete entity
-        ArtistEntity::deleteEntityByPrimaryKey($artist->getId());
+        $manager->deleteEntityByPrimaryKey($artist->getId());
 
     }
 

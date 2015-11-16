@@ -3,7 +3,9 @@
 namespace siestaphp\tests\functional;
 
 use siestaphp\tests\functional\uuid\gen\ArtistEntity;
+use siestaphp\tests\functional\uuid\gen\ArtistEntityManager;
 use siestaphp\tests\functional\uuid\gen\LabelEntity;
+use siestaphp\tests\functional\uuid\gen\LabelEntityManager;
 
 /**
  * Class UUIDTest
@@ -49,12 +51,12 @@ class UUIDTest extends SiestaTester
         $artist = new ArtistEntity();
         $artist->save();
 
-        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId());
+        $artistLoaded = ArtistEntityManager::getInstance()->getEntityByPrimaryKey($artist->getId());
 
         $this->assertNotNull($artistLoaded, "Artist could not be loaded");
 
-        ArtistEntity::deleteEntityByPrimaryKey($artist->getId());
-        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId());
+        ArtistEntityManager::getInstance()->deleteEntityByPrimaryKey($artist->getId());
+        $artistLoaded = ArtistEntityManager::getInstance()->getEntityByPrimaryKey($artist->getId());
 
         $this->assertNull($artistLoaded, "Artist could not be deleted");
 
@@ -70,7 +72,7 @@ class UUIDTest extends SiestaTester
         $artist->setLabel($label);
         $artist->save(true);
 
-        $artistLoaded = ArtistEntity::getEntityByPrimaryKey($artist->getId());
+        $artistLoaded = ArtistEntityManager::getInstance()->getEntityByPrimaryKey($artist->getId());
         $this->assertNotNull($artistLoaded, "Artist could not be loaded");
         $this->assertSame($artistLoaded->getName(), $artist->getName());
 
@@ -103,7 +105,7 @@ class UUIDTest extends SiestaTester
 
         $label->save(true);
 
-        $labelLoaded = LabelEntity::getEntityByPrimaryKey($label->getId(), $label->getName());
+        $labelLoaded = LabelEntityManager::getInstance()->getEntityByPrimaryKey($label->getId(), $label->getName());
         $artistListLoaded = $labelLoaded->getArtistList();
 
         $this->assertSame(sizeof($artistListLoaded), 3, "not found all artist anymore");

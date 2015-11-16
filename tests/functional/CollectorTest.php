@@ -3,7 +3,9 @@
 namespace siestaphp\tests\functional;
 
 use siestaphp\tests\functional\collector1n\gen\ArtistEntity;
+use siestaphp\tests\functional\collector1n\gen\ArtistEntityManager;
 use siestaphp\tests\functional\collector1n\gen\LabelEntity;
+use siestaphp\tests\functional\collector1n\gen\LabelEntityManager;
 
 /**
  * Class ReferenceTest
@@ -76,7 +78,8 @@ class CollectorTest extends SiestaTester
      */
     private function loadStructure($labelId)
     {
-        $k7 = LabelEntity::getEntityByPrimaryKey($labelId);
+        $manager = LabelEntityManager::getInstance();
+        $k7 = $manager->getEntityByPrimaryKey($labelId);
 
         $artistList = $k7->getArtistList();
         $this->assertSame(sizeof($artistList), 3, "Not all artist loaded again");
@@ -84,8 +87,9 @@ class CollectorTest extends SiestaTester
 
     private function loadLabelFromArtist()
     {
+        $manager = ArtistEntityManager::getInstance();
         // test load of artist
-        $artist = ArtistEntity::getEntityByPrimaryKey(1);
+        $artist = $manager->getEntityByPrimaryKey(1);
         $this->assertNotNull($artist, "Artist not found");
 
         // test reference
@@ -103,7 +107,8 @@ class CollectorTest extends SiestaTester
      */
     private function deleteAllArtistsFromLabe($labelId)
     {
-        $k7 = LabelEntity::getEntityByPrimaryKey($labelId);
+        $manager = LabelEntityManager::getInstance();
+        $k7 = $manager->getEntityByPrimaryKey($labelId);
         $k7->deleteAllArtistList();
 
         $artistList = $k7->getArtistList();
