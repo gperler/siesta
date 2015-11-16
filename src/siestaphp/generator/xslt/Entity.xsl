@@ -852,11 +852,14 @@
                 </xsl:choose>
             </xsl:for-each>
 
+
+
+
             <!-- iterate references and initialize from array -->
             <xsl:for-each select="/entity/reference">
                 $<xsl:value-of select="@name"/>Data = $arrayAccessor->get('<xsl:value-of select="@name"/>');
                 if ($<xsl:value-of select="@name"/>Data) {
-                    $this-><xsl:value-of select="@name"/>Obj = new <xsl:value-of select="@foreignConstructClass"/>();
+                    $this-><xsl:value-of select="@name"/>Obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
                     $this-><xsl:value-of select="@name"/>Obj->fromArray($<xsl:value-of select="@name"/>Data);
                 } else {
                     <xsl:for-each select="column">
@@ -871,7 +874,7 @@
                 if ($<xsl:value-of select="@name"/>DataList) {
                     $this-><xsl:value-of select="@name"/> = array();
                     foreach ($<xsl:value-of select="@name"/>DataList as $<xsl:value-of select="@name"/>Data) {
-                        $obj = new <xsl:value-of select="@foreignConstructClass"/>();
+                        $obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
                         $obj->fromArray($<xsl:value-of select="@name"/>Data);
                         $this-><xsl:value-of select="@name"/>[] = $obj;
                     }

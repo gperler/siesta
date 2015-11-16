@@ -24,6 +24,8 @@
 
             <xsl:call-template name="getInstance"/>
 
+            <xsl:call-template name="newInstance"/>
+
             <xsl:call-template name="getEntityByPrimaryKey"/>
 
             <xsl:call-template name="referenceFinder"/>
@@ -309,6 +311,23 @@
             }
             $resultSet->close();
             return $objectList;
+        }
+    </xsl:template>
+
+    <xsl:template name="newInstance">
+        /**
+         * @return <xsl:value-of select="/entity/@constructClass"/>
+         */
+        public function newInstance()
+        {
+            <xsl:choose>
+                <xsl:when test="/entity/@constructFactory != ''">
+                    return <xsl:value-of select="/entity/@constructFactory"/>;
+                </xsl:when>
+                <xsl:otherwise>
+                    return new <xsl:value-of select="/entity/@constructClass"/>();
+                </xsl:otherwise>
+            </xsl:choose>
         }
     </xsl:template>
 
