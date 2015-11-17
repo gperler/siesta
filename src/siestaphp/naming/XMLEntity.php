@@ -15,14 +15,6 @@ class XMLEntity
 
     const ATTRIBUTE_CLASS_NAMESPACE = "namespace";
 
-    const ATTRIBUTE_CONSTRUCTOR_CLASS = "constructClass";
-
-    const ATTRIBUTE_CONSTRUCTOR_NAMESPACE = "constructNamespace";
-
-    const ATTRIBUTE_CONSTRUCT_FACTORY = "constructFactory";
-
-    const ATTRIBUTE_CONSTRUCT_FACTORY_FQN = "constructFactoryFqn";
-
     const ATTRIBUTE_TABLE = "table";
 
     const ATTRIBUTE_DELIMIT = "delimit";

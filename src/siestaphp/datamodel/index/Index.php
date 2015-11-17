@@ -2,7 +2,6 @@
 
 namespace siestaphp\datamodel\index;
 
-use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\Processable;
@@ -58,7 +57,7 @@ class Index implements Processable, IndexSource
     public function getName()
     {
         $indexName = $this->indexSource->getName();
-        if ($indexName) {
+        if (!empty($indexName)) {
             return $indexName;
         }
 
@@ -109,7 +108,7 @@ class Index implements Processable, IndexSource
     /**
      * @param ValidationLogger $logger
      *
-*@return void
+     * @return void
      */
     public function validate(ValidationLogger $logger)
     {

@@ -60,14 +60,14 @@ class DataModelContainer
 
         $entityClassName = $source->getClassName();
 
-        if (!$entityClassName) {
+        if (empty($entityClassName)) {
             $this->generatorLog->warn("Found Entity without name in file(s) ", 0);
             return;
         }
 
         if (isset($this->entityList[$entityClassName])) {
             $existingEntity = $this->entityList[$entityClassName];
-            $this->generatorLog->warn("Found Entity in 2 file(s)", 0);
+            $this->generatorLog->warn("Found Entity in 2 file(s) ignoring 2nd file", 0);
             return;
         }
 

@@ -426,7 +426,7 @@
         <!-- iterate references -->
         <xsl:for-each select="/entity/reference">
            /**
-            * @var <xsl:value-of select="@foreignConstructClass"/>
+            * @var <xsl:value-of select="construct/@name"/>
             */
             protected $<xsl:value-of select="@name"/>Obj;
 
@@ -1102,7 +1102,7 @@
             <xsl:variable name="methodName" select="@methodName"/>
             /**
              * @param bool $forceReload
-             * @return <xsl:value-of select="@foreignConstructClass"/>
+             * @return <xsl:value-of select="construct/@name"/>
              */
             public function get<xsl:value-of select="@methodName"/>($forceReload=false)
             {
@@ -1131,7 +1131,7 @@
             </xsl:for-each>
 
             /**
-             * @param <xsl:value-of select="@foreignConstructClass"/> $object
+             * @param <xsl:value-of select="construct/@name"/> $object
              * <xsl:if test="@referenceCretorNeeded='true'">@param bool $backlink</xsl:if>
              * @return void
              */

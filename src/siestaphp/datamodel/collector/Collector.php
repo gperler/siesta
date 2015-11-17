@@ -245,6 +245,22 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     }
 
     /**
+     * @return string
+     */
+    public function getForeignClass()
+    {
+        return $this->foreignClassEntity->getClassName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getForeignConstructClass()
+    {
+        return $this->foreignClassEntity->getConstructorClass();
+    }
+
+    /**
      * @return CollectorFilterSource[]
      */
     public function getCollectorFilterSourceList()
@@ -259,7 +275,7 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     {
         $ems = $this->foreignClassEntity->getEntityManagerSource();
         return array(
-            $this->foreignClassEntity->getFullyQualifiedClassName(),
+            $this->foreignClassEntity->getFullyQualifiedConstructClassName(),
             $ems->getFullyQualifiedClassName(),
             $ems->getConstructFactoryFqn()
         );
@@ -281,13 +297,7 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         return $this->collectorSource->getType();
     }
 
-    /**
-     * @return string
-     */
-    public function getForeignClass()
-    {
-        return $this->foreignClassEntity->getConstructorClass();
-    }
+
 
     /**
      * @return string
@@ -340,13 +350,7 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         return ucfirst($this->collectorSource->getName());
     }
 
-    /**
-     * @return string
-     */
-    public function getForeignConstructClass()
-    {
-        return $this->foreignClassEntity->getConstructorClass();
-    }
+
 
     /**
      * @return string

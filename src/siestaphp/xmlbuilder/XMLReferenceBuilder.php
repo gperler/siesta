@@ -8,9 +8,7 @@ use siestaphp\datamodel\reference\ReferenceGeneratorSource;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\storedprocedure\SPParameterSource;
 use siestaphp\naming\XMLAttribute;
-use siestaphp\naming\XMLCollector;
 use siestaphp\naming\XMLCollectorFilter;
-use siestaphp\naming\XMLEntityManager;
 use siestaphp\naming\XMLMapping;
 use siestaphp\naming\XMLReference;
 use siestaphp\naming\XMLStoredProcedure;
@@ -97,6 +95,7 @@ class XMLReferenceBuilder extends XMLBuilder
         $this->setAttributeAsBool(XMLReference::ATTRIBUTE_SP_REFERENCE_CREATOR_NEEDED, $referenceGeneratorSource->isReferenceCreatorNeeded());
 
         $this->addForeignEntityManagerData($referenceGeneratorSource);
+        $this->addForeignConstructData($referenceGeneratorSource);
 
         // attach referenced columns to xml
         $referencedColumnList = $referenceGeneratorSource->getReferencedColumnList();
@@ -105,7 +104,7 @@ class XMLReferenceBuilder extends XMLBuilder
         }
 
         // attach collector filter
-        foreach($referenceGeneratorSource->getCollectorFilterSourceList() as $filter) {
+        foreach ($referenceGeneratorSource->getCollectorFilterSourceList() as $filter) {
             $this->addCollectorFilter($filter);
         }
     }
@@ -113,11 +112,20 @@ class XMLReferenceBuilder extends XMLBuilder
     /**
      * @param ReferenceGeneratorSource $referenceGeneratorSource
      */
-    protected function addForeignEntityManagerData(ReferenceGeneratorSource $referenceGeneratorSource) {
+    protected function addForeignEntityManagerData(ReferenceGeneratorSource $referenceGeneratorSource)
+    {
         $referencedEntity = $referenceGeneratorSource->getReferencedEntity();
         new XMLEntityManagerBuilder($referencedEntity->getEntityManagerSource(), $this->domDocument, $this->domElement);
     }
 
+    /**
+     * @param ReferenceGeneratorSource $referenceGeneratorSource
+     */
+    protected function addForeignConstructData(ReferenceGeneratorSource $referenceGeneratorSource)
+    {
+        $referencedEntity = $referenceGeneratorSource->getReferencedEntity();
+        new XMLConstructBuilder($referencedEntity->getConstructSource(), $this->domDocument, $this->domElement);
+    }
 
     /**
      * a referenced column refers to a primary key attribute in the referenced entity

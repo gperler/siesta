@@ -4,6 +4,8 @@ namespace siestaphp\driver\mysqli\metadata;
 
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\CollectorSource;
+use siestaphp\datamodel\construct\Construct;
+use siestaphp\datamodel\construct\ConstructSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\index\IndexSource;
@@ -287,6 +289,14 @@ class TableMetadata implements EntitySource
     }
 
     /**
+     * @return ConstructSource
+     */
+    public function getConstructSource()
+    {
+        return new Construct($this, null);
+    }
+
+    /**
      * @return string
      */
     public function getClassName()
@@ -300,38 +310,6 @@ class TableMetadata implements EntitySource
     public function getClassNamespace()
     {
         return $this->targetNamespace;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConstructorClass()
-    {
-        return "";
-    }
-
-    /**
-     * @return string
-     */
-    public function getConstructorNamespace()
-    {
-        return "";
-    }
-
-    /**
-     * @return string
-     */
-    public function getConstructFactory()
-    {
-        return null;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConstructFactoryFqn()
-    {
-        return null;
     }
 
     /**

@@ -279,7 +279,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     {
         $entity = $this->loadEntitySource();
 
-        foreach ($entity as $sp) {
+        foreach ($entity->getStoredProcedureSourceList() as $sp) {
             $this->testStoredProcedure($sp);
         }
     }

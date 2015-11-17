@@ -4,6 +4,7 @@ namespace siestaphp\generator;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use siestaphp\datamodel\validation\Validator;
 
 /**
  * Class ValidationLogger
@@ -28,6 +29,11 @@ class ValidationLogger implements LoggerAwareInterface
     protected $logger;
 
     /**
+     * @var Validator
+     */
+    protected $validator;
+
+    /**
      * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger)
@@ -35,6 +41,7 @@ class ValidationLogger implements LoggerAwareInterface
         $this->logger = $logger;
         $this->errorCount = 0;
         $this->warningCount = 0;
+        $this->validator = new Validator();
     }
 
     /**
@@ -110,10 +117,10 @@ class ValidationLogger implements LoggerAwareInterface
      */
     public function errorIfAttributeNotSet($needle, $attributeName, $elementName, $errorCode)
     {
-        if (!$needle) {
-            $this->error("Mandatory attribute $attributeName in element <$elementName> not set", $errorCode);
-
+        if (!empty($needle)) {
+            return;
         }
+        $this->error("Mandatory attribute $attributeName in element <$elementName> not set", $errorCode);
     }
 
     /**
@@ -127,10 +134,54 @@ class ValidationLogger implements LoggerAwareInterface
      */
     public function errorIfNotInList($needle, $haystack, $attributeName, $elementName, $errorCode)
     {
-        if (!in_array($needle, $haystack)) {
-            $allowedValues = implode(",", $haystack);
-            $this->error("Attribute '$attributeName' in element <$elementName> has an invalid value ('$needle'). Allowed values are: $allowedValues", $errorCode);
+        if (in_array($needle, $haystack)) {
+            return;
         }
+        $allowedValues = implode(",", $haystack);
+        $this->error("Attribute '$attributeName' in element <$elementName> has an invalid value ('$needle'). Allowed values are: $allowedValues", $errorCode);
+
     }
 
+    /**
+     * @param string $className
+     * @param string $attributeName
+     * @param string $elementName
+     * @param int $errorCode
+     */
+    public function errorIfInvalidClassName($className, $attributeName, $elementName, $errorCode)
+    {
+        if ($this->validator->isValidClassName($className)) {
+            return;
+        }
+        $this->error("Classname '$className' is an invalid php classname (element <$elementName> Attribute $attributeName)", $errorCode);
+    }
+
+    /**
+     * @param string $namespace
+     * @param string $attributeName
+     * @param string $elementName
+     * @param int $errorCode
+     */
+    public function errorIfInvalidNamespace($namespace, $attributeName, $elementName, $errorCode)
+    {
+        if ($this->validator->isValidNamespace($namespace)) {
+            return;
+        }
+
+        $this->error("Namespace '$namespace' is an invalid php namespace (element <$elementName> Attribute $attributeName)", $errorCode);
+    }
+
+    /**
+     * @param string $memberName
+     * @param string $attributeName
+     * @param string $elementName
+     * @param int $errorCode
+     */
+    public function errorIfInvalidMemberName($memberName, $attributeName, $elementName, $errorCode)
+    {
+        if ($this->validator->isValidMemberName($memberName)) {
+            return;
+        }
+        $this->error("Member '$memberName' is an invalid php variable name (element <$elementName> Attribute $attributeName)", $errorCode);
+    }
 }

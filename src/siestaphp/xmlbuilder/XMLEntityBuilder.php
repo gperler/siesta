@@ -69,8 +69,6 @@ class XMLEntityBuilder extends XMLBuilder
 
         $this->addIndexList();
 
-        $managerXMLBuilder = new XMLEntityManagerBuilder($this->entitySource->getEntityManagerSource(), $this->domDocument, $this->domElement);
-
         // if this is used for transformation (and not reverse engineering) add transformation relevant data
         if ($this->entitySource instanceof EntityGeneratorSource) {
             $this->addTransformerData($this->entitySource);
@@ -84,13 +82,14 @@ class XMLEntityBuilder extends XMLBuilder
      */
     private function addEntityData()
     {
+        $managerXMLBuilder = new XMLEntityManagerBuilder($this->entitySource->getEntityManagerSource(), $this->domDocument, $this->domElement);
+        $constructXMLBuilder = new XMLConstructBuilder($this->entitySource->getConstructSource(), $this->domDocument, $this->domElement);
+
         $this->setAttribute(XMLEntity::ATTRIBUTE_CLASS_NAME, $this->entitySource->getClassName());
         $this->setAttribute(XMLEntity::ATTRIBUTE_CLASS_NAMESPACE, $this->entitySource->getClassNamespace());
-        $this->setAttribute(XMLEntity::ATTRIBUTE_CONSTRUCTOR_CLASS, $this->entitySource->getConstructorClass());
-        $this->setAttribute(XMLEntity::ATTRIBUTE_CONSTRUCTOR_NAMESPACE, $this->entitySource->getConstructorNamespace());
+
         $this->setAttribute(XMLEntity::ATTRIBUTE_TARGET_PATH, $this->entitySource->getTargetPath());
         $this->setAttribute(XMLEntity::ATTRIBUTE_TABLE, $this->entitySource->getTable());
-        $this->setAttribute(XMLEntity::ATTRIBUTE_CONSTRUCT_FACTORY, $this->entitySource->getConstructFactory());
         $this->setAttributeAsBool(XMLEntity::ATTRIBUTE_DELIMIT, $this->entitySource->isDelimit());
 
     }

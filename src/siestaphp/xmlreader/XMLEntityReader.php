@@ -4,6 +4,7 @@ namespace siestaphp\xmlreader;
 
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\CollectorSource;
+use siestaphp\datamodel\construct\ConstructSource;
 use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\manager\EntityManagerSource;
@@ -11,6 +12,7 @@ use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\datamodel\storedprocedure\StoredProcedureSource;
 use siestaphp\naming\XMLAttribute;
 use siestaphp\naming\XMLCollector;
+use siestaphp\naming\XMLConstruct;
 use siestaphp\naming\XMLEntity;
 use siestaphp\naming\XMLEntityManager;
 use siestaphp\naming\XMLIndex;
@@ -53,6 +55,11 @@ class XMLEntityReader extends XMLAccess implements EntitySource
      * @var EntityManagerSource
      */
     protected $entityManagerSource;
+
+    /**
+     * @var ConstructSource
+     */
+    protected $constructSource;
 
     /**
      *
@@ -218,6 +225,27 @@ class XMLEntityReader extends XMLAccess implements EntitySource
     }
 
     /**
+     * @return ConstructSource
+     */
+    public function getConstructSource()
+    {
+        if ($this->constructSource === null) {
+            $this->readConstructSource();
+        }
+        return $this->constructSource;
+    }
+
+    private function readConstructSource()
+    {
+        $constructXMLList = $this->getXMLChildElementListByName(XMLConstruct::ELEMENT_CONSTRUCT_NAME);
+        foreach ($constructXMLList as $constructXML) {
+            $this->constructSource = new XMLConstructReader();
+            $this->constructSource->setSource($constructXML);
+            return;
+        }
+    }
+
+    /**
      * @return string
      */
     public function getClassName()
@@ -231,38 +259,6 @@ class XMLEntityReader extends XMLAccess implements EntitySource
     public function getClassNamespace()
     {
         return $this->getAttribute(XMLEntity::ATTRIBUTE_CLASS_NAMESPACE);
-    }
-
-    /**
-     * @return string
-     */
-    public function getConstructorClass()
-    {
-        return $this->getAttribute(XMLEntity::ATTRIBUTE_CONSTRUCTOR_CLASS);
-    }
-
-    /**
-     * @return string
-     */
-    public function getConstructorNamespace()
-    {
-        return $this->getAttribute(XMLEntity::ATTRIBUTE_CONSTRUCTOR_NAMESPACE);
-    }
-
-    /**
-     * @return string
-     */
-    public function getConstructFactory()
-    {
-        return $this->getAttribute(XMLEntity::ATTRIBUTE_CONSTRUCT_FACTORY);
-    }
-
-    /**
-     * @return string
-     */
-    public function getConstructFactoryFqn()
-    {
-        return $this->getAttribute(XMLEntity::ATTRIBUTE_CONSTRUCT_FACTORY_FQN);
     }
 
     /**

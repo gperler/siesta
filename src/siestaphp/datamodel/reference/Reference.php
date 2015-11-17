@@ -167,7 +167,7 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
         $ems = $this->referencedEntity->getEntityManagerSource();
 
         return array(
-            $this->referencedEntity->getFullyQualifiedClassName(),
+            $this->referencedEntity->getFullyQualifiedConstructClassName(),
             $ems->getFullyQualifiedClassName(),
             $ems->getConstructFactoryFqn()
         );

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entityList>
-    <entity name="ArtistEntity" namespace="tests\gen\gen" constructClass="Artist" constructNamespace="tests\gen"
-            table="ARTIST" delimit="false" targetPath="tests/gen" constructFactory="constructFactory" constructFactoryFqn="constructFactoryFqn">
+    <entity name="ArtistEntity" namespace="tests\gen\gen" table="ARTIST" delimit="false" targetPath="tests/gen">
         <entity-mysql engine="InnoDB" charset="utf8" collate="utf8_unicode_ci"/>
+
+        <construct name="Artist" namespace="tests\gen" constructFactory="constructFactory"
+                   constructFactoryFqn="constructFactoryFqn"/>
 
         <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" addIndex="true"
                    defaultValue="" autoValue="autoincrement"/>
@@ -44,8 +46,11 @@
         </index>
     </entity>
 
-    <entity name="LabelEntity" constructClass="Label" constructNamespace="tests" table="LABEL" delimit="false"
+    <entity name="LabelEntity" table="LABEL" delimit="false"
             targetPath="tests/gen" namespace="tests\gen">
+
+        <construct name="Label" namespace="tests" constructFactory=""
+                   constructFactoryFqn=""/>
         <entity-mysql engine="InnoDB" charset="utf8" collate="utf8_unicode_ci"/>
         <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true" addIndex="true"
                    defaultValue="" autoValue="autoincrement"/>

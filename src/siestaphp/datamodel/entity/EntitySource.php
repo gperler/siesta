@@ -4,6 +4,7 @@ namespace siestaphp\datamodel\entity;
 
 use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\CollectorSource;
+use siestaphp\datamodel\construct\ConstructSource;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\index\IndexSource;
 use siestaphp\datamodel\manager\EntityManagerSource;
@@ -42,6 +43,11 @@ interface EntitySource
     public function getIndexSourceList();
 
     /**
+     * @return ConstructSource
+     */
+    public function getConstructSource();
+
+    /**
      * @return EntityManagerSource
      */
     public function getEntityManagerSource();
@@ -55,26 +61,6 @@ interface EntitySource
      * @return string
      */
     public function getClassNamespace();
-
-    /**
-     * @return string
-     */
-    public function getConstructorClass();
-
-    /**
-     * @return string
-     */
-    public function getConstructorNamespace();
-
-    /**
-     * @return string
-     */
-    public function getConstructFactory();
-
-    /**
-     * @return string
-     */
-    public function getConstructFactoryFqn();
 
     /**
      * @return string

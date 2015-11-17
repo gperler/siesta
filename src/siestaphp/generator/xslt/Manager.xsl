@@ -48,16 +48,16 @@
     </xsl:template>
 
     <xsl:template name="getInstance">
+        /**
+         * @var <xsl:value-of select="/entity/manager/@name"/>
+         */
+        protected static $instance;
 
         /**
-        * @var <xsl:value-of select="/entity/manager/@name"/>
-        */
-        private static $instance;
-
-        /**
-        * @return <xsl:value-of select="/entity/manager/@name"/>
-        */
-        public static function getInstance() {
+         * @return <xsl:value-of select="/entity/manager/@name"/>
+         */
+        public static function getInstance()
+        {
             if (self::$instance === null) {
                 self::$instance = new static();
             }
@@ -71,10 +71,10 @@
         <xsl:if test="/entity/@hasPrimaryKey = 'true'">
         /**
         <xsl:for-each select="/entity/pkColumn">
-          * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
+         * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
         </xsl:for-each>
          * @param string $connectionName
-         * @return <xsl:value-of select="/entity/@constructClass"/>
+         * @return <xsl:value-of select="/entity/construct/@name"/>
          */
         public function getEntityByPrimaryKey(<xsl:for-each select="/entity/pkColumn">$<xsl:value-of select="@name"/>,</xsl:for-each> $connectionName=null)
         {
@@ -97,7 +97,7 @@
                     * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
                 </xsl:for-each>
                 * @param string $connectionName
-                * @return <xsl:value-of select="/entity/@constructClass"/>
+                * @return <xsl:value-of select="/entity/construct/@name"/>
                 */
                 public function getEntityByPrimaryKeyAtTime(DateTime $validAt, <xsl:for-each select="/entity/pkColumn">$<xsl:value-of select="@name"/>,</xsl:for-each> $connectionName=null)
                 {
@@ -130,7 +130,7 @@
              * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
              * </xsl:for-each>
              * @param string $connectionName
-             * @return <xsl:value-of select="/entity/@constructClass"/>[]
+             * @return <xsl:value-of select="/entity/construct/@name"/>[]
              */
             public function getEntityBy<xsl:value-of select="@methodName"/>Reference(<xsl:for-each select="column">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
             {
@@ -152,7 +152,7 @@
                  * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
                  * </xsl:for-each>
                  * @param string $connectionName
-                 * @return <xsl:value-of select="/entity/@constructClass"/>[]
+                 * @return <xsl:value-of select="/entity/construct/@name"/>[]
                  */
                 public function getEntityBy<xsl:value-of select="$referenceMethodName"/>Filter<xsl:value-of select="@name"/>(<xsl:for-each select="$columnList">$<xsl:value-of select="@name"/>,</xsl:for-each><xsl:for-each select="parameter">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName = null)
                  {
@@ -174,7 +174,7 @@
             * @param <xsl:value-of select="@phpType"/> $<xsl:value-of select="@name"/>
             * </xsl:for-each>
             * @param string $connectionName
-            * @return <xsl:value-of select="/entity/@constructClass"/>[]
+            * @return <xsl:value-of select="/entity/construct/@name"/>[]
             */
             public function <xsl:value-of select="@phpMethodName"/>(<xsl:for-each select="pkColumn">$<xsl:value-of select="@name"/></xsl:for-each>,$connectionName = null) {
             $connection = ConnectionFactory::getConnection($connectionName);
@@ -213,7 +213,7 @@
             * @param <xsl:value-of select="@type"/> $<xsl:value-of select="@name"/>
          </xsl:for-each>
          * @param string $connectionName
-         * @return <xsl:value-of select="/entity/@constructClass"/>
+         * @return <xsl:value-of select="/entity/construct/@name"/>
          */
         public function deleteEntityByPrimaryKey(<xsl:for-each select="/entity/pkColumn">$<xsl:value-of select="@name"/>,</xsl:for-each>$connectionName=null)
         {
@@ -236,10 +236,10 @@
             * @param string $connectionName
                 <xsl:choose>
                     <xsl:when test="@resultType='single'">
-                        * @return <xsl:value-of select="/entity/@constructClass"/>
+                        * @return <xsl:value-of select="/entity/construct/@name"/>
                     </xsl:when>
                     <xsl:when test="@resultType='list'">
-                        * @return <xsl:value-of select="/entity/@constructClass"/>[]
+                        * @return <xsl:value-of select="/entity/construct/@name"/>[]
                     </xsl:when>
                     <xsl:when test="@resultType='resultset'">
                         * @return ResultSet
@@ -299,7 +299,7 @@
         /**
          * @param string $invocation
          * @param string $connectionName
-         * @return <xsl:value-of select="/entity/@constructClass"/>[]
+         * @return <xsl:value-of select="/entity/construct/@name"/>[]
          */
         private function executeStoredProcedure($invocation, $connectionName=null)
         {
@@ -316,7 +316,7 @@
 
     <xsl:template name="newInstance">
         /**
-         * @return <xsl:value-of select="/entity/@constructClass"/>
+         * @return <xsl:value-of select="/entity/construct/@name"/>
          */
         public function newInstance()
         {
@@ -325,7 +325,7 @@
                     return <xsl:value-of select="/entity/@constructFactory"/>;
                 </xsl:when>
                 <xsl:otherwise>
-                    return new <xsl:value-of select="/entity/@constructClass"/>();
+                    return new <xsl:value-of select="/entity/construct/@name"/>();
                 </xsl:otherwise>
             </xsl:choose>
         }
@@ -335,7 +335,7 @@
     <xsl:template name="createInstanceFromResultSet">
         /**
          * @param ResultSet $res
-         * @return <xsl:value-of select="/entity/@constructClass"/>
+         * @return <xsl:value-of select="/entity/construct/@name"/>
          */
         public function createInstanceFromResultSet(ResultSet $res)
         {
@@ -344,7 +344,7 @@
                     $entity = <xsl:value-of select="/entity/@constructFactory"/>;
                 </xsl:when>
                 <xsl:otherwise>
-                    $entity = new <xsl:value-of select="/entity/@constructClass"/>();
+                    $entity = new <xsl:value-of select="/entity/construct/@name"/>();
                 </xsl:otherwise>
             </xsl:choose>
             $entity->initializeFromResultSet($res);
@@ -355,7 +355,7 @@
 
     <xsl:template name="batchSaver">
        /**
-        * @param $objectList <xsl:value-of select="/entity/@constructClass"/>[]
+        * @param $objectList <xsl:value-of select="/entity/construct/@name"/>[]
         * @param string $connectionName
         */
         public function batchSave(array $objectList, $connectionName = null)

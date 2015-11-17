@@ -62,13 +62,9 @@ class XMLReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($definition["name"], $artistEntity->getClassName(), "name is not correct");
         $this->assertSame($definition["namespace"], $artistEntity->getClassNamespace(), "namespace is not correct");
-        $this->assertSame($definition["constructClass"], $artistEntity->getConstructorClass(), "constructClass is not correct");
-        $this->assertSame($definition["constructNamespace"], $artistEntity->getConstructorNamespace(), "constructNamespace is not correct");
         $this->assertSame($definition["table"], $artistEntity->getTable(), "table is not correct");
         $this->assertSame($definition["delimit"], $artistEntity->isDelimit(), "delimit is not correct");
         $this->assertSame($definition["targetPath"], $artistEntity->getTargetPath(), "targetPath is not correct");
-        $this->assertSame($definition["constructFactory"], $artistEntity->getConstructFactory(), "constructFactory is not correct");
-        $this->assertSame($definition["constructFactoryFqn"], $artistEntity->getConstructFactoryFqn(), "constructFactoryFqn is not correct");
 
     }
 

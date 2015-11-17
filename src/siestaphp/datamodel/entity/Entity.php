@@ -8,6 +8,8 @@ use siestaphp\datamodel\attribute\AttributeSource;
 use siestaphp\datamodel\collector\Collector;
 use siestaphp\datamodel\collector\CollectorGeneratorSource;
 use siestaphp\datamodel\collector\NMMapping;
+use siestaphp\datamodel\construct\Construct;
+use siestaphp\datamodel\construct\ConstructSource;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DatabaseSpecificSource;
 use siestaphp\datamodel\DataModelContainer;
@@ -37,10 +39,6 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     const VALIDATION_ERROR_INVALID_CLASSNAME = 101;
 
     const VALIDATION_ERROR_INVALID_NAMESPACE = 102;
-
-    const VALIDATION_ERROR_INVALID_CONSTRUCT_CLASSNAME = 103;
-
-    const VALIDATION_ERROR_INVALID_CONSTRUCT_NAMESPACE = 104;
 
     const VALIDATION_ERROR_NO_PRIMARY_KEY = 110;
 
@@ -80,6 +78,11 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     protected $entityManager;
 
     /**
+     * @var Construct
+     */
+    protected $construct;
+
+    /**
      * @var string[]
      */
     protected $usedFQNClassNameList;
@@ -98,16 +101,6 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      * @var string
      */
     protected $classNamespace;
-
-    /**
-     * @var string
-     */
-    protected $constructorClass;
-
-    /**
-     * @var string
-     */
-    protected $constructorNamespace;
 
     /**
      * @var string
@@ -181,14 +174,12 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     {
         $this->className = $this->entitySource->getClassName();
         $this->classNamespace = $this->entitySource->getClassNamespace();
-        $this->constructorClass = $this->entitySource->getConstructorClass();
-        $this->constructorNamespace = $this->entitySource->getConstructorNamespace();
         $this->table = $this->entitySource->getTable();
         $this->delimit = $this->entitySource->isDelimit();
         $this->targetPath = $this->entitySource->getTargetPath();
 
         $this->entityManager = new EntityManager($this, $this->entitySource->getEntityManagerSource());
-
+        $this->construct = new Construct($this, $this->entitySource->getConstructSource());
     }
 
     /**
@@ -255,10 +246,6 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     private function deriveData()
     {
-        if (!$this->constructorClass) {
-            $this->constructorClass = $this->className;
-            $this->constructorNamespace = $this->classNamespace;
-        }
         if (!$this->table) {
             $this->table = $this->className;
         }
@@ -301,12 +288,12 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     private function assembleUsedClasses()
     {
 
-        if ($this->constructorClass !== $this->className) {
-            $this->addToUsedFQClassNames($this->getFullyQualifiedClassName());
+        if ($this->construct->getFullyQualifiedClassName() !== $this->getFullyQualifiedClassName()) {
+            $this->addToUsedFQClassNames($this->construct->getFullyQualifiedClassName());
         }
 
-        if ($this->entitySource->getConstructFactoryFqn()) {
-            $this->addToUsedFQClassNames($this->entitySource->getConstructFactoryFqn());
+        if ($this->construct->getConstructFactoryFqn()) {
+            $this->addToUsedFQClassNames($this->construct->getConstructFactoryFqn());
         }
 
         foreach ($this->referenceList as $reference) {
@@ -383,6 +370,9 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         foreach ($this->storedProcedureList as $sp) {
             $sp->validate($logger);
         }
+
+        $this->entityManager->validate($logger);
+
     }
 
     /**
@@ -392,22 +382,11 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     private function validateEntity(ValidationLogger $log)
     {
-        $log->info("Analyzing entity " . $this->className);
+        $log->info("Analyzing entity " . $this->getClassName());
 
-        $log->errorIfAttributeNotSet($this->className, XMLEntity::ATTRIBUTE_CLASS_NAME, XMLEntity::ELEMENT_ENTITY_NAME, self::VALIDATION_ERROR_NO_CLASSNAME);
+        $log->errorIfInvalidClassName($this->getClassName(), XMLEntity::ATTRIBUTE_CLASS_NAME, XMLEntity::ELEMENT_ENTITY_NAME, self::VALIDATION_ERROR_INVALID_CLASSNAME);
 
-        if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $this->className)) {
-            $log->error($this->className . " is not a valid classname ", self::VALIDATION_ERROR_INVALID_CLASSNAME);
-        }
-
-        if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $this->constructorClass)) {
-            $log->error($this->className . " is not a valid classname ", self::VALIDATION_ERROR_INVALID_CONSTRUCT_CLASSNAME);
-        }
-
-        $pkList = $this->getPrimaryKeyAttributeList();
-        if (sizeof($pkList) === 0) {
-            //$log->error("No <" . XMLEntity::ELEMENT_ENTITY_NAME . "> has " . XMLAttribute::ATTRIBUTE_PRIMARY_KEY . " true. A primary key is required", self::VALIDATION_ERROR_NO_PRIMARY_KEY);
-        }
+        $log->errorIfInvalidNamespace($this->getClassNamespace(), XMLEntity::ATTRIBUTE_CLASS_NAMESPACE, XMLEntity::ELEMENT_ENTITY_NAME, self::VALIDATION_ERROR_INVALID_NAMESPACE);
     }
 
     /**
@@ -581,6 +560,14 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
     }
 
     /**
+     * @return ConstructSource
+     */
+    public function getConstructSource()
+    {
+        return $this->construct;
+    }
+
+    /**
      * @return bool
      */
     public function hasReferences()
@@ -617,7 +604,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function getConstructorClass()
     {
-        return $this->constructorClass;
+        return $this->construct->getConstructorClass();
     }
 
     /**
@@ -625,7 +612,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function getConstructorNamespace()
     {
-        return $this->constructorNamespace;
+        return $this->construct->getConstructorNamespace();
     }
 
     /**
@@ -633,7 +620,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function getConstructFactory()
     {
-        return $this->entitySource->getConstructFactory();
+        return $this->construct->getConstructFactory();
     }
 
     /**
@@ -641,7 +628,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function getConstructFactoryFqn()
     {
-        return $this->entitySource->getConstructFactoryFqn();
+        return $this->construct->getConstructFactoryFqn();
     }
 
     /**
@@ -708,7 +695,18 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function getFullyQualifiedClassName()
     {
-        return $this->constructorNamespace . "\\" . $this->constructorClass;
+        return $this->classNamespace . "\\" . $this->className;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullyQualifiedConstructClassName()
+    {
+        if ($this->construct->getFullyQualifiedClassName() !== null) {
+            return $this->construct->getFullyQualifiedClassName();
+        }
+        return $this->getFullyQualifiedClassName();
     }
 
     /**
@@ -749,13 +747,4 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
         return $this->entitySource->getDatabaseSpecific($database);
     }
 
-    /**
-     * @return DelimiterEntity
-     */
-    public function getDelimiterEntity()
-    {
-        $delimiterEntity = new DelimiterEntity();
-        $delimiterEntity->setSource($this->entitySource);
-        return $delimiterEntity;
-    }
 }
