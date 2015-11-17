@@ -321,8 +321,8 @@
         public function newInstance()
         {
             <xsl:choose>
-                <xsl:when test="/entity/@constructFactory != ''">
-                    return <xsl:value-of select="/entity/@constructFactory"/>;
+                <xsl:when test="/entity/construct/@constructFactory != ''">
+                    return <xsl:value-of select="/entity/construct/@constructFactory"/>;
                 </xsl:when>
                 <xsl:otherwise>
                     return new <xsl:value-of select="/entity/construct/@name"/>();
@@ -340,8 +340,8 @@
         public function createInstanceFromResultSet(ResultSet $res)
         {
             <xsl:choose>
-                <xsl:when test="/entity/@constructFactory != ''">
-                    $entity = <xsl:value-of select="/entity/@constructFactory"/>;
+                <xsl:when test="/entity/construct/@constructFactory != ''">
+                    $entity = <xsl:value-of select="/entity/construct/@constructFactory"/>;
                 </xsl:when>
                 <xsl:otherwise>
                     $entity = new <xsl:value-of select="/entity/construct/@name"/>();
