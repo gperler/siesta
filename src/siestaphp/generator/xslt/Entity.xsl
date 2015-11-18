@@ -890,7 +890,7 @@
          */
         public function toJSON()
         {
-            return json_encode($this->to[]);
+            return json_encode($this->toArray());
         }
 
         /**
