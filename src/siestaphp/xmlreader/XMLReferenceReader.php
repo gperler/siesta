@@ -119,7 +119,7 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
      */
     private function readMappingList()
     {
-        $this->mappingList = array();
+        $this->mappingList = [];
         $mappingXMLList = $this->getXMLChildElementListByName(XMLMapping::ELEMENT_MAPPING_NAME);
 
         foreach ($mappingXMLList as $mappingXML) {
@@ -135,7 +135,7 @@ class XMLReferenceReader extends XMLAccess implements ReferenceSource
      */
     public function getReferencedColumnList()
     {
-        return array();
+        return [];
     }
 
 }

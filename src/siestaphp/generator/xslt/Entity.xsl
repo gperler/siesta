@@ -336,7 +336,7 @@
         private static function executeStoredProcedure($invocation, $connectionName=null)
         {
             $connection = ConnectionFactory::getConnection($connectionName);
-            $objectList = array();
+            $objectList = [];
             $resultSet = $connection->executeStoredProcedure($invocation);
             while ($resultSet->hasNext()) {
                 $objectList[] =  self::createInstanceFromResultSet($resultSet);
@@ -498,7 +498,7 @@
             <xsl:for-each select="/entity/collector">
                 $this-><xsl:value-of select="@name"/> = null;
                 <xsl:if test="@type='nm'">
-                    $this-><xsl:value-of select="@name"/>Mapping = array();
+                    $this-><xsl:value-of select="@name"/>Mapping = [];
                 </xsl:if>
             </xsl:for-each>
         }
@@ -872,7 +872,7 @@
             <xsl:for-each select="/entity/collector">
                 $<xsl:value-of select="@name"/>DataList = $arrayAccessor->getArray('<xsl:value-of select="@name"/>');
                 if ($<xsl:value-of select="@name"/>DataList) {
-                    $this-><xsl:value-of select="@name"/> = array();
+                    $this-><xsl:value-of select="@name"/> = [];
                     foreach ($<xsl:value-of select="@name"/>DataList as $<xsl:value-of select="@name"/>Data) {
                         $obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
                         $obj->fromArray($<xsl:value-of select="@name"/>Data);
@@ -890,7 +890,7 @@
          */
         public function toJSON()
         {
-            return json_encode($this->toArray());
+            return json_encode($this->to[]);
         }
 
         /**
@@ -909,7 +909,7 @@
             }
 
             <!-- iterate attributes -->
-            $result = array(
+            $result = [
             <xsl:for-each select="/entity/attribute">
                 <xsl:choose>
                     <xsl:when test="@type='bool'">
@@ -925,14 +925,14 @@
                         "<xsl:value-of select="@name"/>" => $this-><xsl:value-of select="@name"/>
                     </xsl:when>
                     <xsl:when test="@type='DateTime'">
-                        "<xsl:value-of select="@name"/>" => $this-><xsl:value-of select="@name"/>
+                        "<xsl:value-of select="@name"/>" => $this-><xsl:value-of select="@name"/> === null ? null : $this-><xsl:value-of select="@name"/>->getJSONDateTime()
                     </xsl:when>
                     <xsl:when test="@type='json'">
                         "<xsl:value-of select="@name"/>" => $this-><xsl:value-of select="@name"/>
                     </xsl:when>
                 </xsl:choose>
                 <xsl:if test="position() != last()">,</xsl:if>
-            </xsl:for-each>);
+            </xsl:for-each>];
 
             <!-- iterate references -->
             <xsl:for-each select="/entity/reference">
@@ -947,7 +947,7 @@
 
             <!-- iterate collector -->
             <xsl:for-each select="/entity/collector">
-                $result["<xsl:value-of select="@name"/>"] = array();
+                $result["<xsl:value-of select="@name"/>"] = [];
                 if ($this-><xsl:value-of select="@name"/>) {
                     foreach($this-><xsl:value-of select="@name"/> as $<xsl:value-of select="@name"/>) {
                         $result["<xsl:value-of select="@name"/>"][] = $<xsl:value-of select="@name"/>->toArray($passport);
@@ -1027,7 +1027,7 @@
                      */
                     public function addTo<xsl:value-of select="@methodName"/>($key, $value) {
                         if ($this-><xsl:value-of select="@name"/> === null) {
-                            $this-><xsl:value-of select="@name"/> = array();
+                            $this-><xsl:value-of select="@name"/> = [];
                         }
                         $this-><xsl:value-of select="@name"/>[$key] = $value;
                     }
@@ -1082,17 +1082,7 @@
         </xsl:for-each>
     </xsl:template>
 
-    <xsl:template name="managerAccess">
-        <xsl:param name="entityManager"/>
-        <xsl:choose>
-            <xsl:when test="$entityManager/@constructFactory = ''">
-                <xsl:value-of select="$entityManager/@name"/>::getInstance()
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="$entityManager/@constructFactory"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
+
 
 
     <xsl:template name="referenceGetterSetter">
@@ -1236,7 +1226,7 @@
                     {
                         $object->set<xsl:value-of select="@referenceMethodName"/>($this);
                         if ($this-><xsl:value-of select="@name"/> === null) {
-                            $this-><xsl:value-of select="@name"/> = array();
+                            $this-><xsl:value-of select="@name"/> = [];
                         }
                         $this-><xsl:value-of select="@name"/>[] = $object;
                     }
@@ -1278,5 +1268,16 @@
         </xsl:for-each>
     </xsl:template>
 
+    <xsl:template name="managerAccess">
+        <xsl:param name="entityManager"/>
+        <xsl:choose>
+            <xsl:when test="$entityManager/@constructFactory = ''">
+                <xsl:value-of select="$entityManager/@constructClass"/>::getInstance()
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$entityManager/@constructFactory"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 
 </xsl:stylesheet>

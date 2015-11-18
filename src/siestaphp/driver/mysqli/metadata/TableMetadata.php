@@ -79,9 +79,9 @@ class TableMetadata implements EntitySource
 
         $this->connection = $connection;
 
-        $this->attributeMetaDataList = array();
-        $this->referenceMetaDataList = array();
-        $this->indexMetaList = array();
+        $this->attributeMetaDataList = [];
+        $this->referenceMetaDataList = [];
+        $this->indexMetaList = [];
 
         $this->extractReferenceData();
 
@@ -261,7 +261,7 @@ class TableMetadata implements EntitySource
      */
     public function getStoredProcedureSourceList()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -269,7 +269,7 @@ class TableMetadata implements EntitySource
      */
     public function getCollectorSourceList()
     {
-        return array();
+        return [];
     }
 
     /**

@@ -68,7 +68,7 @@ class SelectCollectorStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildSignature()
     {
-        $signatureList = array();
+        $signatureList = [];
         foreach ($this->foreignEntity->getPrimaryKeyColumns() as $column) {
             $signatureList[] = $this->buildSignatureParameterPart($column);
         }
@@ -90,7 +90,7 @@ class SelectCollectorStoredProcedure extends MySQLStoredProcedureBase
 
         $ownTable = $this->entitySource->getTable();
 
-        $onPartList = array();
+        $onPartList = [];
         foreach ($this->entitySource->getPrimaryKeyColumns() as $pkColumn) {
             $referencedColumn = $this->getReferencedColumnForPKColumn($this->entitySource->getTable(), $pkColumn);
 
@@ -101,7 +101,7 @@ class SelectCollectorStoredProcedure extends MySQLStoredProcedureBase
 
         $foreignTable = $this->foreignEntity->getTable();
 
-        $whereList = array();
+        $whereList = [];
         foreach($this->foreignEntity->getPrimaryKeyColumns() as $pkColumn) {
             $referencedColumn = $this->getReferencedColumnForPKColumn($foreignTable, $pkColumn);
 

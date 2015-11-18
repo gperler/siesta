@@ -22,7 +22,7 @@ class Passport
      */
     public function __construct()
     {
-        $this->stamps = array();
+        $this->stamps = [];
     }
 
     /**
@@ -39,7 +39,7 @@ class Passport
         // if object has not been visited
         if (!$objTravels) {
             // create a new entry for the id
-            $this->stamps [$tableName] = array();
+            $this->stamps [$tableName] = [];
 
             // add the id travel
             $this->addTravel($tableName, $visitor);

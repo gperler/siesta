@@ -8,6 +8,10 @@ namespace siestaphp\runtime;
  */
 interface DateTime
 {
+    /**
+     * @return string
+     */
+    function getJSONDateTime();
 
     /**
      * @return string

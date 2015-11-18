@@ -12,11 +12,13 @@ interface AttributeSource extends DatabaseColumn
 {
 
     /**
+     * name of the php attribute/member
      * @return string
      */
     public function getName();
 
     /**
+     * php type of the attribute/member
      * @return string
      */
     public function getPHPType();

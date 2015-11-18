@@ -23,9 +23,13 @@ class ReverseGeneratorConfig
 
     const DEFAULT_REVERSE_TARGET = "/reverse";
 
-    public static $OPTION_LIST = array(self::OPTION_CONNECTION_NAME, self::OPTION_ENTITY_FILE_SUFFX, self::OPTION_SINGLE_FILE, self::OPTION_TARGET_NAMESPACE, self::OPTION_TARGET_PATH
-
-    );
+    public static $OPTION_LIST = [
+        self::OPTION_CONNECTION_NAME,
+        self::OPTION_ENTITY_FILE_SUFFX,
+        self::OPTION_SINGLE_FILE,
+        self::OPTION_TARGET_NAMESPACE,
+        self::OPTION_TARGET_PATH
+    ];
 
     /**
      * @var string

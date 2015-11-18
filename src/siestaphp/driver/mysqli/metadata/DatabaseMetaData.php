@@ -55,8 +55,8 @@ class DatabaseMetaData
      */
     private function extractEntitySourceList($targetNamespace, $targetPath)
     {
-        $this->entitySourceList = array();
-        $tableDTOList = array();
+        $this->entitySourceList = [];
+        $tableDTOList = [];
 
         // find tables first
         $sql = sprintf(self::SQL_GET_TABLE_LIST, $this->connection->getDatabase());

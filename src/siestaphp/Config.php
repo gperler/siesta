@@ -166,7 +166,7 @@ class Config
             throw new InvalidConfiguration(sprintf(self::EXCEPTION_MISSING_CONNECTION, self::CONFIG_CONNECTION));
         }
         if (!is_array($connectionList)) {
-            $connectionList = array($connectionList);
+            $connectionList = [$connectionList];
         }
 
         foreach ($connectionList as $connection) {

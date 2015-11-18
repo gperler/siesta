@@ -48,7 +48,7 @@ class DeleteReferenceStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildSignature()
     {
-        $sqlList = array();
+        $sqlList = [];
         foreach ($this->referenceSource->getReferencedColumnList() as $column) {
             $sqlList[] = $this->buildSignatureParameterPart($column);
         }
@@ -60,7 +60,7 @@ class DeleteReferenceStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildStatement()
     {
-        $whereList = array();
+        $whereList = [];
         foreach ($this->referenceSource->getReferencedColumnList() as $column) {
             $whereList[] = $this->buildWherePart($column);
         }

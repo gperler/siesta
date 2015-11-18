@@ -57,7 +57,7 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildSignature()
     {
-        $parameterList = array();
+        $parameterList = [];
         foreach ($this->entitySource->getPrimaryKeyColumns() as $column) {
             $parameterList[] = $this->buildSignatureParameterPart($column);
         }
@@ -69,7 +69,7 @@ class SelectStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildStatement()
     {
-        $whereList = array();
+        $whereList = [];
         foreach ($this->entitySource->getPrimaryKeyColumns() as $column) {
             $whereList[] = $this->buildWherePart($column);
         }

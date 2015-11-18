@@ -60,7 +60,7 @@ class SelectDelimitStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildSignature()
     {
-        $signaturePartList = array(self::TIME_PARAMETER);
+        $signaturePartList = [self::TIME_PARAMETER];
         foreach ($this->entitySource->getPrimaryKeyColumns() as $column) {
             $signaturePartList[] = $this->buildSignatureParameterPart($column);
         }
@@ -73,7 +73,7 @@ class SelectDelimitStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildStatement()
     {
-        $wherePartList = array();
+        $wherePartList = [];
         foreach ($this->entitySource->getPrimaryKeyColumns() as $column) {
             $wherePartList[] = $this->buildWherePart($column);
         }

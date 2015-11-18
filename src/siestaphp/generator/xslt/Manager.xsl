@@ -304,7 +304,7 @@
         private function executeStoredProcedure($invocation, $connectionName=null)
         {
             $connection = ConnectionFactory::getConnection($connectionName);
-            $objectList = array();
+            $objectList = [];
             $resultSet = $connection->executeStoredProcedure($invocation);
             while ($resultSet->hasNext()) {
                 $objectList[] =  self::createInstanceFromResultSet($resultSet);

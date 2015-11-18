@@ -53,7 +53,7 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildSignature()
     {
-        $parameterList = array();
+        $parameterList = [];
         foreach ($this->entitySource->getPrimaryKeyColumns() as $pkColumn) {
             $parameterList[] = $this->buildSignatureParameterPart($pkColumn);
         }
@@ -76,7 +76,7 @@ class DeleteStoredProcedure extends MySQLStoredProcedureBase
     protected function buildDeleteSQL($tableName)
     {
 
-        $whereList = array();
+        $whereList = [];
         foreach ($this->entitySource->getPrimaryKeyColumns() as $column) {
             $whereList[] = $this->buildWherePart($column);
         }

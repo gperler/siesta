@@ -2,6 +2,7 @@
 
 namespace siestaphp\generator;
 
+use Codeception\Util\Debug;
 use Psr\Log\LoggerInterface;
 use siestaphp\Config;
 use siestaphp\datamodel\DataModelContainer;
@@ -73,7 +74,7 @@ class Generator
 
         $this->directoryScanner = new DirectoryScanner($logger);
 
-        $this->transformerList = array(new EntityTransformer(), new EntityManagerTransformer());
+        $this->transformerList = [new EntityTransformer(), new EntityManagerTransformer()];
     }
 
 
@@ -116,6 +117,7 @@ class Generator
      */
     private function generateDataModelContainer()
     {
+
         $this->dataModelContainer->updateModel();
 
         $this->dataModelContainer->validate();

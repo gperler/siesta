@@ -70,7 +70,7 @@ class XMLStoredProcedureReader extends XMLAccess implements StoredProcedureSourc
      */
     private function readParameterList()
     {
-        $this->spParameterReaderList = array();
+        $this->spParameterReaderList = [];
         $xmlParameterList = $this->getXMLChildElementListByName(XMLStoredProcedure::ELEMENT_PARAMETER);
         foreach ($xmlParameterList as $xmlParameter) {
             $parameterReader = new XMLSPParameterReader();

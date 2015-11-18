@@ -49,7 +49,7 @@ class SelectReferenceStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildSignature()
     {
-        $signatureList = array();
+        $signatureList = [];
         foreach ($this->referenceSource->getReferencedColumnList() as $column) {
             $signatureList[] = $this->buildSignatureParameterPart($column);
         }
@@ -62,7 +62,7 @@ class SelectReferenceStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildStatement()
     {
-        $whereList = array();
+        $whereList = [];
         foreach ($this->referenceSource->getReferencedColumnList() as $column) {
             $whereList[] = $this->buildWherePart($column);
         }

@@ -76,7 +76,7 @@ class XMLCollectorReader extends XMLAccess implements CollectorSource
      */
     private function readReferenceFilterSourceList()
     {
-        $this->collectorFilterSourceList = array();
+        $this->collectorFilterSourceList = [];
         $collectorFilterXMLList = $this->getXMLChildElementListByName(XMLCollectorFilter::ELEMENT_FILTER_NAME);
 
         foreach ($collectorFilterXMLList as $collectorFilterXML) {

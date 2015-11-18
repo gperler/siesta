@@ -65,11 +65,11 @@ class ReferenceListMigrator
         $this->columnMigrator = $columnMigrator;
         $this->databaseReferenceList = $databaseReferenceList;
         $this->modelReferenceList = $modelReferenceList;
-        $this->addForeignKeyStatementList = array();
-        $this->dropForeignKeyStatementList = array();
-        $this->addColumnStatementList = array();
-        $this->modifiyColumnStatementList = array();
-        $this->dropColumnStatementList = array();
+        $this->addForeignKeyStatementList = [];
+        $this->dropForeignKeyStatementList = [];
+        $this->addColumnStatementList = [];
+        $this->modifiyColumnStatementList = [];
+        $this->dropColumnStatementList = [];
     }
 
     /**
@@ -79,7 +79,7 @@ class ReferenceListMigrator
      */
     public function createAlterStatementList()
     {
-        $processedDatabaseList = array();
+        $processedDatabaseList = [];
 
         // iterate references from model and retrieve alter statements
         foreach ($this->modelReferenceList as $modelReference) {
@@ -225,7 +225,7 @@ class ReferenceListMigrator
      */
     private function compareReferencedColumnList($asIsList, $toBeList)
     {
-        $processedReferencedList = array();
+        $processedReferencedList = [];
 
         // stores if the foreign key constraint needs to be drop and recreated
         $needsForeignKeyDropAdd = 0;

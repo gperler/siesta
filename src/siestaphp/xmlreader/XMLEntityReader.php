@@ -86,7 +86,7 @@ class XMLEntityReader extends XMLAccess implements EntitySource
      */
     private function readAttributeList()
     {
-        $this->attributeReaderList = array();
+        $this->attributeReaderList = [];
         $attributeXMLList = $this->getXMLChildElementListByName(XMLAttribute::ELEMENT_ATTRIBUTE_NAME);
 
         foreach ($attributeXMLList as $attributeXML) {
@@ -113,7 +113,7 @@ class XMLEntityReader extends XMLAccess implements EntitySource
      */
     private function readReferenceList()
     {
-        $this->referenceReaderList = array();
+        $this->referenceReaderList = [];
         $referenceXMLList = $this->getXMLChildElementListByName(XMLReference::ELEMENT_REFERENCE_NAME);
         foreach ($referenceXMLList as $referenceXML) {
             $referenceReader = new XMLReferenceReader();
@@ -140,7 +140,7 @@ class XMLEntityReader extends XMLAccess implements EntitySource
      */
     private function readCollectorList()
     {
-        $this->collectorSourceList = array();
+        $this->collectorSourceList = [];
         $collectorXMLList = $this->getXMLChildElementListByName(XMLCollector::ELEMENT_COLLECTOR_NAME);
         foreach ($collectorXMLList as $collectorXML) {
             $collectorReader = new XMLCollectorReader();
@@ -165,7 +165,7 @@ class XMLEntityReader extends XMLAccess implements EntitySource
      */
     private function readStoredProcedureList()
     {
-        $this->storedProcedureList = array();
+        $this->storedProcedureList = [];
         $storedProcedureXMLList = $this->getXMLChildElementListByName(XMLStoredProcedure::ELEMENT_STORED_PROCEDURE);
         foreach ($storedProcedureXMLList as $storedProcedureXML) {
             $spReader = new XMLStoredProcedureReader();
@@ -191,7 +191,7 @@ class XMLEntityReader extends XMLAccess implements EntitySource
      */
     private function readIndexSourceList()
     {
-        $this->indexList = array();
+        $this->indexList = [];
         $indexXMLList = $this->getXMLChildElementListByName(XMLIndex::ELEMENT_INDEX_NAME);
         foreach ($indexXMLList as $indexXML) {
             $indexReader = new XMLIndexReader();

@@ -21,6 +21,16 @@ interface EntityManagerSource
     /**
      * @return string
      */
+    public function getConstructorClass();
+
+    /**
+     * @return string
+     */
+    public function getConstructorNamespace();
+
+    /**
+     * @return string
+     */
     public function getTargetPath();
 
     /**

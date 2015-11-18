@@ -63,10 +63,10 @@ class DatabaseMigrator
         $this->dataModelContainer = $dataModelContainer;
         $this->connection = $connection;
         $this->columnMigrator = $connection->getColumnMigrator();
-        $this->databaseModel = array();
-        $this->neededTableList = array(CreateStatementFactory::SEQUENCER_TABLE_NAME);
-        $this->alterStatementList = array();
-        $this->statementList = array();
+        $this->databaseModel = [];
+        $this->neededTableList = [CreateStatementFactory::SEQUENCER_TABLE_NAME];
+        $this->alterStatementList = [];
+        $this->statementList = [];
     }
 
     /**

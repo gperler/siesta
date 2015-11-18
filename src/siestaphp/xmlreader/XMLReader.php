@@ -35,7 +35,7 @@ class XMLReader
     {
         $this->fileName = $file->getAbsoluteFileName();
         $this->xmlDocument = $file->loadAsXML();
-        $this->enityList = array();
+        $this->enityList = [];
     }
 
     /**

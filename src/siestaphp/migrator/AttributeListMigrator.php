@@ -62,9 +62,9 @@ class AttributeListMigrator
         $this->columnMigrator = $columnMigrator;
         $this->databaseAttributeList = $databaseAttributeList;
         $this->modelAttributeList = $modelAttributeList;
-        $this->addStatementList = array();
-        $this->modifiyStatementList = array();
-        $this->dropStatementList = array();
+        $this->addStatementList = [];
+        $this->modifiyStatementList = [];
+        $this->dropStatementList = [];
     }
 
     /**
@@ -73,7 +73,7 @@ class AttributeListMigrator
      */
     public function createAlterStatementList()
     {
-        $processedDatabaseList = array();
+        $processedDatabaseList = [];
 
         // iterate attributes from model and retrieve alter statements
         foreach ($this->modelAttributeList as $modelAttribute) {

@@ -92,7 +92,7 @@ class ValidationLogger implements LoggerAwareInterface
     public function warn($text, $errorCode)
     {
         $this->warningCount++;
-        $this->logger->warning($text, array("code" => $errorCode));
+        $this->logger->warning($text, ["code" => $errorCode]);
     }
 
     /**
@@ -104,7 +104,7 @@ class ValidationLogger implements LoggerAwareInterface
     public function error($text, $errorCode)
     {
         $this->errorCount++;
-        $this->logger->error($text, array("code" => $errorCode));
+        $this->logger->error($text, ["code" => $errorCode]);
     }
 
     /**
@@ -121,6 +121,22 @@ class ValidationLogger implements LoggerAwareInterface
             return;
         }
         $this->error("Mandatory attribute $attributeName in element <$elementName> not set", $errorCode);
+    }
+
+
+    /**
+     * @param string $needle
+     * @param string $message
+     * @param int $errorCode
+     *
+     * @return void
+     */
+    public function errorIfNull($needle, $message, $errorCode)
+    {
+        if (!empty($needle)) {
+            return;
+        }
+        $this->error($message, $errorCode);
     }
 
     /**

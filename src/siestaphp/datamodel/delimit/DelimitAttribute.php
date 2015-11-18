@@ -17,11 +17,11 @@ class DelimitAttribute implements AttributeGeneratorSource
      */
     public static function getDelimitAttributes()
     {
-        return array(
+        return [
             new DelimitAttribute("_delimit_id", "string", "_delimit_id", "VARCHAR(36)", "uuid", true, "UUID()"),
             new DelimitAttribute("_validFrom", "DateTime", "_validFrom", "DATETIME", null, false, "NOW()"),
             new DelimitAttribute("_validUntil", "DateTime", "_validUntil", "DATETIME", null, false, "NULL"),
-            new DelimitAttribute("_changedBy", "string", "_changedBy", "VARCHAR(36)", null, false, "NULL"));
+            new DelimitAttribute("_changedBy", "string", "_changedBy", "VARCHAR(36)", null, false, "NULL")];
     }
 
     protected $name;

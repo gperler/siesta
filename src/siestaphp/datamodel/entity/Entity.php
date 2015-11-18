@@ -128,19 +128,19 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function __construct()
     {
-        $this->neededNMLookupList = array();
+        $this->neededNMLookupList = [];
 
-        $this->attributeList = array();
+        $this->attributeList = [];
 
-        $this->referenceList = array();
+        $this->referenceList = [];
 
-        $this->collectorList = array();
+        $this->collectorList = [];
 
-        $this->storedProcedureList = array();
+        $this->storedProcedureList = [];
 
-        $this->indexList = array();
+        $this->indexList = [];
 
-        $this->usedFQNClassNameList = array();
+        $this->usedFQNClassNameList = [];
     }
 
     /**
@@ -191,7 +191,6 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
             $attribute = new Attribute();
             $attribute->setSource($attributeSource);
             $this->attributeList[] = $attribute;
-
         }
     }
 
@@ -394,7 +393,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function getPrimaryKeyAttributeList()
     {
-        $resultList = array();
+        $resultList = [];
         foreach ($this->attributeList as $attribute) {
             if ($attribute->isPrimaryKey()) {
                 $resultList[] = $attribute;
@@ -408,7 +407,7 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function getPrimaryKeyColumns()
     {
-        $resultList = array();
+        $resultList = [];
         foreach ($this->attributeList as $attribute) {
             if ($attribute->isPrimaryKey()) {
                 $resultList[] = $attribute;

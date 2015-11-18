@@ -72,7 +72,7 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     {
         $this->entity = $entity;
         $this->collectorSource = $source;
-        $this->collectorFilterList = array();
+        $this->collectorFilterList = [];
     }
 
     /**
@@ -206,14 +206,11 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     protected function validate1N(ValidationLogger $logger)
     {
+        $foreignClassName = $this->collectorSource->getForeignClass();
 
-        if ($this->foreignClassEntity === null) {
-            $logger->error("Collector '" . $this->getName() . "' refers to unknown entity " . $this->getForeignClass(), self::VALIDATION_ERROR_INVALID_ENTITY_REFERENCED);
-        }
+        $logger->errorIfNull($this->foreignClassEntity, "Collector '" . $this->getName() . "' refers to unknown entity " . $foreignClassName, self::VALIDATION_ERROR_INVALID_ENTITY_REFERENCED);
 
-        if ($this->reference === null) {
-            $logger->error("Collector '" . $this->getName() . "' refers to unknown reference " . $this->getReferenceName(), self::VALIDATION_ERROR_INVALID_REFERENCE);
-        }
+        $logger->errorIfNull($this->reference, "Collector '" . $this->getName() . "' refers to unknown reference " . $this->getReferenceName(), self::VALIDATION_ERROR_INVALID_REFERENCE);
     }
 
     /**
@@ -221,19 +218,15 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     protected function validateNM(ValidationLogger $logger)
     {
-        if ($this->foreignClassEntity === null) {
-            $logger->error("Collector '" . $this->getName() . "' refers to unknown entity " . $this->getForeignClass(), self::VALIDATION_ERROR_INVALID_ENTITY_REFERENCED);
-        }
+        $logger->errorIfNull($this->foreignClassEntity, "Collector '" . $this->getName() . "' refers to unknown entity ", self::VALIDATION_ERROR_INVALID_ENTITY_REFERENCED);
 
-        if ($this->mappingClassEntity === null) {
-            $logger->error("Collector '" . $this->getName() . "' refers to unknown mapping entity " . $this->getMappingClass(), self::VALIDATION_ERROR_INVALID_MAPPING_CLASS);
-        }
+        $logger->errorIfNull($this->mappingClassEntity, "Collector '" . $this->getName() . "' refers to unknown mapping entity " . $this->getMappingClass(), self::VALIDATION_ERROR_INVALID_MAPPING_CLASS);
 
-        if ($this->mappingClassEntity->getReferenceByName($this->getReferenceName()) === null) {
-            $logger->error("Collector '" . $this->getName() . "' mapping entity does not refer this mapping class " . $this->getMappingClass() . " reference name " . $this->getReferenceName(), self::VALIDATION_ERROR_INVALID_MAPPING_CLASS);
+        if ($this->mappingClassEntity !== null) {
+            $reference = $this->mappingClassEntity->getReferenceByName($this->getReferenceName());
+            $logger->errorIfNull($reference, "Collector '" . $this->getName() . "' mapping entity does not refer this mapping class " . $this->getMappingClass() . " reference name " . $this->getReferenceName(), self::VALIDATION_ERROR_INVALID_MAPPING_CLASS);
 
         }
-
     }
 
     /**
@@ -273,12 +266,15 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
      */
     public function getReferencedFullyQualifiedClassName()
     {
+        if ($this->foreignClassEntity === null) {
+            return [];
+        }
         $ems = $this->foreignClassEntity->getEntityManagerSource();
-        return array(
+        return [
             $this->foreignClassEntity->getFullyQualifiedConstructClassName(),
             $ems->getFullyQualifiedClassName(),
             $ems->getConstructFactoryFqn()
-        );
+        ];
     }
 
     /**
@@ -296,8 +292,6 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     {
         return $this->collectorSource->getType();
     }
-
-
 
     /**
      * @return string
@@ -349,8 +343,6 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
     {
         return ucfirst($this->collectorSource->getName());
     }
-
-
 
     /**
      * @return string

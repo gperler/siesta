@@ -24,6 +24,9 @@ class Validator
      * @return bool
      */
     public function isValidNamespace($namespace) {
+        if (empty($namespace)) {
+            return true;
+        }
         return preg_match('/^((?:\\\\{1,2}\\w+|\\w+\\\\{1,2})(?:\\w+\\\\{0,2})+)$/', $namespace) === 1;
     }
 

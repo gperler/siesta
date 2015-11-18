@@ -160,7 +160,7 @@ class StoredProcedureNaming
      */
     public function __construct()
     {
-        $this->mappingList = array();
+        $this->mappingList = [];
     }
 
     /**

@@ -115,7 +115,7 @@ class File
             return null;
         }
 
-        $fileList = array();
+        $fileList = [];
         $fileNameList = scandir($this->absoluteFileName);
         foreach ($fileNameList as $fileName) {
             // do not add . and ..
@@ -169,7 +169,7 @@ class File
             return null;
         }
 
-        $result = array();
+        $result = [];
         foreach ($this->scanDir() as $file) {
 
             if ($file->isDir()) {

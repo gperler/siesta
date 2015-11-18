@@ -67,12 +67,44 @@ class EntityManager implements EntityManagerSource, Processable
     /**
      * @return string
      */
+    public function getConstructorClass()
+    {
+        if ($this->entityManagerSource === null) {
+            return $this->getClassName();
+        }
+
+        if ($this->entityManagerSource->getConstructorClass() === null) {
+            return $this->getClassName();
+        }
+
+        return $this->entityManagerSource->getConstructorClass();
+    }
+
+    /**
+     * @return string
+     */
+    public function getConstructorNamespace()
+    {
+        if ($this->entityManagerSource === null) {
+            return $this->getClassNamespace();
+        }
+
+        if ($this->entityManagerSource->getClassNamespace() === null) {
+            return $this->getClassNamespace();
+        }
+
+        return $this->entityManagerSource->getConstructorNamespace();
+    }
+
+    /**
+     * @return string
+     */
     public function getFullyQualifiedClassName()
     {
         if (empty($this->getClassName())) {
             return null;
         }
-        return $this->getClassNamespace() . "\\" . $this->getClassName();
+        return $this->getConstructorNamespace() . "\\" . $this->getConstructorClass();
     }
 
     /**

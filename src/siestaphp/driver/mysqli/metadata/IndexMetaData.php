@@ -95,10 +95,10 @@ class IndexMetaData implements IndexSource
         $this->attributeMetaDataList = $attributeMetaDataList;
 
         // list with parts (2 columns might be merged to one part)
-        $this->indexPartList = array();
+        $this->indexPartList = [];
 
         // list of columns that are actually refered
-        $this->referencedColumnList = array();
+        $this->referencedColumnList = [];
 
         // get standard information
         $this->indexName = $resultSet->getStringValue(self::INDEX_NAME);
@@ -166,7 +166,7 @@ class IndexMetaData implements IndexSource
         // if the index references an attribute return it
         foreach ($this->attributeMetaDataList as $attribute) {
             if ($attribute->getDatabaseName() === $columnName) {
-                return array($attribute);
+                return [$attribute];
             }
         }
 

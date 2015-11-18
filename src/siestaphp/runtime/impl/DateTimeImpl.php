@@ -67,6 +67,15 @@ class DateTimeImpl implements DateTime
     }
 
     /**
+     * @return string
+     */
+    function getJSONDateTime()
+    {
+        // "October 13, 1975 11:13:00"
+        return date("F d, Y H:i:s", $this->timestamp);
+    }
+
+    /**
      * @param DateTime $dateTime
      *
      * @return bool

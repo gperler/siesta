@@ -68,7 +68,7 @@ class MysqlColumnMigrator implements ColumnMigrator
     public function getModifyPrimaryKeyStatement(EntitySource $asIs, EntityGeneratorSource $toBe)
     {
 
-        $pkList = array();
+        $pkList = [];
 
         // assemble PK list
         foreach ($toBe->getAttributeSourceList() as $attribute) {
@@ -86,12 +86,12 @@ class MysqlColumnMigrator implements ColumnMigrator
         }
 
         if (sizeof($pkList) === 0) {
-            return array(sprintf(self::DROP_PRIMARY_KEY, $this->tableName));
+            return [sprintf(self::DROP_PRIMARY_KEY, $this->tableName)];
         }
 
         $pkColumns = implode(",", $pkList);
 
-        return array(sprintf(self::MODIFY_PRIMARY_KEY, $this->tableName, $pkColumns));
+        return [sprintf(self::MODIFY_PRIMARY_KEY, $this->tableName, $pkColumns)];
     }
 
     /**
@@ -139,8 +139,8 @@ class MysqlColumnMigrator implements ColumnMigrator
         $onDelete = $reference->getOnDelete();
         $onUpdate = $reference->getOnUpdate();
 
-        $columnList = array();
-        $foreignColumList = array();
+        $columnList = [];
+        $foreignColumList = [];
         foreach ($reference->getReferencedColumnList() as $column) {
             $columnList[] = $this->quote($column->getDatabaseName());
             $foreignColumList[] = $this->quote($column->getReferencedDatabaseName());

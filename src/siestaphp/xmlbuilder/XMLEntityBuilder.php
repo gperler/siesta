@@ -48,9 +48,9 @@ class XMLEntityBuilder extends XMLBuilder
 
         $this->domElement = $this->createElement($this->domDocument, XMLEntity::ELEMENT_ENTITY_NAME);
 
-        $this->attributeList = array();
-        $this->referenceList = array();
-        $this->collectorList = array();
+        $this->attributeList = [];
+        $this->referenceList = [];
+        $this->collectorList = [];
 
         $this->buildXML();
 

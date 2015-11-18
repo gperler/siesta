@@ -30,6 +30,22 @@ class XMLEntityManagerReader extends XMLAccess implements EntityManagerSource
     /**
      * @return string
      */
+    public function getConstructorClass()
+    {
+        return $this->getAttribute(XMLEntityManager::ATTRIBUTE_CONSTRUCT_CLASS);
+    }
+
+    /**
+     * @return string
+     */
+    public function getConstructorNamespace()
+    {
+        return $this->getAttribute(XMLEntityManager::ATTRIBUTE_CONSTRUCT_NAMESPACE);
+    }
+
+    /**
+     * @return string
+     */
     public function getTargetPath()
     {
         return $this->getAttribute(XMLEntityManager::ATTRIBUTE_TARGET_PATH);

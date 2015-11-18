@@ -74,7 +74,7 @@ class ConnectionData
      */
     public function __construct($name = null, $driver = null, $host = null, $port = null, $database = null, $user = null, $password = null, $charSet = null, array $postConnectStatements = null)
     {
-        $this->postConnectStatementList = $postConnectStatements ? $postConnectStatements : array();
+        $this->postConnectStatementList = $postConnectStatements ? $postConnectStatements : [];
         $this->name = $name;
         $this->driver = $driver;
         $this->host = $host;
@@ -113,7 +113,7 @@ class ConnectionData
      * @return string
      */
     public function __toString() {
-        return implode(PHP_EOL, array(
+        return implode(PHP_EOL, [
             "Name " . $this->name,
             "Driver " . $this->driver,
             "Host " . $this->host,
@@ -122,6 +122,6 @@ class ConnectionData
             "User " . $this->user,
             "Charset " . $this->user,
             "Post Connect statement " . implode(";", $this->postConnectStatementList)
-        ));
+        ]);
     }
 }

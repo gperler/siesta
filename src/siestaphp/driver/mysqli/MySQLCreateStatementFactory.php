@@ -37,7 +37,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
     {
         $sequencerFile = new File(__DIR__ . "/installer/Sequencer.sql");
 
-        $statementList = array();
+        $statementList = [];
         $statementList[] = sprintf(self::CREATE_SEQUENCE_TABLE, CreateStatementFactory::SEQUENCER_TABLE_NAME);
         $statementList[] = sprintf(self::DROP_SEQUENCER_SP, CreateStatementFactory::SEQUENCER_SP_NAME);
         $statementList[] = preg_replace('/\s\s+/', ' ', $sequencerFile->getContents());
@@ -51,7 +51,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
      */
     public function buildCreateTable(EntityGeneratorSource $ets)
     {
-        $statementList = array();
+        $statementList = [];
         $tableBuilder = new MySQLTableCreator($ets);
         $statementList = array_merge($tableBuilder->buildCreateTable(), $statementList);
         return $statementList;
@@ -64,7 +64,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
      */
     public function buildCreateDelimitTable(EntityGeneratorSource $entity)
     {
-        $statementList = array();
+        $statementList = [];
         $tableBuilder = new MySQLTableCreator($entity);
         $statementList[] = $tableBuilder->buildCreateDelimitTable();
 
@@ -78,7 +78,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
      */
     public function buildStoredProceduresStatements(EntityGeneratorSource $ets)
     {
-        $statementList = array();
+        $statementList = [];
         foreach ($this->createStoredProcedureList($ets) as $sp) {
 
             $dropStatement = $sp->buildProcedureDropStatement();
@@ -104,7 +104,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
     {
         $isReplication = Replication::isReplication($source);
 
-        $spList = array();
+        $spList = [];
 
         $spList[] = new InsertStoredProcedure($source, $isReplication);
         $spList[] = new SelectStoredProcedure($source, $isReplication);

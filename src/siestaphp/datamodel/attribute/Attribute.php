@@ -13,9 +13,20 @@ use siestaphp\naming\XMLAttribute;
  */
 class Attribute implements Processable, AttributeSource, AttributeGeneratorSource
 {
-    private static $ALLOWED_PHP_TYPES = array("bool", "int", "float", "string", "DateTime", "json");
+    private static $ALLOWED_PHP_TYPES = [
+        "bool",
+        "int",
+        "float",
+        "string",
+        "DateTime",
+        "json"
+    ];
 
-    private static $ALLOWED_AUTO_VALUE = array("", "autoincrement", "uuid");
+    private static $ALLOWED_AUTO_VALUE = [
+        "",
+        "autoincrement",
+        "uuid"
+    ];
 
     const PARAMETER_PREFIX = "P_";
 
@@ -143,7 +154,7 @@ class Attribute implements Processable, AttributeSource, AttributeGeneratorSourc
     /**
      * @param ValidationLogger $logger
      *
-*@return void
+     * @return void
      */
     public function validate(ValidationLogger $logger)
     {

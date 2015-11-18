@@ -2,8 +2,6 @@
 
 namespace siestaphp\datamodel\index;
 
-use siestaphp\console\GeneratorCommand;
-use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\entity\EntitySource;

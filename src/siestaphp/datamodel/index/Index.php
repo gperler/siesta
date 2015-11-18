@@ -45,7 +45,7 @@ class Index implements Processable, IndexSource
      */
     private function extractIndexPartList()
     {
-        $this->indexPartList = array();
+        $this->indexPartList = [];
         foreach ($this->indexSource->getIndexPartSourceList() as $indexPartSource) {
             $this->indexPartList[] = new IndexPart($this->entity, $this, $indexPartSource);
         }

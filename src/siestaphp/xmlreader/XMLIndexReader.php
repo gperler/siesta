@@ -61,7 +61,7 @@ class XMLIndexReader extends XMLAccess implements IndexSource
      */
     private function readIndexPartList()
     {
-        $this->indexPartList = array();
+        $this->indexPartList = [];
         $indexPartXMLList = $this->getXMLChildElementListByName(XMLIndexPart::ELEMENT_INDEX_PART_NAME);
 
         foreach ($indexPartXMLList as $indexPartXML) {
@@ -76,7 +76,7 @@ class XMLIndexReader extends XMLAccess implements IndexSource
      */
     public function getReferencedColumnList()
     {
-        return array();
+        return [];
     }
 
 }

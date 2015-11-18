@@ -102,7 +102,7 @@ class InitCommand extends Command
     private function askConfigTargetPath()
     {
 
-        $directoryList = array();
+        $directoryList = [];
         $this->compileDirectoryList($directoryList, getcwd());
 
         $question = new Question('<question>Please enter target path for configuration</question> ', '');

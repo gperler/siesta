@@ -30,12 +30,12 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
 
     const VALIDATION_ERROR_REFERENCED_ENTITY_NOT_FOUND = 305;
 
-    private static $ALLOWED_ON_X = array(
+    private static $ALLOWED_ON_X = [
         "restrict",
         "cascade",
         "set null",
         "no action"
-    );
+    ];
 
     const PARAMETER_PREFIX = "P_";
 
@@ -136,9 +136,9 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
 
         $this->referenceSource = $source;
 
-        $this->referenceColumnList = array();
+        $this->referenceColumnList = [];
 
-        $this->collectorFilterList = array();
+        $this->collectorFilterList = [];
 
         $this->storeReferenceData();
 
@@ -163,14 +163,17 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
      */
     public function getReferencedFullyQualifiedClassName()
     {
+        if ($this->referencedEntity === null) {
+            return [];
+        }
 
         $ems = $this->referencedEntity->getEntityManagerSource();
 
-        return array(
+        return [
             $this->referencedEntity->getFullyQualifiedConstructClassName(),
             $ems->getFullyQualifiedClassName(),
             $ems->getConstructFactoryFqn()
-        );
+        ];
     }
 
     /**
@@ -203,7 +206,7 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
         }
 
         // build list with referenced columns
-        $this->referenceColumnList = array();
+        $this->referenceColumnList = [];
         // no mappings > use the primary key columns
         if (sizeof($this->getMappingSourceList()) === 0) {
             $this->updateReferencedColumnFromPK();
@@ -270,10 +273,9 @@ class Reference implements Processable, ReferenceSource, ReferenceGeneratorSourc
             $logger->error("Reference '" . $this->name . "' has required='true' but onDelete='setnull'. Either change onDelete or required", self::VALIDATION_ERROR_ON_DELETE_NULL_AND_REQUIRED);
         }
 
-        if (!$this->referencedEntity) {
+        if ($this->referencedEntity === null) {
             $logger->error("Reference '" . $this->name . "' refers to unknown entity " . $this->foreignClass, self::VALIDATION_ERROR_REFERENCED_ENTITY_NOT_FOUND);
         }
-
     }
 
     /**

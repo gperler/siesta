@@ -18,7 +18,7 @@ class StoredProcedure implements Processable, StoredProcedureSource
 
     const VALIDATION_ERROR_INVALID_RESULT_TYPE = 601;
 
-    private static $ALLOWED_RESULT_TYPES = array("single", "list", "resultset");
+    private static $ALLOWED_RESULT_TYPES = ["single", "list", "resultset"];
 
     /**
      * @var Entity
@@ -40,7 +40,7 @@ class StoredProcedure implements Processable, StoredProcedureSource
      */
     public function __construct()
     {
-        $this->parameterList = array();
+        $this->parameterList = [];
     }
 
     /**

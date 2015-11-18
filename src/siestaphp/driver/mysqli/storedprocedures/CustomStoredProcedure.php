@@ -56,7 +56,7 @@ class CustomStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function buildSignature()
     {
-        $parameterList = array();
+        $parameterList = [];
         foreach ($this->storedProcedureSource->getParameterList() as $parameter) {
             $parameterList[] .= sprintf(parent::SP_PARAMETER, $parameter->getStoredProcedureName(), $parameter->getDatabaseType());
         }

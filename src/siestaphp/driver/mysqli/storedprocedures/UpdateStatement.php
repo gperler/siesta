@@ -47,9 +47,9 @@ class UpdateStatement
     public function __construct(EntityGeneratorSource $entity)
     {
         $this->entity = $entity;
-        $this->setList = array();
-        $this->whereList = array();
-        $this->parameterList = array();
+        $this->setList = [];
+        $this->whereList = [];
+        $this->parameterList = [];
         $this->extractColumAndValueList();
     }
 

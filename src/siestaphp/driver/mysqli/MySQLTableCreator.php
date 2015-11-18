@@ -89,9 +89,9 @@ class MySQLTableCreator
     public function buildCreateTable()
     {
         $tableName = $this->entityGeneratorSource->getTable();
-        $result = array(
+        $result = [
           $this->buildCreateTableForTable($tableName, false)
-        );
+        ];
 
         if (Replication::isReplication($this->entityGeneratorSource)) {
             $tableName = Replication::getReplicationTableName($tableName);
@@ -158,9 +158,9 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildColumnSQL(array $additionalColumns = array())
+    private function buildColumnSQL(array $additionalColumns = [])
     {
-        $columnList = array();
+        $columnList = [];
 
         // used for delimiter functionality
         foreach ($additionalColumns as $attribute) {
@@ -206,7 +206,7 @@ class MySQLTableCreator
             return "";
         }
 
-        $sqlColumnList = array();
+        $sqlColumnList = [];
         foreach ($pkColumnList as $column) {
             $sqlColumnList[] = $this->quote($column->getDatabaseName());
         }
@@ -222,7 +222,7 @@ class MySQLTableCreator
     private function buildPrimaryKeyForDelimiter(array $delimiterAttributes)
     {
 
-        $sqlColumnList = array();
+        $sqlColumnList = [];
         foreach ($delimiterAttributes as $column) {
             if ($column->isPrimaryKey()) {
                 $sqlColumnList[] = $this->quote($column->getDatabaseName());
@@ -311,8 +311,8 @@ class MySQLTableCreator
      */
     private function buildForeignKeyConstraint(ReferenceGeneratorSource $rds)
     {
-        $columnList = array();
-        $foreignColumnList = array();
+        $columnList = [];
+        $foreignColumnList = [];
 
         foreach ($rds->getReferencedColumnList() as $column) {
             $columnList[] = $this->quote($column->getDatabaseName());

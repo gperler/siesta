@@ -27,7 +27,7 @@ class XMLAccess
      */
     public function __construct()
     {
-        $this->databaseSpecific = array();
+        $this->databaseSpecific = [];
     }
 
     /**
@@ -48,7 +48,10 @@ class XMLAccess
      */
     public function getAttribute($name)
     {
-        return $this->sourceElement->getAttribute($name);
+        if ($this->sourceElement->hasAttribute($name)) {
+            return $this->sourceElement->getAttribute($name);
+        }
+        return null;
     }
 
     /**
@@ -66,8 +69,9 @@ class XMLAccess
      *
      * @return int
      */
-    public function getAttributeAsInt($name) {
-        return (int) $this->sourceElement->getAttribute($name);
+    public function getAttributeAsInt($name)
+    {
+        return (int)$this->sourceElement->getAttribute($name);
     }
 
     /**
@@ -79,7 +83,7 @@ class XMLAccess
      */
     protected function getXMLChildElementListByName($tagName)
     {
-        $result = array();
+        $result = [];
         foreach ($this->sourceElement->getElementsByTagName($tagName) as $child) {
             if ($child->nodeType === XML_ELEMENT_NODE) {
                 $result[] = $child;

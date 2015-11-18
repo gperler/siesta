@@ -39,7 +39,7 @@ class DirectoryScanner
      */
     public function __construct(LoggerInterface $logger)
     {
-        $this->entitySourceList = array();
+        $this->entitySourceList = [];
         $this->logger = $logger;
     }
 
@@ -57,13 +57,13 @@ class DirectoryScanner
         $baseDirFile = new File($basedir);
 
         if (!$baseDirFile->exists()) {
-            $this->logger->error("Basedir " . $baseDirFile . " does not exist", array("code" => self::VALIDATION_ERROR_INVALID_BASE_DIR));
-            return array();
+            $this->logger->error("Basedir " . $baseDirFile . " does not exist", ["code" => self::VALIDATION_ERROR_INVALID_BASE_DIR]);
+            return [];
         }
 
         if (!$baseDirFile->isDir()) {
-            $this->logger->error("Basedir " . $baseDirFile . " is not a directory", array("code" => self::VALIDATION_ERROR_INVALID_BASE_DIR));
-            return array();
+            $this->logger->error("Basedir " . $baseDirFile . " is not a directory", ["code" => self::VALIDATION_ERROR_INVALID_BASE_DIR]);
+            return [];
 
         }
 
@@ -112,9 +112,9 @@ class DirectoryScanner
             $this->entitySourceList = array_merge($this->entitySourceList, $xmlReader->getEntitySourceList());
         } catch (XMLNotValidException $e) {
 
-            $this->logger->error("Parsing file " . $e->getFileName(), array("code" => self::VALIDATION_ERROR_INVALID_XML));
+            $this->logger->error("Parsing file " . $e->getFileName(), ["code" => self::VALIDATION_ERROR_INVALID_XML]);
             foreach ($e->getErrorList() as $error) {
-                $this->logger->error($error, array("code" => self::VALIDATION_ERROR_INVALID_XML));
+                $this->logger->error($error, ["code" => self::VALIDATION_ERROR_INVALID_XML]);
             }
 
         }

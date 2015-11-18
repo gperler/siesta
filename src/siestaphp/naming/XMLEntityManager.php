@@ -14,6 +14,10 @@ class XMLEntityManager
 
     const ATTRIBUTE_CLASS_NAMESPACE = "namespace";
 
+    const ATTRIBUTE_CONSTRUCT_CLASS = "constructClass";
+
+    const ATTRIBUTE_CONSTRUCT_NAMESPACE = "constructNamespace";
+
     const ATTRIBUTE_TARGET_PATH = "targetPath";
 
     const ATTRIBUTE_CONSTRUCT_FACTORY = "constructFactory";

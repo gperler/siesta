@@ -29,7 +29,7 @@ class XMLNotValidException extends \Exception implements SiestaException
      */
     public function getErrorList()
     {
-        $errorMessageList = array();
+        $errorMessageList = [];
         foreach ($this->errorList as $error) {
             $errorMessageList[] = trim(Util::getFromObject($error, "message")) . sprintf(" Code : %s Level : %s Column: %s", Util::getFromObject($error, "code"), Util::getFromObject($error, "level"), Util::getFromObject($error, "column"));
         }

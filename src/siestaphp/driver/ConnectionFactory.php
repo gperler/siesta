@@ -86,8 +86,8 @@ class ConnectionFactory
      */
     public function __construct()
     {
-        $this->driverList = array();
-        $this->connectionList = array();
+        $this->driverList = [];
+        $this->connectionList = [];
     }
 
     /**

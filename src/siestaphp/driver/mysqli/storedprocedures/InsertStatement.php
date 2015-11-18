@@ -43,9 +43,9 @@ class InsertStatement
     public function __construct(EntityGeneratorSource $entity)
     {
         $this->entity = $entity;
-        $this->columnList = array();
-        $this->valueList = array();
-        $this->parameterList = array();
+        $this->columnList = [];
+        $this->valueList = [];
+        $this->parameterList = [];
         $this->extractColumAndValueList();
     }
 

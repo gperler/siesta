@@ -2,6 +2,7 @@
 
 namespace siestaphp\datamodel;
 
+use Codeception\Util\Debug;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\entity\EntitySource;
@@ -30,7 +31,7 @@ class DataModelContainer
      */
     public function __construct(ValidationLogger $validationLogger)
     {
-        $this->entityList = array();
+        $this->entityList = [];
 
         $this->generatorLog = $validationLogger;
     }
@@ -92,6 +93,7 @@ class DataModelContainer
      */
     public function validate()
     {
+
         foreach ($this->entityList as $entity) {
             $entity->validate($this->generatorLog);
         }

@@ -40,6 +40,8 @@ class XMLEntityManagerBuilder extends XMLBuilder
         $this->setAttribute(XMLEntityManager::ATTRIBUTE_TARGET_PATH, $this->entityManagerSource->getTargetPath());
         $this->setAttribute(XMLEntityManager::ATTRIBUTE_CONSTRUCT_FACTORY, $this->entityManagerSource->getConstructFactory());
         $this->setAttribute(XMLEntityManager::ATTRIBUTE_CONSTRUCT_FACTORY_FQN, $this->entityManagerSource->getConstructFactoryFqn());
+        $this->setAttribute(XMLEntityManager::ATTRIBUTE_CONSTRUCT_CLASS, $this->entityManagerSource->getConstructorClass());
+        $this->setAttribute(XMLEntityManager::ATTRIBUTE_CONSTRUCT_NAMESPACE, $this->entityManagerSource->getConstructorNamespace());
 
     }
 

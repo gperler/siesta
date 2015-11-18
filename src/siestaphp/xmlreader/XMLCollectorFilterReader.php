@@ -59,7 +59,7 @@ class XMLCollectorFilterReader extends XMLAccess implements CollectorFilterSourc
      */
     private function readSPParameterList()
     {
-        $this->spParameterList = array();
+        $this->spParameterList = [];
         $parameterXMLList = $this->getXMLChildElementListByName(XMLStoredProcedure::ELEMENT_PARAMETER);
 
         foreach ($parameterXMLList as $parameterXML) {

@@ -93,8 +93,8 @@ class ReferenceMetaData implements ReferenceSource
     public function __construct(ResultSet $resultSet)
     {
 
-        $this->mappingList = array();
-        $this->referencedColumnList = array();
+        $this->mappingList = [];
+        $this->referencedColumnList = [];
 
         $this->constraintName = $resultSet->getStringValue(self::CONSTRAINT_NAME);
         $this->foreignTable = $resultSet->getStringValue(self::REFERENCED_TABLE_NAME);

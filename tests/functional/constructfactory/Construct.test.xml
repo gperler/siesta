@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="ArtistEntity" namespace="siestaphp\tests\functional\constructfactory\gen\ns3" table="ARTIST" targetPath="gen/ns3">
+        <construct name="Artist" namespace="siestaphp\tests\functional\constructfactory\ns1" constructFactory="ConstructFactory::newArtist()" constructFactoryFqn="siestaphp\tests\functional\constructfactory\ConstructFactory"/>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
+        <attribute name="dob" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"/>
+
+        <reference name="label" foreignClass="LabelEntity" required="false"/>
+    </entity>
+
+    <entity name="LabelEntity" namespace="siestaphp\tests\functional\constructfactory\gen\ns4" table="LABEL" targetPath="gen/ns4">
+        <construct name="Label" namespace="siestaphp\tests\functional\constructfactory\ns2" constructFactory="ConstructFactory::newLabel()" constructFactoryFqn="siestaphp\tests\functional\constructfactory\ConstructFactory"/>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>
+        <attribute name="city" type="string" dbName="CITY" dbType="VARCHAR(100)"/>
+
+        <collector name="artistList" type="1n" foreignClass="ArtistEntity" referenceName="label"/>
+    </entity>
+
+</entityList>

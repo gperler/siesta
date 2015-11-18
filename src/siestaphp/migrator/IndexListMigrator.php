@@ -49,8 +49,8 @@ class IndexListMigrator
         $this->databaseIndexList = $databaseIndexList;
         $this->modelIndexList = $modelIndexList;
 
-        $this->addIndexStatementList = array();
-        $this->dropIndexStatementList = array();
+        $this->addIndexStatementList = [];
+        $this->dropIndexStatementList = [];
     }
 
     /**
@@ -59,7 +59,7 @@ class IndexListMigrator
      */
     public function createAlterStatementList()
     {
-        $processedIndexList = array();
+        $processedIndexList = [];
 
         // iterate attributes from model and retrieve alter statements
         foreach ($this->modelIndexList as $modelIndex) {

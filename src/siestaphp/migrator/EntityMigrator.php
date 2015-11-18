@@ -60,7 +60,7 @@ class EntityMigrator
         $this->columnMigrator = $migrator;
         $this->databaseEntity = $databaseEntity;
         $this->modelEntity = $modelEntity;
-        $this->statementList = array();
+        $this->statementList = [];
     }
 
     /**
@@ -123,7 +123,7 @@ class EntityMigrator
         $compare = array_diff($databasePKList, $modelPKList);
 
         if (sizeof($compare) === 0) {
-            return array();
+            return [];
         }
 
         return $this->columnMigrator->getModifyPrimaryKeyStatement($this->databaseEntity, $this->modelEntity);
@@ -139,7 +139,7 @@ class EntityMigrator
     private function collectPrimaryKeyColumnList(EntitySource $source)
     {
 
-        $pkList = array();
+        $pkList = [];
         foreach ($source->getAttributeSourceList() as $attribute) {
             if ($attribute->isPrimaryKey()) {
                 $pkList[] = $attribute->getDatabaseName();
