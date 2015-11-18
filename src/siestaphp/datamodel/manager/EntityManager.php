@@ -89,7 +89,7 @@ class EntityManager implements EntityManagerSource, Processable
             return $this->getClassNamespace();
         }
 
-        if ($this->entityManagerSource->getClassNamespace() === null) {
+        if ($this->entityManagerSource->getConstructorNamespace() === null) {
             return $this->getClassNamespace();
         }
 
