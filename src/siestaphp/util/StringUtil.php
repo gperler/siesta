@@ -77,4 +77,16 @@ class StringUtil
         return ltrim(strrchr($haystack, $needle), $needle);
     }
 
+    /**
+     * @param string $haystack
+     * @param string $needle
+     *
+     * @return string
+     */
+    public static function getStartBeforeLast($haystack, $needle)
+    {
+        $end = self::getEndAfterLast($haystack, $needle);
+        return str_replace($needle . $end, "", $haystack);
+    }
+
 }
