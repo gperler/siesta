@@ -66,4 +66,15 @@ class StringUtil
         return substr($value, 0, $maxLength);
     }
 
+    /**
+     * @param string $haystack
+     * @param string $needle
+     *
+     * @return string
+     */
+    public static function getEndAfterLast($haystack, $needle)
+    {
+        return ltrim(strrchr($haystack, $needle), $needle);
+    }
+
 }
