@@ -88,7 +88,11 @@ class ArrayAccessor
      */
     public function getStringValue($key, $maxlength = null)
     {
-        return ($maxlength === null) ? $this->get($key) : substr($this->get($key), 0, $maxlength);
+        $value = $this->get($key);
+        if ($value === null) {
+            return null;
+        }
+        return ($maxlength === null) ? $value : substr($value, 0, $maxlength);
     }
 
     /**
