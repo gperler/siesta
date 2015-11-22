@@ -512,6 +512,7 @@
          */
         public function createSaveStoredProcedureCall($connectionName = null)
         {
+
             <!-- make sure ids are given -->
             <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
                 $this->get<xsl:value-of select="@methodName"/>(true);
@@ -762,7 +763,7 @@
          */
         public function initializeFromHttpRequest(HttpRequest $req)
         {
-            $this->_existing = $req->getBooleanValue("_existing");
+
             <!-- iterate attributes -->
             <xsl:for-each select="/entity/attribute">
                 <xsl:choose>
@@ -850,6 +851,9 @@
                         $this-><xsl:value-of select="@name"/> = $arrayAccessor->getDateTime('<xsl:value-of select="@name"/>');
                     </xsl:when>
                 </xsl:choose>
+                <xsl:if test="@primaryKey = 'true'">
+                    $this->_existing = empty($this-><xsl:value-of select="@name"/>);
+                </xsl:if>
             </xsl:for-each>
 
 
@@ -1051,8 +1055,9 @@
                      */
                     public function get<xsl:value-of select="@methodName"/>(<xsl:if test="@primaryKey = 'true'">$generateKey=false, $connectionName = null</xsl:if>)
                     {
+
                         <xsl:if test="@primaryKey = 'true' and @autoValue != ''">
-                            if ($generateKey and !$this-><xsl:value-of select="@name"/>) {
+                            if ($generateKey and empty($this-><xsl:value-of select="@name"/>)) {
                                 <xsl:choose>
                                     <xsl:when test="@autoValue='uuid'">
                                         $this-><xsl:value-of select="@name"/> = ServiceLocator::getUUIDGenerator()->uuid();
