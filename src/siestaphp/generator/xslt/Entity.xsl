@@ -1082,7 +1082,7 @@
                             <xsl:otherwise>$this-><xsl:value-of select="@name"/> = $value;</xsl:otherwise>
                         </xsl:choose>
                         <xsl:if test="@primaryKey = 'true'">
-                            $this->_existing = true;
+                            $this->_existing = ($this-><xsl:value-of select="@name"/> !== null);
                         </xsl:if>
                     }
                 </xsl:otherwise>
