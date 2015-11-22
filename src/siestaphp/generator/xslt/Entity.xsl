@@ -852,7 +852,7 @@
                     </xsl:when>
                 </xsl:choose>
                 <xsl:if test="@primaryKey = 'true'">
-                    $this->_existing = empty($this-><xsl:value-of select="@name"/>);
+                    $this->_existing = ($this-><xsl:value-of select="@name"/> !== null);
                 </xsl:if>
             </xsl:for-each>
 
