@@ -19,7 +19,10 @@ class Factory
     public static function newDateTime($dateString = null)
     {
         $date = new DateTimeImpl();
-        $date->stringToTime($dateString);
+        if ($dateString !== null) {
+            $date->stringToTime($dateString);
+        }
+
         return $date;
     }
 
