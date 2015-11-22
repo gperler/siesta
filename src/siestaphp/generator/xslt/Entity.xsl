@@ -1081,9 +1081,6 @@
                             <xsl:when test="@type='string'">$this-><xsl:value-of select="@name"/> = StringUtil::trimToNull($value, <xsl:value-of select="@length"/>);</xsl:when>
                             <xsl:otherwise>$this-><xsl:value-of select="@name"/> = $value;</xsl:otherwise>
                         </xsl:choose>
-                        <xsl:if test="@primaryKey = 'true'">
-                            $this->_existing = ($this-><xsl:value-of select="@name"/> !== null);
-                        </xsl:if>
                     }
                 </xsl:otherwise>
             </xsl:choose>
