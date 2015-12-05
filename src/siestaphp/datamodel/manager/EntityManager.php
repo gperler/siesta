@@ -50,7 +50,7 @@ class EntityManager implements EntityManagerSource, Processable
         if ($this->entityManagerSource !== null) {
             return $this->entityManagerSource->getClassName();
         }
-        return $this->entity->getClassName() . "Manager";
+        return $this->entity->getClassName() . "Service";
     }
 
     /**
