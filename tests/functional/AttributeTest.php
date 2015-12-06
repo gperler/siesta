@@ -39,7 +39,7 @@ class AttributeTest extends SiestaTester
         $manager = ArtistEntityManager::getInstance();
 
         $artist = new ArtistEntity();
-        $artist->setBool(true);
+        $artist->setBool(false);
         $artist->setString("Test123");
         $artist->setFloat(19.77);
         $artist->setInt(42);

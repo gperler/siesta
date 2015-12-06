@@ -70,6 +70,7 @@ class SimpleResultSet implements ResultSet
         if (is_null($value)) {
             return null;
         }
+        $value = intval($value);
         return ($value !== 0);
     }
 
