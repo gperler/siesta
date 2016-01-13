@@ -92,7 +92,7 @@ class Migrator
 
             $this->connection->disableForeignKeyChecks();
             foreach ($statementList as $statement) {
-                $this->logger->debug("Executing " . $statement);
+                $this->logger->info("Executing " . $statement);
                 $this->connection->query($statement);
             }
             $this->connection->enableForeignKeyChecks();

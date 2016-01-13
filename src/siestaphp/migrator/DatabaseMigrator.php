@@ -8,8 +8,6 @@ use siestaphp\datamodel\entity\EntitySource;
 use siestaphp\driver\ColumnMigrator;
 use siestaphp\driver\Connection;
 use siestaphp\driver\CreateStatementFactory;
-use siestaphp\generator\GeneratorConfig;
-use siestaphp\generator\ReverseGeneratorConfig;
 
 /**
  * Class DatabaseMigrator allows to retrieve alter statement by comparing model/schema with current database setup
@@ -106,7 +104,7 @@ class DatabaseMigrator
      */
     private function migrateEntity(EntityGeneratorSource $modelSource)
     {
-        $databaseEntity = $this->getDatabaseEntityByTableName($modelSource->getTable());
+        $databaseEntity = $this->getDatabaseEntityByModelSource($modelSource);
 
         // if database entity does not exist, create it
         if ($databaseEntity === null) {
@@ -141,21 +139,29 @@ class DatabaseMigrator
         $this->addStatementList($factory->buildStoredProceduresStatements($source));
 
         if ($source->isDelimit()) {
-            $this->addStatementList($factory->buildCreateDelimitTable($source, $source->getTable() . "_delimit"));
+            $this->addStatementList($factory->buildCreateDelimitTable($source));
         }
     }
 
     /**
-     * @param $tableName
+     * @param EntityGeneratorSource $entityGeneratorSource
      *
      * @return EntitySource|null
      */
-    private function getDatabaseEntityByTableName($tableName)
+    private function getDatabaseEntityByModelSource(EntityGeneratorSource $entityGeneratorSource)
     {
+        $tableName = $entityGeneratorSource->getTable();
         foreach ($this->databaseModel as $entity) {
             if ($entity->getTable() === $tableName) {
                 // store that this table is actually in use
                 $this->neededTableList[] = $tableName;
+
+                if ($entity->isDelimit()) {
+                    $this->neededTableList[] = $entityGeneratorSource->getDelimitTable();
+                }
+
+                // handle replication
+
                 return $entity;
             }
         }
@@ -174,12 +180,6 @@ class DatabaseMigrator
             }
             $statement = $this->columnMigrator->getDropTableStatement($databaseModel);
             $this->statementList[] = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $databaseModel->getTable(), $statement);
-
-            if ($databaseModel->isDelimit()) {
-                // TODO : drop delimit table
-                // TODO : drop replication table
-            }
-
         }
     }
 
