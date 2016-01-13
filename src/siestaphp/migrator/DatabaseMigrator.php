@@ -156,11 +156,11 @@ class DatabaseMigrator
                 // store that this table is actually in use
                 $this->neededTableList[] = $tableName;
 
-                if ($entity->isDelimit()) {
+                if ($entityGeneratorSource->isDelimit()) {
                     $this->neededTableList[] = $entityGeneratorSource->getDelimitTable();
                 }
 
-                // handle replication
+                // TODO: handle replication
 
                 return $entity;
             }
