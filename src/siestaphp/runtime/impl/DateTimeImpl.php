@@ -67,6 +67,14 @@ class DateTimeImpl implements DateTime
     }
 
     /**
+     * @param $timestamp
+     */
+    public function setTime($timestamp)
+    {
+        $this->timestamp = $timestamp;
+    }
+
+    /**
      * @return string
      */
     public function getJSONDateTime()
