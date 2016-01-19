@@ -129,6 +129,8 @@ class Attribute implements Processable, AttributeSource, AttributeGeneratorSourc
 
         if (preg_match("/VARCHAR\((.*?)\)/i", $this->databaseType, $regResult)) {
             $this->length = (int)$regResult [1];
+        } else {
+            $this->length = 'null';
         }
 
     }

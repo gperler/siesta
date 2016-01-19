@@ -54,7 +54,7 @@ class TransformerXML
                 "addIndex" => true,
                 "defaultValue" => "",
                 "autoValue" => "autoincrement",
-                "length" => 0
+                "length" => 'null'
             ),
             "bool" => array(
                 "type" => "bool",
@@ -65,7 +65,7 @@ class TransformerXML
                 "addIndex" => false,
                 "defaultValue" => "true",
                 "autoValue" => "",
-                "length" => 0
+                "length" => 'null'
             ),
             "int" => array(
                 "type" => "int",
@@ -76,7 +76,7 @@ class TransformerXML
                 "addIndex" => false,
                 "defaultValue" => "42",
                 "autoValue" => "autoincrement",
-                "length" => 0
+                "length" => 'null'
             ),
             "float" => array(
                 "type" => "float",
@@ -87,7 +87,7 @@ class TransformerXML
                 "addIndex" => false,
                 "defaultValue" => "42.42",
                 "autoValue" => "",
-                "length" => 0
+                "length" => 'null'
             ),
             "string" => array(
                 "type" => "string",
@@ -109,7 +109,7 @@ class TransformerXML
                 "addIndex" => false,
                 "defaultValue" => "",
                 "autoValue" => "",
-                "length" => 0
+                "length" => 'null'
             )
         );
     }
