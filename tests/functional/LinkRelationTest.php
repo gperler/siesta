@@ -40,7 +40,7 @@ class LinkRelation extends SiestaTester
         $label = new LabelEntity();
         $label->fromJSON($jsonString);
 
-        // id should be still null 
+        // id should be still null
         //$this->assertNull($label->getId(), "ID must be null");
 
         // link the objects

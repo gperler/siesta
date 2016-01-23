@@ -3,7 +3,7 @@
 namespace siestaphp\tests\functional;
 
 use siestaphp\tests\functional\replication\gen\Book;
-use siestaphp\tests\functional\replication\gen\BookManager;
+use siestaphp\tests\functional\replication\gen\BookService;
 
 /**
  * Class PerformanceTest
@@ -38,7 +38,7 @@ class ReplicationTest extends SiestaTester
         $book1->save();
 
 
-        $bookReloaded = BookManager::getInstance()->getEntityByPrimaryKey($book1->getId());
+        $bookReloaded = BookService::getInstance()->getEntityByPrimaryKey($book1->getId());
         $this->assertNotNull($bookReloaded, "make sure book can be reloaded from memory table");
 
 

@@ -2,7 +2,7 @@
 namespace siestaphp\tests\functional;
 
 use siestaphp\tests\functional\storedprocedure\gen\ArtistEntity;
-use siestaphp\tests\functional\storedprocedure\gen\ArtistEntityManager;
+use siestaphp\tests\functional\storedprocedure\gen\ArtistEntityService;
 
 /**
  * Class ReferenceTest
@@ -27,7 +27,7 @@ class SPTest extends SiestaTester
 
     protected function tearDown()
     {
-        $this->dropDatabase();
+        //$this->dropDatabase();
 
     }
 
@@ -45,9 +45,13 @@ class SPTest extends SiestaTester
 
     }
 
+    public function testNoParam() {
+        ArtistEntityService::getInstance()->noParam();
+    }
+
     public function testSingleResultSP()
     {
-        $firstArtist = ArtistEntityManager::getInstance()->getFirstArtistByCity("Vienna");
+        $firstArtist = ArtistEntityService::getInstance()->getFirstArtistByCity("Vienna");
 
         $this->assertNotNull($firstArtist);
         $this->assertInstanceOf("siestaphp\\tests\\functional\\storedprocedure\\gen\\ArtistEntity", $firstArtist, "Not instance of ArtistEntity");
@@ -56,7 +60,7 @@ class SPTest extends SiestaTester
 
     public function testListResultSP()
     {
-        $artistList = ArtistEntityManager::getInstance()->getArtistByCity("Vienna");
+        $artistList = ArtistEntityService::getInstance()->getArtistByCity("Vienna");
 
         $this->assertSame(sizeof($artistList), 2, "not 2 artist found");
 
@@ -69,7 +73,7 @@ class SPTest extends SiestaTester
     public function testResultSetSP()
     {
         $count = null;
-        $countArtistResult = ArtistEntityManager::getInstance()->countArtistInCity("Vienna");
+        $countArtistResult = ArtistEntityService::getInstance()->countArtistInCity("Vienna");
         while ($countArtistResult->hasNext()) {
             $count = $countArtistResult->getIntegerValue("COUNT(ID)");
         }

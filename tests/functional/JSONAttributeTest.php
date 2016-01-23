@@ -3,7 +3,7 @@
 namespace siestaphp\tests\functional;
 
 use siestaphp\tests\functional\jsonattribute\gen\Album;
-use siestaphp\tests\functional\jsonattribute\gen\AlbumManager;
+use siestaphp\tests\functional\jsonattribute\gen\AlbumService;
 
 /**
  * Class JSONAttributeTest
@@ -49,7 +49,7 @@ class JSONAttributeTest extends SiestaTester
 
         $album->save();
 
-        $albumReloaded = AlbumManager::getInstance()->getEntityByPrimaryKey($album->getId());
+        $albumReloaded = AlbumService::getInstance()->getEntityByPrimaryKey($album->getId());
 
         $woon = $albumReloaded->getFromAttributeList("Jamie");
         $this->assertSame("woon", $woon, "did not return woon");

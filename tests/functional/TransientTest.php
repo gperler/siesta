@@ -4,7 +4,7 @@ namespace siestaphp\tests\functional;
 
 use siestaphp\runtime\Factory;
 use siestaphp\tests\functional\transient\gen\ArtistEntity;
-use siestaphp\tests\functional\transient\gen\ArtistEntityManager;
+use siestaphp\tests\functional\transient\gen\ArtistEntityService;
 
 /**
  * Class AttributeTest
@@ -45,7 +45,7 @@ class TransientTest extends SiestaTester
         $artist->setTransientDateTime(Factory::newDateTime());
         $artist->save();
 
-        $artistReloaded = ArtistEntityManager::getInstance()->getEntityByPrimaryKey($artist->getId());
+        $artistReloaded = ArtistEntityService::getInstance()->getEntityByPrimaryKey($artist->getId());
 
         $this->assertNotNull($artistReloaded, "Artist could not be reloaded");
         $this->assertNull($artistReloaded->getTransientBool(), "bool not null");

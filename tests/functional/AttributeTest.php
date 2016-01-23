@@ -5,7 +5,7 @@ namespace siestaphp\tests\functional;
 use siestaphp\runtime\Factory;
 use siestaphp\tests\functional\attribute\AttributeXML;
 use siestaphp\tests\functional\attribute\gen\ArtistEntity;
-use siestaphp\tests\functional\attribute\gen\ArtistEntityManager;
+use siestaphp\tests\functional\attribute\gen\ArtistEntityService;
 
 /**
  * Class AttributeTest
@@ -36,7 +36,7 @@ class AttributeTest extends SiestaTester
      */
     public function testCreateEntity()
     {
-        $manager = ArtistEntityManager::getInstance();
+        $manager = ArtistEntityService::getInstance();
 
         $artist = new ArtistEntity();
         $artist->setBool(false);
@@ -93,7 +93,7 @@ class AttributeTest extends SiestaTester
      */
     public function testNull()
     {
-        $manager = ArtistEntityManager::getInstance();
+        $manager = ArtistEntityService::getInstance();
         $artist = new ArtistEntity();
 
         $artist->setBool(null);

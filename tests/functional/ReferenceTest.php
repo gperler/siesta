@@ -4,7 +4,7 @@ namespace siestaphp\tests\functional;
 
 use Codeception\Util\Debug;
 use siestaphp\tests\functional\reference\gen\ArtistEntity;
-use siestaphp\tests\functional\reference\gen\ArtistEntityManager;
+use siestaphp\tests\functional\reference\gen\ArtistEntityService;
 use siestaphp\tests\functional\reference\gen\LabelEntity;
 
 /**
@@ -48,7 +48,7 @@ class ReferenceTest extends SiestaTester
         $artist->save(true);
 
         // check that the entity can be loaded again
-        $artistLoaded = ArtistEntityManager::getInstance()->getEntityByPrimaryKey($artist->getId());
+        $artistLoaded = ArtistEntityService::getInstance()->getEntityByPrimaryKey($artist->getId());
         $this->assertNotNull($artistLoaded, "Could not load generated artist");
 
         // check that the referenced label can be loaded
@@ -74,7 +74,7 @@ class ReferenceTest extends SiestaTester
         $artist->save(true);
 
         // check that the entity can be loaded again
-        $artistLoaded = ArtistEntityManager::getInstance()->getEntityByPrimaryKey($artist->getId());
+        $artistLoaded = ArtistEntityService::getInstance()->getEntityByPrimaryKey($artist->getId());
         $this->assertNotNull($artistLoaded, "Could not load generated artist");
 
         // check that the referenced label can be loaded

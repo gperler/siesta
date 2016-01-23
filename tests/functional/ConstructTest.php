@@ -2,8 +2,8 @@
 
 namespace siestaphp\tests\functional;
 
-use siestaphp\tests\functional\constructfactory\gen\ns3\ArtistEntityManager;
-use siestaphp\tests\functional\constructfactory\gen\ns4\LabelEntityManager;
+use siestaphp\tests\functional\constructfactory\gen\ns3\ArtistEntityService;
+use siestaphp\tests\functional\constructfactory\gen\ns4\LabelEntityService;
 
 /**
  * Class ReferenceTest
@@ -32,10 +32,10 @@ class ConstructTest extends SiestaTester
 
     public function testNamespaces()
     {
-        $artist = ArtistEntityManager::getInstance()->newInstance();
+        $artist = ArtistEntityService::getInstance()->newInstance();
         $this->assertTrue($artist->getTestValue(), "test value not set to true for artist");
 
-        $label = LabelEntityManager::getInstance()->newInstance();
+        $label = LabelEntityService::getInstance()->newInstance();
         $this->assertTrue($label->getTestValue(), "test value not set to true for label");
     }
 

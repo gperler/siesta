@@ -5,7 +5,7 @@ namespace siestaphp\tests\functional;
 use siestaphp\driver\ConnectionFactory;
 use siestaphp\tests\functional\bidirectional\gen\Address;
 use siestaphp\tests\functional\bidirectional\gen\Customer;
-use siestaphp\tests\functional\bidirectional\gen\CustomerManager;
+use siestaphp\tests\functional\bidirectional\gen\CustomerService;
 
 /**
  * Class ReferenceTest
@@ -53,7 +53,7 @@ class BidirectionalTest extends SiestaTester
         $customer->save(true);
         $connection->enableForeignKeyChecks();
 
-        $manager = CustomerManager::getInstance();
+        $manager = CustomerService::getInstance();
         // load customer
         $customer = $manager->getEntityByPrimaryKey(1);
         $this->assertNotNull($customer, "Customer could not be reloaded");

@@ -3,9 +3,9 @@
 namespace siestaphp\tests\functional;
 
 use siestaphp\tests\functional\multipk\gen\ArtistEntity;
-use siestaphp\tests\functional\multipk\gen\ArtistEntityManager;
+use siestaphp\tests\functional\multipk\gen\ArtistEntityService;
 use siestaphp\tests\functional\multipk\gen\LabelEntity;
-use siestaphp\tests\functional\multipk\gen\LabelEntityManager;
+use siestaphp\tests\functional\multipk\gen\LabelEntityService;
 
 /**
  * Class MultiPKTest
@@ -58,12 +58,12 @@ class MultiPKTest extends SiestaTester
         $artist = new ArtistEntity();
         $artist->save();
 
-        $artistLoaded = ArtistEntityManager::getInstance()->getEntityByPrimaryKey($artist->getId(), $artist->getName());
+        $artistLoaded = ArtistEntityService::getInstance()->getEntityByPrimaryKey($artist->getId(), $artist->getName());
 
         $this->assertNotNull($artistLoaded, "Artist could not be loaded");
 
-        ArtistEntityManager::getInstance()->deleteEntityByPrimaryKey($artist->getId(), $artist->getName());
-        $artistLoaded = ArtistEntityManager::getInstance()->getEntityByPrimaryKey($artist->getId(), $artist->getName());
+        ArtistEntityService::getInstance()->deleteEntityByPrimaryKey($artist->getId(), $artist->getName());
+        $artistLoaded = ArtistEntityService::getInstance()->getEntityByPrimaryKey($artist->getId(), $artist->getName());
 
         $this->assertNull($artistLoaded, "Artist could not be deleted");
 
@@ -79,7 +79,7 @@ class MultiPKTest extends SiestaTester
         $artist->setLabel($label);
         $artist->save(true);
 
-        $artistLoaded = ArtistEntityManager::getInstance()->getEntityByPrimaryKey($artist->getId(), $artist->getName());
+        $artistLoaded = ArtistEntityService::getInstance()->getEntityByPrimaryKey($artist->getId(), $artist->getName());
         $this->assertNotNull($artistLoaded, "Artist could not be loaded");
         $this->assertSame($artistLoaded->getDisplayName(), $artist->getDisplayName());
 
@@ -113,7 +113,7 @@ class MultiPKTest extends SiestaTester
         $artistList = $label->getArtistList();
         $label->save(true);
 
-        $labelLoaded = LabelEntityManager::getInstance()->getEntityByPrimaryKey($label->getId(), $label->getName());
+        $labelLoaded = LabelEntityService::getInstance()->getEntityByPrimaryKey($label->getId(), $label->getName());
         $artistListLoaded = $labelLoaded->getArtistList();
 
         $this->assertSame(sizeof($artistListLoaded), 3, "not found all artist anymore");
