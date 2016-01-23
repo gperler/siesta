@@ -585,20 +585,19 @@
                         $this-><xsl:value-of select="@name"/> = $arrayAccessor->getFloatValue('<xsl:value-of select="@name"/>');
                     </xsl:when>
                     <xsl:when test="@type='string'">
-
                         $this-><xsl:value-of select="@name"/> = $arrayAccessor->getStringValue('<xsl:value-of select="@name"/>'<xsl:if test="@transient='false'">, <xsl:value-of select="@length"/></xsl:if>);
                     </xsl:when>
                     <xsl:when test="@type='DateTime'">
                         $this-><xsl:value-of select="@name"/> = $arrayAccessor->getDateTime('<xsl:value-of select="@name"/>');
+                    </xsl:when>
+                    <xsl:when test="@type='json'">
+                        $this-><xsl:value-of select="@name"/> = $arrayAccessor->getStringValue('<xsl:value-of select="@name"/>');
                     </xsl:when>
                 </xsl:choose>
                 <xsl:if test="@primaryKey = 'true'">
                     $this->_existing = ($this-><xsl:value-of select="@name"/> !== null);
                 </xsl:if>
             </xsl:for-each>
-
-
-
 
             <!-- iterate references and initialize from array -->
             <xsl:for-each select="/entity/reference">
