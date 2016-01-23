@@ -591,7 +591,7 @@
                         $this-><xsl:value-of select="@name"/> = $arrayAccessor->getDateTime('<xsl:value-of select="@name"/>');
                     </xsl:when>
                     <xsl:when test="@type='json'">
-                        $this-><xsl:value-of select="@name"/> = $arrayAccessor->getStringValue('<xsl:value-of select="@name"/>');
+                        $this-><xsl:value-of select="@name"/> = $arrayAccessor->get('<xsl:value-of select="@name"/>');
                     </xsl:when>
                 </xsl:choose>
                 <xsl:if test="@primaryKey = 'true'">
