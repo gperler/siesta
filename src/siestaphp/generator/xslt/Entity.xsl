@@ -603,8 +603,11 @@
             <xsl:for-each select="/entity/reference">
                 $<xsl:value-of select="@name"/>Data = $arrayAccessor->get('<xsl:value-of select="@name"/>');
                 if ($<xsl:value-of select="@name"/>Data) {
-                    $this-><xsl:value-of select="@name"/>Obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
-                    $this-><xsl:value-of select="@name"/>Obj->fromArray($<xsl:value-of select="@name"/>Data);
+                    /*$this-><xsl:value-of select="@name"/>Obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
+                    $this-><xsl:value-of select="@name"/>Obj->fromArray($<xsl:value-of select="@name"/>Data);*/
+                    $obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
+                    $obj->fromArray($<xsl:value-of select="@name"/>Data);
+                    $this->set<xsl:value-of select="@methodName"/>($obj);
                 } else {
                     <xsl:for-each select="column">
                         $this-><xsl:value-of select="@name"/> = $arrayAccessor->get('<xsl:value-of select="@name"/>');
@@ -620,7 +623,9 @@
                     foreach ($<xsl:value-of select="@name"/>DataList as $<xsl:value-of select="@name"/>Data) {
                         $obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
                         $obj->fromArray($<xsl:value-of select="@name"/>Data);
-                        $this-><xsl:value-of select="@name"/>[] = $obj;
+
+                        $this->addTo<xsl:value-of select="@methodName"/>($obj);
+                        // $this-><xsl:value-of select="@name"/>[] = $obj;
                     }
                 }
             </xsl:for-each>
