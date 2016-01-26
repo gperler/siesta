@@ -603,8 +603,6 @@
             <xsl:for-each select="/entity/reference">
                 $<xsl:value-of select="@name"/>Data = $arrayAccessor->get('<xsl:value-of select="@name"/>');
                 if ($<xsl:value-of select="@name"/>Data) {
-                    /*$this-><xsl:value-of select="@name"/>Obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
-                    $this-><xsl:value-of select="@name"/>Obj->fromArray($<xsl:value-of select="@name"/>Data);*/
                     $obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
                     $obj->fromArray($<xsl:value-of select="@name"/>Data);
                     $this->set<xsl:value-of select="@methodName"/>($obj);
@@ -617,17 +615,30 @@
 
             <!-- iterate collections and initialize them -->
             <xsl:for-each select="/entity/collector">
-                $<xsl:value-of select="@name"/>DataList = $arrayAccessor->getArray('<xsl:value-of select="@name"/>');
-                if ($<xsl:value-of select="@name"/>DataList) {
-                    $this-><xsl:value-of select="@name"/> = [];
-                    foreach ($<xsl:value-of select="@name"/>DataList as $<xsl:value-of select="@name"/>Data) {
-                        $obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
-                        $obj->fromArray($<xsl:value-of select="@name"/>Data);
 
-                        $this->addTo<xsl:value-of select="@methodName"/>($obj);
-                        // $this-><xsl:value-of select="@name"/>[] = $obj;
-                    }
-                }
+                <xsl:choose>
+                    <xsl:when test="@type='1n'">
+                        $<xsl:value-of select="@name"/>DataList = $arrayAccessor->getArray('<xsl:value-of select="@name"/>');
+                        if ($<xsl:value-of select="@name"/>DataList) {
+                            $this-><xsl:value-of select="@name"/> = [];
+                            foreach ($<xsl:value-of select="@name"/>DataList as $<xsl:value-of select="@name"/>Data) {
+                                $obj = <xsl:call-template name="managerAccess"><xsl:with-param name="entityManager" select="manager"/></xsl:call-template>->newInstance();
+                                $obj->fromArray($<xsl:value-of select="@name"/>Data);
+                                $this->addTo<xsl:value-of select="@methodName"/>($obj);
+                            }
+                        }
+                    </xsl:when>
+                    <xsl:when test="@type='nm'">
+                        $<xsl:value-of select="@name"/>DataList = $arrayAccessor->getArray('<xsl:value-of select="@name"/>Mapping');
+                        if ($<xsl:value-of select="@name"/>DataList) {
+                            foreach ($<xsl:value-of select="@name"/>DataList as $<xsl:value-of select="@name"/>Id) {
+                                $this->addTo<xsl:value-of select="@methodName"/>Id($<xsl:value-of select="@name"/>Id);
+                            }
+                        }
+                     </xsl:when>
+                </xsl:choose>
+
+
             </xsl:for-each>
         }
     </xsl:template>
@@ -1007,6 +1018,18 @@
                         $mappingElement = new <xsl:value-of select="@mapperClass"/>();
                         $mappingElement->set<xsl:value-of select="@nmThisMethodName"/>($this);
                         $mappingElement->set<xsl:value-of select="@nmForeignMethodName"/>($object);
+                        $this-><xsl:value-of select="@name"/>Mapping[] = $mappingElement;
+                    }
+
+
+                    /**
+                    * @param string $id
+                    * @return void
+                    */
+                    public function addTo<xsl:value-of select="@methodName"/>Id($id) {
+                        $mappingElement = new <xsl:value-of select="@mapperClass"/>();
+                        $mappingElement->set<xsl:value-of select="@nmThisMethodName"/>($this);
+                        $mappingElement->set<xsl:value-of select="@nmForeignMethodName"/>Id($id);
                         $this-><xsl:value-of select="@name"/>Mapping[] = $mappingElement;
                     }
 
