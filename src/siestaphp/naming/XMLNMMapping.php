@@ -15,6 +15,8 @@ class XMLNMMapping
 
     const ATTRIBUTE_SP_NAME = "spName";
 
+    const ATTRIBUTE_SP_DELETE_NAME = "spDeleteName";
+
     const ELEMENT_PK_COLUMN = "pkColumn";
 
     const ATTRIBUTE_PK_COLUMN_NAME = "name";

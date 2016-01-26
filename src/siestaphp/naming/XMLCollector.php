@@ -33,4 +33,6 @@ class XMLCollector
     const ATTRIBUTE_NM_THIS_METHOD_NAME = "nmThisMethodName";
 
     const ATTRIBUTE_NM_FOREIGN_METHOD_NAME = "nmForeignMethodName";
+
+    const ATTRIBUTE_NM_DELETE_MAPPING_SP_NAME = "nmDeleteMappingSPName";
 }

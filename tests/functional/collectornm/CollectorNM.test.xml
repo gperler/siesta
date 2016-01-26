@@ -2,7 +2,7 @@
 <entityList>
 
     <entity name="Artist" namespace="siestaphp\tests\functional\collectornm\gen" table="ARTIST" targetPath="gen/">
-        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="uuid"/>
         <attribute name="name" type="string" dbName="D_STRING" dbType="VARCHAR(100)"/>
 
         <collector name="AlbumList" type="nm" foreignClass="Album" referenceName="artist" mapperClass="ArtistSong"/>
@@ -18,7 +18,7 @@
     </entity>
 
     <entity name="Album" namespace="siestaphp\tests\functional\collectornm\gen" table="Album" targetPath="gen">
-        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" autoValue="uuid"/>
         <attribute name="name" type="string" dbName="NAME" dbType="VARCHAR(100)"/>
 
         <collector name="artistList" type="nm" foreignClass="Artist" referenceName="album" mapperClass="ArtistSong"/>

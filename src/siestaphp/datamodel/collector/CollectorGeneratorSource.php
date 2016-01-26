@@ -57,4 +57,8 @@ interface CollectorGeneratorSource extends CollectorSource
      * @return EntityGeneratorSource
      */
     public function getReferencedEntity();
+    /**
+     * @return string
+     */
+    public function getNMDeleteStoredProcedueName();
 }

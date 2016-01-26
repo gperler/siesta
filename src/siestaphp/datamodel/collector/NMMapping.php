@@ -36,22 +36,33 @@ class NMMapping implements NMMappingSource
     /**
      * @return string
      */
-    public function getPHPMethodName() {
+    public function getPHPMethodName()
+    {
         return "get" . $this->entity->getClassName() . "Join" . $this->mappingEntity->getClassName();
     }
 
     /**
      * @return DatabaseColumn[]
      */
-    public function getForeignPrimaryKeyColumnList() {
+    public function getForeignPrimaryKeyColumnList()
+    {
         return $this->foreignEntity->getPrimaryKeyColumns();
     }
 
     /**
      * @return string
      */
-    public function getStoredProcedureName() {
+    public function getStoredProcedureName()
+    {
         return StoredProcedureNaming::getSPJoinCollectorNMName($this);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeleteStoredProcedureName()
+    {
+        return StoredProcedureNaming::getSPDeleteNMName($this);
     }
 
 }

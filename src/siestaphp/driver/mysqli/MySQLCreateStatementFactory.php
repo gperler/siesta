@@ -3,10 +3,12 @@
 namespace siestaphp\driver\mysqli;
 
 use Codeception\Util\Debug;
+use siestaphp\datamodel\collector\Collector;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\driver\CreateStatementFactory;
 use siestaphp\driver\mysqli\replication\Replication;
 use siestaphp\driver\mysqli\storedprocedures\CustomStoredProcedure;
+use siestaphp\driver\mysqli\storedprocedures\DeleteNMCollectorStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteReferenceStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\DeleteStoredProcedure;
 use siestaphp\driver\mysqli\storedprocedures\InsertStoredProcedure;
@@ -120,6 +122,9 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
             }
         }
 
+
+
+
         foreach ($source->getStoredProcedureSourceList() as $sp) {
             $spList[] = new CustomStoredProcedure($sp, $source, $isReplication);
         }
@@ -130,6 +135,13 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
 
         foreach($source->getNMMappingSourceList() as $nmMapping) {
             $spList[] = new SelectCollectorStoredProcedure($source, $nmMapping, $isReplication);
+
+        }
+
+        foreach($source->getCollectorSourceList() as $collector) {
+            if ($collector->getType() === Collector::N_M) {
+                $spList[] = new DeleteNMCollectorStoredProcedure($source, $collector, $isReplication);
+            }
         }
 
 

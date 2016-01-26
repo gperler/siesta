@@ -10,6 +10,7 @@ use siestaphp\datamodel\Processable;
 use siestaphp\datamodel\reference\Reference;
 use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\generator\ValidationLogger;
+use siestaphp\naming\StoredProcedureNaming;
 
 /**
  * Class Collector
@@ -173,6 +174,15 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         }
     }
 
+
+    /**
+     * @return string
+     */
+    public function getNMDeleteStoredProcedueName() {
+        return StoredProcedureNaming::getSPDeleteNMName($this->entity->getTable(), $this->getName());
+    }
+
+
     /**
      * @param ValidationLogger $logger
      *
@@ -271,7 +281,6 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         }
         $ems = $this->foreignClassEntity->getEntityManagerSource();
 
-
         $usedClassList = [
             $this->foreignClassEntity->getFullyQualifiedConstructClassName(),
             $ems->getFullyQualifiedClassName(),
@@ -280,7 +289,6 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         if ($this->getType() === self::N_M) {
             $usedClassList[] = $this->mappingClassEntity->getFullyQualifiedClassName();
         };
-
 
         return $usedClassList;
     }

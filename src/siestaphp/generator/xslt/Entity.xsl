@@ -1033,6 +1033,21 @@
                         $this-><xsl:value-of select="@name"/>Mapping[] = $mappingElement;
                     }
 
+
+                    /**
+                    * @param string $connectionName
+                    * @return void
+                    */
+                    public function deleteAll<xsl:value-of select="@methodName"/>($connectionName = null) {
+                        $connection = ConnectionFactory::getConnection($connectionName);
+                        <!-- make sure ids are given -->
+                        <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
+                            $<xsl:value-of select="@name"/> = $connection->escape($this-><xsl:value-of select="@name"/>);
+                        </xsl:for-each>
+                        $connection->execute("CALL <xsl:value-of select="@nmDeleteMappingSPName"/>(<xsl:for-each select="/entity/attribute[@primaryKey = 'true']">'$<xsl:value-of select="@name"/>'<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>)");
+
+                    }
+
                 </xsl:when>
             </xsl:choose>
 

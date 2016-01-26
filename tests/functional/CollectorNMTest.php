@@ -2,6 +2,8 @@
 
 namespace siestaphp\tests\functional;
 
+use Codeception\Util\Debug;
+use siestaphp\migrator\AttributeListMigrator;
 use siestaphp\tests\functional\collectornm\gen\Album;
 use siestaphp\tests\functional\collectornm\gen\Artist;
 
@@ -29,29 +31,49 @@ class CollectorNMTest extends SiestaTester
 
     protected function tearDown()
     {
-        $this->dropDatabase();
+        //$this->dropDatabase();
 
     }
 
     // tests
     public function testCollection()
     {
-        $artist = new Artist();
-        $artist->setName("Jamie Woon");
-        $artist->save();
+        $jamieWoon = new Artist();
+        $jamieWoon->setName("Jamie Woon");
+        $jamieWoon->save();
 
-        $album = new Album();
-        $album->setName("Mirrorwriting");
+        $mirrorwriting = new Album();
+        $mirrorwriting->setName("Mirrorwriting");
+        $mirrorwriting->addToArtistList($jamieWoon);
+        $mirrorwriting->save(true);
 
-        $album->addToArtistList($artist);
-        $album->save(true);
+        $makingtime = new Album();
+        $makingtime->setName("making time");
+        $makingtime->addToArtistList($jamieWoon);
+        $makingtime->save(true);
 
-        $albumList = $artist->getAlbumList(true);
 
-        $this->assertSame(1, sizeof($albumList), "not exactly one album found");
+        $albumList = $jamieWoon->getAlbumList(true);
+        $this->assertSame(2, sizeof($albumList), "not exactly 2 album found");
 
-        $this->assertSame($album->getId(), $albumList[0]->getId(), "id not identical");
-        $this->assertSame($album->getName(), $albumList[0]->getName(), "name not identical");
+
+        $radical = new Album();
+        $radical->setName("Radical");
+
+        $monte = new Artist();
+        $monte->setName("Monte");
+        $monte->addToAlbumList($radical);
+        $monte->save(true);
+
+        $jamieWoon->deleteAllAlbumList();
+
+
+        $monteAlbumList = $monte->getAlbumList(true);
+
+        $this->assertSame(1, sizeof($monteAlbumList), "expected one album from monte");
+
+
+
 
     }
 

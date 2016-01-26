@@ -27,8 +27,6 @@ class StoredProcedureNaming
 
     const INSERT_SUFFIX = "_I";
 
-
-
     /**
      * @var StoredProcedureNaming
      */
@@ -62,7 +60,8 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getSPFindByPrimaryKeyDelimitName($tableName) {
+    public static function getSPFindByPrimaryKeyDelimitName($tableName)
+    {
         return self::GI()->getUniqueName($tableName . self::FIND_BY_PRIMARY_KEY_DELIMIT);
     }
 
@@ -71,8 +70,22 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getSPJoinCollectorNMName(NMMapping $nmMapping) {
+    public static function getSPJoinCollectorNMName(NMMapping $nmMapping)
+    {
         $name = $nmMapping->entity->getTable() . "_" . $nmMapping->collector->getName() . "_" . $nmMapping->mappingEntity->getTable();
+
+        return self::GI()->getUniqueName($name);
+    }
+
+    /**
+     * @param string $tableName
+     * @param string $collectorName
+     *
+     * @return string
+     */
+    public static function getSPDeleteNMName($tableName, $collectorName)
+    {
+        $name = $tableName . "_" . $collectorName . "_DELETE_NM";
 
         return self::GI()->getUniqueName($name);
     }
@@ -109,7 +122,8 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getSPFinByCollectorFilterName($tableName, $referenceName, $filerName) {
+    public static function getSPFinByCollectorFilterName($tableName, $referenceName, $filerName)
+    {
         return self::GI()->getUniqueName($tableName . self::FIND_BY_COLLECTOR . $referenceName . $filerName);
     }
 

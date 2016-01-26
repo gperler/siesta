@@ -71,6 +71,7 @@ class XMLCollectorBuilder extends XMLBuilder
         $this->setAttribute(XMLCollector::ATTRIBUTE_NM_MAPPING_METHOD_NAME, $generatorSource->getNMMappingMethodName());
         $this->setAttribute(XMLCollector::ATTRIBUTE_NM_FOREIGN_METHOD_NAME, $generatorSource->getNMForeignMethodName());
         $this->setAttribute(XMLCollector::ATTRIBUTE_NM_THIS_METHOD_NAME, $generatorSource->getNMThisMethodName());
+        $this->setAttribute(XMLCollector::ATTRIBUTE_NM_DELETE_MAPPING_SP_NAME,$generatorSource->getNMDeleteStoredProcedueName() );
 
         $this->addForeignEntityManagerData($generatorSource);
         $this->addForeignConstructData($generatorSource);
