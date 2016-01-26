@@ -2,9 +2,7 @@
 
 namespace siestaphp\driver\mysqli\storedprocedures;
 
-use Codeception\Util\Debug;
 use siestaphp\datamodel\collector\CollectorGeneratorSource;
-use siestaphp\datamodel\collector\NMMapping;
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
 use siestaphp\datamodel\reference\ReferencedColumnSource;
@@ -98,10 +96,7 @@ class DeleteNMCollectorStoredProcedure extends MySQLStoredProcedureBase
      */
     protected function getCorrespondingMappingColumn($tableName, DatabaseColumn $column)
     {
-        Debug::debug("searching for table " . $tableName);
         foreach ($this->mappingEntity->getReferenceSourceList() as $reference) {
-            Debug::debug("    # found" . $reference->getForeignTable());
-
             if ($reference->getForeignTable() !== $tableName) {
                 continue;
             }
@@ -124,7 +119,5 @@ class DeleteNMCollectorStoredProcedure extends MySQLStoredProcedureBase
     {
         return $this->quote($tableName) . "." . $this->quote($column->getDatabaseName());
     }
-
-
 
 }
