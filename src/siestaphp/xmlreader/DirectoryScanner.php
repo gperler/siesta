@@ -67,7 +67,7 @@ class DirectoryScanner
 
         }
 
-        $this->logger->info("I'm searching in " . $baseDirFile . " for *." . $fileSuffix);
+        $this->logger->notice("I'm searching in " . $baseDirFile . " for *." . $fileSuffix);
 
         $this->handleDirectory($baseDirFile);
 
@@ -105,7 +105,7 @@ class DirectoryScanner
             return;
         }
 
-        $this->logger->info("Found " . $file->getAbsoluteFileName());
+        $this->logger->notice("Found " . $file->getAbsoluteFileName());
 
         try {
             $xmlReader = new XMLReader($file);

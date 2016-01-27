@@ -88,7 +88,7 @@ class Migrator
     {
         try {
             $datbase = $this->connection->getDatabase();
-            $this->logger->info("Direct migration of database " . $datbase);
+            $this->logger->notice("Direct migration of database " . $datbase);
 
             $this->connection->disableForeignKeyChecks();
             foreach ($statementList as $statement) {

@@ -65,7 +65,7 @@ class SymphonyConsoleOutputWrapper implements LoggerInterface
     public function emergency($message, array $context = [])
     {
         $message = $this->compileMessage(LogLevel::EMERGENCY, $message, $context);
-        $this->outputInterfase->writeln($message);
+        $this->outputInterfase->writeln('<error>' . $message . '</error>');
     }
 
     /**
@@ -81,7 +81,7 @@ class SymphonyConsoleOutputWrapper implements LoggerInterface
     public function alert($message, array $context = [])
     {
         $message = $this->compileMessage(LogLevel::ALERT, $message, $context);
-        $this->outputInterfase->writeln($message);
+        $this->outputInterfase->writeln('<error>' . $message . '</error>');
     }
 
     /**
@@ -96,7 +96,7 @@ class SymphonyConsoleOutputWrapper implements LoggerInterface
     public function critical($message, array $context = [])
     {
         $message = $this->compileMessage(LogLevel::CRITICAL, $message, $context);
-        $this->outputInterfase->writeln($message);
+        $this->outputInterfase->writeln('<error>' . $message . '</error>');
     }
 
     /**
@@ -111,7 +111,7 @@ class SymphonyConsoleOutputWrapper implements LoggerInterface
     public function error($message, array $context = [])
     {
         $message = $this->compileMessage(LogLevel::ERROR, $message, $context);
-        $this->outputInterfase->writeln($message);
+        $this->outputInterfase->writeln('<error>' . $message . '</error>');
     }
 
     /**
@@ -126,7 +126,7 @@ class SymphonyConsoleOutputWrapper implements LoggerInterface
      */
     public function warning($message, array $context = [])
     {
-        if ($this->outputInterfase->getVerbosity() > 1) {
+        if ($this->outputInterfase->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
             return;
         }
         $message = $this->compileMessage(LogLevel::WARNING, $message, $context);
@@ -143,7 +143,7 @@ class SymphonyConsoleOutputWrapper implements LoggerInterface
      */
     public function notice($message, array $context = [])
     {
-        if ($this->outputInterfase->getVerbosity() > 2) {
+        if ($this->outputInterfase->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
             return;
         }
         $message = $this->compileMessage(LogLevel::NOTICE, $message, $context);
@@ -161,7 +161,7 @@ class SymphonyConsoleOutputWrapper implements LoggerInterface
      */
     public function info($message, array $context = [])
     {
-        if ($this->outputInterfase->getVerbosity() >= 2) {
+        if ($this->outputInterfase->getVerbosity() < OutputInterface::VERBOSITY_DEBUG) {
             return;
         }
         $message = $this->compileMessage(LogLevel::INFO, $message, $context);
@@ -178,7 +178,7 @@ class SymphonyConsoleOutputWrapper implements LoggerInterface
      */
     public function debug($message, array $context = [])
     {
-        if ($this->outputInterfase->getVerbosity() <= 3) {
+        if ($this->outputInterfase->getVerbosity() < OutputInterface::VERBOSITY_DEBUG) {
             return;
         }
         $message = $this->compileMessage(LogLevel::DEBUG, $message, $context);
