@@ -161,7 +161,7 @@ class SymphonyConsoleOutputWrapper implements LoggerInterface
      */
     public function info($message, array $context = [])
     {
-        if ($this->outputInterfase->getVerbosity() <= 2) {
+        if ($this->outputInterfase->getVerbosity() >= 2) {
             return;
         }
         $message = $this->compileMessage(LogLevel::INFO, $message, $context);

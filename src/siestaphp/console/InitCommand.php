@@ -130,7 +130,7 @@ class InitCommand extends Command
         $cd->name = $this->askQuestion("Please enter connection name", "default");
         $cd->host = $this->askQuestion("Please enter host", "127.0.0.1");
         $cd->port = $this->askQuestion("Please enter port", "3306");
-        $cd->driver = $this->askQuestion("Please enter driver", "mysql");
+        $cd->driver = $this->askQuestion("Please enter driver", "siestaphp\\driver\\mysqli\\MySQLDriver");
         $cd->database = $this->askQuestion("Please enter database name", "test");
         $cd->user = $this->askQuestion("Please enter user", "root");
         $cd->password = $this->askQuestion("Please enter password", "");
