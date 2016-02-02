@@ -60,7 +60,7 @@ class StringUtil
             return null;
         }
 
-        if ($maxLength === 0) {
+        if ($maxLength === 0 || $maxLength === null) {
             return $value;
         }
         return substr($value, 0, $maxLength);
