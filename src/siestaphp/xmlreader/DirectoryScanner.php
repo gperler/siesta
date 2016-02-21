@@ -105,7 +105,7 @@ class DirectoryScanner
             return;
         }
 
-        $this->logger->notice("Found " . $file->getAbsoluteFileName());
+        $this->logger->info("Found " . $file->getAbsoluteFileName());
 
         try {
             $xmlReader = new XMLReader($file);

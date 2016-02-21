@@ -130,7 +130,7 @@ class SymphonyConsoleOutputWrapper implements LoggerInterface
             return;
         }
         $message = $this->compileMessage(LogLevel::WARNING, $message, $context);
-        $this->outputInterfase->writeln($message);
+        $this->outputInterfase->writeln('<bg=yellow>' . $message . '</>');
     }
 
     /**
