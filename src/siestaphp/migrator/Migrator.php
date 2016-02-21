@@ -3,14 +3,12 @@
 namespace siestaphp\migrator;
 
 use Psr\Log\LoggerInterface;
-use siestaphp\Config;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\driver\Connection;
 use siestaphp\driver\ConnectionFactory;
 use siestaphp\driver\exceptions\SQLException;
 use siestaphp\generator\GeneratorConfig;
 use siestaphp\util\File;
-use siestaphp\util\StringUtil;
 
 /**
  * Class Migrator
@@ -18,7 +16,6 @@ use siestaphp\util\StringUtil;
  */
 class Migrator
 {
-
 
     /**
      * @var DatabaseMigrator
@@ -64,38 +61,42 @@ class Migrator
      */
     public function migrate()
     {
-        $statementList = $this->databaseMigrator->createAlterStatementList(null,null, $this->config->isDropUnusedTables());
+        $this->databaseMigrator->createAlterStatementList(null, null, $this->config->isDropUnusedTables());
 
-        $alterStatementList = $this->databaseMigrator->getAlterStatementList();
-        $this->logger->info(implode(PHP_EOL, $alterStatementList));
-
-        switch($this->config->getMigrationMethod()) {
+        switch ($this->config->getMigrationMethod()) {
             case GeneratorConfig::MIGRATION_DIRECT_EXECUTION:
-                $this->migrateDirect($statementList);
+                $this->migrateDirect();
                 break;
             case GeneratorConfig::MIGRATOR_CREATE_PHP_FILE:
                 break;
             case GeneratorConfig::MIGRATOR_CREATE_SQL_FILE:
-                $this->migrateSQLFile($statementList);
+                $this->migrateSQLFile();
                 break;
         }
     }
 
     /**
-     * @param string[] $statementList
      */
-    private function migrateDirect(array $statementList)
+    private function migrateDirect()
     {
         try {
+            $alterStatementList = $this->databaseMigrator->getAlterStatementList();
+
             $datbase = $this->connection->getDatabase();
             $this->logger->notice("Direct migration of database " . $datbase);
 
             $this->connection->disableForeignKeyChecks();
-            foreach ($statementList as $statement) {
-                $this->logger->warning("Executing " . $statement);
+            foreach ($alterStatementList as $statement) {
+                $this->logger->warning("Altering " . $statement);
                 $this->connection->query($statement);
             }
             $this->connection->enableForeignKeyChecks();
+
+            $statementList = $this->databaseMigrator->getStatementList();
+            foreach ($statementList as $statement) {
+                $this->logger->info("Executing " . $statement);
+                $this->connection->query($statement);
+            }
 
         } catch (SQLException $e) {
             $this->logger->error("SQL Exception : " . $e->getMessage() . " (" . $e->getCode() . ")");
@@ -104,13 +105,18 @@ class Migrator
     }
 
     /**
-     * @param array $statementList
      */
-    private function migrateSQLFile(array $statementList) {
+    private function migrateSQLFile()
+    {
         $targetDir = new File($this->config->getMigrationTargetPath());
         $targetDir->createDir();
 
         $targetFile = new File($targetDir . "/migration.sql");
+
+        $alterStatementList = $this->databaseMigrator->getAlterStatementList();
+        $statementList = $this->databaseMigrator->getStatementList();
+
+        $statementList = array_merge($alterStatementList, $statementList);
 
         $targetFile->putContents(implode(";" . PHP_EOL, $statementList));
     }

@@ -71,8 +71,6 @@ class DatabaseMigrator
      * @param string $targetNamespace
      * @param string $targetPath
      * @param bool $dropUnusedTables
-     *
-     * @return String[]
      */
     public function createAlterStatementList($targetNamespace, $targetPath, $dropUnusedTables)
     {
@@ -91,10 +89,6 @@ class DatabaseMigrator
         if ($dropUnusedTables) {
             $this->dropUnusedTables();
         }
-
-        // done, return list of needed statements
-        return $this->statementList;
-
     }
 
     /**
@@ -115,9 +109,9 @@ class DatabaseMigrator
 
         // compare database with current model/schema
         $entityMigrator = new EntityMigrator($this->columnMigrator, $databaseEntity, $modelSource);
-        $this->alterStatementList = $entityMigrator->createAlterStatementList();
+        $alterStatementList = $entityMigrator->createAlterStatementList();
 
-        $this->addStatementList($this->alterStatementList);
+        $this->addAlterStatementList($alterStatementList);
 
         // create stored procedures
         $factory = $this->connection->getCreateStatementFactory();
@@ -134,12 +128,12 @@ class DatabaseMigrator
     {
         $factory = $this->connection->getCreateStatementFactory();
 
-        $this->addStatementList($factory->buildCreateTable($source));
+        $this->addAlterStatementList($factory->buildCreateTable($source));
 
         $this->addStatementList($factory->buildStoredProceduresStatements($source));
 
         if ($source->isDelimit()) {
-            $this->addStatementList($factory->buildCreateDelimitTable($source));
+            $this->addAlterStatementList($factory->buildCreateDelimitTable($source));
         }
     }
 
@@ -179,18 +173,35 @@ class DatabaseMigrator
                 continue;
             }
             $statement = $this->columnMigrator->getDropTableStatement($databaseModel);
-            $this->statementList[] = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $databaseModel->getTable(), $statement);
+            $dropStatement = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $databaseModel->getTable(), $statement);
+            $this->addAlterStatementList([$dropStatement]);
         }
     }
 
     /**
-     * @param array $alterStatementList
+     * @param array $statementList
      *
      * @return void
      */
-    private function addStatementList(array $alterStatementList)
+    private function addStatementList(array $statementList)
     {
-        $this->statementList = array_merge($this->statementList, $alterStatementList);
+        $this->statementList = array_merge($this->statementList, $statementList);
+    }
+
+    /**
+     * @param array $alterStatementList
+     */
+    private function addAlterStatementList(array $alterStatementList)
+    {
+        $this->alterStatementList = array_merge($this->alterStatementList, $alterStatementList);
+    }
+
+    /**
+     * @return String[]
+     */
+    public function getStatementList()
+    {
+        return $this->statementList;
     }
 
     /**
