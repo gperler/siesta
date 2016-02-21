@@ -82,7 +82,11 @@ class Index implements Processable, IndexSource
      */
     public function getType()
     {
-        return $this->indexSource->getType();
+        $type = $this->indexSource->getType();
+        if (!$type) {
+            return 'BTREE';
+        }
+        return $type;
     }
 
     /**
