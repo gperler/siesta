@@ -47,4 +47,11 @@ interface DateTime
      */
     public function equals($dateTime);
 
+    /**
+     * @param string $format
+     *
+     * @return string
+     */
+    public function getTimeFormatted($format);
+
 }

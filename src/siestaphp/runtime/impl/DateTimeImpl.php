@@ -87,7 +87,7 @@ class DateTimeImpl implements DateTime
      *
      * @return string
      */
-    public function getTimeFormated($format)
+    public function getTimeFormatted($format)
     {
         return date($format, $this->timestamp);
     }
