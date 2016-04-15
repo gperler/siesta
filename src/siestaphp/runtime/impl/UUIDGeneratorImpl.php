@@ -16,10 +16,12 @@ class UUIDGeneratorImpl implements UUIDGenerator
      */
     public function uuid()
     {
-        return sprintf('%s-%04x-%04x-%04x-%04x%04x%04x', // 32 bits for "time_low"
-            dechex(time()),
+        return sprintf('%s-%04x-%04x-%04x%04x%04x', // 32 bits for "time_low"
+            dechex(microtime(true) * 10000),
 
             // 16 bits for "time_mid"
+            mt_rand(0, 0xffff),
+
             mt_rand(0, 0xffff),
 
             // 16 bits for "time_hi_and_version",

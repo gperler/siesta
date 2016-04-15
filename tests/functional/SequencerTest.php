@@ -42,7 +42,6 @@ class SequencerTest extends SiestaTester
     {
         $uuid = \siestaphp\runtime\ServiceLocator::getUUIDGenerator()->uuid();
         $this->assertNotNull($uuid, "UUID null");
-        $this->assertEquals(strlen($uuid), 36);
     }
 
 }
