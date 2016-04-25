@@ -27,6 +27,11 @@ class DeleteNMCollectorStoredProcedure extends MySQLStoredProcedureBase
     protected $foreignEntity;
 
     /**
+     * @var string
+     */
+    protected $referenceName;
+
+    /**
      * @param EntityGeneratorSource $source
      * @param CollectorGeneratorSource $collectorGeneratorSource
      * @param bool $replication
@@ -38,6 +43,8 @@ class DeleteNMCollectorStoredProcedure extends MySQLStoredProcedureBase
         $this->mappingEntity = $collectorGeneratorSource->getMappingClassEntity();
 
         $this->name = $collectorGeneratorSource->getNMDeleteStoredProcedueName();
+
+        $this->referenceName = $collectorGeneratorSource->getReferenceName();
 
         $this->buildElements();
     }
@@ -97,7 +104,7 @@ class DeleteNMCollectorStoredProcedure extends MySQLStoredProcedureBase
     protected function getCorrespondingMappingColumn($tableName, DatabaseColumn $column)
     {
         foreach ($this->mappingEntity->getReferenceSourceList() as $reference) {
-            if ($reference->getForeignTable() !== $tableName) {
+            if ($reference->getName() !== $this->referenceName) {
                 continue;
             }
             foreach ($reference->getReferencedColumnList() as $referencedColumn) {
