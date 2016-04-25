@@ -44,6 +44,11 @@ class SelectCollectorStoredProcedure extends MySQLStoredProcedureBase
 
         $this->name = $nmMapping->getStoredProcedureName();
 
+        echo "SELECT " . PHP_EOL;
+        echo "   # mappingEntity " . $nmMapping->mappingEntity->getTable() . PHP_EOL;
+        echo "   # foreignEntity " . $nmMapping->foreignEntity->getTable() . PHP_EOL;
+        echo "   # referenceName " . $nmMapping->referenceName . PHP_EOL;
+
         $this->buildElements();
     }
 

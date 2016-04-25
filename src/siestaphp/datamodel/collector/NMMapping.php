@@ -4,6 +4,7 @@ namespace siestaphp\datamodel\collector;
 
 use siestaphp\datamodel\DatabaseColumn;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
+use siestaphp\datamodel\reference\ReferenceSource;
 use siestaphp\naming\StoredProcedureNaming;
 
 /**
@@ -32,6 +33,11 @@ class NMMapping implements NMMappingSource
      * @var CollectorGeneratorSource
      */
     public $collector;
+
+    /**
+     * @var string
+     */
+    public $referenceName;
 
     /**
      * @return string

@@ -142,6 +142,8 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         $this->nmMapping->mappingEntity = $this->mappingClassEntity;
         $this->nmMapping->entity = $this->foreignClassEntity;
         $this->nmMapping->collector = $this;
+        $this->nmMapping->referenceName = $this->getReferenceName();
+
 
         // inform other class that a nm mapping is needed
         $this->foreignClassEntity->addNMMapping($this->nmMapping);
