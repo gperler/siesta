@@ -30,6 +30,11 @@ class SelectCollectorStoredProcedure extends MySQLStoredProcedureBase
     protected $foreignEntity;
 
     /**
+     * @var string
+     */
+    protected $referenceName;
+
+    /**
      * @param EntityGeneratorSource $source
      * @param NMMapping $nmMapping
      * @param bool $replication
@@ -44,10 +49,7 @@ class SelectCollectorStoredProcedure extends MySQLStoredProcedureBase
 
         $this->name = $nmMapping->getStoredProcedureName();
 
-        echo "SELECT " . PHP_EOL;
-        echo "   # mappingEntity " . $nmMapping->mappingEntity->getTable() . PHP_EOL;
-        echo "   # foreignEntity " . $nmMapping->foreignEntity->getTable() . PHP_EOL;
-        echo "   # referenceName " . $nmMapping->referenceName . PHP_EOL;
+        $this->referenceName = $nmMapping->referenceName;
 
         $this->buildElements();
     }
@@ -108,7 +110,7 @@ class SelectCollectorStoredProcedure extends MySQLStoredProcedureBase
 
         $whereList = [];
         foreach($this->foreignEntity->getPrimaryKeyColumns() as $pkColumn) {
-            $referencedColumn = $this->getReferencedColumnForPKColumn($foreignTable, $pkColumn);
+            $referencedColumn = $this->getWhereReferencedColumnForPKColumn($foreignTable, $pkColumn);
 
             $whereList[] = $this->buildTableColumnNameSnippet($mappingTableName, $referencedColumn) . " = " . $pkColumn->getSQLParameterName();
         }
@@ -140,7 +142,30 @@ class SelectCollectorStoredProcedure extends MySQLStoredProcedureBase
     protected function getReferencedColumnForPKColumn($tableName, DatabaseColumn $column)
     {
         foreach ($this->mappingEntity->getReferenceSourceList() as $reference) {
-            if ($reference->getForeignTable() !== $tableName) {
+
+            if ($reference->getName() === $this->referenceName) {
+                continue;
+            }
+
+            foreach($reference->getReferencedColumnList() as $referencedColumn) {
+                if ($referencedColumn->getReferencedDatabaseName() === $column->getDatabaseName()) {
+                    return $referencedColumn;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param string $tableName
+     * @param DatabaseColumn $column
+     *
+     * @return ReferencedColumnSource
+     */
+    protected function getWhereReferencedColumnForPKColumn($tableName, DatabaseColumn $column)
+    {
+        foreach ($this->mappingEntity->getReferenceSourceList() as $reference) {
+
+            if ($reference->getName() !== $this->referenceName) {
                 continue;
             }
 
