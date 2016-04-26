@@ -2,6 +2,7 @@
 
 namespace siestaphp\datamodel\collector;
 
+use Codeception\Util\Debug;
 use siestaphp\datamodel\DataModelContainer;
 use siestaphp\datamodel\entity\Entity;
 use siestaphp\datamodel\entity\EntityGeneratorSource;
@@ -144,7 +145,6 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
         $this->nmMapping->collector = $this;
         $this->nmMapping->referenceName = $this->getReferenceName();
 
-
         // inform other class that a nm mapping is needed
         $this->foreignClassEntity->addNMMapping($this->nmMapping);
     }
@@ -170,20 +170,21 @@ class Collector implements Processable, CollectorSource, CollectorGeneratorSourc
             return null;
         }
         foreach ($this->mappingClassEntity->getReferenceGeneratorSourceList() as $reference) {
-            if ($reference->getForeignTable() === $this->foreignClassEntity->getTable()) {
+            // mapping reference has to point to foreignClass (nm)
+            if ($reference->getForeignClass()  === $this->foreignClassEntity->getClassName() ) {
                 return $reference->getMethodName();
             }
         }
+        Debug::debug("none found ***");
     }
-
 
     /**
      * @return string
      */
-    public function getNMDeleteStoredProcedueName() {
+    public function getNMDeleteStoredProcedueName()
+    {
         return StoredProcedureNaming::getSPDeleteNMName($this->entity->getTable(), $this->getName());
     }
-
 
     /**
      * @param ValidationLogger $logger
