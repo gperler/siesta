@@ -202,9 +202,8 @@ class EntityMigrator
             $this->statementList[] = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->databaseEntity->getTable(), $statement);
 
             // handle delimited table
-            if ($this->databaseEntity->isDelimit() and $isAttribute) {
+            if ($this->modelEntity->isDelimit() and $isAttribute) {
                 $this->statementList[] = str_replace(ColumnMigrator::TABLE_PLACE_HOLDER, $this->modelEntity->getDelimitTable(), $statement);
-
             }
 
             // TODO : handle replication table
