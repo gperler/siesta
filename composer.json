@@ -5,8 +5,7 @@
     "php": ">=5.3.9",
     "lib-xsl": "*",
     "symfony/console": ">=2.4",
-    "psr/log": "~1.0",
-    "fabpot/php-cs-fixer" : "*"
+    "psr/log": "~1.0"
   },
   "require-dev": {
     "codeception/codeception": "*"

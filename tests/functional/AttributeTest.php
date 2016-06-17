@@ -51,7 +51,6 @@ class AttributeTest extends SiestaTester
         $artist->setDateTime($dateTime);
 
         // date
-        $date = Factory::newDateTime();
         $date = new SiestaDateTime("19-08-1977");
         $artist->setPDate($date);
 
