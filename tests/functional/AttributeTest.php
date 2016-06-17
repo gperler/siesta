@@ -2,7 +2,9 @@
 
 namespace siestaphp\tests\functional;
 
+use Codeception\Util\Debug;
 use siestaphp\runtime\Factory;
+use siestaphp\runtime\SiestaDateTime;
 use siestaphp\tests\functional\attribute\AttributeXML;
 use siestaphp\tests\functional\attribute\gen\ArtistEntity;
 use siestaphp\tests\functional\attribute\gen\ArtistEntityService;
@@ -28,7 +30,7 @@ class AttributeTest extends SiestaTester
 
     protected function tearDown()
     {
-        $this->dropDatabase();
+        //$this->dropDatabase();
     }
 
     /**
@@ -45,18 +47,16 @@ class AttributeTest extends SiestaTester
         $artist->setInt(42);
 
         // date time
-        $dateTime = Factory::newDateTime();
-        $dateTime->stringToTime("19-08-1977 10:11:12");
+        $dateTime = new SiestaDateTime("19-08-1977 10:11:12");
         $artist->setDateTime($dateTime);
 
         // date
         $date = Factory::newDateTime();
-        $date->stringToTime("19-08-1977");
+        $date = new SiestaDateTime("19-08-1977");
         $artist->setPDate($date);
 
         // time
-        $time = Factory::newDateTime();
-        $time->stringToTime("10:11:12");
+        $time = new SiestaDateTime("10:11:12");
         $artist->setPTime($time);
 
         $this->startTimer();

@@ -3,6 +3,7 @@
 namespace siestaphp\tests\functional;
 
 use Codeception\Util\Debug;
+use siestaphp\runtime\SiestaDateTime;
 use siestaphp\tests\functional\reference\gen\ArtistEntity;
 use siestaphp\tests\functional\reference\gen\ArtistEntityService;
 use siestaphp\tests\functional\reference\gen\LabelEntity;
@@ -42,7 +43,7 @@ class ReferenceTest extends SiestaTester
         $artist = new ArtistEntity();
         $artist->setLabel($label);
         $artist->setName("Richard Dorfmeister");
-        $artist->setDob(\siestaphp\runtime\Factory::newDateTime());
+        $artist->setDob(new SiestaDateTime());
 
         // save artist cascading
         $artist->save(true);
@@ -69,7 +70,7 @@ class ReferenceTest extends SiestaTester
         $artist = new ArtistEntity();
         $artist->setLabel($label);
         $artist->setName("Richard Dorfmeister");
-        $artist->setDob(\siestaphp\runtime\Factory::newDateTime());
+        $artist->setDob(new SiestaDateTime());
 
         $artist->save(true);
 

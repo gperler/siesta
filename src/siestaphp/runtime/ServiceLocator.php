@@ -26,25 +26,12 @@ class ServiceLocator
     }
 
     /**
-     * @return HttpRequest
-     */
-    public static function getHttpRequest()
-    {
-        return self::getInstance()->getHttpRequestImpl();
-    }
-
-    /**
      * @return UUIDGenerator
      */
     public static function getUUIDGenerator()
     {
         return self::getInstance()->getUUIDGeneratorImpl();
     }
-
-    /**
-     * @var HttpRequest
-     */
-    protected $httpRequest;
 
     /**
      * @var UUIDGenerator
@@ -61,17 +48,8 @@ class ServiceLocator
 
     protected function initialize()
     {
-        $this->httpRequest = new HttpRequestImpl();
         $this->uuidGenerator = new UUIDGeneratorImpl();
 
-    }
-
-    /**
-     * @return HttpRequest
-     */
-    public function getHttpRequestImpl()
-    {
-        return $this->httpRequest;
     }
 
     /**

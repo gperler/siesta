@@ -9,8 +9,7 @@
         </xsl:if>
 
         <xsl:if test="/entity/@dateTimeInUse = 'true'">
-            use siestaphp\runtime\DateTime;
-            use siestaphp\runtime\Factory;
+            use siestaphp\runtime\SiestaDateTime;
         </xsl:if>
         use siestaphp\runtime\ArrayAccessor;
         use siestaphp\runtime\HttpRequest;
@@ -111,6 +110,13 @@
                      */
                     protected $<xsl:value-of select="@name"/>;
                 </xsl:when>
+                <xsl:when test="@type='DateTime'">
+                    /**
+                    * @var SiestaDateTime
+                    */
+                    protected $<xsl:value-of select="@name"/>;
+                </xsl:when>
+
                 <xsl:otherwise>
                     /**
                      * @var <xsl:value-of select="@type"/>
@@ -385,11 +391,14 @@
 
     <xsl:template name="arePrimaryKeyIdentical">
         /**
-         * @param <xsl:value-of select="/entity/@constructClass"/> $other
+         * @param <xsl:value-of select="/entity/construct/@name"/> $other
          * @return bool
          */
         public function arePrimaryKeyIdentical($other)
         {
+            if ($other === null) {
+                return false;
+            }
             return
             <xsl:for-each select="/entity/attribute[@primaryKey = 'true']">
                 $this->get<xsl:value-of select="@methodName"/>() === $other->get<xsl:value-of select="@methodName"/>()<xsl:if test="position() != last()"> and </xsl:if>
@@ -801,6 +810,29 @@
                     }
 
                 </xsl:when>
+                <xsl:when test="@type='DateTime'">
+                    /**
+                    * <xsl:if test="@primaryKey = 'true'">
+                    * @param bool $generateKey
+                    * @param string $connectionName</xsl:if>
+                    *
+                    * @return SiestaDateTime
+                    */
+                    public function get<xsl:value-of select="@methodName"/>()
+                    {
+                        return $this-><xsl:value-of select="@name"/>;
+                    }
+
+                    /**
+                    * @param SiestaDateTime $value
+                    * @return void
+                    */
+                    public function set<xsl:value-of select="@methodName"/>(SiestaDateTime $value = null)
+                    {
+                        $this-><xsl:value-of select="@name"/> = $value;
+                    }
+                </xsl:when>
+
                 <xsl:otherwise>
                     /**
                      * <xsl:if test="@primaryKey = 'true'">
@@ -886,7 +918,7 @@
              * <xsl:if test="@referenceCretorNeeded='true'">@param bool $backlink</xsl:if>
              * @return void
              */
-            public function set<xsl:value-of select="@methodName"/>($object<xsl:if test="@referenceCretorNeeded='true'">, $backlink=true</xsl:if>)
+            public function set<xsl:value-of select="@methodName"/>($object<xsl:if test="@referenceCretorNeeded='true'"> = null, $backlink=true</xsl:if>)
             {
                 if ($object === null) {
                    $this-><xsl:value-of select="@name"/>Obj = null;

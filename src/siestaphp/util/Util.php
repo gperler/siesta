@@ -3,7 +3,7 @@
 namespace siestaphp\util;
 
 use siestaphp\driver\Connection;
-use siestaphp\runtime\DateTime;
+use siestaphp\runtime\SiestaDateTime;
 
 /**
  * Class Util
@@ -85,7 +85,7 @@ class Util
     }
 
     /**
-     * @param DateTime $value
+     * @param SiestaDateTime $value
      *
      * @return string
      */
@@ -98,7 +98,7 @@ class Util
     }
 
     /**
-     * @param DateTime $value
+     * @param SiestaDateTime $value
      *
      * @return string
      */
@@ -111,7 +111,7 @@ class Util
     }
 
     /**
-     * @param DateTime $value
+     * @param SiestaDateTime $value
      *
      * @return string
      */

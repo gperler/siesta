@@ -112,7 +112,7 @@ class ArrayAccessor
     /**
      * @param string $key
      *
-     * @return null|DateTime
+     * @return null|SiestaDateTime
      */
     public function getDateTime($key)
     {
@@ -121,7 +121,7 @@ class ArrayAccessor
             return null;
         }
 
-        return Factory::newDateTime($value);
+        return new SiestaDateTime($value);
     }
 
     /**

@@ -18,7 +18,7 @@ class Factory
      */
     public static function newDateTime($dateString = null)
     {
-        $date = new DateTimeImpl();
+        $date = new SiestaDateTime();
         if ($dateString !== null) {
             $date->stringToTime($dateString);
         }

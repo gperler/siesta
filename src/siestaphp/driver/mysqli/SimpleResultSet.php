@@ -3,8 +3,7 @@
 namespace siestaphp\driver\mysqli;
 
 use siestaphp\driver\ResultSet;
-use siestaphp\runtime\DateTime;
-use siestaphp\runtime\Factory;
+use siestaphp\runtime\SiestaDateTime;
 use siestaphp\util\Util;
 
 /**
@@ -115,7 +114,7 @@ class SimpleResultSet implements ResultSet
     /**
      * @param $key
      *
-     * @return null|DateTime
+     * @return null|SiestaDateTime
      */
     public function getDateTime($key)
     {
@@ -123,9 +122,7 @@ class SimpleResultSet implements ResultSet
         if (is_null($value)) {
             return null;
         }
-        $dateTime = Factory::newDateTime();
-        $dateTime->stringToTime($value);
 
-        return $dateTime;
+        return new SiestaDateTime($value);
     }
 }

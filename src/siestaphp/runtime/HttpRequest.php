@@ -41,7 +41,7 @@ interface HttpRequest
     /**
      * @param string $key
      *
-     * @return DateTime
+     * @return SiestaDateTime
      */
     public function getDateTime($key);
 }

@@ -3,6 +3,7 @@
 namespace siestaphp\tests\functional;
 
 use siestaphp\runtime\Factory;
+use siestaphp\runtime\SiestaDateTime;
 use siestaphp\tests\functional\transient\gen\ArtistEntity;
 use siestaphp\tests\functional\transient\gen\ArtistEntityService;
 
@@ -42,7 +43,7 @@ class TransientTest extends SiestaTester
         $artist->setTransientInt(77);
         $artist->setTransientFloat(19.08);
         $artist->setTransientString("data");
-        $artist->setTransientDateTime(Factory::newDateTime());
+        $artist->setTransientDateTime(new SiestaDateTime());
         $artist->save();
 
         $artistReloaded = ArtistEntityService::getInstance()->getEntityByPrimaryKey($artist->getId());

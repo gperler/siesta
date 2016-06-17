@@ -2,7 +2,7 @@
 
 namespace siestaphp\driver;
 
-use siestaphp\runtime\DateTime;
+use siestaphp\runtime\SiestaDateTime;
 
 /**
  * Interface ResultSet
@@ -59,7 +59,7 @@ interface ResultSet
     /**
      * @param $key
      *
-     * @return DateTime
+     * @return SiestaDateTime
      */
     public function getDateTime($key);
 }
