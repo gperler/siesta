@@ -277,13 +277,13 @@
         <xsl:for-each select="$parameterList">
             <xsl:choose>
                 <xsl:when test="@type = 'DateTime' and @dbType = 'DATETIME'">
-                    $<xsl:value-of select="@name"/> = Util::quoteDateTime($<xsl:value-of select="@name"/>)
+                    $<xsl:value-of select="@name"/> = Util::quoteDateTime($<xsl:value-of select="@name"/>);
                 </xsl:when>
                 <xsl:when test="@type = 'DateTime' and @dbType = 'DATE'">
-                    $<xsl:value-of select="@name"/> = Util::quoteDate($<xsl:value-of select="@name"/>)
+                    $<xsl:value-of select="@name"/> = Util::quoteDate($<xsl:value-of select="@name"/>);
                 </xsl:when>
                 <xsl:when test="@type = 'DateTime' and @dbType = 'TIME'">
-                    $<xsl:value-of select="@name"/> = Util::quoteTime($<xsl:value-of select="@name"/>)
+                    $<xsl:value-of select="@name"/> = Util::quoteTime($<xsl:value-of select="@name"/>);
                 </xsl:when>
                 <xsl:otherwise>
                     $<xsl:value-of select="@name"/> = Util::quoteEscape($connection,$<xsl:value-of select="@name"/>);
