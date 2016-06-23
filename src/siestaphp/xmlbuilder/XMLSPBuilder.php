@@ -73,6 +73,7 @@ class XMLSPBuilder extends XMLBuilder
         // add attributes
         $xmlParameter->setAttribute(XMLStoredProcedure::ATTRIBUTE_PARAMETER_NAME, $source->getName());
         $xmlParameter->setAttribute(XMLStoredProcedure::ATTRIBUTE_PARAMETER_TYPE, $source->getPHPType());
+        $xmlParameter->setAttribute(XMLStoredProcedure::ATTRIBUTE_PARAMETER_DATABASE_TYPE, $source->getDatabaseType());
     }
 
 }
