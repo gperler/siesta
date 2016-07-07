@@ -686,7 +686,15 @@ class Entity implements Processable, EntitySource, EntityGeneratorSource
      */
     public function getUsedFQClassNames()
     {
-        return $this->usedFQNClassNameList;
+        $result = [];
+        foreach($this->usedFQNClassNameList as $className) {
+            if ($className === $this->getFullyQualifiedClassName()) {
+                continue;
+            }
+            $result[] = $className;
+        }
+
+        return $result;
     }
 
     /**
