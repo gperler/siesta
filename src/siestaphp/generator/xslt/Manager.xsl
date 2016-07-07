@@ -13,7 +13,9 @@
         use siestaphp\util\Util;
 
         <xsl:for-each select="/entity/referenceUseList/referenceUse">
+            <xsl:if test="concat(/entity/manager/@namespace, '\', /entity/manager/@name) != @use">
             use <xsl:value-of select="@use"/>;
+            </xsl:if>
         </xsl:for-each>
 
         /**
