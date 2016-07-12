@@ -155,7 +155,7 @@ class Util
         if ($value === null) {
             return "NULL";
         }
-
+        $value = (float)$value;
         return "'" . $value . "'";
     }
 
