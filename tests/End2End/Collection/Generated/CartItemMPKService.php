@@ -68,9 +68,9 @@ class CartItemMPKService
      * @param string $cartId2
      * @param string $connectionName
      * 
-     * @return void
+     * @return CartMPK[]
      */
-    public function getEntityByCartReference(string $cartId1, string $cartId2, string $connectionName = null)
+    public function getEntityByCartReference(string $cartId1, string $cartId2, string $connectionName = null) : array
     {
         $connection = ConnectionFactory::getConnection($connectionName);
         $cartId1 = Escaper::quoteString($connection, $cartId1);

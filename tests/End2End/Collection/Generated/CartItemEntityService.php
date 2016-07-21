@@ -63,9 +63,9 @@ class CartItemEntityService
      * @param int $cartId
      * @param string $connectionName
      * 
-     * @return void
+     * @return Cart[]
      */
-    public function getEntityByCartReference(int $cartId, string $connectionName = null)
+    public function getEntityByCartReference(int $cartId, string $connectionName = null) : array
     {
         $connection = ConnectionFactory::getConnection($connectionName);
         $cartId = Escaper::quoteInt($cartId);

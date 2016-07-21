@@ -47,6 +47,14 @@ class CollectionAccessPlugin extends BasePlugin
      */
     public function getUseClassNameList(Entity $entity) : array
     {
+        $useList = [];
+        foreach ($entity->getReferenceList() as $reference) {
+            if (!$reference->doesCollectionRefersTo()) {
+                continue;
+            }
+            $foreignEntity = $reference->getForeignEntity();
+            $useList[] = $foreignEntity->getInstantiationClass();
+        }
         return [];
     }
 
@@ -80,12 +88,16 @@ class CollectionAccessPlugin extends BasePlugin
      */
     protected function generateSelectByReference(Reference $reference)
     {
+
+        $foreignEntity = $reference->getForeignEntity();
+
         $methodName = self::getSelectByReferenceName($reference);
         $mappingList = $reference->getReferenceMappingList();
 
         $method = $this->codeGenerator->newPublicMethod($methodName);
         $method->addReferenceMappingListParameter($mappingList);
         $method->addConnectionNameParameter();
+        $method->setReturnType($foreignEntity->getInstantiationClassShortName() . '[]');
 
         $method->addQuoteReferenceMappingList($mappingList, true);
 
