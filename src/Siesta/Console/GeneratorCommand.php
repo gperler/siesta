@@ -55,7 +55,7 @@ class GeneratorCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('generate');
+        $this->setName('gen');
         $this->setDescription('Scans directories for entity files and generates classes and database tables');
         $this->addOption(self::OPTION_CONFIG_FILE, null, InputOption::VALUE_OPTIONAL, "Path to config file to use.");
     }
