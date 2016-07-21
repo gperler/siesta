@@ -11,18 +11,18 @@
     <attribute name="data" type="string" dbName="data" dbType="LONGTEXT"/>
     <attribute name="username" type="string" dbName="username" dbType="VARCHAR(255)"/>
     <index name="log_class_lookup_idx" type="btree" unique="false">
-      <indexPart columnName="object_class" length="" sortOrder="ASC"/>
+      <indexPart attributeName="objectClass" length="" sortOrder="ASC"/>
     </index>
     <index name="log_date_lookup_idx" type="btree" unique="false">
-      <indexPart columnName="logged_at" length="" sortOrder="ASC"/>
+      <indexPart attributeName="loggedAt" length="" sortOrder="ASC"/>
     </index>
     <index name="log_user_lookup_idx" type="btree" unique="false">
-      <indexPart columnName="username" length="" sortOrder="ASC"/>
+      <indexPart attributeName="username" length="" sortOrder="ASC"/>
     </index>
     <index name="log_version_lookup_idx" type="btree" unique="false">
-      <indexPart columnName="object_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="object_class" length="" sortOrder="ASC"/>
-      <indexPart columnName="version" length="" sortOrder="ASC"/>
+      <indexPart attributeName="objectId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="objectClass" length="" sortOrder="ASC"/>
+      <indexPart attributeName="version" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="phpcr_binarydata" name="PhpcrBinarydata" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -34,10 +34,10 @@
     <attribute name="idx" type="int" dbName="idx" dbType="INT" required="true"/>
     <attribute name="data" type="string" dbName="data" dbType="LONGBLOB" required="true"/>
     <index name="UNIQ_37E65615460D9FD7413BC13C1AC10DC4E7087E10" type="btree" unique="true">
-      <indexPart columnName="node_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="property_name" length="" sortOrder="ASC"/>
-      <indexPart columnName="workspace_name" length="" sortOrder="ASC"/>
-      <indexPart columnName="idx" length="" sortOrder="ASC"/>
+      <indexPart attributeName="nodeId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="propertyName" length="" sortOrder="ASC"/>
+      <indexPart attributeName="workspaceName" length="" sortOrder="ASC"/>
+      <indexPart attributeName="idx" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="phpcr_internal_index_types" name="PhpcrInternalIndexTypes" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -65,22 +65,22 @@
     <attribute name="depth" type="int" dbName="depth" dbType="INT" required="true"/>
     <attribute name="sortOrder" type="int" dbName="sort_order" dbType="INT"/>
     <index name="UNIQ_A4624AD7B548B0F1AC10DC4" type="btree" unique="true">
-      <indexPart columnName="path" length="" sortOrder="ASC"/>
-      <indexPart columnName="workspace_name" length="" sortOrder="ASC"/>
+      <indexPart attributeName="path" length="" sortOrder="ASC"/>
+      <indexPart attributeName="workspaceName" length="" sortOrder="ASC"/>
     </index>
     <index name="UNIQ_A4624AD7772E836A1AC10DC4" type="btree" unique="true">
-      <indexPart columnName="identifier" length="" sortOrder="ASC"/>
-      <indexPart columnName="workspace_name" length="" sortOrder="ASC"/>
+      <indexPart attributeName="identifier" length="" sortOrder="ASC"/>
+      <indexPart attributeName="workspaceName" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_A4624AD73D8E604F" type="btree" unique="false">
-      <indexPart columnName="parent" length="" sortOrder="ASC"/>
+      <indexPart attributeName="parent" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_A4624AD78CDE5729" type="btree" unique="false">
-      <indexPart columnName="type" length="" sortOrder="ASC"/>
+      <indexPart attributeName="type" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_A4624AD7623C14D533E16B56" type="btree" unique="false">
-      <indexPart columnName="local_name" length="" sortOrder="ASC"/>
-      <indexPart columnName="namespace" length="" sortOrder="ASC"/>
+      <indexPart attributeName="localName" length="" sortOrder="ASC"/>
+      <indexPart attributeName="namespace" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="phpcr_nodes_references" name="PhpcrNodesReferences" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -89,7 +89,7 @@
     <attribute name="sourcePropertyName" type="string" dbName="source_property_name" dbType="VARCHAR(220)" primaryKey="true" required="true"/>
     <attribute name="targetId" type="int" dbName="target_id" dbType="INT" primaryKey="true" required="true"/>
     <index name="IDX_F3BF7E1158E0B66" type="btree" unique="false">
-      <indexPart columnName="target_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="targetId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="phpcr_nodes_weakreferences" name="PhpcrNodesWeakreferences" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -98,7 +98,7 @@
     <attribute name="sourcePropertyName" type="string" dbName="source_property_name" dbType="VARCHAR(220)" primaryKey="true" required="true"/>
     <attribute name="targetId" type="int" dbName="target_id" dbType="INT" primaryKey="true" required="true"/>
     <index name="IDX_F0E4F6FA158E0B66" type="btree" unique="false">
-      <indexPart columnName="target_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="targetId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="phpcr_type_childs" name="PhpcrTypeChilds" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -123,7 +123,7 @@
     <attribute name="orderableChildNodes" type="string" dbName="orderable_child_nodes" dbType="TINYINT(1)" required="true"/>
     <attribute name="primaryItem" type="string" dbName="primary_item" dbType="VARCHAR(255)"/>
     <index name="UNIQ_34B0A8095E237E06" type="btree" unique="true">
-      <indexPart columnName="name" length="" sortOrder="ASC"/>
+      <indexPart attributeName="name" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="phpcr_type_props" name="PhpcrTypeProps" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -170,13 +170,13 @@
       <referenceMapping localAttribute="countryId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_B97FF058F92F3E70" type="btree" unique="false">
-      <indexPart columnName="country_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="countryId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_B97FF058E946114A" type="btree" unique="false">
-      <indexPart columnName="province_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="provinceId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_B97FF0589395C3F3" type="btree" unique="false">
-      <indexPart columnName="customer_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="customerId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_adjustment" name="SyliusAdjustment" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -200,10 +200,10 @@
       <referenceMapping localAttribute="orderItemId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_ACA6E0F28D9F6D38" type="btree" unique="false">
-      <indexPart columnName="order_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_ACA6E0F2E415FB15" type="btree" unique="false">
-      <indexPart columnName="order_item_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderItemId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_api_access_token" name="SyliusApiAccessToken" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -221,13 +221,13 @@
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_7D83AA7F5F37A13B" type="btree" unique="true">
-      <indexPart columnName="token" length="" sortOrder="ASC"/>
+      <indexPart attributeName="token" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_7D83AA7F19EB6921" type="btree" unique="false">
-      <indexPart columnName="client_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="clientId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_7D83AA7FA76ED395" type="btree" unique="false">
-      <indexPart columnName="user_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="userId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_api_auth_code" name="SyliusApiAuthCode" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -246,13 +246,13 @@
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_C84041795F37A13B" type="btree" unique="true">
-      <indexPart columnName="token" length="" sortOrder="ASC"/>
+      <indexPart attributeName="token" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_C840417919EB6921" type="btree" unique="false">
-      <indexPart columnName="client_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="clientId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_C8404179A76ED395" type="btree" unique="false">
-      <indexPart columnName="user_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="userId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_api_client" name="SyliusApiClient" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -278,13 +278,13 @@
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_445785255F37A13B" type="btree" unique="true">
-      <indexPart columnName="token" length="" sortOrder="ASC"/>
+      <indexPart attributeName="token" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_4457852519EB6921" type="btree" unique="false">
-      <indexPart columnName="client_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="clientId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_44578525A76ED395" type="btree" unique="false">
-      <indexPart columnName="user_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="userId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_channel" name="SyliusChannel" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -299,7 +299,7 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <index name="UNIQ_16C8119E77153098" type="btree" unique="true">
-      <indexPart columnName="code" length="" sortOrder="ASC"/>
+      <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_channel_currencies" name="SyliusChannelCurrencies" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -313,10 +313,10 @@
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_AE491F9372F5A1AA" type="btree" unique="false">
-      <indexPart columnName="channel_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="channelId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_AE491F9338248176" type="btree" unique="false">
-      <indexPart columnName="currency_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="currencyId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_channel_locales" name="SyliusChannelLocales" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -330,10 +330,10 @@
       <referenceMapping localAttribute="localeId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_786B7A8472F5A1AA" type="btree" unique="false">
-      <indexPart columnName="channel_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="channelId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_786B7A84E559DFD1" type="btree" unique="false">
-      <indexPart columnName="locale_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="localeId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_channel_payment_methods" name="SyliusChannelPaymentMethods" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -347,10 +347,10 @@
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_B0C0002B72F5A1AA" type="btree" unique="false">
-      <indexPart columnName="channel_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="channelId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_B0C0002B5AA1164F" type="btree" unique="false">
-      <indexPart columnName="payment_method_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="paymentMethodId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_channel_shipping_methods" name="SyliusChannelShippingMethods" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -364,10 +364,10 @@
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_6858B18E72F5A1AA" type="btree" unique="false">
-      <indexPart columnName="channel_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="channelId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_6858B18E5F7D6850" type="btree" unique="false">
-      <indexPart columnName="shipping_method_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="shippingMethodId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_channel_taxonomy" name="SyliusChannelTaxonomy" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -381,10 +381,10 @@
       <referenceMapping localAttribute="taxonomyId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_4BE9652E72F5A1AA" type="btree" unique="false">
-      <indexPart columnName="channel_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="channelId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_4BE9652E9557E6F6" type="btree" unique="false">
-      <indexPart columnName="taxonomy_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="taxonomyId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_contact_request" name="SyliusContactRequest" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -401,7 +401,7 @@
       <referenceMapping localAttribute="topicId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_8B0BBF201F55203D" type="btree" unique="false">
-      <indexPart columnName="topic_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="topicId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_contact_topic" name="SyliusContactTopic" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -418,11 +418,11 @@
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_contact_topic_translation_uniq_trans" type="btree" unique="true">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="locale" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="locale" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_6681216F2C2AC5D3" type="btree" unique="false">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_country" name="SyliusCountry" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -431,10 +431,10 @@
     <attribute name="isoName" type="string" dbName="iso_name" dbType="VARCHAR(3)" required="true"/>
     <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
     <index name="UNIQ_E74256BF4B80EAC0" type="btree" unique="true">
-      <indexPart columnName="iso_name" length="" sortOrder="ASC"/>
+      <indexPart attributeName="isoName" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_E74256BF4B80EAC0" type="btree" unique="false">
-      <indexPart columnName="iso_name" length="" sortOrder="ASC"/>
+      <indexPart attributeName="isoName" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_credit_card" name="SyliusCreditCard" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -459,7 +459,7 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <index name="UNIQ_96EDD3D077153098" type="btree" unique="true">
-      <indexPart columnName="code" length="" sortOrder="ASC"/>
+      <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_customer" name="SyliusCustomer" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -484,16 +484,16 @@
       <referenceMapping localAttribute="billingAddressId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_7E82D5E6E7927C74" type="btree" unique="true">
-      <indexPart columnName="email" length="" sortOrder="ASC"/>
+      <indexPart attributeName="email" length="" sortOrder="ASC"/>
     </index>
     <index name="UNIQ_7E82D5E6A0D96FBF" type="btree" unique="true">
-      <indexPart columnName="email_canonical" length="" sortOrder="ASC"/>
+      <indexPart attributeName="emailCanonical" length="" sortOrder="ASC"/>
     </index>
     <index name="UNIQ_7E82D5E679D0C0E4" type="btree" unique="true">
-      <indexPart columnName="billing_address_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="billingAddressId" length="" sortOrder="ASC"/>
     </index>
     <index name="UNIQ_7E82D5E64D4CFF2B" type="btree" unique="true">
-      <indexPart columnName="shipping_address_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="shippingAddressId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_customer_group" name="SyliusCustomerGroup" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -507,10 +507,10 @@
       <referenceMapping localAttribute="groupId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_7FCF9B059395C3F3" type="btree" unique="false">
-      <indexPart columnName="customer_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="customerId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_7FCF9B05FE54D947" type="btree" unique="false">
-      <indexPart columnName="group_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="groupId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_email" name="SyliusEmail" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -526,7 +526,7 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <index name="UNIQ_732D4E1577153098" type="btree" unique="true">
-      <indexPart columnName="code" length="" sortOrder="ASC"/>
+      <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_gateway_config" name="SyliusGatewayConfig" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -561,13 +561,13 @@
       <referenceMapping localAttribute="stockableId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_4A276986FBE8234" type="btree" unique="false">
-      <indexPart columnName="stockable_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="stockableId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_4A276986E415FB15" type="btree" unique="false">
-      <indexPart columnName="order_item_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderItemId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_4A2769867BE036FC" type="btree" unique="false">
-      <indexPart columnName="shipment_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="shipmentId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_locale" name="SyliusLocale" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -578,7 +578,7 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <index name="UNIQ_7BA1286477153098" type="btree" unique="true">
-      <indexPart columnName="code" length="" sortOrder="ASC"/>
+      <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_order" name="SyliusOrder" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -615,19 +615,19 @@
       <referenceMapping localAttribute="customerId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_6196A1F996901F54" type="btree" unique="true">
-      <indexPart columnName="number" length="" sortOrder="ASC"/>
+      <indexPart attributeName="number" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_6196A1F972F5A1AA" type="btree" unique="false">
-      <indexPart columnName="channel_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="channelId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_6196A1F94D4CFF2B" type="btree" unique="false">
-      <indexPart columnName="shipping_address_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="shippingAddressId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_6196A1F979D0C0E4" type="btree" unique="false">
-      <indexPart columnName="billing_address_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="billingAddressId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_6196A1F99395C3F3" type="btree" unique="false">
-      <indexPart columnName="customer_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="customerId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_order_comment" name="SyliusOrderComment" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -644,7 +644,7 @@
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_8EA9CF098D9F6D38" type="btree" unique="false">
-      <indexPart columnName="order_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_order_identity" name="SyliusOrderIdentity" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -657,7 +657,7 @@
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_5757A18E8D9F6D38" type="btree" unique="false">
-      <indexPart columnName="order_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_order_item" name="SyliusOrderItem" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -677,10 +677,10 @@
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_77B587ED8D9F6D38" type="btree" unique="false">
-      <indexPart columnName="order_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_77B587ED3B69A9AF" type="btree" unique="false">
-      <indexPart columnName="variant_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="variantId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_payment" name="SyliusPayment" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -706,13 +706,13 @@
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_D9191BD419883967" type="btree" unique="false">
-      <indexPart columnName="method_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="methodId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_D9191BD47048FD0F" type="btree" unique="false">
-      <indexPart columnName="credit_card_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="creditCardId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_D9191BD48D9F6D38" type="btree" unique="false">
-      <indexPart columnName="order_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_payment_method" name="SyliusPaymentMethod" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -737,11 +737,11 @@
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_payment_method_translation_uniq_trans" type="btree" unique="true">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="locale" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="locale" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_966BE3A12C2AC5D3" type="btree" unique="false">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_payment_security_token" name="SyliusPaymentSecurityToken" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -767,7 +767,7 @@
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_C5160A4E727ACA70" type="btree" unique="false">
-      <indexPart columnName="parent_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="parentId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product" name="SyliusProduct" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -795,16 +795,16 @@
       <referenceMapping localAttribute="restrictedZone" foreignAttribute="id"/>
     </reference>
     <index name="IDX_677B9B74732C6CC7" type="btree" unique="false">
-      <indexPart columnName="archetype_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="archetypeId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_677B9B749DF894ED" type="btree" unique="false">
-      <indexPart columnName="tax_category_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="taxCategoryId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_677B9B749E2D1A41" type="btree" unique="false">
-      <indexPart columnName="shipping_category_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="shippingCategoryId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_677B9B74E64AACD3" type="btree" unique="false">
-      <indexPart columnName="restricted_zone" length="" sortOrder="ASC"/>
+      <indexPart attributeName="restrictedZone" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_archetype" name="SyliusProductArchetype" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -818,10 +818,10 @@
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_A4001B5277153098" type="btree" unique="true">
-      <indexPart columnName="code" length="" sortOrder="ASC"/>
+      <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_A4001B52727ACA70" type="btree" unique="false">
-      <indexPart columnName="parent_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="parentId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_archetype_attribute" name="SyliusProductArchetypeAttribute" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -835,10 +835,10 @@
       <referenceMapping localAttribute="attributeId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_97763342732C6CC7" type="btree" unique="false">
-      <indexPart columnName="archetype_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="archetypeId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_97763342B6E62EFA" type="btree" unique="false">
-      <indexPart columnName="attribute_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="attributeId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_archetype_option" name="SyliusProductArchetypeOption" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -852,10 +852,10 @@
       <referenceMapping localAttribute="productArchetypeId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_BCE763A7FE884EAC" type="btree" unique="false">
-      <indexPart columnName="product_archetype_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="productArchetypeId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_BCE763A7A7C41D6F" type="btree" unique="false">
-      <indexPart columnName="option_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="optionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_archetype_translation" name="SyliusProductArchetypeTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -868,11 +868,11 @@
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_product_archetype_translation_uniq_trans" type="btree" unique="true">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="locale" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="locale" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_E0BA36D2C2AC5D3" type="btree" unique="false">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_attribute" name="SyliusProductAttribute" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -894,11 +894,11 @@
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_product_attribute_translation_uniq_trans" type="btree" unique="true">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="locale" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="locale" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_93850EBA2C2AC5D3" type="btree" unique="false">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_attribute_value" name="SyliusProductAttributeValue" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -914,10 +914,10 @@
       <referenceMapping localAttribute="attributeId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_8A053E544584665A" type="btree" unique="false">
-      <indexPart columnName="product_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="productId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_8A053E54B6E62EFA" type="btree" unique="false">
-      <indexPart columnName="attribute_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="attributeId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_channels" name="SyliusProductChannels" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -931,10 +931,10 @@
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_F9EF269B4584665A" type="btree" unique="false">
-      <indexPart columnName="product_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="productId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_F9EF269B72F5A1AA" type="btree" unique="false">
-      <indexPart columnName="channel_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="channelId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_option" name="SyliusProductOption" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -954,11 +954,11 @@
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_product_option_translation_uniq_trans" type="btree" unique="true">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="locale" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="locale" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_CBA491AD2C2AC5D3" type="btree" unique="false">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_option_value" name="SyliusProductOptionValue" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -970,7 +970,7 @@
       <referenceMapping localAttribute="optionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_F7FF7D4BA7C41D6F" type="btree" unique="false">
-      <indexPart columnName="option_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="optionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_options" name="SyliusProductOptions" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -984,10 +984,10 @@
       <referenceMapping localAttribute="optionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_2B5FF0094584665A" type="btree" unique="false">
-      <indexPart columnName="product_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="productId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_2B5FF009A7C41D6F" type="btree" unique="false">
-      <indexPart columnName="option_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="optionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_taxon" name="SyliusProductTaxon" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1001,10 +1001,10 @@
       <referenceMapping localAttribute="taxonId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_169C6CD94584665A" type="btree" unique="false">
-      <indexPart columnName="product_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="productId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_169C6CD9DE13F470" type="btree" unique="false">
-      <indexPart columnName="taxon_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="taxonId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_translation" name="SyliusProductTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1022,14 +1022,14 @@
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_105A908989D9B62" type="btree" unique="true">
-      <indexPart columnName="slug" length="" sortOrder="ASC"/>
+      <indexPart attributeName="slug" length="" sortOrder="ASC"/>
     </index>
     <index name="sylius_product_translation_uniq_trans" type="btree" unique="true">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="locale" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="locale" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_105A9082C2AC5D3" type="btree" unique="false">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_variant" name="SyliusProductVariant" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1058,13 +1058,13 @@
       <referenceMapping localAttribute="productId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_A29B5234584665A" type="btree" unique="false">
-      <indexPart columnName="product_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="productId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_A29B523F9038C4" type="btree" unique="false">
-      <indexPart columnName="sku" length="" sortOrder="ASC"/>
+      <indexPart attributeName="sku" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_A29B52398D2DD99" type="btree" unique="false">
-      <indexPart columnName="sold" length="" sortOrder="ASC"/>
+      <indexPart attributeName="sold" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_variant_image" name="SyliusProductVariantImage" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1078,7 +1078,7 @@
       <referenceMapping localAttribute="variantId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_C6B77D5D3B69A9AF" type="btree" unique="false">
-      <indexPart columnName="variant_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="variantId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_product_variant_option_value" name="SyliusProductVariantOptionValue" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1092,10 +1092,10 @@
       <referenceMapping localAttribute="optionValueId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_76CDAFA13B69A9AF" type="btree" unique="false">
-      <indexPart columnName="variant_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="variantId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_76CDAFA1D957CA06" type="btree" unique="false">
-      <indexPart columnName="option_value_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="optionValueId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_promotion" name="SyliusPromotion" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1124,7 +1124,7 @@
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_933D0915139DF194" type="btree" unique="false">
-      <indexPart columnName="promotion_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_promotion_channels" name="SyliusPromotionChannels" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1138,10 +1138,10 @@
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_1A044F64139DF194" type="btree" unique="false">
-      <indexPart columnName="promotion_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_1A044F6472F5A1AA" type="btree" unique="false">
-      <indexPart columnName="channel_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="channelId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_promotion_coupon" name="SyliusPromotionCoupon" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1160,7 +1160,7 @@
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_B04EBA85139DF194" type="btree" unique="false">
-      <indexPart columnName="promotion_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_promotion_coupon_order" name="SyliusPromotionCouponOrder" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1174,10 +1174,10 @@
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_D58E3BC48D9F6D38" type="btree" unique="false">
-      <indexPart columnName="order_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_D58E3BC417B24436" type="btree" unique="false">
-      <indexPart columnName="promotion_coupon_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="promotionCouponId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_promotion_order" name="SyliusPromotionOrder" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1191,10 +1191,10 @@
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_BF9CF6FB8D9F6D38" type="btree" unique="false">
-      <indexPart columnName="order_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_BF9CF6FB139DF194" type="btree" unique="false">
-      <indexPart columnName="promotion_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_promotion_order_item" name="SyliusPromotionOrderItem" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1208,10 +1208,10 @@
       <referenceMapping localAttribute="orderItemId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_49838ED1E415FB15" type="btree" unique="false">
-      <indexPart columnName="order_item_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderItemId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_49838ED1139DF194" type="btree" unique="false">
-      <indexPart columnName="promotion_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_promotion_rule" name="SyliusPromotionRule" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1224,7 +1224,7 @@
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_2C188EA8139DF194" type="btree" unique="false">
-      <indexPart columnName="promotion_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_province" name="SyliusProvince" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1237,7 +1237,7 @@
       <referenceMapping localAttribute="countryId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_B5618FE4F92F3E70" type="btree" unique="false">
-      <indexPart columnName="country_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="countryId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_report" name="SyliusReport" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1251,7 +1251,7 @@
     <attribute name="dataFetcher" type="string" dbName="data_fetcher" dbType="VARCHAR(255)" required="true"/>
     <attribute name="dataFetcherConfiguration" type="string" dbName="data_fetcher_configuration" dbType="LONGTEXT" required="true"/>
     <index name="UNIQ_FE0E997877153098" type="btree" unique="true">
-      <indexPart columnName="code" length="" sortOrder="ASC"/>
+      <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_role" name="SyliusRole" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1271,7 +1271,7 @@
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_8C606FE3727ACA70" type="btree" unique="false">
-      <indexPart columnName="parent_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="parentId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_role_permission" name="SyliusRolePermission" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1285,10 +1285,10 @@
       <referenceMapping localAttribute="permissionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_45CEE9B8D60322AC" type="btree" unique="false">
-      <indexPart columnName="role_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="roleId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_45CEE9B8FED90CCA" type="btree" unique="false">
-      <indexPart columnName="permission_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="permissionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_search_index" name="SyliusSearchIndex" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1300,14 +1300,14 @@
     <attribute name="tags" type="string" dbName="tags" dbType="LONGTEXT"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <index name="fulltext_search_idx" type="btree" unique="false">
-      <indexPart columnName="item_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="itemId" length="" sortOrder="ASC"/>
     </index>
     <index name="item_id_idx" type="btree" unique="false">
-      <indexPart columnName="item_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="itemId" length="" sortOrder="ASC"/>
     </index>
     <index name="item_id_entity_idx" type="btree" unique="false">
-      <indexPart columnName="item_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="entity" length="" sortOrder="ASC"/>
+      <indexPart attributeName="itemId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="entity" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_search_log" name="SyliusSearchLog" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1323,7 +1323,7 @@
     <attribute name="idx" type="int" dbName="idx" dbType="INT" required="true"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
     <index name="UNIQ_AD3D8CC48CDE5729" type="btree" unique="true">
-      <indexPart columnName="type" length="" sortOrder="ASC"/>
+      <indexPart attributeName="type" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_settings_parameter" name="SyliusSettingsParameter" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1333,8 +1333,8 @@
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="value" type="string" dbName="value" dbType="LONGTEXT"/>
     <index name="name_idx" type="btree" unique="true">
-      <indexPart columnName="namespace" length="" sortOrder="ASC"/>
-      <indexPart columnName="name" length="" sortOrder="ASC"/>
+      <indexPart attributeName="namespace" length="" sortOrder="ASC"/>
+      <indexPart attributeName="name" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_shipment" name="SyliusShipment" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1353,10 +1353,10 @@
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_FD707B3319883967" type="btree" unique="false">
-      <indexPart columnName="method_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="methodId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_FD707B338D9F6D38" type="btree" unique="false">
-      <indexPart columnName="order_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_shipping_category" name="SyliusShippingCategory" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1385,10 +1385,10 @@
       <referenceMapping localAttribute="zoneId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_5FB0EE1112469DE2" type="btree" unique="false">
-      <indexPart columnName="category_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="categoryId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_5FB0EE119F2C3FAB" type="btree" unique="false">
-      <indexPart columnName="zone_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="zoneId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_shipping_method_translation" name="SyliusShippingMethodTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1401,11 +1401,11 @@
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_shipping_method_translation_uniq_trans" type="btree" unique="true">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="locale" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="locale" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_2B37DB3D2C2AC5D3" type="btree" unique="false">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_shipping_rule" name="SyliusShippingRule" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1418,7 +1418,7 @@
       <referenceMapping localAttribute="methodId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_3BC30EE019883967" type="btree" unique="false">
-      <indexPart columnName="method_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="methodId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_tax_category" name="SyliusTaxCategory" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1447,10 +1447,10 @@
       <referenceMapping localAttribute="zoneId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_3CD86B2E12469DE2" type="btree" unique="false">
-      <indexPart columnName="category_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="categoryId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_3CD86B2E9F2C3FAB" type="btree" unique="false">
-      <indexPart columnName="zone_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="zoneId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_taxon" name="SyliusTaxon" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1470,10 +1470,10 @@
       <referenceMapping localAttribute="taxonomyId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_CFD811CA9557E6F6" type="btree" unique="false">
-      <indexPart columnName="taxonomy_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="taxonomyId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_CFD811CA727ACA70" type="btree" unique="false">
-      <indexPart columnName="parent_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="parentId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_taxon_translation" name="SyliusTaxonTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1489,15 +1489,15 @@
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="permalink_uidx" type="btree" unique="true">
-      <indexPart columnName="locale" length="" sortOrder="ASC"/>
-      <indexPart columnName="permalink" length="" sortOrder="ASC"/>
+      <indexPart attributeName="locale" length="" sortOrder="ASC"/>
+      <indexPart attributeName="permalink" length="" sortOrder="ASC"/>
     </index>
     <index name="sylius_taxon_translation_uniq_trans" type="btree" unique="true">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="locale" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="locale" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_1487DFCF2C2AC5D3" type="btree" unique="false">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_taxonomy" name="SyliusTaxonomy" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1508,7 +1508,7 @@
       <referenceMapping localAttribute="rootId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_2A9E3D279066886" type="btree" unique="false">
-      <indexPart columnName="root_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="rootId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_taxonomy_translation" name="SyliusTaxonomyTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1521,11 +1521,11 @@
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_taxonomy_translation_uniq_trans" type="btree" unique="true">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="locale" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="locale" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_9F3F90D92C2AC5D3" type="btree" unique="false">
-      <indexPart columnName="translatable_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_user" name="SyliusUser" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1551,7 +1551,7 @@
       <referenceMapping localAttribute="customerId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_569A33C09395C3F3" type="btree" unique="true">
-      <indexPart columnName="customer_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="customerId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_user_oauth" name="SyliusUserOauth" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1565,11 +1565,11 @@
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
     <index name="user_provider" type="btree" unique="true">
-      <indexPart columnName="user_id" length="" sortOrder="ASC"/>
-      <indexPart columnName="provider" length="" sortOrder="ASC"/>
+      <indexPart attributeName="userId" length="" sortOrder="ASC"/>
+      <indexPart attributeName="provider" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_C3471B78A76ED395" type="btree" unique="false">
-      <indexPart columnName="user_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="userId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_user_role" name="SyliusUserRole" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1583,10 +1583,10 @@
       <referenceMapping localAttribute="roleId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_1DA28211A76ED395" type="btree" unique="false">
-      <indexPart columnName="user_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="userId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_1DA28211D60322AC" type="btree" unique="false">
-      <indexPart columnName="role_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="roleId" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity table="sylius_zone" name="SyliusZone" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
@@ -1617,16 +1617,16 @@
       <referenceMapping localAttribute="countryId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_E8B5ABF34B0E929B" type="btree" unique="false">
-      <indexPart columnName="belongs_to" length="" sortOrder="ASC"/>
+      <indexPart attributeName="belongsTo" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_E8B5ABF3F92F3E70" type="btree" unique="false">
-      <indexPart columnName="country_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="countryId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_E8B5ABF3E946114A" type="btree" unique="false">
-      <indexPart columnName="province_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="provinceId" length="" sortOrder="ASC"/>
     </index>
     <index name="IDX_E8B5ABF39F2C3FAB" type="btree" unique="false">
-      <indexPart columnName="zone_id" length="" sortOrder="ASC"/>
+      <indexPart attributeName="zoneId" length="" sortOrder="ASC"/>
     </index>
   </entity>
 </entityList>

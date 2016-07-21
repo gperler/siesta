@@ -24,13 +24,13 @@
     <entity name="ArtistEntity2" namespace="\SiestaTest\Functional\XML\Artist\" table="ARTIST2" delimit="true">
 
         <index name="indexName" unique="true" type="btree">
-            <indexPart columnName="D_STRING" sortOrder="ASC" length="10"/>
-            <indexPart columnName="D_STRING" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="D_STRING" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="D_STRING" sortOrder="ASC" length="10"/>
         </index>
 
         <index name="indexName2" unique="true" type="btree">
-            <indexPart columnName="D_STRING" sortOrder="ASC" length="10"/>
-            <indexPart columnName="D_STRING2" sortOrder="ASC2" length="102"/>
+            <indexPart attributeName="D_STRING" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="D_STRING2" sortOrder="ASC2" length="102"/>
         </index>
 
     </entity>

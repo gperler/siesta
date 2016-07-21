@@ -18,12 +18,12 @@
         </reference>
 
         <index name="index1" unique="true" type="btree">
-            <indexPart columnName="string" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="string" sortOrder="ASC" length="10"/>
         </index>
 
         <index name="index2" unique="false" type="btree">
-            <indexPart columnName="datetime" sortOrder="ASC"/>
-            <indexPart columnName="date" sortOrder="ASC"/>
+            <indexPart attributeName="datetime" sortOrder="ASC"/>
+            <indexPart attributeName="date" sortOrder="ASC"/>
        </index>
     </entity>
 

@@ -118,7 +118,7 @@ class ModelReadTest extends \PHPUnit_Framework_TestCase
 
         $indexPart = $indexPartList[0];
 
-        $this->assertSame("D_STRING", $indexPart->getColumnName());
+        $this->assertSame("string", $indexPart->getAttributeName());
         $this->assertSame("ASC", $indexPart->getSortOrder());
         $this->assertSame(10, $indexPart->getLength());
     }

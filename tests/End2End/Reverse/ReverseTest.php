@@ -8,6 +8,7 @@ use Siesta\Main\Siesta;
 use Siesta\Migration\DatabaseMigrator;
 use Siesta\Util\File;
 use SiestaTest\End2End\Util\End2EndTest;
+use SiestaTest\TestUtil\CodeceptionLogger;
 
 /**
  * This is actually a smoke test. A real world schema form sylius is dumped into db
@@ -54,9 +55,9 @@ class ReverseTest extends End2EndTest
 
     public function testCreateModel()
     {
-        //$this->markTestSkipped();
 
         $siesta = new Siesta();
+        $siesta->setLogger(new CodeceptionLogger(true));
         $siesta->addFile(new File(__DIR__ . "/reverse/reverse.xml"));
         $siesta->migrateDirect(__DIR__);
     }

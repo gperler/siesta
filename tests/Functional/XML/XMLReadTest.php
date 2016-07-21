@@ -97,7 +97,7 @@ class XMLReadTest extends \PHPUnit_Framework_TestCase
 
         $indexPart = $indexPartList[0];
 
-        $this->assertSame("D_STRING", $indexPart->getColumnName());
+        $this->assertSame("D_STRING", $indexPart->getAttributeName());
         $this->assertSame("ASC", $indexPart->getSortOrder());
         $this->assertSame(10, $indexPart->getLength());
     }

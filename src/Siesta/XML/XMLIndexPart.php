@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Siesta\XML;
 
 use Siesta\Database\MetaData\IndexPartMetaData;
+use Siesta\NamingStrategy\NamingStrategyRegistry;
 
 /**
  * @author Gregor Müller
@@ -13,7 +14,7 @@ class XMLIndexPart
 
     const ELEMENT_INDEX_PART_NAME = "indexPart";
 
-    const COLUMN_NAME = "columnName";
+    const ATTRIBUTE_NAME = "attributeName";
 
     const SORT_ORDER = "sortOrder";
 
@@ -22,7 +23,7 @@ class XMLIndexPart
     /**
      * @var string
      */
-    protected $columnName;
+    protected $attributeName;
 
     /**
      * @var string
@@ -39,7 +40,7 @@ class XMLIndexPart
      */
     public function fromXML(XMLAccess $xmlAccess)
     {
-        $this->setColumnName($xmlAccess->getAttribute(self::COLUMN_NAME));
+        $this->setAttributeName($xmlAccess->getAttribute(self::ATTRIBUTE_NAME));
         $this->setLength($xmlAccess->getAttributeAsInt(self::LENGTH));
         $this->setSortOrder($xmlAccess->getAttribute(self::SORT_ORDER));
     }
@@ -50,7 +51,7 @@ class XMLIndexPart
     public function toXML(XMLWrite $parent)
     {
         $xmlWrite = $parent->appendChild(self::ELEMENT_INDEX_PART_NAME);
-        $xmlWrite->setAttribute(self::COLUMN_NAME, $this->getColumnName());
+        $xmlWrite->setAttribute(self::ATTRIBUTE_NAME, $this->getAttributeName());
         $xmlWrite->setIntAttribute(self::LENGTH, $this->getLength());
         $xmlWrite->setAttribute(self::SORT_ORDER, $this->getSortOrder());
 
@@ -61,7 +62,9 @@ class XMLIndexPart
      */
     public function fromIndexPartMetaData(IndexPartMetaData $indexPartMetaData)
     {
-        $this->setColumnName($indexPartMetaData->getColumnName());
+        $namingStratey = NamingStrategyRegistry::getAttributeNamingStrategy();
+        $attributeName = $namingStratey->transform($indexPartMetaData->getColumnName());
+        $this->setAttributeName($attributeName);
         $this->setLength($indexPartMetaData->getLength());
         $this->setSortOrder($indexPartMetaData->getSortOrder());
     }
@@ -69,17 +72,17 @@ class XMLIndexPart
     /**
      * @return string
      */
-    public function getColumnName()
+    public function getAttributeName()
     {
-        return $this->columnName;
+        return $this->attributeName;
     }
 
     /**
-     * @param string $columnName
+     * @param string $attributeName
      */
-    public function setColumnName($columnName)
+    public function setAttributeName($attributeName)
     {
-        $this->columnName = $columnName;
+        $this->attributeName = $attributeName;
     }
 
     /**

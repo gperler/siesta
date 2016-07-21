@@ -13,8 +13,8 @@
         <attribute name="fk_name" type="string" dbType="VARCHAR(100)"/>
 
         <index name="index" unique="false" type="btree">
-            <indexPart columnName="datetime" sortOrder="ASC"/>
-            <indexPart columnName="date" sortOrder="ASC"/>
+            <indexPart attributeName="datetime" sortOrder="ASC"/>
+            <indexPart attributeName="date" sortOrder="ASC"/>
        </index>
     </entity>
 

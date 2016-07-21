@@ -9,27 +9,27 @@
         <attribute name="changeRequired" type="int" dbType="VARCHAR(100)" required="true"/>
 
         <index name="newIndex" unique="true" type="btree">
-            <indexPart columnName="changeType" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="changeType" sortOrder="ASC" length="10"/>
         </index>
 
         <index name="notModified" unique="true" type="btree">
-            <indexPart columnName="changeType" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="changeType" sortOrder="ASC" length="10"/>
         </index>
 
         <index name="uniqueChanged" unique="true" type="btree">
-            <indexPart columnName="changeType" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="changeType" sortOrder="ASC" length="10"/>
         </index>
 
         <index name="typeChanged" unique="true" type="hash">
-            <indexPart columnName="changeType" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="changeType" sortOrder="ASC" length="10"/>
         </index>
 
         <index name="columnChanged" unique="true" type="btree">
-            <indexPart columnName="changeType" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="changeType" sortOrder="ASC" length="10"/>
         </index>
 
         <index name="partChanged" unique="true" type="btree">
-            <indexPart columnName="toDelete" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="toDelete" sortOrder="ASC" length="10"/>
         </index>
 
     </entity>

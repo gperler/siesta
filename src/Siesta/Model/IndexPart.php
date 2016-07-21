@@ -35,6 +35,11 @@ class IndexPart
     protected $attribute;
 
     /**
+     * @var string
+     */
+    protected $attributeName;
+
+    /**
      * IndexPart constructor.
      *
      * @param Entity $entity
@@ -46,7 +51,7 @@ class IndexPart
 
     public function update()
     {
-        $this->attribute = $this->entity->getAttributeByDbName($this->getColumnName());
+        $this->attribute = $this->entity->getAttributeByName($this->getAttributeName());
     }
 
     public function validate()
@@ -65,9 +70,26 @@ class IndexPart
     /**
      * @return string
      */
+    public function getAttributeName(): string
+    {
+        return $this->attributeName;
+    }
+
+    /**
+     * @param string $attributeName
+     */
+    public function setAttributeName(string $attributeName)
+    {
+        $this->attributeName = $attributeName;
+    }
+
+
+    /**
+     * @return string
+     */
     public function getColumnName()
     {
-        return $this->columnName;
+        return $this->attribute->getDBName();
     }
 
     /**

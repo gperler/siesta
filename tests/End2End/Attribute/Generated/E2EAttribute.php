@@ -435,7 +435,7 @@ class E2EAttribute implements ArraySerializable
      * 
      * @return void
      */
-    public function addToArray(string $key,  $value)
+    public function addToArray(string $key,  $value = null)
     {
         if ($this->array === null) {
             $this->array = [];

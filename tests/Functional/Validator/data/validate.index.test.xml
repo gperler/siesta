@@ -10,7 +10,7 @@
         </index>
 
         <index name="indexName" unique="true" type="btree">
-            <indexPart columnName="reference" sortOrder="ASC" length="10"/>
+            <indexPart attributeName="reference" sortOrder="ASC" length="10"/>
         </index>
     </entity>
 

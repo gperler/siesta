@@ -19,9 +19,9 @@ class DefaultIndexValidator implements IndexValidator
 
     const ERROR_INVALID_INDEX_NAME_CODE = 1400;
 
-    const ERROR_INVALID_COLUMN = "Entity '%s' Index '%s' refers to non existing column '%s'";
+    const ERROR_INVALID_ATTRIBUTE = "Entity '%s' Index '%s' refers to non existing attribute '%s'";
 
-    const ERROR_INVALID_COLUMN_CODE = 1401;
+    const ERROR_INVALID_ATTRIBUTE_CODE = 1401;
 
     const ERROR_NO_INDEX_PART = "Entity '%s' Index '%s' has no indexPart.";
 
@@ -125,8 +125,8 @@ class DefaultIndexValidator implements IndexValidator
             return;
         }
 
-        $error = sprintf(self::ERROR_INVALID_COLUMN, $this->getEntityName(), $this->getIndexName(), $indexPart->getColumnName());
-        $this->error($error, self::ERROR_INVALID_COLUMN_CODE);
+        $error = sprintf(self::ERROR_INVALID_ATTRIBUTE, $this->getEntityName(), $this->getIndexName(), $indexPart->getAttributeName());
+        $this->error($error, self::ERROR_INVALID_ATTRIBUTE_CODE);
 
     }
 

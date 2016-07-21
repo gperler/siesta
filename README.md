@@ -35,7 +35,7 @@ vendor/bin/siesta init
 generate entities
 
 ```
-vendor/bin/siesta generate
+vendor/bin/siesta gen
 ```
 
 reverse engineer
@@ -47,7 +47,7 @@ vendor/bin/siesta reverse
 
 # Testing
 
-configure your database settings in tests/siesta.test.config.json
+configure your database settings in tests/siesta.test.mysql.config.json
 
 ```
 vendor/bin/codecept run

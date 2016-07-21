@@ -160,7 +160,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $errorCodeList = $validationLogger->getErrorCodeList();
 
         $this->assertSame(3, sizeof($errorCodeList));
-        $this->assertTrue(in_array(DefaultIndexValidator::ERROR_INVALID_COLUMN_CODE, $errorCodeList));
+        $this->assertTrue(in_array(DefaultIndexValidator::ERROR_INVALID_ATTRIBUTE_CODE, $errorCodeList));
         $this->assertTrue(in_array(DefaultIndexValidator::ERROR_NO_INDEX_PART_CODE, $errorCodeList));
         $this->assertTrue(in_array(DefaultIndexValidator::ERROR_INVALID_INDEX_NAME_CODE, $errorCodeList));
 

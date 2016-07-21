@@ -182,7 +182,7 @@ class XMLEntityReader
      */
     protected function readIndexPartFromXML(IndexPart $indexPart, XMLIndexPart $xmlIndexPart)
     {
-        $indexPart->setColumnName($xmlIndexPart->getColumnName());
+        $indexPart->setAttributeName($xmlIndexPart->getAttributeName());
         $indexPart->setLength($xmlIndexPart->getLength());
         $indexPart->setSortOrder($xmlIndexPart->getSortOrder());
     }

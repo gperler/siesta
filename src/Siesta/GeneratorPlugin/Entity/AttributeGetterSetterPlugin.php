@@ -139,7 +139,7 @@ class AttributeGetterSetterPlugin extends BasePlugin
         $methodName = "addTo" . $attribute->getMethodName();
         $method = $this->codeGenerator->newPublicMethod($methodName);
         $method->addParameter(PHPType::STRING, "key");
-        $method->addParameter("", "value");
+        $method->addParameter("", "value", 'null');
 
         $memberName = '$this->' . $attribute->getPhpName();
 

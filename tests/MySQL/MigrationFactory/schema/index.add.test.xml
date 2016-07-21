@@ -13,8 +13,8 @@
         <attribute name="fk_name" type="string" dbType="VARCHAR(100)"/>
 
         <index name="indexNew" unique="true" type="btree">
-            <indexPart columnName="string" sortOrder="ASC" length="20"/>
-            <indexPart columnName="int" sortOrder="ASC"/>
+            <indexPart attributeName="string" sortOrder="ASC" length="20"/>
+            <indexPart attributeName="int" sortOrder="ASC"/>
        </index>
     </entity>
 
