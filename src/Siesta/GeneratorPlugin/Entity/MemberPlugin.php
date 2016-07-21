@@ -53,32 +53,70 @@ class MemberPlugin extends BasePlugin
      */
     public function generate(Entity $entity, CodeGenerator $codeGenerator)
     {
-        $codeGenerator->addProtectedMember("_existing", "bool");
-        $codeGenerator->addProtectedMember("_rawJSON", "array");
-        $codeGenerator->addProtectedMember("_rawSQLResult", "array");
+        $this->setup($entity, $codeGenerator);
+        $this->generateStandardMember();
+        $this->generateAttributeMember();
+        $this->generateReferenceMember();
+        $this->generateCollectionMember();
+        $this->generateCollectionManyMember();
+    }
 
-        foreach ($entity->getAttributeList() as $attribute) {
-            $codeGenerator->addProtectedMember($attribute->getPhpName(), $attribute->getPhpType());
-        }
+    /**
+     *
+     */
+    protected function generateStandardMember()
+    {
 
-        foreach ($entity->getReferenceList() as $reference) {
-            $foreignEntity = $reference->getForeignEntity();
-            $codeGenerator->addProtectedMember($reference->getName(), $foreignEntity->getClassShortName());
-        }
+        $this->codeGenerator->addProtectedMember("_existing", "bool");
+        $this->codeGenerator->addProtectedMember("_rawJSON", "array");
+        $this->codeGenerator->addProtectedMember("_rawSQLResult", "array");
 
-        foreach ($entity->getCollectionList() as $collection) {
-            $foreignEntity = $collection->getForeignEntity();
-            $codeGenerator->addProtectedMember($collection->getName(), $foreignEntity->getInstantiationClassShortName() . '[]');
-        }
+    }
 
-        foreach ($entity->getCollectionManyList() as $collectionMany) {
-            $foreignEntity = $collectionMany->getForeignEntity();
-
-            $codeGenerator->addProtectedMember($collectionMany->getName(), $foreignEntity->getInstantiationClassShortName() . '[]');
-
-            $mappingEntity = $collectionMany->getMappingEntity();
-            $codeGenerator->addProtectedMember($collectionMany->getName() . 'Mapping', $mappingEntity->getInstantiationClassShortName() . '[]');
+    /**
+     *
+     */
+    protected function generateAttributeMember()
+    {
+        foreach ($this->entity->getAttributeList() as $attribute) {
+            $this->codeGenerator->addProtectedMember($attribute->getPhpName(), $attribute->getPhpType());
         }
     }
 
+    /**
+     *
+     */
+    protected function generateReferenceMember()
+    {
+        foreach ($this->entity->getReferenceList() as $reference) {
+            $foreignEntity = $reference->getForeignEntity();
+            $this->codeGenerator->addProtectedMember($reference->getName(), $foreignEntity->getClassShortName());
+        }
+    }
+
+    /**
+     *
+     */
+    protected function generateCollectionMember()
+    {
+        foreach ($this->entity->getCollectionList() as $collection) {
+            $foreignEntity = $collection->getForeignEntity();
+            $this->codeGenerator->addProtectedMember($collection->getName(), $foreignEntity->getInstantiationClassShortName() . '[]');
+        }
+    }
+
+    /**
+     *
+     */
+    protected function generateCollectionManyMember()
+    {
+        foreach ($this->entity->getCollectionManyList() as $collectionMany) {
+            $foreignEntity = $collectionMany->getForeignEntity();
+
+            $this->codeGenerator->addProtectedMember($collectionMany->getName(), $foreignEntity->getInstantiationClassShortName() . '[]');
+
+            $mappingEntity = $collectionMany->getMappingEntity();
+            $this->codeGenerator->addProtectedMember($collectionMany->getName() . 'Mapping', $mappingEntity->getInstantiationClassShortName() . '[]');
+        }
+    }
 }
