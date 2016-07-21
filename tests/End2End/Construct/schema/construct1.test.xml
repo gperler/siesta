@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="ConstructEntity" namespace="SiestaTest\End2End\Construct\Generated" table="ConstructEntity" targetPath="Generated" delimit="true">
+        <constructor className="SiestaTest\End2End\Construct\Entity\Construct"/>
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="bool" type="bool" dbType="SMALLINT"/>
+        <attribute name="int" type="int" dbType="INT"/>
+        <attribute name="float" type="float" dbType="FLOAT"/>
+        <attribute name="string" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="dateTime" type="SiestaDateTime" dbType="DATETIME"/>
+        <attribute name="date" type="SiestaDateTime" dbType="DATE"/>
+        <attribute name="time" type="SiestaDateTime" dbType="TIME"/>
+        <attribute name="object" type="SiestaTest\End2End\Util\AttributeSerialize" dbType="VARCHAR(500)" defaultValue="new AttributeSerialize()"/>
+    </entity>
+
+
+
+    <entity name="FactoryEntity" namespace="SiestaTest\End2End\Construct\Generated" table="FactoryEntity" targetPath="Generated" delimit="true">
+        <constructor className="SiestaTest\End2End\Construct\Entity\Factory" constructCall="EntityFactory::newFactoryEntity()" constructFactoryClassName="SiestaTest\End2End\Construct\Entity\EntityFactory"/>
+        <attribute name="id1" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="bool1" type="bool" dbType="SMALLINT"/>
+        <attribute name="int1" type="int" dbType="INT"/>
+        <attribute name="float1" type="float" dbType="FLOAT"/>
+        <attribute name="string1" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="dateTime1" type="SiestaDateTime" dbType="DATETIME"/>
+        <attribute name="date1" type="SiestaDateTime" dbType="DATE"/>
+        <attribute name="time1" type="SiestaDateTime" dbType="TIME"/>
+        <attribute name="object1" type="SiestaTest\End2End\Util\AttributeSerialize" dbType="VARCHAR(500)" defaultValue="new AttributeSerialize()"/>
+    </entity>
+</entityList>
+

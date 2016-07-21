@@ -1,0 +1,45 @@
+{
+  "tableList": [
+    {
+      "name": "TestTable",
+      "columnList": [
+        {
+          "dbType": "dbType",
+          "dbName": "dbName",
+          "phpType": "phpType",
+          "isRequired": true,
+          "isPrimaryKey": true
+        }
+      ],
+      "indexList": [
+        {
+          "name": "name",
+          "type": "type",
+          "isUnique": true,
+          "indexPartList": [
+            {
+              "columnName": "columnName",
+              "sortOrder": "sortOrder",
+              "length": 42
+            }
+          ]
+        }
+      ],
+      "constraintList": [
+        {
+          "name": "name",
+          "constraintName": "constraintName",
+          "foreignTable": "foreignTable",
+          "onUpdate": "onUpdate",
+          "onDelete": "onDelete",
+          "constraintMappingList": [
+            {
+              "foreignColumn": "foreignColumn",
+              "localColumn": "localColumn"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

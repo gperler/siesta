@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="IndexTest" namespace="IndexTest" table="IndexTest" delimit="">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="smallint" type="bool" dbType="SMALLINT"/>
+        <attribute name="int" type="int" dbType="INT" required="true"/>
+        <attribute name="string" type="string" dbType="VARCHAR(100)" primaryKey="true"/>
+        <attribute name="datetime" type="SiestaDateTime" dbType="DATETIME"/>
+        <attribute name="date" type="SiestaDateTime" dbType="DATE"/>
+        <attribute name="time" type="SiestaDateTime" dbType="TIME"/>
+        <attribute name="fk_artist" type="int" dbType="INT"/>
+        <attribute name="fk_name" type="string" dbType="VARCHAR(100)"/>
+
+        <reference name="person" foreignTable="Person" onDelete="set null" onUpdate="cascade">
+            <referenceMapping localAttribute="fk_artist" foreignAttribute="id"/>
+            <referenceMapping localAttribute="fk_name" foreignAttribute="name"/>
+        </reference>
+
+        <index name="index1" unique="true" type="btree">
+            <indexPart columnName="string" sortOrder="ASC" length="10"/>
+        </index>
+
+        <index name="index2" unique="false" type="btree">
+            <indexPart columnName="datetime" sortOrder="ASC"/>
+            <indexPart columnName="date" sortOrder="ASC"/>
+       </index>
+    </entity>
+
+    <entity name="Person" namespace="Person" table="Person">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)" primaryKey="true" autoValue="uuid"/>
+        <attribute name="city" type="string" dbType="VARCHAR(100)"/>
+    </entity>
+
+</entityList>

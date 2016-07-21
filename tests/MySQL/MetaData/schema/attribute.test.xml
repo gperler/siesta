@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<entity name="Attribute" namespace="Attribute"  table="Attribute">
+
+    <attribute name="id" type="int" dbName="id" dbType="INT" defaultValue="" autoValue="autoincrement" primaryKey="true"
+               required="true" transient="false"/>
+    <attribute name="bit" type="bool" dbName="bit" dbType="BIT" defaultValue="" autoValue="" primaryKey="false"
+               required="false" transient="false"/>
+    <attribute name="smallInt" type="int" dbName="smallInt" dbType="SMALLINT" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="mediumInt" type="int" dbName="mediumInt" dbType="MEDIUMINT" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="int1" type="int" dbName="int1" dbType="INT" defaultValue="" autoValue="" primaryKey="false"
+               required="true" transient="false"/>
+    <attribute name="int2" type="int" dbName="int2" dbType="INT(5)" defaultValue="" autoValue="" primaryKey="false"
+               required="false" transient="false"/>
+    <attribute name="bigInt" type="int" dbName="bigInt" dbType="BIGINT" defaultValue="" autoValue="" primaryKey="false"
+               required="false" transient="false"/>
+    <attribute name="real" type="float" dbName="real" dbType="DOUBLE" defaultValue="" autoValue="" primaryKey="false"
+               required="false" transient="false"/>
+    <attribute name="double" type="float" dbName="double" dbType="DOUBLE" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="float" type="float" dbName="float" dbType="FLOAT" defaultValue="" autoValue="" primaryKey="false"
+               required="false" transient="false"/>
+    <attribute name="decimal" type="float" dbName="decimal" dbType="DECIMAL" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="numeric" type="float" dbName="numeric" dbType="DECIMAL" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="date" type="DateTime" dbName="date" dbType="DATE" defaultValue="" autoValue="" primaryKey="false"
+               required="false" transient="false"/>
+    <attribute name="time" type="DateTime" dbName="time" dbType="TIME" defaultValue="" autoValue="" primaryKey="false"
+               required="false" transient="false"/>
+    <attribute name="timestamp" type="string" dbName="timestamp" dbType="TIMESTAMP" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="datetime" type="DateTime" dbName="datetime" dbType="DATETIME" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="year" type="string" dbName="year" dbType="YEAR" defaultValue="" autoValue="" primaryKey="false"
+               required="false" transient="false"/>
+    <attribute name="char" type="string" dbName="char" dbType="CHAR(100)" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="varchar" type="string" dbName="varchar" dbType="VARCHAR(100)" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="binary" type="string" dbName="binary" dbType="BINARY(100)" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="tinyblob" type="string" dbName="tinyblob" dbType="TINYBLOB" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="blob" type="string" dbName="blob" dbType="BLOB" defaultValue="" autoValue="" primaryKey="false"
+               required="false" transient="false"/>
+    <attribute name="mediumblob" type="string" dbName="mediumblob" dbType="MEDIUMBLOB" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="longblob" type="string" dbName="longblob" dbType="LONGBLOB" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="tinytext" type="string" dbName="tinytext" dbType="TINYTEXT" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="text" type="string" dbName="text" dbType="TEXT" defaultValue="" autoValue="" primaryKey="false"
+               required="false" transient="false"/>
+    <attribute name="mediumtext" type="string" dbName="mediumtext" dbType="MEDIUMTEXT" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="longtext" type="string" dbName="longtext" dbType="LONGTEXT" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="enum" type="string" dbName="enum" dbType="ENUM('A','B')" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+    <attribute name="set" type="string" dbName="set" dbType="SET('X','Y')" defaultValue="" autoValue=""
+               primaryKey="false" required="false" transient="false"/>
+</entity>

@@ -1,0 +1,63 @@
+{
+  "tableList": [
+    {
+      "name": "migrateEntity1",
+      "columnList": [
+        {
+          "dbType": "INT",
+          "dbName": "1-primary1",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        },
+        {
+          "dbType": "INT",
+          "dbName": "1-primary2",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        },
+        {
+          "dbType": "INT",
+          "dbName": "1-foreign",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        }
+      ],
+      "indexList": [
+      ],
+      "constraintList": [
+        {
+          "name": "dropConstraint",
+          "constraintName": "migrateEntity1_dropConstraint",
+          "foreignTable": "migrateEntity2",
+          "onUpdate": "cascade",
+          "onDelete": "set null",
+          "constraintMappingList": [
+            {
+              "foreignColumn": "first_id",
+              "localColumn": "1-foreign"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "migrateEntity2",
+      "columnList": [
+        {
+          "dbType": "INT",
+          "dbName": "2-primary1",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        }
+      ],
+      "indexList": [
+      ],
+      "constraintList": [
+      ]
+    }
+  ]
+}

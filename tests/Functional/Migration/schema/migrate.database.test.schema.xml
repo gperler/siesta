@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<entityList>
+
+    <entity name="NoAction" namespace="NoAction" table="NoAction">
+        <attribute name="int" type="int" dbName="int" dbType="INT" primaryKey="true" required="true"/>
+    </entity>
+
+    <entity name="AddTable" namespace="AddTable" table="AddTable">
+        <attribute name="int" type="int" dbName="int" dbType="INT" primaryKey="true" required="true"/>
+    </entity>
+
+</entityList>
+

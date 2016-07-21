@@ -1,0 +1,185 @@
+{
+  "id": {
+    "dbType": "INT",
+    "required": true,
+    "phpType": "int",
+    "primaryKey": true
+  },
+  "bit": {
+    "dbType": "BIT",
+    "required": false,
+    "phpType": "bool",
+    "primaryKey": false
+  },
+  "smallInt": {
+    "dbType": "SMALLINT",
+    "required": false,
+    "phpType": "int",
+    "primaryKey": false
+  },
+  "mediumInt": {
+    "dbType": "MEDIUMINT",
+    "required": false,
+    "phpType": "int",
+    "primaryKey": false
+  },
+  "int1": {
+    "dbType": "INT",
+    "required": true,
+    "phpType": "int",
+    "primaryKey": false
+  },
+  "int2": {
+    "dbType": "INT(5)",
+    "required": false,
+    "phpType": "int",
+    "primaryKey": false
+  },
+  "bigInt": {
+    "dbType": "BIGINT",
+    "required": false,
+    "phpType": "int",
+    "primaryKey": false
+  },
+  "real": {
+    "dbType": "DOUBLE",
+    "required": false,
+    "phpType": "float",
+    "primaryKey": false
+  },
+  "double": {
+    "dbType": "DOUBLE",
+    "required": false,
+    "phpType": "float",
+    "primaryKey": false
+  },
+  "float": {
+    "dbType": "FLOAT",
+    "required": false,
+    "phpType": "float",
+    "primaryKey": false
+  },
+  "decimal": {
+    "dbType": "DECIMAL",
+    "required": false,
+    "phpType": "float",
+    "primaryKey": false
+  },
+  "numeric": {
+    "dbType": "DECIMAL",
+    "required": false,
+    "phpType": "float",
+    "primaryKey": false
+  },
+  "date": {
+    "dbType": "DATE",
+    "required": false,
+    "phpType": "SiestaDateTime",
+    "primaryKey": false
+  },
+  "time": {
+    "dbType": "TIME",
+    "required": false,
+    "phpType": "SiestaDateTime",
+    "primaryKey": false
+  },
+  "timestamp": {
+    "dbType": "TIMESTAMP",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "datetime": {
+    "dbType": "DATETIME",
+    "required": false,
+    "phpType": "SiestaDateTime",
+    "primaryKey": false
+  },
+  "year": {
+    "dbType": "YEAR",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "char": {
+    "dbType": "CHAR(100)",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "varchar": {
+    "dbType": "VARCHAR(100)",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "binary": {
+    "dbType": "BINARY(100)",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "tinyblob": {
+    "dbType": "TINYBLOB",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "blob": {
+    "dbType": "BLOB",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "mediumblob": {
+    "dbType": "MEDIUMBLOB",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "longblob": {
+    "dbType": "LONGBLOB",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "tinytext": {
+    "dbType": "TINYTEXT",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "text": {
+    "dbType": "TEXT",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "mediumtext": {
+    "dbType": "MEDIUMTEXT",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "longtext": {
+    "dbType": "LONGTEXT",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "enum": {
+    "dbType": "ENUM('A','B')",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  },
+  "set": {
+    "dbType": "SET('X','Y')",
+    "required": false,
+    "phpType": "string",
+    "primaryKey": false
+  }
+}
+
+
+

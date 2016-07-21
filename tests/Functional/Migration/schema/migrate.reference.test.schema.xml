@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<entityList>
+
+    <entity name="Reference" namespace="Reference" table="Reference">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true"/>
+        <attribute name="fk_noChange_id" type="int" dbType="INT"/>
+        <attribute name="fk_a_first_id" type="int" dbType="INT"/>
+        <attribute name="fk_a_second_id" type="int" dbType="INT"/>
+
+        <reference name="noChange" foreignTable="ForeignB" onDelete="set null" onUpdate="cascade">
+            <referenceMapping localAttribute="fk_noChange_id" foreignAttribute="id"/>
+        </reference>
+
+        <reference name="addReference" foreignTable="ForeignB" onDelete="set null" onUpdate="cascade">
+            <referenceMapping localAttribute="fk_noChange_id" foreignAttribute="id"/>
+        </reference>
+
+        <reference name="differentForeignTable" foreignTable="ForeignA" onDelete="set null" onUpdate="cascade">
+            <referenceMapping localAttribute="fk_a_first_id" foreignAttribute="first_id"/>
+            <referenceMapping localAttribute="fk_a_second_id" foreignAttribute="second_id"/>
+        </reference>
+
+        <reference name="differentMappingCount" foreignTable="ForeignA" onDelete="set null" onUpdate="cascade">
+            <referenceMapping localAttribute="fk_a_first_id" foreignAttribute="first_id"/>
+            <referenceMapping localAttribute="fk_a_second_id" foreignAttribute="second_id"/>
+        </reference>
+
+        <reference name="differentMapping" foreignTable="ForeignA" onDelete="set null" onUpdate="cascade">
+            <referenceMapping localAttribute="fk_a_first_id" foreignAttribute="first_id"/>
+            <referenceMapping localAttribute="fk_a_second_id" foreignAttribute="second_id"/>
+        </reference>
+
+        <reference name="changeUpdate" foreignTable="ForeignB" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="fk_noChange_id" foreignAttribute="id"/>
+        </reference>
+
+    </entity>
+
+
+    <entity name="ForeignA" namespace="ForeignA" table="ForeignA">
+        <attribute name="first_id" type="int" dbType="INT" primaryKey="true" required="true"/>
+        <attribute name="second_id" type="int" dbType="INT" primaryKey="true" required="true"/>
+    </entity>
+
+    <entity name="ForeignB" namespace="ForeignB" table="ForeignB">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true"/>
+    </entity>
+
+
+</entityList>
+

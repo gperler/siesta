@@ -1,0 +1,156 @@
+{
+  "tableList": [
+    {
+      "name": "Reference",
+      "columnList": [
+        {
+          "dbType": "INT",
+          "dbName": "id",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        },
+        {
+          "dbType": "INT",
+          "dbName": "fk_noChange_id",
+          "phpType": "int"
+        },
+        {
+          "dbType": "INT",
+          "dbName": "fk_a_first_id",
+          "phpType": "int"
+        },
+        {
+          "dbType": "INT",
+          "dbName": "fk_a_second_id",
+          "phpType": "string"
+        }
+      ],
+      "indexList": [
+      ],
+      "constraintList": [
+        {
+          "name": "noChange",
+          "constraintName": "Reference_noChange",
+          "foreignTable": "ForeignB",
+          "onUpdate": "cascade",
+          "onDelete": "set null",
+          "constraintMappingList": [
+            {
+              "foreignColumn": "id",
+              "localColumn": "fk_noChange_id"
+            }
+          ]
+        },
+        {
+          "name": "deleteReference",
+          "constraintName": "Reference_deleteReference",
+          "foreignTable": "ForeignB",
+          "onUpdate": "cascade",
+          "onDelete": "set null",
+          "constraintMappingList": [
+            {
+              "foreignColumn": "id",
+              "localColumn": "fk_noChange_id"
+            }
+          ]
+        },
+        {
+          "name": "differentForeignTable",
+          "constraintName": "Reference_differentForeignTable",
+          "foreignTable": "ForeignB",
+          "onUpdate": "cascade",
+          "onDelete": "set null",
+          "constraintMappingList": [
+            {
+              "foreignColumn": "id",
+              "localColumn": "fk_noChange_id"
+            }
+          ]
+        },
+        {
+          "name": "differentMappingCount",
+          "constraintName": "Reference_differentMappingCount",
+          "foreignTable": "ForeignA",
+          "onUpdate": "cascade",
+          "onDelete": "set null",
+          "constraintMappingList": [
+            {
+              "foreignColumn": "id",
+              "localColumn": "fk_noChange_id"
+            }
+          ]
+        },
+        {
+          "name": "differentMapping",
+          "constraintName": "Reference_differentMapping",
+          "foreignTable": "ForeignA",
+          "onUpdate": "cascade",
+          "onDelete": "set null",
+          "constraintMappingList": [
+            {
+              "foreignColumn": "first_id",
+              "localColumn": "fk_a_first_id"
+            },
+            {
+              "foreignColumn": "first_id",
+              "localColumn": "fk_a_second_id"
+            }
+          ]
+        },
+        {
+          "name": "changeUpdate",
+          "constraintName": "Reference_changeUpdate",
+          "foreignTable": "ForeignB",
+          "onUpdate": "cascade",
+          "onDelete": "set null",
+          "constraintMappingList": [
+            {
+              "foreignColumn": "id",
+              "localColumn": "fk_noChange_id"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ForeignA",
+      "columnList": [
+        {
+          "dbType": "INT",
+          "dbName": "first_id",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        },
+        {
+          "dbType": "INT",
+          "dbName": "second_id",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        }
+      ],
+      "indexList": [
+      ],
+      "constraintList": [
+      ]
+    },
+    {
+      "name": "ForeignB",
+      "columnList": [
+        {
+          "dbType": "INT",
+          "dbName": "id",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        }
+      ],
+      "indexList": [
+      ],
+      "constraintList": [
+      ]
+    }
+  ]
+}

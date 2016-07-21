@@ -1,0 +1,27 @@
+{
+  "tableList": [
+    {
+      "name": "namingStrategy",
+      "columnList": [
+        {
+          "dbType": "INT",
+          "dbName": "test_naming",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        },
+        {
+          "dbType": "INT",
+          "dbName": "test_naming_more",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": false
+        }
+      ],
+      "indexList": [
+      ],
+      "constraintList": [
+      ]
+    }
+  ]
+}

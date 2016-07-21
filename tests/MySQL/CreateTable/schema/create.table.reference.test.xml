@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="Artist" namespace="Artist" table="Artist">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true"/>
+        <attribute name="name" type="string" dbType="VARCHAR(36)" required="true"/>
+    </entity>
+
+
+    <entity name="CD" namespace="CD" table="CD">
+        <attribute name="id" type="string" dbType="VARCHAR(36)" primaryKey="true"/>
+        <attribute name="name" type="string" dbType="VARCHAR(36)" required="true"/>
+        <attribute name="fk_artist" type="int" dbType="INT"/>
+
+        <reference name="artist" foreignTable="Artist" onDelete="set null" onUpdate="cascade">
+            <referenceMapping localAttribute="fk_artist" foreignAttribute="id"/>
+        </reference>
+    </entity>
+
+
+    <entity name="Label" namespace="Label" table="Label">
+        <attribute name="id" type="string" dbType="VARCHAR(36)" primaryKey="true"/>
+        <attribute name="fk_a" type="string" dbType="VARCHAR(36)"/>
+        <attribute name="fk_b" type="string" dbType="VARCHAR(36)"/>
+
+        <reference name="owner" foreignTable="Owner" onDelete="cascade" onUpdate="no action">
+            <referenceMapping localAttribute="fk_a" foreignAttribute="a"/>
+            <referenceMapping localAttribute="fk_b" foreignAttribute="b"/>
+        </reference>
+    </entity>
+
+
+    <entity name="Owner" namespace="Owner" table="Owner">
+        <attribute name="a" type="string" dbType="VARCHAR(36)" primaryKey="true"/>
+        <attribute name="b" type="string" dbType="VARCHAR(36)" primaryKey="true"/>
+    </entity>
+
+
+</entityList>

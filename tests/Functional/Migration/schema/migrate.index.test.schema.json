@@ -1,0 +1,116 @@
+{
+  "tableList": [
+    {
+      "name": "migrateIndex",
+      "columnList": [
+        {
+          "dbType": "INT",
+          "dbName": "id",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        },
+        {
+          "dbType": "TEXT",
+          "dbName": "toDelete",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": false
+        },
+        {
+          "dbType": "VARCHAR(100)",
+          "dbName": "changeType",
+          "phpType": "int",
+          "isRequired": false,
+          "isPrimaryKey": false
+        },
+        {
+          "dbType": "VARCHAR(100)",
+          "dbName": "changeRequired",
+          "phpType": "string",
+          "isRequired": true,
+          "isPrimaryKey": false
+        }
+      ],
+      "indexList": [
+        {
+          "name": "notModified",
+          "type": "btree",
+          "isUnique": true,
+          "indexPartList": [
+            {
+              "columnName": "changeType",
+              "sortOrder": "ASC",
+              "length": 10
+            }
+          ]
+        },
+        {
+          "name": "uniqueChanged",
+          "type": "btree",
+          "isUnique": false,
+          "indexPartList": [
+            {
+              "columnName": "changeType",
+              "sortOrder": "ASC",
+              "length": 10
+            }
+          ]
+        },
+        {
+          "name": "typeChanged",
+          "type": "btree",
+          "isUnique": true,
+          "indexPartList": [
+            {
+              "columnName": "changeType",
+              "sortOrder": "ASC",
+              "length": 10
+            }
+          ]
+        },
+        {
+          "name": "dropIndex",
+          "type": "btree",
+          "isUnique": true,
+          "indexPartList": [
+            {
+              "columnName": "changeType",
+              "sortOrder": "ASC",
+              "length": 10
+            }
+          ]
+        },
+        {
+          "name": "columnChanged",
+          "type": "btree",
+          "isUnique": true,
+          "indexPartList": [
+            {
+              "columnName": "changeType",
+              "sortOrder": "ASC",
+              "length": 11
+            }
+          ]
+        },
+        {
+          "name": "partChanged",
+          "type": "btree",
+          "isUnique": true,
+          "indexPartList": [
+            {
+              "columnName": "changeType",
+              "sortOrder": "ASC",
+              "length": 10
+            }
+          ]
+        }
+      ],
+      "constraintList": [
+      ]
+    }
+  ]
+}
+
+
+

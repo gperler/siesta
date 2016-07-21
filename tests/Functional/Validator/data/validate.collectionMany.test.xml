@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+    <entity name="Student" namespace="Student" table="Student" delimit="true">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <collectionMany2Many name="" foreignTable="Exam1" foreignReferenceName="ExamReference" mappingTable="StudentExam"/>
+    </entity>
+
+    <entity name="Exam" namespace="Exam" table="Exam" delimit="true">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <collectionMany2Many name="StudentList" foreignTable="Student" foreignReferenceName="StudentReference1" mappingTable="StudentExam1"/>
+    </entity>
+
+
+    <entity name="StudentExam" namespace="StudentExam" table="StudentExam" delimit="true">
+        <attribute name="FK_Student" type="int" dbType="INT"/>
+        <attribute name="FK_Exam" type="int" dbType="INT"/>
+
+        <reference name="StudentReference" foreignTable="Student">
+            <referenceMapping localAttribute="FK_Student" foreignAttribute="id"/>
+        </reference>
+
+        <reference name="ExamReference" foreignTable="Exam">
+            <referenceMapping localAttribute="FK_Exam" foreignAttribute="id"/>
+        </reference>
+    </entity>
+
+
+</entityList>

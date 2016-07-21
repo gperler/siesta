@@ -1,0 +1,29 @@
+{
+  "tableList": [
+    {
+      "name": "ToDelete",
+      "columnList": [
+      ],
+      "indexList": [
+      ],
+      "constraintList": [
+      ]
+    },
+    {
+      "name": "NoAction",
+      "columnList": [
+        {
+          "dbType": "INT",
+          "dbName": "int",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        }
+      ],
+      "indexList": [
+      ],
+      "constraintList": [
+      ]
+    }
+  ]
+}

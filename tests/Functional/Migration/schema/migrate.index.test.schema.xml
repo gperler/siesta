@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<entityList>
+
+
+    <entity name="migrateIndex" namespace="migrateIndex" table="migrateIndex">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true"/>
+        <attribute name="toDelete" type="int" dbType="TEXT" required="true"/>
+        <attribute name="changeType" type="int" dbType="VARCHAR(100)"/>
+        <attribute name="changeRequired" type="int" dbType="VARCHAR(100)" required="true"/>
+
+        <index name="newIndex" unique="true" type="btree">
+            <indexPart columnName="changeType" sortOrder="ASC" length="10"/>
+        </index>
+
+        <index name="notModified" unique="true" type="btree">
+            <indexPart columnName="changeType" sortOrder="ASC" length="10"/>
+        </index>
+
+        <index name="uniqueChanged" unique="true" type="btree">
+            <indexPart columnName="changeType" sortOrder="ASC" length="10"/>
+        </index>
+
+        <index name="typeChanged" unique="true" type="hash">
+            <indexPart columnName="changeType" sortOrder="ASC" length="10"/>
+        </index>
+
+        <index name="columnChanged" unique="true" type="btree">
+            <indexPart columnName="changeType" sortOrder="ASC" length="10"/>
+        </index>
+
+        <index name="partChanged" unique="true" type="btree">
+            <indexPart columnName="toDelete" sortOrder="ASC" length="10"/>
+        </index>
+
+    </entity>
+
+
+</entityList>
+

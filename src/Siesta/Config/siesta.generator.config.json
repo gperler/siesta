@@ -1,0 +1,53 @@
+{
+  "generatorList": [
+    {
+      "name": "Entity Generator",
+      "className": "Siesta\\Generator\\EntityGenerator",
+      "pluginList": [
+        "Siesta\\GeneratorPlugin\\Entity\\ConstantPlugin",
+        "Siesta\\GeneratorPlugin\\Entity\\MemberPlugin",
+        "Siesta\\GeneratorPlugin\\Entity\\ConstructorPlugin",
+        "Siesta\\GeneratorPlugin\\Entity\\SavePlugin",
+        "Siesta\\GeneratorPlugin\\Entity\\FromResultSetPlugin",
+        "Siesta\\GeneratorPlugin\\Entity\\DeletePlugin",
+        "Siesta\\GeneratorPlugin\\Entity\\ArrayConverterPlugin",
+        "Siesta\\GeneratorPlugin\\Entity\\JSONConverterPlugin",
+        "Siesta\\GeneratorPlugin\\Entity\\AttributeGetterSetterPlugin",
+        "Siesta\\GeneratorPlugin\\Entity\\ReferenceGetterSetter",
+        "Siesta\\GeneratorPlugin\\Entity\\CollectorGetterSetter",
+        "Siesta\\GeneratorPlugin\\Entity\\CollectionManyAccess",
+        "Siesta\\GeneratorPlugin\\Entity\\ArePKIdenticalPlugin"
+      ],
+      "config": {
+      },
+      "validatorList": [
+        "Siesta\\Validator\\DefaultDataModelValidator",
+        "Siesta\\Validator\\DefaultEntityValidator",
+        "Siesta\\Validator\\DefaultAttributeValidator",
+        "Siesta\\Validator\\DefaultReferenceValidator",
+        "Siesta\\Validator\\DefaultIndexValidator",
+        "Siesta\\Validator\\DefaultCollectionValidator",
+        "Siesta\\Validator\\DefaultCollectionManyValidator"
+      ]
+    },
+    {
+      "name": "Service Generator",
+      "className": "Siesta\\Generator\\ServiceGenerator",
+      "pluginList": [
+        "Siesta\\GeneratorPlugin\\ServiceClass\\SingletonPlugin",
+        "Siesta\\GeneratorPlugin\\ServiceClass\\GetEntityByIdPlugin",
+        "Siesta\\GeneratorPlugin\\ServiceClass\\DeleteEntityByIdPlugin",
+        "Siesta\\GeneratorPlugin\\ServiceClass\\CollectionAccessPlugin",
+        "Siesta\\GeneratorPlugin\\ServiceClass\\ForeignCollectionManyPlugin",
+        "Siesta\\GeneratorPlugin\\ServiceClass\\StoredProcedurePlugin",
+        "Siesta\\GeneratorPlugin\\ServiceClass\\NewInstancePlugin",
+        "Siesta\\GeneratorPlugin\\ServiceClass\\ExecuteStoredProcedurePlugin",
+        "Siesta\\GeneratorPlugin\\ServiceClass\\BatchSavePlugin"
+      ],
+      "config": {
+      },
+      "validatorList": [
+      ]
+    }
+  ]
+}

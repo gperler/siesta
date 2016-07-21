@@ -2,10 +2,9 @@
   "name": "gm314/siesta",
   "description": "PHP ORM Library",
   "require": {
-    "php": ">=5.3.9",
-    "lib-xsl": "*",
-    "symfony/console": ">=2.4",
-    "psr/log": "~1.0"
+    "php": ">=7.0.0",
+    "symfony/console": "*",
+    "psr/log": "*"
   },
   "require-dev": {
     "codeception/codeception": "*"
@@ -27,18 +26,18 @@
   ],
   "autoload": {
     "psr-0": {
-      "siestaphp\\": "src"
+      "Siesta\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "siestaphp\\tests\\": "tests"
+      "SiestaTest\\": "tests"
     }
   },
   "license": "MIT",
   "type": "library",
   "homepage": "https://gperler.github.io",
   "bin": [
-    "src/siestaphp/console/siesta"
+    "src/Siesta/Console/siesta"
   ]
 }

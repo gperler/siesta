@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+    <entity name="Student" namespace="SiestaTest\End2End\CollectionMany\Generated" table="Student" targetPath="Generated">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(30)"/>
+        <collectionMany2Many name="examList" foreignTable="Exam"  mappingTable="StudentExam"/>
+    </entity>
+
+    <entity name="Exam" namespace="SiestaTest\End2End\CollectionMany\Generated" table="Exam" targetPath="Generated">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(30)"/>
+        <collectionMany2Many name="studentList" foreignTable="Student" mappingTable="StudentExam"/>
+    </entity>
+
+
+    <entity name="StudentExam" namespace="SiestaTest\End2End\CollectionMany\Generated" table="StudentExam" targetPath="Generated">
+        <attribute name="studentId" dbName="FK_Student" type="int" dbType="INT"/>
+        <attribute name="examId" dbName="FK_Exam" type="int" dbType="INT"/>
+
+        <reference name="StudentReference" foreignTable="Student" onDelete="cascade">
+            <referenceMapping localAttribute="studentId" foreignAttribute="id"/>
+        </reference>
+
+        <reference name="ExamReference" foreignTable="Exam" onDelete="cascade">
+            <referenceMapping localAttribute="examId" foreignAttribute="id" />
+        </reference>
+    </entity>
+
+
+    <!-- SAME TEST WITH UUID -->
+
+
+    <entity name="StudentUUID" namespace="SiestaTest\End2End\CollectionMany\Generated" table="StudentUUID" targetPath="Generated">
+        <attribute name="id" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="name" type="string" dbType="VARCHAR(30)"/>
+        <collectionMany2Many name="examList" foreignTable="ExamUUID" mappingTable="StudentExamUUID"/>
+    </entity>
+
+    <entity name="ExamUUID" namespace="SiestaTest\End2End\CollectionMany\Generated" table="ExamUUID" targetPath="Generated">
+        <attribute name="id" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="name" type="string" dbType="VARCHAR(30)"/>
+        <collectionMany2Many name="studentList" foreignTable="StudentUUID" mappingTable="StudentExamUUID"/>
+    </entity>
+
+
+    <entity name="StudentExamUUID" namespace="SiestaTest\End2End\CollectionMany\Generated" table="StudentExamUUID" targetPath="Generated">
+        <attribute name="studentId" dbName="FK_Student" type="string" dbType="VARCHAR(36)"/>
+        <attribute name="examId" dbName="FK_Exam" type="string" dbType="VARCHAR(36)"/>
+
+        <reference name="StudentReference" foreignTable="StudentUUID" onDelete="cascade">
+            <referenceMapping localAttribute="studentId" foreignAttribute="id"/>
+        </reference>
+
+        <reference name="ExamReference" foreignTable="ExamUUID" onDelete="cascade">
+            <referenceMapping localAttribute="examId" foreignAttribute="id" />
+        </reference>
+    </entity>
+
+    <!-- SAME TEST WITH MULTIPLE PK -->
+
+    <entity name="StudentMPK" namespace="SiestaTest\End2End\CollectionMany\Generated" table="StudentMPK" targetPath="Generated">
+        <attribute name="id1" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="id2" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+
+        <attribute name="name" type="string" dbType="VARCHAR(30)"/>
+        <collectionMany2Many name="examList" foreignTable="ExamMPK" mappingTable="StudentExamMPK"/>
+    </entity>
+
+    <entity name="ExamMPK" namespace="SiestaTest\End2End\CollectionMany\Generated" table="ExamMPK" targetPath="Generated">
+        <attribute name="id1" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="id2" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="name" type="string" dbType="VARCHAR(30)"/>
+        <collectionMany2Many name="studentList" foreignTable="StudentMPK" mappingTable="StudentExamMPK"/>
+    </entity>
+
+
+    <entity name="StudentExamMPK" namespace="SiestaTest\End2End\CollectionMany\Generated" table="StudentExamMPK" targetPath="Generated">
+        <attribute name="studentId1" dbName="FK_Student1" type="string" dbType="VARCHAR(36)"/>
+        <attribute name="studentId2" dbName="FK_Student2" type="string" dbType="VARCHAR(36)"/>
+
+        <attribute name="examId1" dbName="FK_Exam1" type="string" dbType="VARCHAR(36)"/>
+        <attribute name="examId2" dbName="FK_Exam2" type="string" dbType="VARCHAR(36)"/>
+
+        <reference name="StudentReference" foreignTable="StudentMPK" onDelete="cascade">
+            <referenceMapping localAttribute="studentId1" foreignAttribute="id1"/>
+            <referenceMapping localAttribute="studentId2" foreignAttribute="id2"/>
+        </reference>
+
+        <reference name="ExamReference" foreignTable="ExamMPK" onDelete="cascade">
+            <referenceMapping localAttribute="examId1" foreignAttribute="id1" />
+            <referenceMapping localAttribute="examId2" foreignAttribute="id2" />
+
+        </reference>
+    </entity>
+
+
+
+
+</entityList>

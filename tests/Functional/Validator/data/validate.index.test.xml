@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+    <entity name="Testst" namespace="\SiestaTestFunctional\XML\Artist\" table="Index">
+
+        <attribute name="id" type="int" dbName="id" dbType="INT"/>
+
+        <index name="" unique="true" type="btree">
+        </index>
+
+        <index name="indexName" unique="true" type="btree">
+            <indexPart columnName="reference" sortOrder="ASC" length="10"/>
+        </index>
+    </entity>
+
+
+</entityList>

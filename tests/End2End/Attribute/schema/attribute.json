@@ -1,0 +1,18 @@
+{
+  "id": 1,
+  "bool": true,
+  "int": 7,
+  "float": 19.4,
+  "string": "json_string",
+  "transient": "not_for_db",
+  "array": {
+    "x": "y"
+  },
+  "dateTime": "2016-07-13T11:41:12",
+  "pDate": "2016-07-13T00:00:00",
+  "pTime": "2016-07-13T11:42:12",
+  "object": {
+    "x": 2001,
+    "y": 3800
+  }
+}

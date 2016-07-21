@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="Artist" namespace="\SiestaTest\Functional\XML\Artist\" table="Artist" delimit="true">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="smallint" type="bool" dbType="SMALLINT"/>
+        <attribute name="int" type="int" dbType="INT" required="true"/>
+        <attribute name="string" type="string" dbType="VARCHAR(100)" primaryKey="true"/>
+        <attribute name="datetime" type="SiestaDateTime" dbType="DATETIME"/>
+        <attribute name="date" type="SiestaDateTime" dbType="DATE"/>
+        <attribute name="time" type="SiestaDateTime" dbType="TIME"/>
+    </entity>
+
+
+</entityList>

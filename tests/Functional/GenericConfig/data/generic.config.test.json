@@ -1,0 +1,16 @@
+{
+  "generatorList": [
+    {
+      "name": "",
+      "className": "Siesta\\Generator\\EntityGenerator1",
+      "pluginList": [
+        "Siesta\\EntityPlugin\\ConstantPlugin1"
+      ],
+      "config": {
+      },
+      "validatorList": [
+        ""
+      ]
+    }
+  ]
+}

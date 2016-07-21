@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+    <entity name="ArtistEntity" namespace="\SiestaTest\Functional\XML\Artist\" table="ARTIST2" delimit="true">
+
+        <attribute name="" type="int" dbName="noName" dbType="INT"/>
+        <attribute name="noPhpType" type="" dbType="SMALLINT"/>
+
+        <attribute name="invalidAutovalue" type="int" dbType="INT" autoValue="invalid"/>
+        <attribute name="InvalidClassName" type="InvalidClassName" dbType="FLOAT"/>
+        <attribute name="validClassName" type="SiestaTest\Functional\Validator\ValidClassName" dbType="VARCHAR(100)"/>
+
+        <attribute name="transient" type="SiestaDateTime" transient="true"/>
+        <attribute name="notTransient" type="string"/>
+
+        <attribute name="warn" type="int" dbType="INT" primaryKey="true"/>
+    </entity>
+
+
+</entityList>

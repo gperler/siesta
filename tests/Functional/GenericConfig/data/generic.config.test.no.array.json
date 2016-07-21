@@ -1,0 +1,10 @@
+{
+  "generatorList": [
+    {
+      "name": "test",
+      "className": "Siesta\\Generator\\EntityGenerator",
+      "config": {
+      }
+    }
+  ]
+}

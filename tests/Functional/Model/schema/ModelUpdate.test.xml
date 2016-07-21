@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="Artist" namespace="\SiestaTest\Functional\XML\Artist\" table="Artist" delimit="true">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="firstName" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="lastName" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="city" type="string" dbType="VARCHAR(123)"/>
+
+        <collection name="collection1" foreignTable="Reference" foreignReferenceName="reference2"/>
+
+
+        <index name="indexName" unique="true" type="btree">
+            <indexPart columnName="firstName"/>
+            <indexPart columnName="lastName"/>
+        </index>
+
+        <index name="indexName2" unique="true" type="btree">
+            <indexPart columnName="city" sortOrder="ASC" length="10"/>
+        </index>
+    </entity>
+
+
+    <entity name="ReferenceTest" namespace="\SiestaTest\Functional\XML\Artist\" table="Reference" delimit="true">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="FK_firstName" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="FK_lastName" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="FK_Artist" type="string" dbType="VARCHAR(100)"/>
+
+        <reference name="reference1" foreignTable="Artist" onDelete="onDelete" onUpdate="onUpdate">
+            <referenceMapping localAttribute="FK_firstName" foreignAttribute="firstName"/>
+            <referenceMapping localAttribute="FK_lastName" foreignAttribute="lastName"/>
+        </reference>
+
+        <reference name="reference2" foreignTable="Artist" onDelete="testValue" onUpdate="onUpdate">
+            <referenceMapping localAttribute="FK_Artist" foreignAttribute="id"/>
+        </reference>
+
+
+    </entity>
+
+
+    <entity name="Student" namespace="---student---" table="Student" delimit="true">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <collectionMany2Many name="ExamList" foreignTable="Exam" mappingTable="StudentExam"/>
+    </entity>
+
+
+    <entity name="Exam" namespace="---Exam---" table="Exam" delimit="true">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <collectionMany2Many name="StudentList" foreignTable="Student" mappingTable="StudentExam"/>
+    </entity>
+
+
+    <entity name="StudentExam" namespace="---MappingTable---" table="StudentExam" delimit="true">
+        <attribute name="FK_Student" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="FK_Exam" type="string" dbType="VARCHAR(100)"/>
+
+        <reference name="StudentReference" foreignTable="Student">
+            <referenceMapping localAttribute="FK_Student" foreignAttribute="id"/>
+        </reference>
+
+        <reference name="ExamReference" foreignTable="Exam">
+            <referenceMapping localAttribute="FK_Exam" foreignAttribute="id"/>
+        </reference>
+    </entity>
+
+</entityList>

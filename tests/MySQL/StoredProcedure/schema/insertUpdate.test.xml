@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="Artist" namespace="Artist" table="Artist">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true"/>
+        <attribute name="column1" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="column2" type="SiestaDateTime" dbType="DATETIME"/>
+        <attribute name="column3" type="int" dbType="INT"/>
+        <attribute name="column4" type="float" dbType="FLOAT"/>
+    </entity>
+
+</entityList>

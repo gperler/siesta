@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+    <entity name="CartEntity" namespace="SiestaTest\End2End\Collection\Generated" table="Cart" targetPath="Generated">
+        <constructor className="SiestaTest\End2End\Collection\Entity\Cart"/>
+
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+
+        <collection name="cartItem" foreignTable="CartItem" foreignReferenceName="cart"/>
+
+    </entity>
+
+    <entity name="CartItemEntity" namespace="SiestaTest\End2End\Collection\Generated" table="CartItem" targetPath="Generated">
+        <constructor className="SiestaTest\End2End\Collection\Entity\CartItem"/>
+
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+
+        <attribute name="cartId" dbName="fk_cart" type="int" dbType="INT"/>
+
+        <reference name="cart" foreignTable="Cart" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="cartId" foreignAttribute="id"/>
+        </reference>
+    </entity>
+
+    <!-- SAME TEST WITH UUID -->
+
+    <entity name="CartUUID" namespace="SiestaTest\End2End\Collection\Generated" table="CartUUID" targetPath="Generated">
+
+        <attribute name="id" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+
+        <collection name="cartItem" foreignTable="CartItemUUID" foreignReferenceName="cart"/>
+
+    </entity>
+
+    <entity name="CartItemUUID" namespace="SiestaTest\End2End\Collection\Generated" table="CartItemUUID" targetPath="Generated">
+
+        <attribute name="id" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+
+        <attribute name="cartId" dbName="fk_cart" type="string" dbType="VARCHAR(36)"/>
+
+        <reference name="cart" foreignTable="CartUUID" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="cartId" foreignAttribute="id"/>
+        </reference>
+    </entity>
+
+
+    <entity name="CartMPK" namespace="SiestaTest\End2End\Collection\Generated" table="CartMPK" targetPath="Generated">
+
+        <attribute name="id1" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="id2" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+
+        <collection name="cartItem" foreignTable="CartItemMPK" foreignReferenceName="cart"/>
+
+    </entity>
+
+    <entity name="CartItemMPK" namespace="SiestaTest\End2End\Collection\Generated" table="CartItemMPK" targetPath="Generated">
+
+        <attribute name="id1" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="id2" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+
+        <attribute name="cartId1" dbName="fk_cart_1" type="string" dbType="VARCHAR(36)"/>
+        <attribute name="cartId2" dbName="fk_cart_2" type="string" dbType="VARCHAR(36)"/>
+
+        <reference name="cart" foreignTable="CartMPK" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="cartId1" foreignAttribute="id1"/>
+            <referenceMapping localAttribute="cartId2" foreignAttribute="id2"/>
+        </reference>
+    </entity>
+
+
+
+</entityList>

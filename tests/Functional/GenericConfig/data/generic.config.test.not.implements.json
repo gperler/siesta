@@ -1,0 +1,16 @@
+{
+  "generatorList": [
+    {
+      "name": "name",
+      "className": "SiestaTest\\Functional\\GenericConfig\\NoInterface",
+      "pluginList": [
+        "SiestaTest\\Functional\\GenericConfig\\NoInterface"
+      ],
+      "config": {
+      },
+      "validatorList": [
+        "SiestaTest\\Functional\\GenericConfig\\NoInterface"
+      ]
+    }
+  ]
+}

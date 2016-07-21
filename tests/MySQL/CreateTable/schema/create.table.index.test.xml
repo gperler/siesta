@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="IndexTest" namespace="\SiestaTest\Functional\XML\Artist\" table="IndexTest" delimit="false">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="smallint" type="bool" dbType="SMALLINT"/>
+        <attribute name="int" type="int" dbType="INT" required="true"/>
+        <attribute name="string" type="string" dbType="VARCHAR(100)" primaryKey="true"/>
+        <attribute name="datetime" type="SiestaDateTime" dbType="DATETIME"/>
+        <attribute name="date" type="SiestaDateTime" dbType="DATE"/>
+        <attribute name="time" type="SiestaDateTime" dbType="TIME"/>
+
+        <index name="index1" unique="true" type="btree">
+            <indexPart columnName="string" sortOrder="ASC" length="10"/>
+        </index>
+
+        <index name="index2" unique="false" type="btree">
+            <indexPart columnName="datetime" sortOrder="ASC"/>
+            <indexPart columnName="date" sortOrder="ASC"/>
+       </index>
+    </entity>
+
+
+</entityList>

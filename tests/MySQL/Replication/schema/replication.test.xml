@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="MySQLReplication" namespace="SiestaTest\MySQL\Replication\Generated" table="MySQLReplication" replication="true" targetPath="Generated">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="bool" type="bool" dbType="SMALLINT" defaultValue="true"/>
+        <attribute name="int" type="int" dbType="INT" defaultValue="42"/>
+        <attribute name="float" type="float" dbType="FLOAT" defaultValue="42.42"/>
+        <attribute name="string" type="string" dbType="VARCHAR(100)" defaultValue="'Discovery'"/>
+        <attribute name="dateTime" type="SiestaDateTime" dbType="DATETIME" defaultValue="new SiestaDateTime('19-08-1977 10:10:10')"/>
+        <attribute name="date" type="SiestaDateTime" dbType="DATE" defaultValue="new SiestaDateTime('19-08-1977')"/>
+        <attribute name="time" type="SiestaDateTime" dbType="TIME" defaultValue="new SiestaDateTime('10:11:12')"/>
+        <attribute name="object" type="SiestaTest\MySQL\Util\AttributeSerialize" dbType="VARCHAR(500)" defaultValue="new AttributeSerialize()"/>
+    </entity>
+</entityList>

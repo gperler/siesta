@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="E2ECustomStoredProcedure" namespace="SiestaTest\End2End\CustomStoredProcedure\Generated" table="E2ECustomStoredProcedure" targetPath="Generated">
+
+
+        <storedProcedure name="getSingle" modifies="false" resultType="entity">
+            <parameter name="stringParam" spName="P_STRING_PARAM" type="string" dbType="VARCHAR(100)"/>
+            <parameter name="intParam" spName="P_INT_PARAM" type="int" dbType="INT"/>
+            <sql>
+                SELECT * FROM E2ECustomStoredProcedure WHERE `string` = P_STRING_PARAM AND `int` = P_INT_PARAM LIMIT 1;
+            </sql>
+        </storedProcedure>
+
+        <storedProcedure name="getList" modifies="false" resultType="list">
+            <parameter name="stringParam" spName="P_STRING_PARAM" type="string" dbType="VARCHAR(100)"/>
+            <parameter name="intParam" spName="P_INT_PARAM" type="int" dbType="INT"/>
+            <sql>
+                SELECT * FROM E2ECustomStoredProcedure WHERE `string` = P_STRING_PARAM AND `int` = P_INT_PARAM;
+            </sql>
+        </storedProcedure>
+
+        <storedProcedure name="getResultSet" modifies="false" resultType="resultSet">
+            <parameter name="stringParam" spName="P_STRING_PARAM" type="string" dbType="VARCHAR(100)"/>
+            <parameter name="intParam" spName="P_INT_PARAM" type="int" dbType="INT"/>
+            <sql>
+                SELECT * FROM E2ECustomStoredProcedure WHERE `string` = P_STRING_PARAM AND `int` = P_INT_PARAM;
+            </sql>
+        </storedProcedure>
+
+        <storedProcedure name="updateTable" modifies="true" resultType="none">
+            <parameter name="stringParam" spName="P_STRING_PARAM" type="string" dbType="VARCHAR(100)"/>
+            <parameter name="intParam" spName="P_INT_PARAM" type="int" dbType="INT"/>
+            <sql>
+               UPDATE E2ECustomStoredProcedure SET `string` = P_STRING_PARAM, `int` = P_INT_PARAM;
+            </sql>
+        </storedProcedure>
+
+        <storedProcedure name="getListNoParam" modifies="false" resultType="list">
+            <sql>
+                SELECT * FROM E2ECustomStoredProcedure;
+            </sql>
+        </storedProcedure>
+
+
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="bool" type="bool" dbType="SMALLINT" defaultValue="true"/>
+        <attribute name="int" type="int" dbType="INT" defaultValue="42"/>
+        <attribute name="float" type="float" dbType="FLOAT" defaultValue="42.42"/>
+        <attribute name="string" type="string" dbType="VARCHAR(100)" defaultValue="'Discovery'"/>
+        <attribute name="dateTime" type="SiestaDateTime" dbType="DATETIME" defaultValue="new SiestaDateTime('19-08-1977 10:10:10')"/>
+        <attribute name="pDate" type="SiestaDateTime" dbType="DATE" defaultValue="new SiestaDateTime('19-08-1977')"/>
+        <attribute name="pTime" type="SiestaDateTime" dbType="TIME" defaultValue="new SiestaDateTime('10:11:12')"/>
+        <attribute name="object" type="SiestaTest\End2End\Util\AttributeSerialize" dbType="VARCHAR(500)" defaultValue="new AttributeSerialize()"/>
+    </entity>
+</entityList>

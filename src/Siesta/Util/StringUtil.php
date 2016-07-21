@@ -1,0 +1,89 @@
+<?php
+declare(strict_types = 1);
+
+namespace Siesta\Util;
+
+/**
+ * @author Gregor Müller
+ */
+class StringUtil
+{
+    /**
+     * @param string $haystack
+     * @param string $needle
+     *
+     * @return bool
+     */
+    public static function startsWith($haystack, $needle)
+    {
+        return !strncmp($haystack, $needle, strlen($needle));
+    }
+
+    /**
+     * @param $haystack
+     * @param $needle
+     *
+     * @return bool
+     */
+    public static function endsWith($haystack, $needle)
+    {
+        return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+    }
+
+    /**
+     * @param $value
+     * @param int $maxLength
+     *
+     * @return bool|int|null|string
+     */
+    public static function trimToNull($value, $maxLength = null)
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        // preserve 0
+        if ($value === 0 || $value === "0") {
+            return "0";
+        }
+
+        // trim it
+        $value = trim($value);
+
+        if ($value === "") {
+            return null;
+        }
+
+        if ($maxLength === 0 || $maxLength === null) {
+            return $value;
+        }
+        return substr($value, 0, $maxLength);
+    }
+
+    /**
+     * @param string $haystack
+     * @param string $needle
+     *
+     * @return string
+     */
+    public static function getEndAfterLast(string $haystack, string $needle) : string
+    {
+        $lastOccurence = strrchr($haystack, $needle);
+        if ($lastOccurence === false) {
+            return $haystack;
+        }
+        return ltrim($lastOccurence, $needle);
+    }
+
+    /**
+     * @param string $haystack
+     * @param string $needle
+     *
+     * @return string
+     */
+    public static function getStartBeforeLast($haystack, $needle)
+    {
+        $end = self::getEndAfterLast($haystack, $needle);
+        return str_replace($needle . $end, "", $haystack);
+    }
+}

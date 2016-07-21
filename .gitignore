@@ -1,10 +1,4 @@
-codeception.yml
-composer.phar
 composer.lock
-**/gen/**
-tests/xml/*
 vendor
-reverse/
-helloworld/
 !**/.gitkeep
-
+tests/_output/*

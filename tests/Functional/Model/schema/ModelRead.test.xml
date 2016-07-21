@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="ArtistEntity" namespace="\SiestaTest\Functional\XML\Artist\" table="ARTIST" delimit="true" replication="true" customAttribute="customValue">
+        <entity-mysql collate="unicode" engine="MEMORY"/>
+        <constructor className="className" constructCall="constructCall" constructFactoryClassName="constructFactoryClassName"/>
+        <serviceClass className="\SiestaTest\Functional\XML\Artist\ServiceClass" constructCall="serviceClassConstructFactory" constructFactoryClassName="serviceConstructFactoryClassName"/>
+    </entity>
+
+    <entity name="ArtistEntity1" namespace="\SiestaTest\Functional\XML\Artist\" table="ARTIST2" delimit="true" targetPath="/gen/test/">
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="true"
+                   autoValue="autoincrement" defaultValue="42"/>
+        <attribute name="bool" type="bool" dbName="_D_BOOLEAN" dbType="SMALLINT" defaultValue="true"/>
+        <attribute name="int" type="int" dbName="D_INTEGER" dbType="INT" defaultValue="42"/>
+        <attribute name="float" type="float" dbName="D_FLOAT" dbType="FLOAT" defaultValue="42.42"/>
+        <attribute name="string" type="string" dbName="D_STRING" dbType="VARCHAR(100)"
+                   defaultValue="'Traveling Salesman'"/>
+        <attribute name="dateTime" type="DateTime" dbName="D_DATETIME" dbType="DATETIME"
+                   defaultValue="new SiestaDateTime('19-08-1977 10:10:10')"/>
+        <attribute name="pDate" type="DateTime" dbName="D_DATE" dbType="DATE"/>
+        <attribute name="pTime" type="DateTime" dbName="D_TIME" dbType="TIME"/>
+    </entity>
+
+
+    <entity name="ArtistEntity2" namespace="\SiestaTest\Functional\XML\Artist\" table="ARTIST2" delimit="true">
+
+        <index name="indexName" unique="true" type="btree">
+            <indexPart columnName="D_STRING" sortOrder="ASC" length="10"/>
+            <indexPart columnName="D_STRING" sortOrder="ASC" length="10"/>
+        </index>
+
+        <index name="indexName2" unique="true" type="btree">
+            <indexPart columnName="D_STRING" sortOrder="ASC" length="10"/>
+            <indexPart columnName="D_STRING2" sortOrder="ASC2" length="102"/>
+        </index>
+
+    </entity>
+
+    <entity name="ArtistEntity3" namespace="\SiestaTest\Functional\XML\Artist\" table="ARTIST2" delimit="true">
+
+        <storedProcedure name="getFirstArtistByCity" modifies="true" resultType="single">
+            <parameter name="test" spName="P_CITY" type="string" dbType="VARCHAR(100)"/>
+            <parameter name="test2" spName="P_CITY2" type="int" dbType="INT"/>
+            <sql>
+                SP_STATEMENT;
+            </sql>
+        </storedProcedure>
+
+
+    </entity>
+
+
+    <entity name="ArtistEntity4" namespace="\SiestaTest\Functional\XML\Artist\" table="ARTIST2" delimit="true">
+
+        <collection name="1" foreignTable="table1" foreignReferenceName="frn_1"/>
+        <collection name="2" foreignTable="table2" foreignReferenceName="frn_2"/>
+        <collection name="3" foreignTable="table3" foreignReferenceName="frn_3"/>
+
+        <collectionMany2Many name="m2m_1" foreignTable="m2m_t_1" mappingTable="m2m_mt_1"/>
+        <collectionMany2Many name="m2m_2" foreignTable="m2m_t_2" mappingTable="m2m_mt_2"/>
+
+    </entity>
+
+
+
+
+    <entity name="ReferenceTest" namespace="\SiestaTest\Functional\XML\Artist\" table="ARTIST2" delimit="true">
+
+        <reference name="reference1" foreignTable="xyz" onDelete="onDelete" onUpdate="onUpdate">
+            <referenceMapping localAttribute="a" foreignAttribute="b"/>
+            <referenceMapping localAttribute="c" foreignAttribute="d"/>
+        </reference>
+
+        <reference name="reference2" foreignTable="xyz2" onDelete="onDelete2" onUpdate="onUpdate2">
+            <referenceMapping localAttribute="2a" foreignAttribute="2b"/>
+            <referenceMapping localAttribute="2c" foreignAttribute="2d"/>
+        </reference>
+
+    </entity>
+
+
+
+
+</entityList>

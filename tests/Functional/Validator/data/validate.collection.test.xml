@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+    <entity name="Address" namespace="Address" table="Address">
+
+        <attribute name="id" type="int" dbName="id" dbType="INT"/>
+        <attribute name="fk_customer" type="int" dbType="INT"/>
+
+        <reference name="customer" foreignTable="Customer">
+            <referenceMapping localAttribute="fk_customer" foreignAttribute="id"/>
+        </reference>
+    </entity>
+
+    <entity name="Customer" namespace="Customer" table="Customer">
+        <attribute name="id" type="int" dbName="id" dbType="INT"/>
+        <collection name="" foreignTable="Address" foreignReferenceName=""/>
+    </entity>
+
+    <entity name="Customer2" namespace="Customer2" table="Customer2">
+        <attribute name="id" type="int" dbName="id" dbType="INT"/>
+        <collection name="Collection" foreignTable="" foreignReferenceName="reference"/>
+    </entity>
+
+
+</entityList>

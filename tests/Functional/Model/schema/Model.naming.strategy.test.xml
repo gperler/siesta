@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="Artist" namespace="\SiestaTest\Functional\XML\Artist\" table="Artist" delimit="true">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="customerFirstName" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="customerLastName" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="cityStateName" type="string" dbType="VARCHAR(123)"/>
+    </entity>
+
+</entityList>

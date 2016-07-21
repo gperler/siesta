@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+    <entity name="Artist" namespace="Artist" table="Artist">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true"/>
+
+        <attribute name="fk_label" type="string" dbType="FLOAT"/>
+
+        <!-- test wrong data types -->
+        <reference name="label" foreignTable="Label" onDelete="onDelete" onUpdate="onUpdate">
+            <referenceMapping localAttribute="fk_label" foreignAttribute="id"/>
+        </reference>
+
+        <reference name="notexisting" foreignTable="notexisting" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="fk_label" foreignAttribute="id"/>
+        </reference>
+
+        <reference name="invalidMapping" foreignTable="Label" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="fk_label1" foreignAttribute="id1"/>
+        </reference>
+
+        <reference name="noMappig" foreignTable="Label" onDelete="set null" onUpdate="set null">
+        </reference>
+    </entity>
+
+
+    <entity name="Label" namespace="Label" table="Label">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true"/>
+    </entity>
+
+
+</entityList>

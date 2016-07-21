@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+    <entity name="Album" namespace="SiestaTest\End2End\Reference\Generated" table="Album" targetPath="Generated">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+
+        <attribute name="artistId" dbName="fk_artist" type="int" dbType="INT"/>
+
+        <reference name="artist" foreignTable="Artist" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="artistId" foreignAttribute="id"/>
+        </reference>
+    </entity>
+
+    <entity name="Artist" namespace="SiestaTest\End2End\Reference\Generated" table="Artist" targetPath="Generated">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+    </entity>
+
+
+    <!-- same test with UUID -->
+
+
+    <entity name="AlbumUUID" namespace="SiestaTest\End2End\Reference\Generated" table="AlbumUUID" targetPath="Generated">
+        <attribute name="id" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+
+        <attribute name="artistId" dbName="fk_artist" type="string" dbType="VARCHAR(36)"/>
+
+        <reference name="artist" foreignTable="ArtistUUID" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="artistId" foreignAttribute="id"/>
+        </reference>
+    </entity>
+
+    <entity name="ArtistUUID" namespace="SiestaTest\End2End\Reference\Generated" table="ArtistUUID" targetPath="Generated">
+        <attribute name="id" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+    </entity>
+
+
+    <!-- same test with multiple primary keys-->
+
+    <entity name="AlbumMPK" namespace="SiestaTest\End2End\Reference\Generated" table="AlbumMPK" targetPath="Generated">
+        <attribute name="id_1" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="id_2" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+
+        <attribute name="artistId_1" dbName="fk_artist_1" type="string" dbType="VARCHAR(36)"/>
+        <attribute name="artistId_2" dbName="fk_artist_2" type="string" dbType="VARCHAR(36)"/>
+
+
+        <reference name="artist" foreignTable="ArtistMPK" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="artistId_1" foreignAttribute="id_1"/>
+            <referenceMapping localAttribute="artistId_2" foreignAttribute="id_2"/>
+
+        </reference>
+    </entity>
+
+    <entity name="ArtistMPK" namespace="SiestaTest\End2End\Reference\Generated" table="ArtistMPK" targetPath="Generated">
+        <attribute name="id_1" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="id_2" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+    </entity>
+
+
+
+</entityList>

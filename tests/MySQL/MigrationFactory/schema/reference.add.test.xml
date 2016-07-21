@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+    <entity name="Address" namespace="Address" table="Address">
+
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="fk_artist" type="int" dbType="INT"/>
+        <attribute name="fk_name" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="fk_company" type="int" dbType="INT"/>
+
+        <reference name="company" foreignTable="Company" onDelete="cascade" onUpdate="set null">
+            <referenceMapping localAttribute="fk_company" foreignAttribute="id"/>
+            <referenceMapping localAttribute="fk_name" foreignAttribute="name"/>
+        </reference>
+
+    </entity>
+
+    <entity name="Person" namespace="Person" table="Person">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)" primaryKey="true" autoValue="uuid"/>
+        <attribute name="city" type="string" dbType="VARCHAR(100)"/>
+    </entity>
+
+
+    <entity name="Company" namespace="Company" table="Company">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)" primaryKey="true" autoValue="uuid"/>
+        <attribute name="city" type="string" dbType="VARCHAR(100)"/>
+    </entity>
+
+
+</entityList>

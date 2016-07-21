@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="ServiceEntity" namespace="SiestaTest\End2End\CustomServiceClass\Generated" table="ServiceEntity" targetPath="Generated" delimit="true">
+        <serviceClass className="SiestaTest\End2End\CustomServiceClass\ServiceClass\ServiceChild"/>
+
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="bool" type="bool" dbType="SMALLINT"/>
+        <attribute name="int" type="int" dbType="INT"/>
+        <attribute name="float" type="float" dbType="FLOAT"/>
+        <attribute name="string" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="dateTime" type="SiestaDateTime" dbType="DATETIME"/>
+        <attribute name="date" type="SiestaDateTime" dbType="DATE"/>
+        <attribute name="time" type="SiestaDateTime" dbType="TIME"/>
+        <attribute name="object" type="SiestaTest\End2End\Util\AttributeSerialize" dbType="VARCHAR(500)" defaultValue="new AttributeSerialize()"/>
+    </entity>
+
+
+
+    <entity name="ServiceFactoryEntity" namespace="SiestaTest\End2End\CustomServiceClass\Generated" table="ServiceFactoryEntity" targetPath="Generated" delimit="true">
+        <serviceClass className="SiestaTest\End2End\CustomServiceClass\ServiceClass\ServiceFactoryChild" constructCall="ServiceFactory::getInstance()" constructFactoryClassName="SiestaTest\End2End\CustomServiceClass\ServiceClass\ServiceFactory"/>
+
+        <attribute name="id1" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="bool1" type="bool" dbType="SMALLINT"/>
+        <attribute name="int1" type="int" dbType="INT"/>
+        <attribute name="float1" type="float" dbType="FLOAT"/>
+        <attribute name="string1" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="dateTime1" type="SiestaDateTime" dbType="DATETIME"/>
+        <attribute name="date1" type="SiestaDateTime" dbType="DATE"/>
+        <attribute name="time1" type="SiestaDateTime" dbType="TIME"/>
+        <attribute name="object1" type="SiestaTest\End2End\Util\AttributeSerialize" dbType="VARCHAR(500)" defaultValue="new AttributeSerialize()"/>
+    </entity>
+
+    <entity name="ServiceReference" namespace="SiestaTest\End2End\CustomServiceClass\Generated" targetPath="Generated">
+        <attribute name="id2" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="serviceFactoryId" type="int" dbType="INT"/>
+
+        <reference name="serviceFactory" foreignTable="ServiceFactoryEntity" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="serviceFactoryId" foreignAttribute="id1"/>
+        </reference>
+
+    </entity>
+
+</entityList>
+
