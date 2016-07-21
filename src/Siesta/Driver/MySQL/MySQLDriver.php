@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types = 1);
+
 namespace Siesta\Driver\MySQL;
 
 use Siesta\Database\Connection;
@@ -15,6 +17,8 @@ class MySQLDriver implements Driver
     const MYSQL_QUOTE = "`";
 
     const MYSQL_DRIVER_NAME = "mysql";
+
+    const DRIVER_CLASS = 'Siesta\Driver\MySQL\MySQLDriver';
 
     /**
      * @param $name

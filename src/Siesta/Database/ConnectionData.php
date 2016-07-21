@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types = 1);
+
 namespace Siesta\Database;
 
 use Siesta\Util\ArrayUtil;
@@ -9,6 +11,26 @@ use Siesta\Util\ArrayUtil;
  */
 class ConnectionData
 {
+
+    const NAME = "name";
+
+    const DRIVER = "driver";
+
+    const HOST = "host";
+
+    const PORT = "port";
+
+    const DATABASE = "database";
+
+    const USER = "user";
+
+    const PASSWORD = "password";
+
+    const CHARSET = "charSet";
+
+    const IS_DEFAULT = "isDefault";
+
+    const POST_CONNECT_STATEMENT_LIST = "postConnectStatementList";
 
     /**
      * @var string
@@ -91,16 +113,35 @@ class ConnectionData
      */
     public function fromArray(array $values)
     {
-        $this->name = ArrayUtil::getFromArray($values, "name");
-        $this->driver = ArrayUtil::getFromArray($values, "driver");
-        $this->host = ArrayUtil::getFromArray($values, "host");
-        $this->port = ArrayUtil::getFromArray($values, "port");
-        $this->database = ArrayUtil::getFromArray($values, "database");
-        $this->user = ArrayUtil::getFromArray($values, "user");
-        $this->password = ArrayUtil::getFromArray($values, "password");
-        $this->charSet = ArrayUtil::getFromArray($values, "charSet");
-        $this->isDefault = ArrayUtil::getFromArray($values, "isDefault");
-        $this->postConnectStatementList = ArrayUtil::getFromArray($values, "postConnectStatementList");
+        $this->name = ArrayUtil::getFromArray($values, self::NAME);
+        $this->driver = ArrayUtil::getFromArray($values, self::DRIVER);
+        $this->host = ArrayUtil::getFromArray($values, self::HOST);
+        $this->port = ArrayUtil::getFromArray($values, self::PORT);
+        $this->database = ArrayUtil::getFromArray($values, self::DATABASE);
+        $this->user = ArrayUtil::getFromArray($values, self::USER);
+        $this->password = ArrayUtil::getFromArray($values, self::PASSWORD);
+        $this->charSet = ArrayUtil::getFromArray($values, self::CHARSET);
+        $this->isDefault = ArrayUtil::getFromArray($values, self::IS_DEFAULT);
+        $this->postConnectStatementList = ArrayUtil::getFromArray($values, self::POST_CONNECT_STATEMENT_LIST);
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray() : array
+    {
+        return [
+            self::NAME => $this->name,
+            self::DRIVER => $this->driver,
+            self::HOST => $this->host,
+            self::PORT => $this->port,
+            self::DATABASE => $this->database,
+            self::USER => $this->user,
+            self::PASSWORD => $this->password,
+            self::CHARSET => $this->charSet,
+            self::IS_DEFAULT => $this->isDefault,
+            self::POST_CONNECT_STATEMENT_LIST => $this->postConnectStatementList !== null ? $this->postConnectStatementList : []
+        ];
     }
 
     /**
