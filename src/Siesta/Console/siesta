@@ -10,6 +10,5 @@ use Symfony\Component\Console\Application;
 $app = new Application();
 $app->add(new ReverseCommand('reverse'));
 $app->add(new GeneratorCommand('gen'));
-$app->add(new InitCommand('init'));
 
 $app->run();

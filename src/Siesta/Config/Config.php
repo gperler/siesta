@@ -21,7 +21,7 @@ class Config
 
     const CONFIG_GENERATOR = "generator";
 
-    const CONFIG_REVERSE = "reverse";
+    const CONFIG_REVERSE_GENERATOR = "reverse";
 
     const EXCEPTION_NO_CONFIG = "found no config file in %s I searched for %s";
 
@@ -46,24 +46,6 @@ class Config
             self::$instance->configureConnections();
         }
         return self::$instance;
-    }
-
-    /**
-     * @param ConnectionData $connectionData
-     *
-     * @return array
-     */
-    public static function buildConfiguration(ConnectionData $connectionData) : array
-    {
-        $reverseConfig = new ReverseConfig();
-        $generatorConfig = new MainGeneratorConfig();
-        return [
-            self::CONFIG_CONNECTION => [
-                $connectionData->toArray()
-            ],
-            self::CONFIG_GENERATOR => $generatorConfig->toArray(),
-            self::CONFIG_REVERSE => $reverseConfig->toArray()
-        ];
     }
 
     /**
@@ -207,7 +189,7 @@ class Config
     public function getReverseConfig()
     {
         if ($this->reverseConfig === null) {
-            $this->reverseConfig = new ReverseConfig(ArrayUtil::getFromArray($this->jsonConfig, self::CONFIG_REVERSE));
+            $this->reverseConfig = new ReverseConfig(ArrayUtil::getFromArray($this->jsonConfig, self::CONFIG_REVERSE_GENERATOR));
         }
         return $this->reverseConfig;
     }
