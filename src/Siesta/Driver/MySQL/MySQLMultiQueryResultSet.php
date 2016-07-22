@@ -83,7 +83,7 @@ class MySQLMultiQueryResultSet implements ResultSet
      *
      * @return bool
      */
-    public function getBooleanValue(string $key) : bool
+    public function getBooleanValue(string $key)
     {
         $value = ArrayUtil::getFromArray($this->next, $key);
         if (is_null($value)) {
