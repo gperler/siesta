@@ -89,11 +89,9 @@ class ForeignCollectionManyPlugin extends BasePlugin
         $method = $this->codeGenerator->newPublicMethod($methodName);
         $method->addAttributeParameterList($pkAttributeList);
         $method->addConnectionNameParameter();
-
-        $method->addConnectionLookup();
         $method->setReturnType($entityClass . '[]');
 
-        $method->addQuoteAttributeList($pkAttributeList, false);
+        $method->addQuoteAttributeList($pkAttributeList, true);
 
         $spName = StoredProcedureNaming::getSelectByCollectionManyName($collectionMany);
         $signature = $method->getSPInvocationSignature($pkAttributeList);

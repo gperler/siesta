@@ -68,7 +68,6 @@ class StudentUUIDService
     public function getStudentUUIDJoinStudentExamUUID(string $id, string $connectionName = null) : array
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $connection = ConnectionFactory::getConnection($connectionName);
         $id = Escaper::quoteString($connection, $id);
         return $this->executeStoredProcedure("CALL StudentUUID_S_JOIN_StudentExamUUID_studentList($id)", $connectionName);
     }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+    <entity name="Artist" namespace="Artist" table="Artist">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true"/>
+
+        <storedProcedure name="_findArtistById" modifies="false" resultType="entity2">
+            <parameter name="externalId" spName="P_EXTERNAL_ID" type="string" dbType="VARCHAR(100)"/>
+            <sql>
+                SELECT * FROM !TABLE! WHERE external_id = P_EXTERNAL_ID;
+            </sql>
+        </storedProcedure>
+
+    </entity>
+
+
+
+
+
+</entityList>

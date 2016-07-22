@@ -13,6 +13,7 @@ use Siesta\Validator\DefaultDataModelValidator;
 use Siesta\Validator\DefaultEntityValidator;
 use Siesta\Validator\DefaultIndexValidator;
 use Siesta\Validator\DefaultReferenceValidator;
+use Siesta\Validator\DefaultStoredProcedureValidator;
 use Siesta\Validator\Validator;
 use Siesta\XML\XMLReader;
 use SiestaTest\TestUtil\CodeceptionLogger;
@@ -222,5 +223,24 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(4, sizeof($errorCodeList));
         $this->assertTrue(in_array(DefaultCollectionManyValidator::ERROR_FOREIGN_REFERENCE_CODE, $errorCodeList));
         $this->assertTrue(in_array(DefaultCollectionManyValidator::ERROR_MAPPING_REFERENCE_CODE, $errorCodeList));
+    }
+
+
+    /**
+     *
+     */
+    public function testValidateStoredProcedure()
+    {
+        $silent = true;
+        $dataModel = $this->loadDataModel("/data/validate.stored.procedure.test.xml");
+        $validator = $this->getValidator($silent);
+
+        $validationLogger = $this->getValidationLogger($silent);
+        $validator->validateDataModel($dataModel, $validationLogger);
+
+        $errorCodeList = $validationLogger->getErrorCodeList();
+
+        $this->assertSame(1, sizeof($errorCodeList));
+        $this->assertTrue(in_array(DefaultStoredProcedureValidator::ERROR_INVALID_RESULT_TYPE_CODE, $errorCodeList));
     }
 }

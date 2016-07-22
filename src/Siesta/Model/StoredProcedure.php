@@ -17,6 +17,13 @@ class StoredProcedure
 
     const RESULT_NONE = "none";
 
+    const ALLOWED_RESULT = [
+        self::RESULT_ENITY,
+        self::RESULT_LIST,
+        self::RESULT_RESULT_SET,
+        self::RESULT_NONE
+    ];
+
     /**
      * @var Entity
      */

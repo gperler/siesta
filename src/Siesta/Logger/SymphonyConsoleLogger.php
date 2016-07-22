@@ -90,9 +90,6 @@ class SymphonyConsoleLogger implements LoggerInterface
      */
     public function warning($message, array $context = [])
     {
-        if ($this->outputInterfase->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
-            return;
-        }
         $this->outputInterfase->writeln('<bg=yellow>' . $message . '</>');
     }
 

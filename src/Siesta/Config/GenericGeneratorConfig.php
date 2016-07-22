@@ -4,6 +4,7 @@ namespace Siesta\Config;
 
 use Siesta\Model\ValidationLogger;
 use Siesta\Util\ArrayUtil;
+use Siesta\Util\ClassUtil;
 use Siesta\Validator\Validator;
 
 /**
@@ -153,13 +154,14 @@ class GenericGeneratorConfig
      */
     protected function validatePlugin(ValidationLogger $logger, string $plugin)
     {
-        if (!class_exists($plugin)) {
+
+        if (!ClassUtil::exists($plugin)) {
             $error = sprintf(self::ERROR_GENERATOR_PLUGIN_DOES_NOT_EXIST, $plugin, $this->getName());
             $logger->error($error, self::ERROR_GENERATOR_PLUGIN_DOES_NOT_EXIST_CODE);
             return;
         }
-        $reflect = new \ReflectionClass($plugin);
-        if (!$reflect->implementsInterface(self::PLUGIN_INTERFACE)) {
+
+        if (!ClassUtil::implementsInterface($plugin, self::PLUGIN_INTERFACE)) {
             $error = sprintf(self::ERROR_GENERATOR_PLUGIN_DOES_NOT_IMPLEMENT, $plugin, $this->getName());
             $logger->error($error, self::ERROR_GENERATOR_PLUGIN_DOES_NOT_IMPLEMENT_CODE);
         }
@@ -177,7 +179,7 @@ class GenericGeneratorConfig
 
     public function validateValidator(ValidationLogger $logger, $validator)
     {
-        if (!class_exists($validator)) {
+        if (!ClassUtil::exists($validator)) {
             $error = sprintf(self::ERROR_GENERATOR_VALIDATOR_DOES_NOT_EXIST, $validator, $this->getName());
             $logger->error($error, self::ERROR_GENERATOR_VALIDATOR_DOES_NOT_EXIST_CODE);
             return;
@@ -205,6 +207,9 @@ class GenericGeneratorConfig
             return;
         }
         if ($reflect->implementsInterface(Validator::COLLECTION_MANY_VALIDATOR_INTERFACE)) {
+            return;
+        }
+        if ($reflect->implementsInterface(Validator::STORED_PROCEDURE_VALIDATOR)) {
             return;
         }
 

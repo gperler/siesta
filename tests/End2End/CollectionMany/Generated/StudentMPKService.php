@@ -73,7 +73,6 @@ class StudentMPKService
     public function getStudentMPKJoinStudentExamMPK(string $id1, string $id2, string $connectionName = null) : array
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $connection = ConnectionFactory::getConnection($connectionName);
         $id1 = Escaper::quoteString($connection, $id1);
         $id2 = Escaper::quoteString($connection, $id2);
         return $this->executeStoredProcedure("CALL StudentMPK_S_JOIN_StudentExamMPK_studentList($id1,$id2)", $connectionName);

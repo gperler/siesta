@@ -59,6 +59,10 @@ class ReferenceMapping
     {
         $this->localAttribute = $this->entity->getAttributeByName($this->getLocalAttributeName());
         $this->foreignAttribute = $foreignEntity->getAttributeByName($this->getForeignAttributeName());
+
+        if ($this->localAttribute !== null) {
+            $this->localAttribute->setIsForeignKey();
+        }
     }
 
     /**

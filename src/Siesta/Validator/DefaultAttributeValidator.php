@@ -7,6 +7,7 @@ use Siesta\Contract\AttributeValidator;
 use Siesta\Model\Attribute;
 use Siesta\Model\DataModel;
 use Siesta\Model\Entity;
+use Siesta\Model\PHPType;
 use Siesta\Model\ValidationLogger;
 
 /**
@@ -50,13 +51,12 @@ class DefaultAttributeValidator implements AttributeValidator
     ];
 
     const PHP_TYPE_LIST = [
-        "bool",
-        "int",
-        "float",
-        "string",
-        "SiestaDateTime",
-        "array",
-        "json"
+        PHPType::BOOL,
+        PHPType::INT,
+        PHPType::FLOAT,
+        PHPType::STRING,
+        PHPType::SIESTA_DATE_TIME,
+        PHPType::ARRAY
     ];
 
     /**
@@ -199,7 +199,7 @@ class DefaultAttributeValidator implements AttributeValidator
     protected function validateWarnAutovalue()
     {
 
-        if (!$this->attribute->getIsPrimaryKey() || $this->attribute->getAutoValue() !== null) {
+        if (!$this->attribute->getIsPrimaryKey() || $this->attribute->getAutoValue() !== null || $this->attribute->getIsForeignKey()) {
             return;
         }
 

@@ -76,6 +76,11 @@ class Attribute
     protected $className;
 
     /**
+     * @var bool
+     */
+    protected $isForeignKey;
+
+    /**
      * Attribute constructor.
      *
      * @param Entity $entity
@@ -83,6 +88,7 @@ class Attribute
     public function __construct(Entity $entity)
     {
         $this->entity = $entity;
+        $this->isForeignKey = false;
     }
 
     /**
@@ -329,6 +335,22 @@ class Attribute
     public function setClassName(string $className = null)
     {
         $this->className = $className;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsForeignKey(): bool
+    {
+        return $this->isForeignKey;
+    }
+
+    /**
+     *
+     */
+    public function setIsForeignKey()
+    {
+        $this->isForeignKey = true;
     }
 
 }

@@ -11,6 +11,7 @@ use Siesta\Contract\DataModelValidator;
 use Siesta\Contract\EntityValidator;
 use Siesta\Contract\IndexValidator;
 use Siesta\Contract\ReferenceValidator;
+use Siesta\Contract\StoredProcedureValidator;
 use Siesta\Model\Attribute;
 use Siesta\Model\Collection;
 use Siesta\Model\CollectionMany;
@@ -18,6 +19,7 @@ use Siesta\Model\DataModel;
 use Siesta\Model\Entity;
 use Siesta\Model\Index;
 use Siesta\Model\Reference;
+use Siesta\Model\StoredProcedure;
 use Siesta\Model\ValidationLogger;
 
 /**
@@ -39,6 +41,8 @@ class Validator
     const COLLECTION_VALIDATOR_INTERFACE = 'Siesta\Contract\CollectionValidator';
 
     const COLLECTION_MANY_VALIDATOR_INTERFACE = 'Siesta\Contract\CollectionManyValidator';
+
+    const STORED_PROCEDURE_VALIDATOR = 'Siesta\Contract\StoredProcedureValidator';
 
     /**
      * @var DataModelValidator[]
@@ -76,6 +80,11 @@ class Validator
     protected $collectionManyValidatorList;
 
     /**
+     * @var StoredProcedureValidator[]
+     */
+    protected $storedProcedureValidatorList;
+
+    /**
      * Validator constructor.
      */
     public function __construct()
@@ -87,6 +96,7 @@ class Validator
         $this->indexValidatorList = [];
         $this->collectionValidatorList = [];
         $this->collectionManyValidatorList = [];
+        $this->storedProcedureValidatorList = [];
     }
 
     /**
@@ -143,6 +153,10 @@ class Validator
 
         foreach ($entity->getCollectionManyList() as $collectionMany) {
             $this->validateCollectionMany($dataModel, $entity, $collectionMany, $logger);
+        }
+
+        foreach($entity->getStoredProcedureList() as $storedProcedure) {
+            $this->validateStoredProcedure($dataModel, $entity, $storedProcedure, $logger);
         }
     }
 
@@ -212,6 +226,19 @@ class Validator
     }
 
     /**
+     * @param DataModel $dataModel
+     * @param Entity $entity
+     * @param StoredProcedure $storedProcedure
+     * @param ValidationLogger $logger
+     */
+    protected function validateStoredProcedure(DataModel $dataModel, Entity $entity, StoredProcedure $storedProcedure, ValidationLogger $logger)
+    {
+        foreach ($this->storedProcedureValidatorList as $validator) {
+            $validator->validate($dataModel, $entity, $storedProcedure, $logger);
+        }
+    }
+
+    /**
      * @param GenericGeneratorConfig $config
      */
     protected function addGenericGeneratorConfig(GenericGeneratorConfig $config)
@@ -256,6 +283,10 @@ class Validator
 
         if ($reflect->implementsInterface(self::COLLECTION_MANY_VALIDATOR_INTERFACE)) {
             $this->collectionManyValidatorList[$validatorClassName] = $validator;
+        }
+
+        if ($reflect->implementsInterface(self::STORED_PROCEDURE_VALIDATOR)) {
+            $this->storedProcedureValidatorList[$validatorClassName] = $validator;
         }
 
     }

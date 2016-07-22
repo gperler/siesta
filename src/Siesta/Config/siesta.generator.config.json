@@ -27,7 +27,8 @@
         "Siesta\\Validator\\DefaultReferenceValidator",
         "Siesta\\Validator\\DefaultIndexValidator",
         "Siesta\\Validator\\DefaultCollectionValidator",
-        "Siesta\\Validator\\DefaultCollectionManyValidator"
+        "Siesta\\Validator\\DefaultCollectionManyValidator",
+        "Siesta\\Validator\\DefaultStoredProcedureValidator"
       ]
     },
     {
