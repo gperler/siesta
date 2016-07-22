@@ -33,7 +33,7 @@ class MemberPlugin extends BasePlugin
 
         foreach ($entity->getReferenceList() as $reference) {
             $foreignEntity = $reference->getForeignEntity();
-            $useList[] = $foreignEntity->getClassName();
+            $useList[] = $foreignEntity->getInstantiationClass();
         }
 
         return $useList;
@@ -90,7 +90,7 @@ class MemberPlugin extends BasePlugin
     {
         foreach ($this->entity->getReferenceList() as $reference) {
             $foreignEntity = $reference->getForeignEntity();
-            $this->codeGenerator->addProtectedMember($reference->getName(), $foreignEntity->getClassShortName());
+            $this->codeGenerator->addProtectedMember($reference->getName(), $foreignEntity->getInstantiationClassShortName());
         }
     }
 

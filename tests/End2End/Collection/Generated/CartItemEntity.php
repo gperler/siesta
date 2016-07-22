@@ -58,7 +58,7 @@ class CartItemEntity implements ArraySerializable
     protected $cartId;
 
     /**
-     * @var CartEntity
+     * @var Cart
      */
     protected $cart;
 
