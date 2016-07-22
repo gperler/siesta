@@ -67,10 +67,10 @@ class CollectionManyAccess extends BasePlugin
         $useList = [];
         foreach ($entity->getCollectionManyList() as $collectionMany) {
             $mappingEntity = $collectionMany->getMappingEntity();
-            $useList[] = $mappingEntity->getClassName();
+            $useList[] = $mappingEntity->getInstantiationClass();
 
             $foreignEntity = $collectionMany->getForeignEntity();
-            $useList[] = $foreignEntity->getClassName();
+            $useList[] = $foreignEntity->getInstantiationClass();
         }
 
         foreach ($entity->getReferenceList() as $reference) {

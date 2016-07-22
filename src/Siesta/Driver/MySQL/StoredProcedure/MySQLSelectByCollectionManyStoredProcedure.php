@@ -12,7 +12,7 @@ use Siesta\Model\Reference;
 class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBase
 {
 
-    const JOIN = "SELECT * FROM %s LEFT JOIN %s ON %s WHERE %s;";
+    const JOIN = "SELECT %s.* FROM %s LEFT JOIN %s ON %s WHERE %s;";
 
     /**
      * @var CollectionMany
@@ -94,7 +94,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
         $joinCondition = $this->getJoinCondition();
         $whereStatement = $this->getWhereCondition();
 
-        $this->statement = sprintf(self::JOIN, $foreignTable, $mappingTable, $joinCondition, $whereStatement);
+        $this->statement = sprintf(self::JOIN, $foreignTable, $foreignTable, $mappingTable, $joinCondition, $whereStatement);
     }
 
     /**
