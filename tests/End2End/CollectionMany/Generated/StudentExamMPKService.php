@@ -9,41 +9,41 @@ use Siesta\Database\Escaper;
 use Siesta\Database\ResultSet;
 use Siesta\Util\ArrayUtil;
 
-class ProductRelatedService
+class StudentExamMPKService
 {
 
     /**
-     * @var ProductRelatedService
+     * @var StudentExamMPKService
      */
     protected static $instance;
 
     /**
      * 
-     * @return ProductRelatedService
+     * @return StudentExamMPKService
      */
-    public static function getInstance() : ProductRelatedService
+    public static function getInstance() : StudentExamMPKService
     {
         if (self::$instance === null) {
-            self::$instance = new ProductRelatedService();
+            self::$instance = new StudentExamMPKService();
         }
         return self::$instance;
     }
 
     /**
      * 
-     * @return ProductRelated
+     * @return StudentExamMPK
      */
-    public function newInstance() : ProductRelated
+    public function newInstance() : StudentExamMPK
     {
-        return new ProductRelated();
+        return new StudentExamMPK();
     }
 
     /**
      * @param ResultSet $resultSet
      * 
-     * @return ProductRelated
+     * @return StudentExamMPK
      */
-    public function createInstanceFromResultSet(ResultSet $resultSet) : ProductRelated
+    public function createInstanceFromResultSet(ResultSet $resultSet) : StudentExamMPK
     {
         $entity = $this->newInstance();
         $entity->fromResultSet($resultSet);
@@ -54,7 +54,7 @@ class ProductRelatedService
      * @param string $spCall
      * @param string $connectionName
      * 
-     * @return ProductRelated[]
+     * @return StudentExamMPK[]
      */
     public function executeStoredProcedure(string $spCall, string $connectionName = null) : array
     {
@@ -69,7 +69,7 @@ class ProductRelatedService
     }
 
     /**
-     * @param ProductRelated[] $entityList
+     * @param StudentExamMPK[] $entityList
      * @param string $connectionName
      * 
      * @return void

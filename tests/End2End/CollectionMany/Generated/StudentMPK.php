@@ -15,12 +15,14 @@ use Siesta\Util\ArrayUtil;
 use Siesta\Util\DefaultCycleDetector;
 use Siesta\Util\StringUtil;
 
-class Product implements ArraySerializable
+class StudentMPK implements ArraySerializable
 {
 
-    const TABLE_NAME = "Product";
+    const TABLE_NAME = "StudentMPK";
 
-    const COLUMN_ID = "id";
+    const COLUMN_ID1 = "id1";
+
+    const COLUMN_ID2 = "id2";
 
     const COLUMN_NAME = "name";
 
@@ -40,9 +42,14 @@ class Product implements ArraySerializable
     protected $_rawSQLResult;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $id;
+    protected $id1;
+
+    /**
+     * @var string
+     */
+    protected $id2;
 
     /**
      * @var string
@@ -50,14 +57,14 @@ class Product implements ArraySerializable
     protected $name;
 
     /**
-     * @var Product[]
+     * @var ExamMPK[]
      */
-    protected $relatedProductList;
+    protected $examList;
 
     /**
-     * @var ProductRelated[]
+     * @var StudentExamMPK[]
      */
-    protected $relatedProductListMapping;
+    protected $examListMapping;
 
     /**
      * 
@@ -65,7 +72,7 @@ class Product implements ArraySerializable
     public function __construct()
     {
         $this->_existing = false;
-        $this->relatedProductListMapping = [];
+        $this->examListMapping = [];
     }
 
     /**
@@ -75,10 +82,11 @@ class Product implements ArraySerializable
      */
     public function createSaveStoredProcedureCall(string $connectionName = null) : string
     {
-        $spCall = ($this->_existing) ? "CALL Product_U(" : "CALL Product_I(";
+        $spCall = ($this->_existing) ? "CALL StudentMPK_U(" : "CALL StudentMPK_I(";
         $connection = ConnectionFactory::getConnection($connectionName);
-        $this->getId(true, $connectionName);
-        return $spCall . Escaper::quoteInt($this->id) . ',' . Escaper::quoteString($connection, $this->name) . ');';
+        $this->getId1(true, $connectionName);
+        $this->getId2(true, $connectionName);
+        return $spCall . Escaper::quoteString($connection, $this->id1) . ',' . Escaper::quoteString($connection, $this->id2) . ',' . Escaper::quoteString($connection, $this->name) . ');';
     }
 
     /**
@@ -103,7 +111,7 @@ class Product implements ArraySerializable
         if (!$cascade) {
             return;
         }
-        foreach ($this->relatedProductListMapping as $mapping) {
+        foreach ($this->examListMapping as $mapping) {
             $mapping->save($cascade, $cycleDetector, $connectionName);
         }
     }
@@ -117,7 +125,8 @@ class Product implements ArraySerializable
     {
         $this->_existing = true;
         $this->_rawSQLResult = $resultSet->getNext();
-        $this->id = $resultSet->getIntegerValue("id");
+        $this->id1 = $resultSet->getStringValue("id1");
+        $this->id2 = $resultSet->getStringValue("id2");
         $this->name = $resultSet->getStringValue("name");
     }
 
@@ -139,8 +148,9 @@ class Product implements ArraySerializable
     public function delete(string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $id = Escaper::quoteInt($this->id);
-        $connection->execute("CALL Product_DB_PK($id)");
+        $id1 = Escaper::quoteString($connection, $this->id1);
+        $id2 = Escaper::quoteString($connection, $this->id2);
+        $connection->execute("CALL StudentMPK_DB_PK($id1,$id2)");
         $this->_existing = false;
     }
 
@@ -153,9 +163,10 @@ class Product implements ArraySerializable
     {
         $this->_rawJSON = $data;
         $arrayAccessor = new ArrayAccessor($data);
-        $this->setId($arrayAccessor->getIntegerValue("id"));
+        $this->setId1($arrayAccessor->getStringValue("id1"));
+        $this->setId2($arrayAccessor->getStringValue("id2"));
         $this->setName($arrayAccessor->getStringValue("name"));
-        $this->_existing = ($this->id !== null);
+        $this->_existing = ($this->id1 !== null) && ($this->id2 !== null);
     }
 
     /**
@@ -172,7 +183,8 @@ class Product implements ArraySerializable
             return null;
         }
         $result = [
-            "id" => $this->getId(),
+            "id1" => $this->getId1(),
+            "id2" => $this->getId2(),
             "name" => $this->getName()
         ];
         return $result;
@@ -202,24 +214,48 @@ class Product implements ArraySerializable
      * @param bool $generateKey
      * @param string $connectionName
      * 
-     * @return int|null
+     * @return string|null
      */
-    public function getId(bool $generateKey = false, string $connectionName = null)
+    public function getId1(bool $generateKey = false, string $connectionName = null)
     {
-        if ($generateKey && $this->id === null) {
-            $this->id = SequencerFactory::nextSequence("autoincrement", self::TABLE_NAME, $connectionName);
+        if ($generateKey && $this->id1 === null) {
+            $this->id1 = SequencerFactory::nextSequence("uuid", self::TABLE_NAME, $connectionName);
         }
-        return $this->id;
+        return $this->id1;
     }
 
     /**
-     * @param int $id
+     * @param string $id1
      * 
      * @return void
      */
-    public function setId(int $id = null)
+    public function setId1(string $id1 = null)
     {
-        $this->id = $id;
+        $this->id1 = StringUtil::trimToNull($id1, 36);
+    }
+
+    /**
+     * @param bool $generateKey
+     * @param string $connectionName
+     * 
+     * @return string|null
+     */
+    public function getId2(bool $generateKey = false, string $connectionName = null)
+    {
+        if ($generateKey && $this->id2 === null) {
+            $this->id2 = SequencerFactory::nextSequence("uuid", self::TABLE_NAME, $connectionName);
+        }
+        return $this->id2;
+    }
+
+    /**
+     * @param string $id2
+     * 
+     * @return void
+     */
+    public function setId2(string $id2 = null)
+    {
+        $this->id2 = StringUtil::trimToNull($id2, 36);
     }
 
     /**
@@ -245,68 +281,74 @@ class Product implements ArraySerializable
      * @param bool $forceReload
      * @param string $connectionName
      * 
-     * @return Product[]
+     * @return ExamMPK[]
      */
-    public function getRelatedProductList(bool $forceReload = false, string $connectionName = null) : array
+    public function getExamList(bool $forceReload = false, string $connectionName = null) : array
     {
-        if ($this->relatedProductList === null || $forceReload) {
-            $this->relatedProductList = ProductService::getInstance()->getProductJoinProductRelated($this->id, $connectionName);
+        if ($this->examList === null || $forceReload) {
+            $this->examList = ExamMPKService::getInstance()->getExamMPKJoinStudentExamMPK($this->id1, $this->id2, $connectionName);
         }
-        return $this->relatedProductList;
+        return $this->examList;
     }
 
     /**
-     * @param Product $entity
+     * @param ExamMPK $entity
      * 
      * @return void
      */
-    public function addToRelatedProductList(Product $entity)
+    public function addToExamList(ExamMPK $entity)
     {
-        $mapping = ProductRelatedService::getInstance()->newInstance();
-        $mapping->setProductTarget($this);
-        $mapping->setProductTarget($entity);
-        $this->relatedProductListMapping[] = $mapping;
+        $mapping = StudentExamMPKService::getInstance()->newInstance();
+        $mapping->setStudentReference($this);
+        $mapping->setExamReference($entity);
+        $this->examListMapping[] = $mapping;
     }
 
     /**
-     * @param int $id
+     * @param string $id1
+     * @param string $id2
      * @param string $connectionName
      * 
      * @return void
      */
-    public function deleteFromRelatedProductList(int $id = null, string $connectionName = null)
+    public function deleteFromExamList(string $id1 = null, string $id2 = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $productId = Escaper::quoteInt($this->id);
-        $productId = Escaper::quoteInt($id);
-        $connection->execute("CALL ProductRelated_D_A_Product_relatedProductList($productId,$productId)");
+        $studentMPKId1 = Escaper::quoteString($connection, $this->id1);
+        $studentMPKId2 = Escaper::quoteString($connection, $this->id2);
+        $examMPKId1 = Escaper::quoteString($connection, $id1);
+        $examMPKId2 = Escaper::quoteString($connection, $id2);
+        $connection->execute("CALL StudentExamMPK_D_A_StudentMPK_examList($studentMPKId1,$studentMPKId2,$examMPKId1,$examMPKId2)");
     }
 
     /**
-     * @param int $id
+     * @param string $id1
+     * @param string $id2
      * @param string $connectionName
      * 
      * @return void
      */
-    public function deleteAssignedProduct(int $id = null, string $connectionName = null)
+    public function deleteAssignedExamMPK(string $id1 = null, string $id2 = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $productId = Escaper::quoteInt($this->id);
-        $productId = Escaper::quoteInt($id);
-        $connection->execute("CALL Product_D_JOIN_ProductRelated_relatedProductList($productId,$productId)");
+        $studentMPKId1 = Escaper::quoteString($connection, $this->id1);
+        $studentMPKId2 = Escaper::quoteString($connection, $this->id2);
+        $examMPKId1 = Escaper::quoteString($connection, $id1);
+        $examMPKId2 = Escaper::quoteString($connection, $id2);
+        $connection->execute("CALL ExamMPK_D_JOIN_StudentExamMPK_examList($studentMPKId1,$studentMPKId2,$examMPKId1,$examMPKId2)");
     }
 
     /**
-     * @param Product $entity
+     * @param StudentMPK $entity
      * 
      * @return bool
      */
-    public function arePrimaryKeyIdentical(Product $entity = null) : bool
+    public function arePrimaryKeyIdentical(StudentMPK $entity = null) : bool
     {
         if ($entity === null) {
             return false;
         }
-        return $this->getId() === $entity->getId();
+        return $this->getId1() === $entity->getId1() && $this->getId2() === $entity->getId2();
     }
 
 }

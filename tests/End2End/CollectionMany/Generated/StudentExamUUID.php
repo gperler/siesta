@@ -12,15 +12,16 @@ use Siesta\Database\ResultSet;
 use Siesta\Util\ArrayAccessor;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\DefaultCycleDetector;
+use Siesta\Util\StringUtil;
 
-class ProductRelated implements ArraySerializable
+class StudentExamUUID implements ArraySerializable
 {
 
-    const TABLE_NAME = "ProductRelated";
+    const TABLE_NAME = "StudentExamUUID";
 
-    const COLUMN_PRODUCTSOURCEID = "FK_source";
+    const COLUMN_STUDENTID = "FK_Student";
 
-    const COLUMN_PRODUCTTARGETID = "FK_target";
+    const COLUMN_EXAMID = "FK_Exam";
 
     /**
      * @var bool
@@ -38,24 +39,24 @@ class ProductRelated implements ArraySerializable
     protected $_rawSQLResult;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $productSourceId;
+    protected $studentId;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $productTargetId;
+    protected $examId;
 
     /**
-     * @var Product
+     * @var StudentUUID
      */
-    protected $productSource;
+    protected $StudentReference;
 
     /**
-     * @var Product
+     * @var ExamUUID
      */
-    protected $productTarget;
+    protected $ExamReference;
 
     /**
      * 
@@ -72,9 +73,9 @@ class ProductRelated implements ArraySerializable
      */
     public function createSaveStoredProcedureCall(string $connectionName = null) : string
     {
-        $spCall = ($this->_existing) ? "CALL ProductRelated_U(" : "CALL ProductRelated_I(";
+        $spCall = ($this->_existing) ? "CALL StudentExamUUID_U(" : "CALL StudentExamUUID_I(";
         $connection = ConnectionFactory::getConnection($connectionName);
-        return $spCall . Escaper::quoteInt($this->productSourceId) . ',' . Escaper::quoteInt($this->productTargetId) . ');';
+        return $spCall . Escaper::quoteString($connection, $this->studentId) . ',' . Escaper::quoteString($connection, $this->examId) . ');';
     }
 
     /**
@@ -93,11 +94,11 @@ class ProductRelated implements ArraySerializable
         if (!$cycleDetector->canProceed(self::TABLE_NAME, $this)) {
             return;
         }
-        if ($cascade && $this->productSource !== null) {
-            $this->productSource->save($cascade, $cycleDetector, $connectionName);
+        if ($cascade && $this->StudentReference !== null) {
+            $this->StudentReference->save($cascade, $cycleDetector, $connectionName);
         }
-        if ($cascade && $this->productTarget !== null) {
-            $this->productTarget->save($cascade, $cycleDetector, $connectionName);
+        if ($cascade && $this->ExamReference !== null) {
+            $this->ExamReference->save($cascade, $cycleDetector, $connectionName);
         }
         $call = $this->createSaveStoredProcedureCall($connectionName);
         $connection->execute($call);
@@ -116,8 +117,8 @@ class ProductRelated implements ArraySerializable
     {
         $this->_existing = true;
         $this->_rawSQLResult = $resultSet->getNext();
-        $this->productSourceId = $resultSet->getIntegerValue("FK_source");
-        $this->productTargetId = $resultSet->getIntegerValue("FK_target");
+        $this->studentId = $resultSet->getStringValue("FK_Student");
+        $this->examId = $resultSet->getStringValue("FK_Exam");
     }
 
     /**
@@ -138,7 +139,7 @@ class ProductRelated implements ArraySerializable
     public function delete(string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $connection->execute("CALL ProductRelated_DB_PK()");
+        $connection->execute("CALL StudentExamUUID_DB_PK()");
         $this->_existing = false;
     }
 
@@ -151,19 +152,19 @@ class ProductRelated implements ArraySerializable
     {
         $this->_rawJSON = $data;
         $arrayAccessor = new ArrayAccessor($data);
-        $this->setProductSourceId($arrayAccessor->getIntegerValue("productSourceId"));
-        $this->setProductTargetId($arrayAccessor->getIntegerValue("productTargetId"));
-        $productSourceArray = $arrayAccessor->getArray("productSource");
-        if ($productSourceArray !== null) {
-            $productSource = ProductService::getInstance()->newInstance();
-            $productSource->fromArray($productSourceArray);
-            $this->setProductSource($productSource);
+        $this->setStudentId($arrayAccessor->getStringValue("studentId"));
+        $this->setExamId($arrayAccessor->getStringValue("examId"));
+        $StudentReferenceArray = $arrayAccessor->getArray("StudentReference");
+        if ($StudentReferenceArray !== null) {
+            $StudentReference = StudentUUIDService::getInstance()->newInstance();
+            $StudentReference->fromArray($StudentReferenceArray);
+            $this->setStudentReference($StudentReference);
         }
-        $productTargetArray = $arrayAccessor->getArray("productTarget");
-        if ($productTargetArray !== null) {
-            $productTarget = ProductService::getInstance()->newInstance();
-            $productTarget->fromArray($productTargetArray);
-            $this->setProductTarget($productTarget);
+        $ExamReferenceArray = $arrayAccessor->getArray("ExamReference");
+        if ($ExamReferenceArray !== null) {
+            $ExamReference = ExamUUIDService::getInstance()->newInstance();
+            $ExamReference->fromArray($ExamReferenceArray);
+            $this->setExamReference($ExamReference);
         }
     }
 
@@ -181,14 +182,14 @@ class ProductRelated implements ArraySerializable
             return null;
         }
         $result = [
-            "productSourceId" => $this->getProductSourceId(),
-            "productTargetId" => $this->getProductTargetId()
+            "studentId" => $this->getStudentId(),
+            "examId" => $this->getExamId()
         ];
-        if ($this->productSource !== null) {
-            $result["productSource"] = $this->productSource->toArray($cycleDetector);
+        if ($this->StudentReference !== null) {
+            $result["StudentReference"] = $this->StudentReference->toArray($cycleDetector);
         }
-        if ($this->productTarget !== null) {
-            $result["productTarget"] = $this->productTarget->toArray($cycleDetector);
+        if ($this->ExamReference !== null) {
+            $result["ExamReference"] = $this->ExamReference->toArray($cycleDetector);
         }
         return $result;
     }
@@ -215,96 +216,96 @@ class ProductRelated implements ArraySerializable
 
     /**
      * 
-     * @return int|null
+     * @return string|null
      */
-    public function getProductSourceId()
+    public function getStudentId()
     {
-        return $this->productSourceId;
+        return $this->studentId;
     }
 
     /**
-     * @param int $productSourceId
+     * @param string $studentId
      * 
      * @return void
      */
-    public function setProductSourceId(int $productSourceId = null)
+    public function setStudentId(string $studentId = null)
     {
-        $this->productSourceId = $productSourceId;
+        $this->studentId = StringUtil::trimToNull($studentId, 36);
     }
 
     /**
      * 
-     * @return int|null
+     * @return string|null
      */
-    public function getProductTargetId()
+    public function getExamId()
     {
-        return $this->productTargetId;
+        return $this->examId;
     }
 
     /**
-     * @param int $productTargetId
+     * @param string $examId
      * 
      * @return void
      */
-    public function setProductTargetId(int $productTargetId = null)
+    public function setExamId(string $examId = null)
     {
-        $this->productTargetId = $productTargetId;
+        $this->examId = StringUtil::trimToNull($examId, 36);
     }
 
     /**
      * @param bool $forceReload
      * 
-     * @return Product|null
+     * @return StudentUUID|null
      */
-    public function getProductSource(bool $forceReload = false)
+    public function getStudentReference(bool $forceReload = false)
     {
-        if ($this->productSource === null || $forceReload) {
-            $this->productSource = ProductService::getInstance()->getEntityByPrimaryKey($this->productSourceId);
+        if ($this->StudentReference === null || $forceReload) {
+            $this->StudentReference = StudentUUIDService::getInstance()->getEntityByPrimaryKey($this->studentId);
         }
-        return $this->productSource;
+        return $this->StudentReference;
     }
 
     /**
-     * @param Product $entity
+     * @param StudentUUID $entity
      * 
      * @return void
      */
-    public function setProductSource(Product $entity = null)
+    public function setStudentReference(StudentUUID $entity = null)
     {
-        $this->productSource = $entity;
-        $this->productSourceId = ($entity !== null) ? $entity->getId(true) : null;
+        $this->StudentReference = $entity;
+        $this->studentId = ($entity !== null) ? $entity->getId(true) : null;
     }
 
     /**
      * @param bool $forceReload
      * 
-     * @return Product|null
+     * @return ExamUUID|null
      */
-    public function getProductTarget(bool $forceReload = false)
+    public function getExamReference(bool $forceReload = false)
     {
-        if ($this->productTarget === null || $forceReload) {
-            $this->productTarget = ProductService::getInstance()->getEntityByPrimaryKey($this->productTargetId);
+        if ($this->ExamReference === null || $forceReload) {
+            $this->ExamReference = ExamUUIDService::getInstance()->getEntityByPrimaryKey($this->examId);
         }
-        return $this->productTarget;
+        return $this->ExamReference;
     }
 
     /**
-     * @param Product $entity
+     * @param ExamUUID $entity
      * 
      * @return void
      */
-    public function setProductTarget(Product $entity = null)
+    public function setExamReference(ExamUUID $entity = null)
     {
-        $this->productTarget = $entity;
-        $this->productTargetId = ($entity !== null) ? $entity->getId(true) : null;
+        $this->ExamReference = $entity;
+        $this->examId = ($entity !== null) ? $entity->getId(true) : null;
     }
 
     /**
-     * @param ProductRelated $entity
+     * @param StudentExamUUID $entity
      * 
      * @return bool
      */
-    public function arePrimaryKeyIdentical(ProductRelated $entity = null) : bool
+    public function arePrimaryKeyIdentical(StudentExamUUID $entity = null) : bool
     {
         if ($entity === null) {
             return false;

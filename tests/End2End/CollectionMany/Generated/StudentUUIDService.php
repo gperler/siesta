@@ -9,96 +9,97 @@ use Siesta\Database\Escaper;
 use Siesta\Database\ResultSet;
 use Siesta\Util\ArrayUtil;
 
-class ProductService
+class StudentUUIDService
 {
 
     /**
-     * @var ProductService
+     * @var StudentUUIDService
      */
     protected static $instance;
 
     /**
      * 
-     * @return ProductService
+     * @return StudentUUIDService
      */
-    public static function getInstance() : ProductService
+    public static function getInstance() : StudentUUIDService
     {
         if (self::$instance === null) {
-            self::$instance = new ProductService();
+            self::$instance = new StudentUUIDService();
         }
         return self::$instance;
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @param string $connectionName
      * 
-     * @return Product|null
+     * @return StudentUUID|null
      */
-    public function getEntityByPrimaryKey(int $id = null, string $connectionName = null)
+    public function getEntityByPrimaryKey(string $id = null, string $connectionName = null)
     {
         if ($id === null) {
             return null;
         }
-        $id = Escaper::quoteInt($id);
-        $entityList = $this->executeStoredProcedure("CALL Product_SB_PK($id)", $connectionName);
+        $connection = ConnectionFactory::getConnection($connectionName);
+        $id = Escaper::quoteString($connection, $id);
+        $entityList = $this->executeStoredProcedure("CALL StudentUUID_SB_PK($id)", $connectionName);
         return ArrayUtil::getFromArray($entityList, 0);
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @param string $connectionName
      * 
      * @return void
      */
-    public function deleteEntityByPrimaryKey(int $id, string $connectionName = null)
+    public function deleteEntityByPrimaryKey(string $id, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $id = Escaper::quoteInt($id);
-        $connection->execute("CALL Product_DB_PK($id)");
+        $id = Escaper::quoteString($connection, $id);
+        $connection->execute("CALL StudentUUID_DB_PK($id)");
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @param string $connectionName
      * 
-     * @return Product[]
+     * @return StudentUUID[]
      */
-    public function getProductJoinProductRelated(int $id, string $connectionName = null) : array
+    public function getStudentUUIDJoinStudentExamUUID(string $id, string $connectionName = null) : array
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $id = Escaper::quoteInt($id);
-        return $this->executeStoredProcedure("CALL Product_S_JOIN_ProductRelated_relatedProductList($id)", $connectionName);
+        $id = Escaper::quoteString($connection, $id);
+        return $this->executeStoredProcedure("CALL StudentUUID_S_JOIN_StudentExamUUID_studentList($id)", $connectionName);
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @param string $connectionName
      * 
      * @return void
      */
-    public function deleteProductJoinProductRelated(int $id, string $connectionName = null)
+    public function deleteStudentUUIDJoinStudentExamUUID(string $id, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $id = Escaper::quoteInt($id);
-        $connection->execute("CALL Product_D_JOIN_ProductRelated_relatedProductList($id)");
+        $id = Escaper::quoteString($connection, $id);
+        $connection->execute("CALL StudentUUID_D_JOIN_StudentExamUUID_studentList($id)");
     }
 
     /**
      * 
-     * @return Product
+     * @return StudentUUID
      */
-    public function newInstance() : Product
+    public function newInstance() : StudentUUID
     {
-        return new Product();
+        return new StudentUUID();
     }
 
     /**
      * @param ResultSet $resultSet
      * 
-     * @return Product
+     * @return StudentUUID
      */
-    public function createInstanceFromResultSet(ResultSet $resultSet) : Product
+    public function createInstanceFromResultSet(ResultSet $resultSet) : StudentUUID
     {
         $entity = $this->newInstance();
         $entity->fromResultSet($resultSet);
@@ -109,7 +110,7 @@ class ProductService
      * @param string $spCall
      * @param string $connectionName
      * 
-     * @return Product[]
+     * @return StudentUUID[]
      */
     public function executeStoredProcedure(string $spCall, string $connectionName = null) : array
     {
@@ -124,7 +125,7 @@ class ProductService
     }
 
     /**
-     * @param Product[] $entityList
+     * @param StudentUUID[] $entityList
      * @param string $connectionName
      * 
      * @return void
