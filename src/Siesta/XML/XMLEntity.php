@@ -128,9 +128,9 @@ class XMLEntity
     public function toXML(XMLWrite $parent)
     {
         $xmlWrite = $parent->appendChild(self::ELEMENT_ENTITY_NAME);
-        $xmlWrite->setAttribute(self::TABLE_NAME, $this->getTableName());
         $xmlWrite->setAttribute(self::CLASS_SHORT_NAME, $this->getClassShortName());
         $xmlWrite->setAttribute(self::NAMESPACE_NAME, $this->getNamespaceName());
+        $xmlWrite->setAttribute(self::TABLE_NAME, $this->getTableName());
         $xmlWrite->setAttribute(self::TARGET_PATH, $this->getTargetPath());
         $this->databaseSpecificToXML($xmlWrite);
         foreach ($this->getXMLAttributeList() as $xmlAttribute) {
@@ -424,9 +424,11 @@ class XMLEntity
     /**
      * @param string $namespaceName
      */
-    public function setNamespaceName($namespaceName)
+    public function setNamespaceName(string $namespaceName = null)
     {
-        $this->namespaceName = trim($namespaceName, "\\");
+        if ($namespaceName !== null) {
+            $this->namespaceName = trim($namespaceName, "\\");
+        }
     }
 
     /**

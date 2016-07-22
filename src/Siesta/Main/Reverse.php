@@ -46,11 +46,6 @@ class Reverse
     protected $databaseName;
 
     /**
-     * @var AttributeNamingStrategy
-     */
-    protected $attributeNamingStrategy;
-
-    /**
      * Reverse constructor.
      */
     public function __construct()
@@ -147,7 +142,7 @@ class Reverse
     /**
      * @param string $defaultNamespace
      */
-    public function setDefaultNamespace(string $defaultNamespace = "")
+    public function setDefaultNamespace(string $defaultNamespace = null)
     {
         $this->defaultNamespace = $defaultNamespace;
     }

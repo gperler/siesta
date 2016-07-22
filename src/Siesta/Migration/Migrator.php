@@ -97,7 +97,7 @@ class Migrator implements LoggerAwareInterface
             }
 
             foreach ($this->databaseMigrator->getAlterStatementList() as $statement) {
-                $this->logger->info("Altering " . $statement);
+                $this->logger->warning("Altering " . $statement);
                 $this->connection->query($statement);
             }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <entityList>
-  <entity table="ext_log_entries" name="ExtLogEntries" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="ExtLogEntries" namespace="SiestaTest\End2End\Reverse\Generated" table="ext_log_entries" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="action" type="string" dbName="action" dbType="VARCHAR(8)" required="true"/>
@@ -25,7 +25,7 @@
       <indexPart attributeName="version" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="phpcr_binarydata" name="PhpcrBinarydata" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="PhpcrBinarydata" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_binarydata" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="nodeId" type="int" dbName="node_id" dbType="INT" required="true"/>
@@ -40,17 +40,17 @@
       <indexPart attributeName="idx" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="phpcr_internal_index_types" name="PhpcrInternalIndexTypes" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="PhpcrInternalIndexTypes" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_internal_index_types" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" primaryKey="true" required="true"/>
     <attribute name="nodeId" type="int" dbName="node_id" dbType="INT" primaryKey="true" required="true"/>
   </entity>
-  <entity table="phpcr_namespaces" name="PhpcrNamespaces" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="PhpcrNamespaces" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_namespaces" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="prefix" type="string" dbName="prefix" dbType="VARCHAR(255)" primaryKey="true" required="true"/>
     <attribute name="uri" type="string" dbName="uri" dbType="VARCHAR(255)" required="true"/>
   </entity>
-  <entity table="phpcr_nodes" name="PhpcrNodes" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="PhpcrNodes" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_nodes" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="path" type="string" dbName="path" dbType="VARCHAR(255)" required="true"/>
@@ -83,7 +83,7 @@
       <indexPart attributeName="namespace" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="phpcr_nodes_references" name="PhpcrNodesReferences" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="PhpcrNodesReferences" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_nodes_references" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="sourceId" type="int" dbName="source_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="sourcePropertyName" type="string" dbName="source_property_name" dbType="VARCHAR(220)" primaryKey="true" required="true"/>
@@ -92,7 +92,7 @@
       <indexPart attributeName="targetId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="phpcr_nodes_weakreferences" name="PhpcrNodesWeakreferences" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="PhpcrNodesWeakreferences" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_nodes_weakreferences" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="sourceId" type="int" dbName="source_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="sourcePropertyName" type="string" dbName="source_property_name" dbType="VARCHAR(220)" primaryKey="true" required="true"/>
@@ -101,7 +101,7 @@
       <indexPart attributeName="targetId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="phpcr_type_childs" name="PhpcrTypeChilds" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="PhpcrTypeChilds" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_type_childs" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="nodeTypeId" type="int" dbName="node_type_id" dbType="INT" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
@@ -112,7 +112,7 @@
     <attribute name="primaryTypes" type="string" dbName="primary_types" dbType="VARCHAR(255)" required="true"/>
     <attribute name="defaultType" type="string" dbName="default_type" dbType="VARCHAR(255)"/>
   </entity>
-  <entity table="phpcr_type_nodes" name="PhpcrTypeNodes" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="PhpcrTypeNodes" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_type_nodes" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="nodeTypeId" type="int" dbName="node_type_id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
@@ -126,7 +126,7 @@
       <indexPart attributeName="name" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="phpcr_type_props" name="PhpcrTypeProps" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="PhpcrTypeProps" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_type_props" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="nodeTypeId" type="int" dbName="node_type_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" primaryKey="true" required="true"/>
@@ -141,11 +141,11 @@
     <attribute name="queryOperators" type="int" dbName="query_operators" dbType="INT" required="true"/>
     <attribute name="defaultValue" type="string" dbName="default_value" dbType="VARCHAR(255)"/>
   </entity>
-  <entity table="phpcr_workspaces" name="PhpcrWorkspaces" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="PhpcrWorkspaces" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_workspaces" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" primaryKey="true" required="true"/>
   </entity>
-  <entity table="sylius_address" name="SyliusAddress" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusAddress" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_address" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="countryId" type="int" dbName="country_id" dbType="INT"/>
@@ -179,7 +179,7 @@
       <indexPart attributeName="customerId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_adjustment" name="SyliusAdjustment" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusAdjustment" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_adjustment" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT"/>
@@ -206,7 +206,7 @@
       <indexPart attributeName="orderItemId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_api_access_token" name="SyliusApiAccessToken" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusApiAccessToken" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_api_access_token" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="clientId" type="int" dbName="client_id" dbType="INT"/>
@@ -230,7 +230,7 @@
       <indexPart attributeName="userId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_api_auth_code" name="SyliusApiAuthCode" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusApiAuthCode" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_api_auth_code" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="clientId" type="int" dbName="client_id" dbType="INT"/>
@@ -255,7 +255,7 @@
       <indexPart attributeName="userId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_api_client" name="SyliusApiClient" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusApiClient" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_api_client" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="randomId" type="string" dbName="random_id" dbType="VARCHAR(255)" required="true"/>
@@ -263,7 +263,7 @@
     <attribute name="secret" type="string" dbName="secret" dbType="VARCHAR(255)" required="true"/>
     <attribute name="allowedGrantTypes" type="string" dbName="allowed_grant_types" dbType="LONGTEXT" required="true"/>
   </entity>
-  <entity table="sylius_api_refresh_token" name="SyliusApiRefreshToken" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusApiRefreshToken" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_api_refresh_token" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="clientId" type="int" dbName="client_id" dbType="INT"/>
@@ -287,7 +287,7 @@
       <indexPart attributeName="userId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_channel" name="SyliusChannel" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusChannel" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_channel" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
@@ -302,7 +302,7 @@
       <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_channel_currencies" name="SyliusChannelCurrencies" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusChannelCurrencies" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_channel_currencies" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="currencyId" type="int" dbName="currency_id" dbType="INT" primaryKey="true" required="true"/>
@@ -319,7 +319,7 @@
       <indexPart attributeName="currencyId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_channel_locales" name="SyliusChannelLocales" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusChannelLocales" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_channel_locales" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="localeId" type="int" dbName="locale_id" dbType="INT" primaryKey="true" required="true"/>
@@ -336,7 +336,7 @@
       <indexPart attributeName="localeId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_channel_payment_methods" name="SyliusChannelPaymentMethods" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusChannelPaymentMethods" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_channel_payment_methods" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="paymentMethodId" type="int" dbName="payment_method_id" dbType="INT" primaryKey="true" required="true"/>
@@ -353,7 +353,7 @@
       <indexPart attributeName="paymentMethodId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_channel_shipping_methods" name="SyliusChannelShippingMethods" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusChannelShippingMethods" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_channel_shipping_methods" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="shippingMethodId" type="int" dbName="shipping_method_id" dbType="INT" primaryKey="true" required="true"/>
@@ -370,7 +370,7 @@
       <indexPart attributeName="shippingMethodId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_channel_taxonomy" name="SyliusChannelTaxonomy" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusChannelTaxonomy" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_channel_taxonomy" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="taxonomyId" type="int" dbName="taxonomy_id" dbType="INT" primaryKey="true" required="true"/>
@@ -387,7 +387,7 @@
       <indexPart attributeName="taxonomyId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_contact_request" name="SyliusContactRequest" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusContactRequest" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_contact_request" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="topicId" type="int" dbName="topic_id" dbType="INT"/>
@@ -404,11 +404,11 @@
       <indexPart attributeName="topicId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_contact_topic" name="SyliusContactTopic" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusContactTopic" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_contact_topic" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
   </entity>
-  <entity table="sylius_contact_topic_translation" name="SyliusContactTopicTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusContactTopicTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_contact_topic_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
@@ -425,7 +425,7 @@
       <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_country" name="SyliusCountry" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusCountry" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_country" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="isoName" type="string" dbName="iso_name" dbType="VARCHAR(3)" required="true"/>
@@ -437,7 +437,7 @@
       <indexPart attributeName="isoName" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_credit_card" name="SyliusCreditCard" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusCreditCard" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_credit_card" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="token" type="string" dbName="token" dbType="VARCHAR(255)"/>
@@ -450,7 +450,7 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
-  <entity table="sylius_currency" name="SyliusCurrency" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusCurrency" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_currency" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="code" type="string" dbName="code" dbType="VARCHAR(3)" required="true"/>
@@ -462,7 +462,7 @@
       <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_customer" name="SyliusCustomer" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusCustomer" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_customer" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="billingAddressId" type="int" dbName="billing_address_id" dbType="INT"/>
@@ -496,7 +496,7 @@
       <indexPart attributeName="shippingAddressId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_customer_group" name="SyliusCustomerGroup" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusCustomerGroup" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_customer_group" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="customerId" type="int" dbName="customer_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="groupId" type="int" dbName="group_id" dbType="INT" primaryKey="true" required="true"/>
@@ -513,7 +513,7 @@
       <indexPart attributeName="groupId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_email" name="SyliusEmail" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusEmail" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_email" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
@@ -529,19 +529,19 @@
       <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_gateway_config" name="SyliusGatewayConfig" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusGatewayConfig" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_gateway_config" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="config" type="string" dbName="config" dbType="LONGTEXT" required="true"/>
     <attribute name="gatewayName" type="string" dbName="gateway_name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="factoryName" type="string" dbName="factory_name" dbType="VARCHAR(255)" required="true"/>
   </entity>
-  <entity table="sylius_group" name="SyliusGroup" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusGroup" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_group" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
   </entity>
-  <entity table="sylius_inventory_unit" name="SyliusInventoryUnit" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusInventoryUnit" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_inventory_unit" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="stockableId" type="int" dbName="stockable_id" dbType="INT" required="true"/>
@@ -570,7 +570,7 @@
       <indexPart attributeName="shipmentId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_locale" name="SyliusLocale" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusLocale" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_locale" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="code" type="string" dbName="code" dbType="VARCHAR(12)" required="true"/>
@@ -581,7 +581,7 @@
       <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_order" name="SyliusOrder" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusOrder" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_order" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT"/>
@@ -630,7 +630,7 @@
       <indexPart attributeName="customerId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_order_comment" name="SyliusOrderComment" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusOrderComment" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_order_comment" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" required="true"/>
@@ -647,7 +647,7 @@
       <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_order_identity" name="SyliusOrderIdentity" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusOrderIdentity" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_order_identity" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" required="true"/>
@@ -660,7 +660,7 @@
       <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_order_item" name="SyliusOrderItem" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusOrderItem" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_order_item" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" required="true"/>
@@ -683,7 +683,7 @@
       <indexPart attributeName="variantId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_payment" name="SyliusPayment" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPayment" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_payment" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="methodId" type="int" dbName="method_id" dbType="INT"/>
@@ -715,7 +715,7 @@
       <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_payment_method" name="SyliusPaymentMethod" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPaymentMethod" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_payment_method" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="gateway" type="string" dbName="gateway" dbType="VARCHAR(255)" required="true"/>
@@ -726,7 +726,7 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
-  <entity table="sylius_payment_method_translation" name="SyliusPaymentMethodTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPaymentMethodTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_payment_method_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
@@ -744,7 +744,7 @@
       <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_payment_security_token" name="SyliusPaymentSecurityToken" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPaymentSecurityToken" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_payment_security_token" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="hash" type="string" dbName="hash" dbType="VARCHAR(255)" primaryKey="true" required="true"/>
     <attribute name="details" type="string" dbName="details" dbType="LONGTEXT"/>
@@ -752,7 +752,7 @@
     <attribute name="targetUrl" type="string" dbName="target_url" dbType="LONGTEXT" required="true"/>
     <attribute name="gatewayName" type="string" dbName="gateway_name" dbType="VARCHAR(255)" required="true"/>
   </entity>
-  <entity table="sylius_permission" name="SyliusPermission" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPermission" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_permission" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="parentId" type="int" dbName="parent_id" dbType="INT"/>
@@ -770,7 +770,7 @@
       <indexPart attributeName="parentId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product" name="SyliusProduct" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProduct" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="archetypeId" type="int" dbName="archetype_id" dbType="INT"/>
@@ -807,7 +807,7 @@
       <indexPart attributeName="restrictedZone" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_archetype" name="SyliusProductArchetype" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductArchetype" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_archetype" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="parentId" type="int" dbName="parent_id" dbType="INT"/>
@@ -824,7 +824,7 @@
       <indexPart attributeName="parentId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_archetype_attribute" name="SyliusProductArchetypeAttribute" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductArchetypeAttribute" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_archetype_attribute" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="archetypeId" type="int" dbName="archetype_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="attributeId" type="int" dbName="attribute_id" dbType="INT" primaryKey="true" required="true"/>
@@ -841,7 +841,7 @@
       <indexPart attributeName="attributeId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_archetype_option" name="SyliusProductArchetypeOption" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductArchetypeOption" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_archetype_option" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="productArchetypeId" type="int" dbName="product_archetype_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="optionId" type="int" dbName="option_id" dbType="INT" primaryKey="true" required="true"/>
@@ -858,7 +858,7 @@
       <indexPart attributeName="optionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_archetype_translation" name="SyliusProductArchetypeTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductArchetypeTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_archetype_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
@@ -875,7 +875,7 @@
       <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_attribute" name="SyliusProductAttribute" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductAttribute" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_attribute" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
@@ -884,7 +884,7 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
-  <entity table="sylius_product_attribute_translation" name="SyliusProductAttributeTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductAttributeTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_attribute_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
@@ -901,7 +901,7 @@
       <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_attribute_value" name="SyliusProductAttributeValue" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductAttributeValue" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_attribute_value" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" required="true"/>
@@ -920,7 +920,7 @@
       <indexPart attributeName="attributeId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_channels" name="SyliusProductChannels" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductChannels" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_channels" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
@@ -937,14 +937,14 @@
       <indexPart attributeName="channelId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_option" name="SyliusProductOption" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductOption" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_option" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
-  <entity table="sylius_product_option_translation" name="SyliusProductOptionTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductOptionTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_option_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
@@ -961,7 +961,7 @@
       <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_option_value" name="SyliusProductOptionValue" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductOptionValue" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_option_value" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="optionId" type="int" dbName="option_id" dbType="INT" required="true"/>
@@ -973,7 +973,7 @@
       <indexPart attributeName="optionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_options" name="SyliusProductOptions" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductOptions" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_options" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="optionId" type="int" dbName="option_id" dbType="INT" primaryKey="true" required="true"/>
@@ -990,7 +990,7 @@
       <indexPart attributeName="optionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_taxon" name="SyliusProductTaxon" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductTaxon" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_taxon" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="taxonId" type="int" dbName="taxon_id" dbType="INT" primaryKey="true" required="true"/>
@@ -1007,7 +1007,7 @@
       <indexPart attributeName="taxonId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_translation" name="SyliusProductTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
@@ -1032,7 +1032,7 @@
       <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_variant" name="SyliusProductVariant" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductVariant" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_variant" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" required="true"/>
@@ -1067,7 +1067,7 @@
       <indexPart attributeName="sold" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_variant_image" name="SyliusProductVariantImage" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductVariantImage" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_variant_image" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="variantId" type="int" dbName="variant_id" dbType="INT"/>
@@ -1081,7 +1081,7 @@
       <indexPart attributeName="variantId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_product_variant_option_value" name="SyliusProductVariantOptionValue" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProductVariantOptionValue" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_variant_option_value" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="variantId" type="int" dbName="variant_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="optionValueId" type="int" dbName="option_value_id" dbType="INT" primaryKey="true" required="true"/>
@@ -1098,7 +1098,7 @@
       <indexPart attributeName="optionValueId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_promotion" name="SyliusPromotion" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPromotion" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
@@ -1114,7 +1114,7 @@
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
   </entity>
-  <entity table="sylius_promotion_action" name="SyliusPromotionAction" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPromotionAction" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_action" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT"/>
@@ -1127,7 +1127,7 @@
       <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_promotion_channels" name="SyliusPromotionChannels" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPromotionChannels" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_channels" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
@@ -1144,7 +1144,7 @@
       <indexPart attributeName="channelId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_promotion_coupon" name="SyliusPromotionCoupon" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPromotionCoupon" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_coupon" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT"/>
@@ -1163,7 +1163,7 @@
       <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_promotion_coupon_order" name="SyliusPromotionCouponOrder" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPromotionCouponOrder" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_coupon_order" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="promotionCouponId" type="int" dbName="promotion_coupon_id" dbType="INT" primaryKey="true" required="true"/>
@@ -1180,7 +1180,7 @@
       <indexPart attributeName="promotionCouponId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_promotion_order" name="SyliusPromotionOrder" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPromotionOrder" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_order" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT" primaryKey="true" required="true"/>
@@ -1197,7 +1197,7 @@
       <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_promotion_order_item" name="SyliusPromotionOrderItem" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPromotionOrderItem" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_order_item" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="orderItemId" type="int" dbName="order_item_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT" primaryKey="true" required="true"/>
@@ -1214,7 +1214,7 @@
       <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_promotion_rule" name="SyliusPromotionRule" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusPromotionRule" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_rule" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT"/>
@@ -1227,7 +1227,7 @@
       <indexPart attributeName="promotionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_province" name="SyliusProvince" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusProvince" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_province" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="countryId" type="int" dbName="country_id" dbType="INT"/>
@@ -1240,7 +1240,7 @@
       <indexPart attributeName="countryId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_report" name="SyliusReport" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusReport" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_report" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
@@ -1254,7 +1254,7 @@
       <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_role" name="SyliusRole" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusRole" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_role" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="parentId" type="int" dbName="parent_id" dbType="INT"/>
@@ -1274,7 +1274,7 @@
       <indexPart attributeName="parentId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_role_permission" name="SyliusRolePermission" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusRolePermission" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_role_permission" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="roleId" type="int" dbName="role_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="permissionId" type="int" dbName="permission_id" dbType="INT" primaryKey="true" required="true"/>
@@ -1291,7 +1291,7 @@
       <indexPart attributeName="permissionId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_search_index" name="SyliusSearchIndex" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusSearchIndex" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_search_index" targetPath="Generated">
     <entity-mysql engine="MyISAM" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="itemId" type="int" dbName="item_id" dbType="INT" required="true"/>
@@ -1310,14 +1310,14 @@
       <indexPart attributeName="entity" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_search_log" name="SyliusSearchLog" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusSearchLog" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_search_log" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="searchString" type="string" dbName="search_string" dbType="VARCHAR(255)" required="true"/>
     <attribute name="remoteAddress" type="string" dbName="remote_address" dbType="VARCHAR(20)" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
   </entity>
-  <entity table="sylius_sequence" name="SyliusSequence" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusSequence" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_sequence" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="idx" type="int" dbName="idx" dbType="INT" required="true"/>
@@ -1326,7 +1326,7 @@
       <indexPart attributeName="type" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_settings_parameter" name="SyliusSettingsParameter" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusSettingsParameter" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_settings_parameter" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="namespace" type="string" dbName="namespace" dbType="VARCHAR(255)" required="true"/>
@@ -1337,7 +1337,7 @@
       <indexPart attributeName="name" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_shipment" name="SyliusShipment" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusShipment" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_shipment" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="methodId" type="int" dbName="method_id" dbType="INT" required="true"/>
@@ -1359,7 +1359,7 @@
       <indexPart attributeName="orderId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_shipping_category" name="SyliusShippingCategory" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusShippingCategory" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_shipping_category" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
@@ -1367,7 +1367,7 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
-  <entity table="sylius_shipping_method" name="SyliusShippingMethod" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusShippingMethod" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_shipping_method" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="categoryId" type="int" dbName="category_id" dbType="INT"/>
@@ -1391,7 +1391,7 @@
       <indexPart attributeName="zoneId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_shipping_method_translation" name="SyliusShippingMethodTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusShippingMethodTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_shipping_method_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
@@ -1408,7 +1408,7 @@
       <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_shipping_rule" name="SyliusShippingRule" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusShippingRule" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_shipping_rule" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="methodId" type="int" dbName="method_id" dbType="INT" required="true"/>
@@ -1421,7 +1421,7 @@
       <indexPart attributeName="methodId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_tax_category" name="SyliusTaxCategory" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusTaxCategory" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_tax_category" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
@@ -1429,7 +1429,7 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
-  <entity table="sylius_tax_rate" name="SyliusTaxRate" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusTaxRate" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_tax_rate" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="categoryId" type="int" dbName="category_id" dbType="INT" required="true"/>
@@ -1453,7 +1453,7 @@
       <indexPart attributeName="zoneId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_taxon" name="SyliusTaxon" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusTaxon" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_taxon" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="taxonomyId" type="int" dbName="taxonomy_id" dbType="INT"/>
@@ -1476,7 +1476,7 @@
       <indexPart attributeName="parentId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_taxon_translation" name="SyliusTaxonTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusTaxonTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_taxon_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
@@ -1500,7 +1500,7 @@
       <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_taxonomy" name="SyliusTaxonomy" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusTaxonomy" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_taxonomy" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="rootId" type="int" dbName="root_id" dbType="INT"/>
@@ -1511,7 +1511,7 @@
       <indexPart attributeName="rootId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_taxonomy_translation" name="SyliusTaxonomyTranslation" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusTaxonomyTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_taxonomy_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
@@ -1528,7 +1528,7 @@
       <indexPart attributeName="translatableId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_user" name="SyliusUser" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusUser" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_user" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="customerId" type="int" dbName="customer_id" dbType="INT" required="true"/>
@@ -1554,7 +1554,7 @@
       <indexPart attributeName="customerId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_user_oauth" name="SyliusUserOauth" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusUserOauth" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_user_oauth" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="userId" type="int" dbName="user_id" dbType="INT"/>
@@ -1572,7 +1572,7 @@
       <indexPart attributeName="userId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_user_role" name="SyliusUserRole" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusUserRole" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_user_role" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="userId" type="int" dbName="user_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="roleId" type="int" dbName="role_id" dbType="INT" primaryKey="true" required="true"/>
@@ -1589,14 +1589,14 @@
       <indexPart attributeName="roleId" length="" sortOrder="ASC"/>
     </index>
   </entity>
-  <entity table="sylius_zone" name="SyliusZone" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusZone" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_zone" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(8)" required="true"/>
     <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
   </entity>
-  <entity table="sylius_zone_member" name="SyliusZoneMember" namespace="SiestaTest\End2End\Reverse\Generated" targetPath="Generated">
+  <entity name="SyliusZoneMember" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_zone_member" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="belongsTo" type="int" dbName="belongs_to" dbType="INT"/>

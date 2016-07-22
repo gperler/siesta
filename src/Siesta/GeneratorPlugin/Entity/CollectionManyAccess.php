@@ -68,7 +68,11 @@ class CollectionManyAccess extends BasePlugin
         foreach ($entity->getCollectionManyList() as $collectionMany) {
             $mappingEntity = $collectionMany->getMappingEntity();
             $useList[] = $mappingEntity->getClassName();
+
+            $foreignEntity = $collectionMany->getForeignEntity();
+            $useList[] = $foreignEntity->getClassName();
         }
+
         foreach ($entity->getReferenceList() as $reference) {
             $foreignEntity = $reference->getForeignEntity();
             $serviceFactory = $foreignEntity->getServiceFactoryClass();
