@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Siesta\Model;
@@ -58,7 +59,6 @@ class ReferenceMapping
     {
         $this->localAttribute = $this->entity->getAttributeByName($this->getLocalAttributeName());
         $this->foreignAttribute = $foreignEntity->getAttributeByName($this->getForeignAttributeName());
-
     }
 
     /**
@@ -80,7 +80,7 @@ class ReferenceMapping
     /**
      * @param string $localAttributeName
      */
-    public function setLocalAttributeName($localAttributeName)
+    public function setLocalAttributeName(string $localAttributeName = null)
     {
         $this->localAttributeName = $localAttributeName;
     }
@@ -104,7 +104,7 @@ class ReferenceMapping
     /**
      * @param string $foreignAttributeName
      */
-    public function setForeignAttributeName($foreignAttributeName)
+    public function setForeignAttributeName(string $foreignAttributeName = null)
     {
         $this->foreignAttributeName = $foreignAttributeName;
     }

@@ -6,7 +6,6 @@ namespace Siesta\Model;
 use Siesta\NamingStrategy\NamingStrategyRegistry;
 use Siesta\Util\StringUtil;
 use Siesta\Validator\DefaultAttributeValidator;
-use Siesta\XML\XMLAttribute;
 
 /**
  * @author Gregor Müller
@@ -57,17 +56,17 @@ class Attribute
     protected $autoValue;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $isRequired;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $isTransient;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $isObject;
 
@@ -87,21 +86,8 @@ class Attribute
     }
 
     /**
-     * @param XMLAttribute $xmlAttribute
+     *
      */
-    public function fromXMLAttribute(XMLAttribute $xmlAttribute)
-    {
-        $this->setAutoValue($xmlAttribute->getAutoValue());
-        $this->setDbType($xmlAttribute->getDbType());
-        $this->setDbName($xmlAttribute->getDbName());
-        $this->setDefaultValue($xmlAttribute->getDefaultValue());
-        $this->setIsPrimaryKey($xmlAttribute->getIsPrimaryKey());
-        $this->setIsRequired($xmlAttribute->getIsRequired());
-        $this->setIsTransient($xmlAttribute->getIsTransient());
-        $this->setPhpName($xmlAttribute->getPhpName());
-        $this->setPhpType($xmlAttribute->getPhpType());
-    }
-
     public function update()
     {
         $this->checkIfTypeIsObject();
@@ -119,7 +105,7 @@ class Attribute
 
         $this->setIsObject(true);
         $this->setClassName($this->getPhpType());
-        $classShortName = StringUtil::getEndAfterLast($this->getPhpType(), "\\");
+        $classShortName = StringUtil::getEndAfterLast($phpType, "\\");
         $this->setPhpType($classShortName);
     }
 
@@ -135,9 +121,11 @@ class Attribute
             return (int)$regResult [1];
         }
         return null;
-
     }
 
+    /**
+     * @return string
+     */
     public function getMethodName()
     {
         return ucfirst($this->getPhpName());
@@ -154,7 +142,7 @@ class Attribute
     /**
      * @param string $phpName
      */
-    public function setPhpName($phpName)
+    public function setPhpName(string $phpName = null)
     {
         $this->phpName = $phpName;
     }
@@ -170,7 +158,7 @@ class Attribute
     /**
      * @param string $phpType
      */
-    public function setPhpType($phpType)
+    public function setPhpType(string $phpType = null)
     {
         $this->phpType = $phpType;
     }
@@ -198,7 +186,7 @@ class Attribute
     /**
      * @param string $dbName
      */
-    public function setDbName($dbName)
+    public function setDbName(string $dbName = null)
     {
         $this->dbName = $dbName;
     }
@@ -214,13 +202,13 @@ class Attribute
     /**
      * @param string $dbType
      */
-    public function setDbType($dbType)
+    public function setDbType(string $dbType = null)
     {
         $this->dbType = $dbType;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsPrimaryKey()
     {
@@ -228,9 +216,9 @@ class Attribute
     }
 
     /**
-     * @param boolean $isPrimaryKey
+     * @param bool $isPrimaryKey
      */
-    public function setIsPrimaryKey($isPrimaryKey)
+    public function setIsPrimaryKey(bool $isPrimaryKey = false)
     {
         $this->isPrimaryKey = $isPrimaryKey;
     }
@@ -246,7 +234,7 @@ class Attribute
     /**
      * @param string $defaultValue
      */
-    public function setDefaultValue($defaultValue)
+    public function setDefaultValue(string $defaultValue = null)
     {
         $this->defaultValue = $defaultValue;
     }
@@ -262,13 +250,13 @@ class Attribute
     /**
      * @param string $autoValue
      */
-    public function setAutoValue($autoValue)
+    public function setAutoValue(string $autoValue = null)
     {
         $this->autoValue = $autoValue;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsRequired()
     {
@@ -276,15 +264,15 @@ class Attribute
     }
 
     /**
-     * @param boolean $isRequired
+     * @param bool $isRequired
      */
-    public function setIsRequired($isRequired)
+    public function setIsRequired(bool $isRequired = false)
     {
         $this->isRequired = $isRequired;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsTransient()
     {
@@ -292,15 +280,15 @@ class Attribute
     }
 
     /**
-     * @param boolean $isTransient
+     * @param bool $isTransient
      */
-    public function setIsTransient($isTransient)
+    public function setIsTransient(bool $isTransient = false)
     {
         $this->isTransient = $isTransient;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsObject()
     {
@@ -308,9 +296,9 @@ class Attribute
     }
 
     /**
-     * @param boolean $isObject
+     * @param bool $isObject
      */
-    public function setIsObject($isObject)
+    public function setIsObject(bool $isObject = false)
     {
         $this->isObject = $isObject;
     }
@@ -338,7 +326,7 @@ class Attribute
     /**
      * @param string $className
      */
-    public function setClassName($className)
+    public function setClassName(string $className = null)
     {
         $this->className = $className;
     }

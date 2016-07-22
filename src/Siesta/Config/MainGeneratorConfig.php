@@ -152,7 +152,7 @@ class MainGeneratorConfig
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDropUnusedTables() : bool
     {
@@ -160,7 +160,7 @@ class MainGeneratorConfig
     }
 
     /**
-     * @param boolean $dropUnusedTables
+     * @param bool $dropUnusedTables
      */
     public function setDropUnusedTables(bool $dropUnusedTables = null)
     {

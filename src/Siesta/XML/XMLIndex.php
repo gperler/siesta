@@ -109,7 +109,7 @@ class XMLIndex
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsUnique()
     {
@@ -117,7 +117,7 @@ class XMLIndex
     }
 
     /**
-     * @param boolean $isUnique
+     * @param bool $isUnique
      */
     public function setIsUnique($isUnique)
     {

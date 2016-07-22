@@ -90,7 +90,7 @@ class StoredProcedure
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getModifies()
     {
@@ -98,7 +98,7 @@ class StoredProcedure
     }
 
     /**
-     * @param boolean $modifies
+     * @param bool $modifies
      */
     public function setModifies($modifies)
     {

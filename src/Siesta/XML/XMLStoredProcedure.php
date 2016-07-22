@@ -86,7 +86,7 @@ class XMLStoredProcedure
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getModifies()
     {
@@ -94,7 +94,7 @@ class XMLStoredProcedure
     }
 
     /**
-     * @param boolean $modifies
+     * @param bool $modifies
      */
     public function setModifies($modifies)
     {

@@ -12,7 +12,7 @@ interface ResultSet
 
     /**
      * checks if there are more ResultSets
-     * @return boolean
+     * @return bool
      */
     public function hasNext() : bool;
 
@@ -30,7 +30,7 @@ interface ResultSet
     /**
      * @param string $key
      *
-     * @return boolean|null
+     * @return bool|null
      */
     public function getBooleanValue(string $key);
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Siesta\Model;
@@ -76,13 +77,13 @@ class Index
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name = null)
     {
         $this->name = $name;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsUnique()
     {
@@ -90,9 +91,9 @@ class Index
     }
 
     /**
-     * @param boolean $isUnique
+     * @param bool $isUnique
      */
-    public function setIsUnique($isUnique)
+    public function setIsUnique(bool $isUnique = null)
     {
         $this->isUnique = $isUnique;
     }
@@ -108,7 +109,7 @@ class Index
     /**
      * @param string $indexType
      */
-    public function setIndexType($indexType)
+    public function setIndexType(string $indexType = null)
     {
         $this->indexType = $indexType;
     }

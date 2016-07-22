@@ -172,7 +172,7 @@ class ReverseConfig
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isSingleFile(): bool
     {
@@ -180,7 +180,7 @@ class ReverseConfig
     }
 
     /**
-     * @param boolean $singleFile
+     * @param bool $singleFile
      */
     public function setSingleFile(bool $singleFile = null)
     {

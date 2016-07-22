@@ -320,7 +320,7 @@ class MethodGenerator
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsConstructor(): bool
     {
@@ -328,7 +328,7 @@ class MethodGenerator
     }
 
     /**
-     * @param boolean $isConstructor
+     * @param bool $isConstructor
      */
     public function setIsConstructor(bool $isConstructor)
     {

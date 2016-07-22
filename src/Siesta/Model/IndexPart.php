@@ -78,7 +78,7 @@ class IndexPart
     /**
      * @param string $attributeName
      */
-    public function setAttributeName(string $attributeName)
+    public function setAttributeName(string $attributeName = null)
     {
         $this->attributeName = $attributeName;
     }
@@ -111,7 +111,7 @@ class IndexPart
     /**
      * @param string $sortOrder
      */
-    public function setSortOrder($sortOrder)
+    public function setSortOrder(string $sortOrder = null)
     {
         $this->sortOrder = $sortOrder;
     }
@@ -127,7 +127,7 @@ class IndexPart
     /**
      * @param int $length
      */
-    public function setLength($length)
+    public function setLength(int $length = null)
     {
         $this->length = $length;
     }

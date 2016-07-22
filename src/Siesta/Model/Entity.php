@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace Siesta\Model;
@@ -250,26 +251,11 @@ class Entity
     }
 
     /**
-     * @param string $dbName
-     *
-     * @return null|Attribute
-     */
-    public function getAttributeByDbName(string $dbName)
-    {
-        foreach ($this->attributeList as $attribute) {
-            if ($attribute->getDBName() === $dbName) {
-                return $attribute;
-            }
-        }
-        return null;
-    }
-
-    /**
      * @param string $name
      *
      * @return null|Attribute
      */
-    public function getAttributeByName(string $name)
+    public function getAttributeByName(string $name = null)
     {
         foreach ($this->attributeList as $attribute) {
             if ($attribute->getPhpName() === $name) {
@@ -299,7 +285,7 @@ class Entity
      *
      * @return null|Index
      */
-    public function getIndexByName(string $name)
+    public function getIndexByName(string $name = null)
     {
         foreach ($this->indexList as $index) {
             if ($index->getName() === $name) {
@@ -314,7 +300,7 @@ class Entity
      *
      * @return null|Collection
      */
-    public function getCollectionByName(string $name)
+    public function getCollectionByName(string $name = null)
     {
         foreach ($this->collectionList as $collection) {
             if ($collection->getName() === $name) {
@@ -329,7 +315,7 @@ class Entity
      *
      * @return null|CollectionMany
      */
-    public function getCollectionManyByName(string $name)
+    public function getCollectionManyByName(string $name = null)
     {
         foreach ($this->collectionManyList as $collectionMany) {
             if ($collectionMany->getName() === $name) {
@@ -392,7 +378,7 @@ class Entity
      *
      * @return null|StoredProcedure
      */
-    public function getStoredProcedureByName(string $name)
+    public function getStoredProcedureByName(string $name = null)
     {
         foreach ($this->storedProcedureList as $storedProcedure) {
             if ($storedProcedure->getName() === $name) {
@@ -447,7 +433,7 @@ class Entity
     /**
      * @param string $classShortName
      */
-    public function setClassShortName($classShortName)
+    public function setClassShortName(string $classShortName = null)
     {
         $this->classShortName = $classShortName;
     }
@@ -492,9 +478,11 @@ class Entity
     /**
      * @param string $namespaceName
      */
-    public function setNamespaceName($namespaceName)
+    public function setNamespaceName(string $namespaceName = null)
     {
-        $this->namespaceName = trim($namespaceName, "\\");
+        if ($namespaceName !== null) {
+            $this->namespaceName = trim($namespaceName, "\\");
+        }
     }
 
     /**
@@ -520,13 +508,13 @@ class Entity
     /**
      * @param string $tableName
      */
-    public function setTableName($tableName)
+    public function setTableName(string $tableName = null)
     {
         $this->tableName = $tableName;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsDelimit()
     {
@@ -534,15 +522,15 @@ class Entity
     }
 
     /**
-     * @param boolean $isDelimit
+     * @param bool $isDelimit
      */
-    public function setIsDelimit($isDelimit)
+    public function setIsDelimit(bool $isDelimit = false)
     {
         $this->isDelimit = $isDelimit;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsReplication() : bool
     {
@@ -550,9 +538,9 @@ class Entity
     }
 
     /**
-     * @param boolean $isReplication
+     * @param bool $isReplication
      */
-    public function setIsReplication(bool $isReplication)
+    public function setIsReplication(bool $isReplication = false)
     {
         $this->isReplication = $isReplication;
     }
@@ -576,7 +564,7 @@ class Entity
     /**
      * @param Constructor $constructor
      */
-    public function setConstructor($constructor)
+    public function setConstructor(Constructor $constructor = null)
     {
         $this->constructor = $constructor;
     }
@@ -592,15 +580,15 @@ class Entity
     /**
      * @param ServiceClass $serviceClass
      */
-    public function setServiceClass($serviceClass)
+    public function setServiceClass(ServiceClass $serviceClass = null)
     {
         $this->serviceClass = $serviceClass;
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function getInstantiationClassShortName()
+    public function getInstantiationClassShortName() : string
     {
         if ($this->constructor === null) {
             return $this->getClassShortName();
@@ -613,7 +601,10 @@ class Entity
         return $this->getClassShortName();
     }
 
-    public function getInstantiationClass()
+    /**
+     * @return string|null
+     */
+    public function getInstantiationClass() : string
     {
         if ($this->constructor === null) {
             return $this->getClassName();

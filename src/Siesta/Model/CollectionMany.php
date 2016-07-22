@@ -3,8 +3,6 @@ declare(strict_types = 1);
 
 namespace Siesta\Model;
 
-use Siesta\XML\XMLCollectionMany;
-
 /**
  * @author Gregor Müller
  */
@@ -69,27 +67,42 @@ class CollectionMany
     }
 
     /**
-     * @param XMLCollectionMany $xmlCollectionMany
+     *
      */
-    public function fromXMLCollectionMany(XMLCollectionMany $xmlCollectionMany)
+    public function update()
     {
-        $this->setName($xmlCollectionMany->getName());
-        $this->setForeignTable($xmlCollectionMany->getForeignTable());
-        $this->setMappingTable($xmlCollectionMany->getMappingTable());
+        $this->updateForeignEntity();
+
+        $this->updateMappingEntity();
+
+        $this->updateReferences();
     }
 
     /**
      *
      */
-    public function update()
+    protected function updateForeignEntity()
     {
         $this->foreignEntity = $this->datamodel->getEntityByTableName($this->getForeignTable());
-        if ($this->foreignEntity !== null) {
-            $this->foreignEntity->addForeignCollectionManyList($this);
+        if ($this->foreignEntity === null) {
+            return;
         }
+        $this->foreignEntity->addForeignCollectionManyList($this);
+    }
 
+    /**
+     *
+     */
+    protected function updateMappingEntity()
+    {
         $this->mappingEntity = $this->datamodel->getEntityByTableName($this->getMappingTable());
+    }
 
+    /**
+     *
+     */
+    protected function updateReferences()
+    {
         if ($this->mappingEntity === null || $this->foreignEntity === null) {
             return;
         }
@@ -102,7 +115,6 @@ class CollectionMany
                 $this->mappingReference = $reference;
             }
         }
-
     }
 
     /**

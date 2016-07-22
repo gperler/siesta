@@ -193,7 +193,7 @@ class XMLAttribute
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsPrimaryKey()
     {
@@ -201,7 +201,7 @@ class XMLAttribute
     }
 
     /**
-     * @param boolean $isPrimaryKey
+     * @param bool $isPrimaryKey
      */
     public function setIsPrimaryKey($isPrimaryKey)
     {
@@ -241,7 +241,7 @@ class XMLAttribute
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsRequired()
     {
@@ -249,7 +249,7 @@ class XMLAttribute
     }
 
     /**
-     * @param boolean $isRequired
+     * @param bool $isRequired
      */
     public function setIsRequired($isRequired)
     {
@@ -257,7 +257,7 @@ class XMLAttribute
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsTransient()
     {
@@ -265,7 +265,7 @@ class XMLAttribute
     }
 
     /**
-     * @param boolean $isTransient
+     * @param bool $isTransient
      */
     public function setIsTransient($isTransient)
     {

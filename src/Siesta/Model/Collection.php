@@ -82,7 +82,7 @@ class Collection
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name = null)
     {
         $this->name = $name;
     }
@@ -106,7 +106,7 @@ class Collection
     /**
      * @param string $foreignTable
      */
-    public function setForeignTable($foreignTable)
+    public function setForeignTable(string $foreignTable = null)
     {
         $this->foreignTable = $foreignTable;
     }
@@ -122,7 +122,7 @@ class Collection
     /**
      * @param string $foreignReferenceName
      */
-    public function setForeignReferenceName($foreignReferenceName)
+    public function setForeignReferenceName(string $foreignReferenceName = null)
     {
         $this->foreignReferenceName = $foreignReferenceName;
     }

@@ -3,8 +3,6 @@ declare(strict_types = 1);
 
 namespace Siesta\Model;
 
-use Siesta\XML\XMLReference;
-
 /**
  * @author Gregor Müller
  */
@@ -85,24 +83,6 @@ class Reference
     }
 
     /**
-     * @param XMLReference $xmlReference
-     */
-    public function fromXMLReference(XMLReference $xmlReference)
-    {
-        $this->setName($xmlReference->getName());
-        $this->setConstraintName($xmlReference->getConstraintName());
-        $this->setForeignTable($xmlReference->getForeignTable());
-        $this->setOnUpdate($xmlReference->getOnUpdate());
-        $this->setOnDelete($xmlReference->getOnDelete());
-
-        foreach ($xmlReference->getXmlReferenceMappingList() as $xmlReferenceMapping) {
-            $referenceMapping = new ReferenceMapping($this->dataModel, $this->entity);
-            $referenceMapping->fromXMLReferenceMaping($xmlReferenceMapping);
-            $this->referenceMappingList[] = $referenceMapping;
-        }
-    }
-
-    /**
      * @return ReferenceMapping
      */
     public function newReferenceMapping() : ReferenceMapping
@@ -112,6 +92,9 @@ class Reference
         return $referenceMapping;
     }
 
+    /**
+     *
+     */
     public function update()
     {
         $this->foreignEntity = $this->dataModel->getEntityByTableName($this->getForeignTable());
@@ -128,7 +111,7 @@ class Reference
     /**
      * @return string
      */
-    public function getConstraintName()
+    public function getConstraintName() : string
     {
         if ($this->constraintName !== null) {
             return $this->constraintName;
@@ -139,7 +122,7 @@ class Reference
     /**
      * @param string $constraintName
      */
-    public function setConstraintName($constraintName)
+    public function setConstraintName(string $constraintName = null)
     {
         $this->constraintName = $constraintName;
     }
@@ -155,7 +138,7 @@ class Reference
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name = null)
     {
         $this->name = $name;
     }
@@ -179,7 +162,7 @@ class Reference
     /**
      * @param string $foreignTable
      */
-    public function setForeignTable($foreignTable)
+    public function setForeignTable(string $foreignTable = null)
     {
         $this->foreignTable = $foreignTable;
     }
@@ -195,7 +178,7 @@ class Reference
     /**
      * @param string $onDelete
      */
-    public function setOnDelete($onDelete)
+    public function setOnDelete(string $onDelete = null)
     {
         $this->onDelete = $onDelete;
     }
@@ -211,7 +194,7 @@ class Reference
     /**
      * @param string $onUpdate
      */
-    public function setOnUpdate($onUpdate)
+    public function setOnUpdate(string $onUpdate = null)
     {
         $this->onUpdate = $onUpdate;
     }
@@ -233,7 +216,7 @@ class Reference
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function doesCollectionRefersTo()
     {

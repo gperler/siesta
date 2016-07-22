@@ -446,7 +446,7 @@ class XMLEntity
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsDelimit()
     {
@@ -454,7 +454,7 @@ class XMLEntity
     }
 
     /**
-     * @param boolean $isDelimit
+     * @param bool $isDelimit
      */
     public function setIsDelimit($isDelimit)
     {
@@ -480,7 +480,7 @@ class XMLEntity
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsReplication() : bool
     {
@@ -488,7 +488,7 @@ class XMLEntity
     }
 
     /**
-     * @param boolean $isReplication
+     * @param bool $isReplication
      */
     public function setIsReplication($isReplication)
     {
