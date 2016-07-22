@@ -314,11 +314,32 @@ class StudentMPK implements ArraySerializable
     public function deleteFromExamList(string $id1 = null, string $id2 = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $studentMPKId1 = Escaper::quoteString($connection, $this->id1);
-        $studentMPKId2 = Escaper::quoteString($connection, $this->id2);
-        $examMPKId1 = Escaper::quoteString($connection, $id1);
-        $examMPKId2 = Escaper::quoteString($connection, $id2);
-        $connection->execute("CALL StudentExamMPK_D_A_StudentMPK_examList($studentMPKId1,$studentMPKId2,$examMPKId1,$examMPKId2)");
+        $localStudentMPKId1 = Escaper::quoteString($connection, $this->id1);
+        $localStudentMPKId2 = Escaper::quoteString($connection, $this->id2);
+        $foreignExamMPKId1 = Escaper::quoteString($connection, $id1);
+        $foreignExamMPKId2 = Escaper::quoteString($connection, $id2);
+        $connection->execute("CALL StudentExamMPK_D_A_StudentMPK_examList($localStudentMPKId1,$localStudentMPKId2,$foreignExamMPKId1,$foreignExamMPKId2)");
+        if ($id1 === null && $id2 === null) {
+            $this->examList = [];
+            $this->examListMapping = [];
+            return;
+        }
+        if ($this->examList !== null) {
+            foreach ($this->examList as $index => $entity) {
+                if ($id1 === $entity->getId1() && $id2 === $entity->getId2()) {
+                    array_splice($this->examList, $index, 1);
+                    break;
+                }
+            }
+        }
+        if ($this->examListMapping !== null) {
+            foreach ($this->examListMapping as $index => $mapping) {
+                if ($mapping->getExamId1() === $id1 && $mapping->getExamId2() === $id2) {
+                    array_splice($this->examListMapping, $index, 1);
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -331,11 +352,32 @@ class StudentMPK implements ArraySerializable
     public function deleteAssignedExamMPK(string $id1 = null, string $id2 = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $studentMPKId1 = Escaper::quoteString($connection, $this->id1);
-        $studentMPKId2 = Escaper::quoteString($connection, $this->id2);
-        $examMPKId1 = Escaper::quoteString($connection, $id1);
-        $examMPKId2 = Escaper::quoteString($connection, $id2);
-        $connection->execute("CALL ExamMPK_D_JOIN_StudentExamMPK_examList($studentMPKId1,$studentMPKId2,$examMPKId1,$examMPKId2)");
+        $localStudentMPKId1 = Escaper::quoteString($connection, $this->id1);
+        $localStudentMPKId2 = Escaper::quoteString($connection, $this->id2);
+        $foreignExamMPKId1 = Escaper::quoteString($connection, $id1);
+        $foreignExamMPKId2 = Escaper::quoteString($connection, $id2);
+        $connection->execute("CALL ExamMPK_D_JOIN_StudentExamMPK_examList($localStudentMPKId1,$localStudentMPKId2,$foreignExamMPKId1,$foreignExamMPKId2)");
+        if ($id1 === null && $id2 === null) {
+            $this->examList = [];
+            $this->examListMapping = [];
+            return;
+        }
+        if ($this->examList !== null) {
+            foreach ($this->examList as $index => $entity) {
+                if ($id1 === $entity->getId1() && $id2 === $entity->getId2()) {
+                    array_splice($this->examList, $index, 1);
+                    break;
+                }
+            }
+        }
+        if ($this->examListMapping !== null) {
+            foreach ($this->examListMapping as $index => $mapping) {
+                if ($mapping->getExamId1() === $id1 && $mapping->getExamId2() === $id2) {
+                    array_splice($this->examListMapping, $index, 1);
+                    break;
+                }
+            }
+        }
     }
 
     /**

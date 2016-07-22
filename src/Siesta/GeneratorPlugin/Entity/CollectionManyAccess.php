@@ -205,6 +205,8 @@ class CollectionManyAccess extends BasePlugin
         $signature = $this->getInvocationSignature($foreignEntity);
         $method->addExecuteStoredProcedure($spName, $signature, false);
 
+        $this->generateArraySlice($method, $collectionMany);
+
         $method->end();
 
     }
@@ -230,8 +232,94 @@ class CollectionManyAccess extends BasePlugin
         $signature = $this->getInvocationSignature($foreignEntity);
         $method->addExecuteStoredProcedure($spName, $signature, false);
 
+        $this->generateArraySlice($method, $collectionMany);
+
         // done
         $method->end();
+    }
+
+    /**
+     * @param MethodGenerator $method
+     * @param CollectionMany $collectionMany
+     */
+    protected function generateArraySlice(MethodGenerator $method, CollectionMany $collectionMany)
+    {
+        $foreignEntity = $collectionMany->getForeignEntity();
+
+        $idNullCheck = $this->getIdNullCondition($foreignEntity);
+
+        $collectionMember = '$this->' . $collectionMany->getName();
+        $collectionMappingMember = $collectionMember . 'Mapping';
+
+        $method->addIfStart($idNullCheck);
+        $method->addLine($collectionMember . ' = [];');
+        $method->addLine($collectionMappingMember . ' = [];');
+        $method->addLine('return;');
+        $method->addIfEnd();
+
+        $method->addIfStart($collectionMember . ' !== null');
+        $method->addForeachStart($collectionMember . ' as $index => $entity');
+        $compareCondition = $this->getEntityComparePrimaryKeyStatement($foreignEntity);
+        $method->addIfStart($compareCondition);
+        $method->addLine('array_splice(' . $collectionMember . ', $index, 1);');
+        $method->addLine('break;');
+        $method->addIfEnd();
+        $method->addForeachEnd();
+        $method->addIfEnd();
+
+        $method->addIfStart($collectionMappingMember . ' !== null');
+        $method->addForeachStart($collectionMappingMember . ' as $index => $mapping');
+        $compareCondition = $this->getMappingCompareForeignKey($collectionMany);
+        $method->addIfStart($compareCondition);
+        $method->addLine('array_splice(' . $collectionMappingMember . ', $index, 1);');
+        $method->addLine('break;');
+        $method->addIfEnd();
+        $method->addForeachEnd();
+        $method->addIfEnd();
+    }
+
+    /**
+     * @param CollectionMany $collectionMany
+     *
+     * @return string
+     */
+    protected function getMappingCompareForeignKey(CollectionMany $collectionMany) : string
+    {
+        $foreignReference = $collectionMany->getForeignReference();
+
+        $compareList = [];
+        foreach ($foreignReference->getReferenceMappingList() as $mapping) {
+            $localAttribute = $mapping->getLocalAttribute();
+            $foreignAttribute = $mapping->getForeignAttribute();
+            $compareList[] = '$mapping->get' . $localAttribute->getMethodName() . '() === $' . $foreignAttribute->getPhpName();
+        }
+        return implode(" && ", $compareList);
+    }
+
+    /**
+     * @param Entity $foreignEntity
+     *
+     * @return string
+     */
+    protected function getEntityComparePrimaryKeyStatement(Entity $foreignEntity) : string
+    {
+        $compareList = [];
+        foreach ($foreignEntity->getPrimaryKeyAttributeList() as $attribute) {
+            $name = $attribute->getPhpName();
+            $methodName = $attribute->getMethodName();
+
+            $compareList[] = '$' . $name . ' === $entity->get' . $methodName . '()';
+        }
+        return implode(" && ", $compareList);
+    }
+
+    protected function getIdNullCondition(Entity $foreignEntity) : string
+    {
+        $nullCheck = [];
+        foreach ($foreignEntity->getPrimaryKeyAttributeList() as $attribute) {
+            $nullCheck[] = '$' . $attribute->getPhpName() . ' === null';
+        }
+        return implode(" && ", $nullCheck);
     }
 
     /**
@@ -244,13 +332,13 @@ class CollectionManyAccess extends BasePlugin
         $foreignPKList = $foreignEntity->getPrimaryKeyAttributeList();
 
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
-            $variableName = $this->geVariableName($this->entity, $pkAttribute);
+            $variableName = $this->geVariableName("local", $this->entity, $pkAttribute);
             $quoteCall = $method->getQuoteCall($pkAttribute->getPhpType(), $pkAttribute->getDbType(), '$this->' . $pkAttribute->getPhpName(), $pkAttribute->getIsObject());
             $method->addLine($variableName . ' = ' . $quoteCall . ';');
         }
 
         foreach ($foreignPKList as $foreignPKAttribute) {
-            $variableName = $this->geVariableName($foreignEntity, $foreignPKAttribute);
+            $variableName = $this->geVariableName("foreign", $foreignEntity, $foreignPKAttribute);
             $quoteCall = $method->getQuoteCall($foreignPKAttribute->getPhpType(), $foreignPKAttribute->getDbType(), '$' . $foreignPKAttribute->getPhpName(), $foreignPKAttribute->getIsObject());
             $method->addLine($variableName . ' = ' . $quoteCall . ';');
         }
@@ -266,23 +354,24 @@ class CollectionManyAccess extends BasePlugin
     {
         $signaturePart = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
-            $signaturePart[] = $this->geVariableName($this->entity, $pkAttribute);
+            $signaturePart[] = $this->geVariableName("local", $this->entity, $pkAttribute);
         }
         foreach ($foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
-            $signaturePart[] = $this->geVariableName($foreignEntity, $pkAttribute);
+            $signaturePart[] = $this->geVariableName("foreign", $foreignEntity, $pkAttribute);
         }
         return implode(",", $signaturePart);
     }
 
     /**
+     * @param string $prefix
      * @param Entity $foreignEntity
      * @param Attribute $attribute
      *
      * @return string
      */
-    protected function geVariableName(Entity $foreignEntity, Attribute $attribute)
+    protected function geVariableName(string $prefix, Entity $foreignEntity, Attribute $attribute)
     {
-        return '$' . lcfirst($foreignEntity->getTableName()) . $attribute->getMethodName();
+        return '$' . $prefix . $foreignEntity->getTableName() . $attribute->getMethodName();
     }
 
 }

@@ -107,16 +107,18 @@ class CollectionMany
             return;
         }
 
-
-
         foreach ($this->mappingEntity->getReferenceList() as $reference) {
             if ($reference->getForeignTable() === $this->foreignEntity->getTableName()) {
                 $this->foreignReference = $reference;
             }
-            if ($reference->getForeignTable() === $this->entity->getTableName()) {
+        }
+
+        foreach ($this->mappingEntity->getReferenceList() as $reference) {
+            if ($reference->getForeignTable() === $this->entity->getTableName() && $this->foreignReference !== null && $reference->getName() !== $this->foreignReference->getName()) {
                 $this->mappingReference = $reference;
             }
         }
+
     }
 
     /**

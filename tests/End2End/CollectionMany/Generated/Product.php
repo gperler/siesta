@@ -15,10 +15,10 @@ use Siesta\Util\ArrayUtil;
 use Siesta\Util\DefaultCycleDetector;
 use Siesta\Util\StringUtil;
 
-class ExamUUID implements ArraySerializable
+class Product implements ArraySerializable
 {
 
-    const TABLE_NAME = "ExamUUID";
+    const TABLE_NAME = "Product";
 
     const COLUMN_ID = "id";
 
@@ -40,7 +40,7 @@ class ExamUUID implements ArraySerializable
     protected $_rawSQLResult;
 
     /**
-     * @var string
+     * @var int
      */
     protected $id;
 
@@ -50,14 +50,14 @@ class ExamUUID implements ArraySerializable
     protected $name;
 
     /**
-     * @var StudentUUID[]
+     * @var Product[]
      */
-    protected $studentList;
+    protected $relatedProductList;
 
     /**
-     * @var StudentExamUUID[]
+     * @var ProductRelated[]
      */
-    protected $studentListMapping;
+    protected $relatedProductListMapping;
 
     /**
      * 
@@ -65,7 +65,7 @@ class ExamUUID implements ArraySerializable
     public function __construct()
     {
         $this->_existing = false;
-        $this->studentListMapping = [];
+        $this->relatedProductListMapping = [];
     }
 
     /**
@@ -75,10 +75,10 @@ class ExamUUID implements ArraySerializable
      */
     public function createSaveStoredProcedureCall(string $connectionName = null) : string
     {
-        $spCall = ($this->_existing) ? "CALL ExamUUID_U(" : "CALL ExamUUID_I(";
+        $spCall = ($this->_existing) ? "CALL Product_U(" : "CALL Product_I(";
         $connection = ConnectionFactory::getConnection($connectionName);
         $this->getId(true, $connectionName);
-        return $spCall . Escaper::quoteString($connection, $this->id) . ',' . Escaper::quoteString($connection, $this->name) . ');';
+        return $spCall . Escaper::quoteInt($this->id) . ',' . Escaper::quoteString($connection, $this->name) . ');';
     }
 
     /**
@@ -103,7 +103,7 @@ class ExamUUID implements ArraySerializable
         if (!$cascade) {
             return;
         }
-        foreach ($this->studentListMapping as $mapping) {
+        foreach ($this->relatedProductListMapping as $mapping) {
             $mapping->save($cascade, $cycleDetector, $connectionName);
         }
     }
@@ -117,7 +117,7 @@ class ExamUUID implements ArraySerializable
     {
         $this->_existing = true;
         $this->_rawSQLResult = $resultSet->getNext();
-        $this->id = $resultSet->getStringValue("id");
+        $this->id = $resultSet->getIntegerValue("id");
         $this->name = $resultSet->getStringValue("name");
     }
 
@@ -139,8 +139,8 @@ class ExamUUID implements ArraySerializable
     public function delete(string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $id = Escaper::quoteString($connection, $this->id);
-        $connection->execute("CALL ExamUUID_DB_PK($id)");
+        $id = Escaper::quoteInt($this->id);
+        $connection->execute("CALL Product_DB_PK($id)");
         $this->_existing = false;
     }
 
@@ -153,7 +153,7 @@ class ExamUUID implements ArraySerializable
     {
         $this->_rawJSON = $data;
         $arrayAccessor = new ArrayAccessor($data);
-        $this->setId($arrayAccessor->getStringValue("id"));
+        $this->setId($arrayAccessor->getIntegerValue("id"));
         $this->setName($arrayAccessor->getStringValue("name"));
         $this->_existing = ($this->id !== null);
     }
@@ -202,24 +202,24 @@ class ExamUUID implements ArraySerializable
      * @param bool $generateKey
      * @param string $connectionName
      * 
-     * @return string|null
+     * @return int|null
      */
     public function getId(bool $generateKey = false, string $connectionName = null)
     {
         if ($generateKey && $this->id === null) {
-            $this->id = SequencerFactory::nextSequence("uuid", self::TABLE_NAME, $connectionName);
+            $this->id = SequencerFactory::nextSequence("autoincrement", self::TABLE_NAME, $connectionName);
         }
         return $this->id;
     }
 
     /**
-     * @param string $id
+     * @param int $id
      * 
      * @return void
      */
-    public function setId(string $id = null)
+    public function setId(int $id = null)
     {
-        $this->id = StringUtil::trimToNull($id, 36);
+        $this->id = $id;
     }
 
     /**
@@ -245,58 +245,58 @@ class ExamUUID implements ArraySerializable
      * @param bool $forceReload
      * @param string $connectionName
      * 
-     * @return StudentUUID[]
+     * @return Product[]
      */
-    public function getStudentList(bool $forceReload = false, string $connectionName = null) : array
+    public function getRelatedProductList(bool $forceReload = false, string $connectionName = null) : array
     {
-        if ($this->studentList === null || $forceReload) {
-            $this->studentList = StudentUUIDService::getInstance()->getStudentUUIDJoinStudentExamUUID($this->id, $connectionName);
+        if ($this->relatedProductList === null || $forceReload) {
+            $this->relatedProductList = ProductService::getInstance()->getProductJoinProductRelated($this->id, $connectionName);
         }
-        return $this->studentList;
+        return $this->relatedProductList;
     }
 
     /**
-     * @param StudentUUID $entity
+     * @param Product $entity
      * 
      * @return void
      */
-    public function addToStudentList(StudentUUID $entity)
+    public function addToRelatedProductList(Product $entity)
     {
-        $mapping = StudentExamUUIDService::getInstance()->newInstance();
-        $mapping->setExamReference($this);
-        $mapping->setStudentReference($entity);
-        $this->studentListMapping[] = $mapping;
+        $mapping = ProductRelatedService::getInstance()->newInstance();
+        $mapping->setProductSource($this);
+        $mapping->setProductTarget($entity);
+        $this->relatedProductListMapping[] = $mapping;
     }
 
     /**
-     * @param string $id
+     * @param int $id
      * @param string $connectionName
      * 
      * @return void
      */
-    public function deleteFromStudentList(string $id = null, string $connectionName = null)
+    public function deleteFromRelatedProductList(int $id = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $localExamUUIDId = Escaper::quoteString($connection, $this->id);
-        $foreignStudentUUIDId = Escaper::quoteString($connection, $id);
-        $connection->execute("CALL StudentExamUUID_D_A_ExamUUID_studentList($localExamUUIDId,$foreignStudentUUIDId)");
+        $localProductId = Escaper::quoteInt($this->id);
+        $foreignProductId = Escaper::quoteInt($id);
+        $connection->execute("CALL ProductRelated_D_A_Product_relatedProductList($localProductId,$foreignProductId)");
         if ($id === null) {
-            $this->studentList = [];
-            $this->studentListMapping = [];
+            $this->relatedProductList = [];
+            $this->relatedProductListMapping = [];
             return;
         }
-        if ($this->studentList !== null) {
-            foreach ($this->studentList as $index => $entity) {
+        if ($this->relatedProductList !== null) {
+            foreach ($this->relatedProductList as $index => $entity) {
                 if ($id === $entity->getId()) {
-                    array_splice($this->studentList, $index, 1);
+                    array_splice($this->relatedProductList, $index, 1);
                     break;
                 }
             }
         }
-        if ($this->studentListMapping !== null) {
-            foreach ($this->studentListMapping as $index => $mapping) {
-                if ($mapping->getStudentId() === $id) {
-                    array_splice($this->studentListMapping, $index, 1);
+        if ($this->relatedProductListMapping !== null) {
+            foreach ($this->relatedProductListMapping as $index => $mapping) {
+                if ($mapping->getProductTargetId() === $id) {
+                    array_splice($this->relatedProductListMapping, $index, 1);
                     break;
                 }
             }
@@ -304,34 +304,34 @@ class ExamUUID implements ArraySerializable
     }
 
     /**
-     * @param string $id
+     * @param int $id
      * @param string $connectionName
      * 
      * @return void
      */
-    public function deleteAssignedStudentUUID(string $id = null, string $connectionName = null)
+    public function deleteAssignedProduct(int $id = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $localExamUUIDId = Escaper::quoteString($connection, $this->id);
-        $foreignStudentUUIDId = Escaper::quoteString($connection, $id);
-        $connection->execute("CALL StudentUUID_D_JOIN_StudentExamUUID_studentList($localExamUUIDId,$foreignStudentUUIDId)");
+        $localProductId = Escaper::quoteInt($this->id);
+        $foreignProductId = Escaper::quoteInt($id);
+        $connection->execute("CALL Product_D_JOIN_ProductRelated_relatedProductList($localProductId,$foreignProductId)");
         if ($id === null) {
-            $this->studentList = [];
-            $this->studentListMapping = [];
+            $this->relatedProductList = [];
+            $this->relatedProductListMapping = [];
             return;
         }
-        if ($this->studentList !== null) {
-            foreach ($this->studentList as $index => $entity) {
+        if ($this->relatedProductList !== null) {
+            foreach ($this->relatedProductList as $index => $entity) {
                 if ($id === $entity->getId()) {
-                    array_splice($this->studentList, $index, 1);
+                    array_splice($this->relatedProductList, $index, 1);
                     break;
                 }
             }
         }
-        if ($this->studentListMapping !== null) {
-            foreach ($this->studentListMapping as $index => $mapping) {
-                if ($mapping->getStudentId() === $id) {
-                    array_splice($this->studentListMapping, $index, 1);
+        if ($this->relatedProductListMapping !== null) {
+            foreach ($this->relatedProductListMapping as $index => $mapping) {
+                if ($mapping->getProductTargetId() === $id) {
+                    array_splice($this->relatedProductListMapping, $index, 1);
                     break;
                 }
             }
@@ -339,11 +339,11 @@ class ExamUUID implements ArraySerializable
     }
 
     /**
-     * @param ExamUUID $entity
+     * @param Product $entity
      * 
      * @return bool
      */
-    public function arePrimaryKeyIdentical(ExamUUID $entity = null) : bool
+    public function arePrimaryKeyIdentical(Product $entity = null) : bool
     {
         if ($entity === null) {
             return false;

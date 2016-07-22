@@ -277,9 +277,30 @@ class StudentUUID implements ArraySerializable
     public function deleteFromExamList(string $id = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $studentUUIDId = Escaper::quoteString($connection, $this->id);
-        $examUUIDId = Escaper::quoteString($connection, $id);
-        $connection->execute("CALL StudentExamUUID_D_A_StudentUUID_examList($studentUUIDId,$examUUIDId)");
+        $localStudentUUIDId = Escaper::quoteString($connection, $this->id);
+        $foreignExamUUIDId = Escaper::quoteString($connection, $id);
+        $connection->execute("CALL StudentExamUUID_D_A_StudentUUID_examList($localStudentUUIDId,$foreignExamUUIDId)");
+        if ($id === null) {
+            $this->examList = [];
+            $this->examListMapping = [];
+            return;
+        }
+        if ($this->examList !== null) {
+            foreach ($this->examList as $index => $entity) {
+                if ($id === $entity->getId()) {
+                    array_splice($this->examList, $index, 1);
+                    break;
+                }
+            }
+        }
+        if ($this->examListMapping !== null) {
+            foreach ($this->examListMapping as $index => $mapping) {
+                if ($mapping->getExamId() === $id) {
+                    array_splice($this->examListMapping, $index, 1);
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -291,9 +312,30 @@ class StudentUUID implements ArraySerializable
     public function deleteAssignedExamUUID(string $id = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $studentUUIDId = Escaper::quoteString($connection, $this->id);
-        $examUUIDId = Escaper::quoteString($connection, $id);
-        $connection->execute("CALL ExamUUID_D_JOIN_StudentExamUUID_examList($studentUUIDId,$examUUIDId)");
+        $localStudentUUIDId = Escaper::quoteString($connection, $this->id);
+        $foreignExamUUIDId = Escaper::quoteString($connection, $id);
+        $connection->execute("CALL ExamUUID_D_JOIN_StudentExamUUID_examList($localStudentUUIDId,$foreignExamUUIDId)");
+        if ($id === null) {
+            $this->examList = [];
+            $this->examListMapping = [];
+            return;
+        }
+        if ($this->examList !== null) {
+            foreach ($this->examList as $index => $entity) {
+                if ($id === $entity->getId()) {
+                    array_splice($this->examList, $index, 1);
+                    break;
+                }
+            }
+        }
+        if ($this->examListMapping !== null) {
+            foreach ($this->examListMapping as $index => $mapping) {
+                if ($mapping->getExamId() === $id) {
+                    array_splice($this->examListMapping, $index, 1);
+                    break;
+                }
+            }
+        }
     }
 
     /**

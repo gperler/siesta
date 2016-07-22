@@ -277,9 +277,30 @@ class Student implements ArraySerializable
     public function deleteFromExamList(int $id = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $studentId = Escaper::quoteInt($this->id);
-        $examId = Escaper::quoteInt($id);
-        $connection->execute("CALL StudentExam_D_A_Student_examList($studentId,$examId)");
+        $localStudentId = Escaper::quoteInt($this->id);
+        $foreignExamId = Escaper::quoteInt($id);
+        $connection->execute("CALL StudentExam_D_A_Student_examList($localStudentId,$foreignExamId)");
+        if ($id === null) {
+            $this->examList = [];
+            $this->examListMapping = [];
+            return;
+        }
+        if ($this->examList !== null) {
+            foreach ($this->examList as $index => $entity) {
+                if ($id === $entity->getId()) {
+                    array_splice($this->examList, $index, 1);
+                    break;
+                }
+            }
+        }
+        if ($this->examListMapping !== null) {
+            foreach ($this->examListMapping as $index => $mapping) {
+                if ($mapping->getExamId() === $id) {
+                    array_splice($this->examListMapping, $index, 1);
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -291,9 +312,30 @@ class Student implements ArraySerializable
     public function deleteAssignedExam(int $id = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $studentId = Escaper::quoteInt($this->id);
-        $examId = Escaper::quoteInt($id);
-        $connection->execute("CALL Exam_D_JOIN_StudentExam_examList($studentId,$examId)");
+        $localStudentId = Escaper::quoteInt($this->id);
+        $foreignExamId = Escaper::quoteInt($id);
+        $connection->execute("CALL Exam_D_JOIN_StudentExam_examList($localStudentId,$foreignExamId)");
+        if ($id === null) {
+            $this->examList = [];
+            $this->examListMapping = [];
+            return;
+        }
+        if ($this->examList !== null) {
+            foreach ($this->examList as $index => $entity) {
+                if ($id === $entity->getId()) {
+                    array_splice($this->examList, $index, 1);
+                    break;
+                }
+            }
+        }
+        if ($this->examListMapping !== null) {
+            foreach ($this->examListMapping as $index => $mapping) {
+                if ($mapping->getExamId() === $id) {
+                    array_splice($this->examListMapping, $index, 1);
+                    break;
+                }
+            }
+        }
     }
 
     /**

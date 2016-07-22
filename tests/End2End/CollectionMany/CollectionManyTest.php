@@ -19,7 +19,6 @@ class CollectionManyTest extends End2EndTest
     public function setUp()
     {
         $silent = true;
-        $this->deleteGenDir(__DIR__ . "/Generated");
         $this->resetSchema();
         $schemaFile = new File(__DIR__ . "/schema/collection.many.test.xml");
         $this->generateSchema($schemaFile, __DIR__, $silent);

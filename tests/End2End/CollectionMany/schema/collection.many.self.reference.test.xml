@@ -11,6 +11,8 @@
         <attribute name="productSourceId" dbName="FK_source" type="int" dbType="INT"/>
         <attribute name="productTargetId" dbName="FK_target" type="int" dbType="INT"/>
 
+
+
         <reference name="productSource" foreignTable="Product" onDelete="cascade">
             <referenceMapping localAttribute="productSourceId" foreignAttribute="id"/>
         </reference>
@@ -19,5 +21,28 @@
             <referenceMapping localAttribute="productTargetId" foreignAttribute="id" />
         </reference>
     </entity>
+
+
+    <!-- same test with UUID -->
+    <entity name="ProductUUID" namespace="SiestaTest\End2End\CollectionMany\Generated" table="ProductUUID" targetPath="Generated">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(30)"/>
+        <collectionMany2Many name="relatedProductList" foreignTable="ProductUUID" mappingTable="ProductRelatedUUID"/>
+    </entity>
+
+    <entity name="ProductRelatedUUID" namespace="SiestaTest\End2End\CollectionMany\Generated" table="ProductRelatedUUID" targetPath="Generated">
+        <attribute name="productSourceId" dbName="FK_source" type="int" dbType="INT"/>
+        <attribute name="productTargetId" dbName="FK_target" type="int" dbType="INT"/>
+
+        <reference name="productSource" foreignTable="ProductUUID" onDelete="cascade">
+            <referenceMapping localAttribute="productSourceId" foreignAttribute="id"/>
+        </reference>
+
+        <reference name="productTarget" foreignTable="ProductUUID" onDelete="cascade">
+            <referenceMapping localAttribute="productTargetId" foreignAttribute="id" />
+        </reference>
+    </entity>
+
+
 
 </entityList>
