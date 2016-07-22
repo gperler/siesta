@@ -70,7 +70,7 @@ class IndexPart
     /**
      * @return string
      */
-    public function getAttributeName(): string
+    public function getAttributeName()
     {
         return $this->attributeName;
     }
@@ -82,7 +82,6 @@ class IndexPart
     {
         $this->attributeName = $attributeName;
     }
-
 
     /**
      * @return string

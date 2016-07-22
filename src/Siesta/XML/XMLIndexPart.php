@@ -54,7 +54,6 @@ class XMLIndexPart
         $xmlWrite->setAttribute(self::ATTRIBUTE_NAME, $this->getAttributeName());
         $xmlWrite->setIntAttribute(self::LENGTH, $this->getLength());
         $xmlWrite->setAttribute(self::SORT_ORDER, $this->getSortOrder());
-
     }
 
     /**
@@ -62,8 +61,8 @@ class XMLIndexPart
      */
     public function fromIndexPartMetaData(IndexPartMetaData $indexPartMetaData)
     {
-        $namingStratey = NamingStrategyRegistry::getAttributeNamingStrategy();
-        $attributeName = $namingStratey->transform($indexPartMetaData->getColumnName());
+        $namingStrategy = NamingStrategyRegistry::getAttributeNamingStrategy();
+        $attributeName = $namingStrategy->transform($indexPartMetaData->getColumnName());
         $this->setAttributeName($attributeName);
         $this->setLength($indexPartMetaData->getLength());
         $this->setSortOrder($indexPartMetaData->getSortOrder());
