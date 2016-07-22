@@ -25,8 +25,9 @@ class ReferenceGetterSetter extends BasePlugin
     {
         $useClassList = [];
         foreach ($entity->getReferenceList() as $reference) {
-            $foreinEntity = $reference->getForeignEntity();
-            $useClassList[] = $foreinEntity->getInstantiationClass();
+            $foreignEntity = $reference->getForeignEntity();
+            $useClassList[] = $foreignEntity->getInstantiationClass();
+            $useClassList[] = $foreignEntity->getClassName();
         }
 
         foreach ($entity->getReferenceList() as $reference) {
