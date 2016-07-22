@@ -107,6 +107,8 @@ class CollectionMany
             return;
         }
 
+
+
         foreach ($this->mappingEntity->getReferenceList() as $reference) {
             if ($reference->getForeignTable() === $this->foreignEntity->getTableName()) {
                 $this->foreignReference = $reference;

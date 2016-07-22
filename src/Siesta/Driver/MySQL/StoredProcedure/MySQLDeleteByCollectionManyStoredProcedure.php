@@ -79,12 +79,12 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     {
         $signaturePart = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
-            $parameterName = $this->buildParameterName($this->entity, $pkAttribute);
+            $parameterName = $this->buildParameterName("L", $this->entity, $pkAttribute);
             $signaturePart[] = $this->buildSignatureParameter($parameterName, $pkAttribute->getDbType());
         }
 
         foreach ($this->foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
-            $parameterName = $this->buildParameterName($this->foreignEntity, $pkAttribute);
+            $parameterName = $this->buildParameterName("F", $this->foreignEntity, $pkAttribute);
             $signaturePart[] = $this->buildSignatureParameter($parameterName, $pkAttribute->getDbType());
         }
 
@@ -131,13 +131,13 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
         $whereList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
             $mappingAttribute = $this->getCorrespondingColumnForPKAttribute($this->mappingReference, $pkAttribute);
-            $whereList[] = $this->buildTableColumn($mappingTable, $mappingAttribute) . ' = ' . $this->buildParameterName($this->entity, $pkAttribute);
+            $whereList[] = $this->buildTableColumn($mappingTable, $mappingAttribute) . ' = ' . $this->buildParameterName("L", $this->entity, $pkAttribute);
         }
 
         foreach ($this->foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
             $mappingAttribute = $this->getCorrespondingColumnForPKAttribute($this->foreignReference, $pkAttribute);
             $mappingAttribute = $this->quote($mappingAttribute);
-            $spParam = $this->buildParameterName($this->foreignEntity, $pkAttribute);
+            $spParam = $this->buildParameterName("F", $this->foreignEntity, $pkAttribute);
             $whereList[] = "($spParam IS NULL OR $mappingAttribute = $spParam)";
         }
         return implode(" AND ", $whereList);
@@ -183,14 +183,15 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     }
 
     /**
+     * @param string $prefix
      * @param Entity $entity
      * @param Attribute $attribute
      *
      * @return string
      */
-    protected function buildParameterName(Entity $entity, Attribute $attribute)
+    protected function buildParameterName(string $prefix, Entity $entity, Attribute $attribute)
     {
-        return 'P_' . $entity->getTableName() . '_' . $attribute->getDBName();
+        return 'P_' . $prefix . '_' . $entity->getTableName() . '_' . $attribute->getDBName();
     }
 
 }

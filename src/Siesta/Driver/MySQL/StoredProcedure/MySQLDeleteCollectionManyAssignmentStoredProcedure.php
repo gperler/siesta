@@ -80,12 +80,12 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
     {
         $signaturePart = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
-            $parameterName = $this->buildParameterName($this->entity, $pkAttribute);
+            $parameterName = $this->buildParameterName("L", $this->entity, $pkAttribute);
             $signaturePart[] = $this->buildSignatureParameter($parameterName, $pkAttribute->getDbType());
         }
 
         foreach ($this->foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
-            $parameterName = $this->buildParameterName($this->foreignEntity, $pkAttribute);
+            $parameterName = $this->buildParameterName("F", $this->foreignEntity, $pkAttribute);
             $signaturePart[] = $this->buildSignatureParameter($parameterName, $pkAttribute->getDbType());
         }
 
@@ -112,13 +112,13 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
         $whereList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
             $mappingAttribute = $this->getCorrespondingColumnForPKAttribute($this->mappingReference, $pkAttribute);
-            $parameterName = $this->buildParameterName($this->entity, $pkAttribute);
+            $parameterName = $this->buildParameterName("L", $this->entity, $pkAttribute);
             $whereList[] = $this->buildTableColumn($mappingTable, $mappingAttribute) . ' = ' . $parameterName;
         }
         foreach ($this->foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
             $mappingAttribute = $this->getCorrespondingColumnForPKAttribute($this->foreignReference, $pkAttribute);
             $mappingAttribute = $this->quote($mappingAttribute);
-            $spParam = $this->buildParameterName($this->foreignEntity, $pkAttribute);
+            $spParam = $this->buildParameterName("F", $this->foreignEntity, $pkAttribute);
             $whereList[] = "($spParam IS NULL OR $mappingAttribute = $spParam)";
         }
         return implode(" AND ", $whereList);
@@ -151,14 +151,15 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
     }
 
     /**
+     * @param string $prefix
      * @param Entity $entity
      * @param Attribute $attribute
      *
      * @return string
      */
-    protected function buildParameterName(Entity $entity, Attribute $attribute)
+    protected function buildParameterName(string $prefix, Entity $entity, Attribute $attribute)
     {
-        return 'P_' . $entity->getTableName() . '_' . $attribute->getDBName();
+        return 'P_' . $prefix . '_' . $entity->getTableName() . '_' . $attribute->getDBName();
     }
 
 }

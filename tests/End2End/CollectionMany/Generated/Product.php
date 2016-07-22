@@ -15,14 +15,12 @@ use Siesta\Util\ArrayUtil;
 use Siesta\Util\DefaultCycleDetector;
 use Siesta\Util\StringUtil;
 
-class StudentMPK implements ArraySerializable
+class Product implements ArraySerializable
 {
 
-    const TABLE_NAME = "StudentMPK";
+    const TABLE_NAME = "Product";
 
-    const COLUMN_ID1 = "id1";
-
-    const COLUMN_ID2 = "id2";
+    const COLUMN_ID = "id";
 
     const COLUMN_NAME = "name";
 
@@ -42,14 +40,9 @@ class StudentMPK implements ArraySerializable
     protected $_rawSQLResult;
 
     /**
-     * @var string
+     * @var int
      */
-    protected $id1;
-
-    /**
-     * @var string
-     */
-    protected $id2;
+    protected $id;
 
     /**
      * @var string
@@ -57,14 +50,14 @@ class StudentMPK implements ArraySerializable
     protected $name;
 
     /**
-     * @var ExamMPK[]
+     * @var Product[]
      */
-    protected $examList;
+    protected $relatedProductList;
 
     /**
-     * @var StudentExamMPK[]
+     * @var ProductRelated[]
      */
-    protected $examListMapping;
+    protected $relatedProductListMapping;
 
     /**
      * 
@@ -72,7 +65,7 @@ class StudentMPK implements ArraySerializable
     public function __construct()
     {
         $this->_existing = false;
-        $this->examListMapping = [];
+        $this->relatedProductListMapping = [];
     }
 
     /**
@@ -82,11 +75,10 @@ class StudentMPK implements ArraySerializable
      */
     public function createSaveStoredProcedureCall(string $connectionName = null) : string
     {
-        $spCall = ($this->_existing) ? "CALL StudentMPK_U(" : "CALL StudentMPK_I(";
+        $spCall = ($this->_existing) ? "CALL Product_U(" : "CALL Product_I(";
         $connection = ConnectionFactory::getConnection($connectionName);
-        $this->getId1(true, $connectionName);
-        $this->getId2(true, $connectionName);
-        return $spCall . Escaper::quoteString($connection, $this->id1) . ',' . Escaper::quoteString($connection, $this->id2) . ',' . Escaper::quoteString($connection, $this->name) . ');';
+        $this->getId(true, $connectionName);
+        return $spCall . Escaper::quoteInt($this->id) . ',' . Escaper::quoteString($connection, $this->name) . ');';
     }
 
     /**
@@ -111,7 +103,7 @@ class StudentMPK implements ArraySerializable
         if (!$cascade) {
             return;
         }
-        foreach ($this->examListMapping as $mapping) {
+        foreach ($this->relatedProductListMapping as $mapping) {
             $mapping->save($cascade, $cycleDetector, $connectionName);
         }
     }
@@ -125,8 +117,7 @@ class StudentMPK implements ArraySerializable
     {
         $this->_existing = true;
         $this->_rawSQLResult = $resultSet->getNext();
-        $this->id1 = $resultSet->getStringValue("id1");
-        $this->id2 = $resultSet->getStringValue("id2");
+        $this->id = $resultSet->getIntegerValue("id");
         $this->name = $resultSet->getStringValue("name");
     }
 
@@ -148,9 +139,8 @@ class StudentMPK implements ArraySerializable
     public function delete(string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $id1 = Escaper::quoteString($connection, $this->id1);
-        $id2 = Escaper::quoteString($connection, $this->id2);
-        $connection->execute("CALL StudentMPK_DB_PK($id1,$id2)");
+        $id = Escaper::quoteInt($this->id);
+        $connection->execute("CALL Product_DB_PK($id)");
         $this->_existing = false;
     }
 
@@ -163,10 +153,9 @@ class StudentMPK implements ArraySerializable
     {
         $this->_rawJSON = $data;
         $arrayAccessor = new ArrayAccessor($data);
-        $this->setId1($arrayAccessor->getStringValue("id1"));
-        $this->setId2($arrayAccessor->getStringValue("id2"));
+        $this->setId($arrayAccessor->getIntegerValue("id"));
         $this->setName($arrayAccessor->getStringValue("name"));
-        $this->_existing = ($this->id1 !== null) && ($this->id2 !== null);
+        $this->_existing = ($this->id !== null);
     }
 
     /**
@@ -183,8 +172,7 @@ class StudentMPK implements ArraySerializable
             return null;
         }
         $result = [
-            "id1" => $this->getId1(),
-            "id2" => $this->getId2(),
+            "id" => $this->getId(),
             "name" => $this->getName()
         ];
         return $result;
@@ -214,48 +202,24 @@ class StudentMPK implements ArraySerializable
      * @param bool $generateKey
      * @param string $connectionName
      * 
-     * @return string|null
+     * @return int|null
      */
-    public function getId1(bool $generateKey = false, string $connectionName = null)
+    public function getId(bool $generateKey = false, string $connectionName = null)
     {
-        if ($generateKey && $this->id1 === null) {
-            $this->id1 = SequencerFactory::nextSequence("uuid", self::TABLE_NAME, $connectionName);
+        if ($generateKey && $this->id === null) {
+            $this->id = SequencerFactory::nextSequence("autoincrement", self::TABLE_NAME, $connectionName);
         }
-        return $this->id1;
+        return $this->id;
     }
 
     /**
-     * @param string $id1
+     * @param int $id
      * 
      * @return void
      */
-    public function setId1(string $id1 = null)
+    public function setId(int $id = null)
     {
-        $this->id1 = StringUtil::trimToNull($id1, 36);
-    }
-
-    /**
-     * @param bool $generateKey
-     * @param string $connectionName
-     * 
-     * @return string|null
-     */
-    public function getId2(bool $generateKey = false, string $connectionName = null)
-    {
-        if ($generateKey && $this->id2 === null) {
-            $this->id2 = SequencerFactory::nextSequence("uuid", self::TABLE_NAME, $connectionName);
-        }
-        return $this->id2;
-    }
-
-    /**
-     * @param string $id2
-     * 
-     * @return void
-     */
-    public function setId2(string $id2 = null)
-    {
-        $this->id2 = StringUtil::trimToNull($id2, 36);
+        $this->id = $id;
     }
 
     /**
@@ -281,74 +245,68 @@ class StudentMPK implements ArraySerializable
      * @param bool $forceReload
      * @param string $connectionName
      * 
-     * @return ExamMPK[]
+     * @return Product[]
      */
-    public function getExamList(bool $forceReload = false, string $connectionName = null) : array
+    public function getRelatedProductList(bool $forceReload = false, string $connectionName = null) : array
     {
-        if ($this->examList === null || $forceReload) {
-            $this->examList = ExamMPKService::getInstance()->getExamMPKJoinStudentExamMPK($this->id1, $this->id2, $connectionName);
+        if ($this->relatedProductList === null || $forceReload) {
+            $this->relatedProductList = ProductService::getInstance()->getProductJoinProductRelated($this->id, $connectionName);
         }
-        return $this->examList;
+        return $this->relatedProductList;
     }
 
     /**
-     * @param ExamMPK $entity
+     * @param Product $entity
      * 
      * @return void
      */
-    public function addToExamList(ExamMPK $entity)
+    public function addToRelatedProductList(Product $entity)
     {
-        $mapping = StudentExamMPKService::getInstance()->newInstance();
-        $mapping->setStudentReference($this);
-        $mapping->setExamReference($entity);
-        $this->examListMapping[] = $mapping;
+        $mapping = ProductRelatedService::getInstance()->newInstance();
+        $mapping->setProductTarget($this);
+        $mapping->setProductTarget($entity);
+        $this->relatedProductListMapping[] = $mapping;
     }
 
     /**
-     * @param string $id1
-     * @param string $id2
+     * @param int $id
      * @param string $connectionName
      * 
      * @return void
      */
-    public function deleteFromExamList(string $id1 = null, string $id2 = null, string $connectionName = null)
+    public function deleteFromRelatedProductList(int $id = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $studentMPKId1 = Escaper::quoteString($connection, $this->id1);
-        $studentMPKId2 = Escaper::quoteString($connection, $this->id2);
-        $examMPKId1 = Escaper::quoteString($connection, $id1);
-        $examMPKId2 = Escaper::quoteString($connection, $id2);
-        $connection->execute("CALL StudentExamMPK_D_A_StudentMPK_examList($studentMPKId1,$studentMPKId2,$examMPKId1,$examMPKId2)");
+        $productId = Escaper::quoteInt($this->id);
+        $productId = Escaper::quoteInt($id);
+        $connection->execute("CALL ProductRelated_D_A_Product_relatedProductList($productId,$productId)");
     }
 
     /**
-     * @param string $id1
-     * @param string $id2
+     * @param int $id
      * @param string $connectionName
      * 
      * @return void
      */
-    public function deleteAssignedExamMPK(string $id1 = null, string $id2 = null, string $connectionName = null)
+    public function deleteAssignedProduct(int $id = null, string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $studentMPKId1 = Escaper::quoteString($connection, $this->id1);
-        $studentMPKId2 = Escaper::quoteString($connection, $this->id2);
-        $examMPKId1 = Escaper::quoteString($connection, $id1);
-        $examMPKId2 = Escaper::quoteString($connection, $id2);
-        $connection->execute("CALL ExamMPK_D_JOIN_StudentExamMPK_examList($studentMPKId1,$studentMPKId2,$examMPKId1,$examMPKId2)");
+        $productId = Escaper::quoteInt($this->id);
+        $productId = Escaper::quoteInt($id);
+        $connection->execute("CALL Product_D_JOIN_ProductRelated_relatedProductList($productId,$productId)");
     }
 
     /**
-     * @param StudentMPK $entity
+     * @param Product $entity
      * 
      * @return bool
      */
-    public function arePrimaryKeyIdentical(StudentMPK $entity = null) : bool
+    public function arePrimaryKeyIdentical(Product $entity = null) : bool
     {
         if ($entity === null) {
             return false;
         }
-        return $this->getId1() === $entity->getId1() && $this->getId2() === $entity->getId2();
+        return $this->getId() === $entity->getId();
     }
 
 }

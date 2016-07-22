@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="Product" namespace="SiestaTest\End2End\CollectionMany\Generated" table="Product" targetPath="Generated">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbType="VARCHAR(30)"/>
+        <collectionMany2Many name="relatedProductList" foreignTable="Product" mappingTable="ProductRelated"/>
+    </entity>
+
+    <entity name="ProductRelated" namespace="SiestaTest\End2End\CollectionMany\Generated" table="ProductRelated" targetPath="Generated">
+        <attribute name="productSourceId" dbName="FK_source" type="int" dbType="INT"/>
+        <attribute name="productTargetId" dbName="FK_target" type="int" dbType="INT"/>
+
+        <reference name="productSource" foreignTable="Product" onDelete="cascade">
+            <referenceMapping localAttribute="productSourceId" foreignAttribute="id"/>
+        </reference>
+
+        <reference name="productTarget" foreignTable="Product" onDelete="cascade">
+            <referenceMapping localAttribute="productTargetId" foreignAttribute="id" />
+        </reference>
+    </entity>
+
+</entityList>
