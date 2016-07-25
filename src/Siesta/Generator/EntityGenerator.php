@@ -5,22 +5,14 @@ declare(strict_types = 1);
 namespace Siesta\Generator;
 
 use Siesta\CodeGenerator\CodeGenerator;
-use Siesta\Contract\Generator;
-use Siesta\Contract\Plugin;
 use Siesta\Model\Entity;
 use Siesta\Util\File;
-use Siesta\Util\StringUtil;
 
 /**
  * @author Gregor Müller
  */
-class EntityGenerator implements Generator
+class EntityGenerator extends AbstractGenerator
 {
-
-    /**
-     * @var Plugin[]
-     */
-    protected $pluginList;
 
     /**
      * @var Entity
@@ -36,23 +28,6 @@ class EntityGenerator implements Generator
      * @var string
      */
     protected $basePath;
-
-    /**
-     * EntityGenerator constructor.
-     */
-    public function __construct()
-    {
-        $this->pluginList = [];
-
-    }
-
-    /**
-     * @param Plugin $plugin
-     */
-    public function addPlugin(Plugin $plugin)
-    {
-        $this->pluginList[] = $plugin;
-    }
 
     /**
      * @param Entity $entity
@@ -72,7 +47,7 @@ class EntityGenerator implements Generator
     {
         $this->codeGenerator->addNamespace($this->entity->getNamespaceName());
 
-        foreach ($this->getUseClassNameList() as $useClass) {
+        foreach ($this->getUseClassNameList($this->entity) as $useClass) {
             $this->codeGenerator->addUse($useClass);
         }
 
@@ -113,60 +88,6 @@ class EntityGenerator implements Generator
 
         $targetFileName = $directoryPath . DIRECTORY_SEPARATOR . $this->entity->getClassShortName() . ".php";
         return new File($targetFileName);
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getImplementedInterfaceList()
-    {
-        $interfaceList = [];
-        foreach ($this->pluginList as $plugin) {
-            $interfaceList = array_merge($interfaceList, $plugin->getInterfaceList());
-        }
-        $interfaceList = array_unique($interfaceList);
-        sort($interfaceList);
-
-        if (sizeof($interfaceList) === 0) {
-            return null;
-        }
-
-        return implode(", ", $interfaceList);
-    }
-
-    /**
-     * @return array
-     */
-    public function getUseClassNameList()
-    {
-        $useClassList = [];
-
-        foreach ($this->pluginList as $plugin) {
-            $useClassList = array_merge($useClassList, $plugin->getUseClassNameList($this->entity));
-        }
-        $useClassList = array_unique($useClassList);
-        return $this->cleanUseClassNameList($useClassList);
-    }
-
-    /**
-     * @param array $useClassList
-     *
-     * @return array
-     */
-    protected function cleanUseClassNameList(array $useClassList) : array
-    {
-        $result = [];
-        foreach ($useClassList as $useClass) {
-            $useClass = ltrim($useClass, "\\");
-
-            $namespaceName = StringUtil::getStartBeforeLast($useClass, "\\");
-            if ($namespaceName !== $this->entity->getNamespaceName()) {
-                $result[] = $useClass;
-            }
-
-        }
-        sort($result);
-        return $result;
     }
 
 }
