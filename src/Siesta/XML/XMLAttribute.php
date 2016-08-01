@@ -78,6 +78,11 @@ class XMLAttribute
     protected $isTransient;
 
     /**
+     * @var string[]
+     */
+    protected $customAttributeList;
+
+    /**
      * @param XMLAccess $xmlAccess
      */
     public function fromXML(XMLAccess $xmlAccess)
@@ -91,6 +96,7 @@ class XMLAttribute
         $this->setIsPrimaryKey($xmlAccess->getAttributeAsBool(self::PRIMARY_KEY));
         $this->setIsRequired($xmlAccess->getAttributeAsBool(self::REQUIRED));
         $this->setIsTransient($xmlAccess->getAttributeAsBool(self::TRANSIENT));
+        $this->setCustomAttributeList($xmlAccess->getAttributeList());
     }
 
     /**
@@ -270,6 +276,22 @@ class XMLAttribute
     public function setIsTransient($isTransient)
     {
         $this->isTransient = $isTransient;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCustomAttributeList(): array
+    {
+        return $this->customAttributeList;
+    }
+
+    /**
+     * @param string[] $customAttributeList
+     */
+    public function setCustomAttributeList(array $customAttributeList)
+    {
+        $this->customAttributeList = $customAttributeList;
     }
 
 }

@@ -25,4 +25,15 @@ class ArrayUtil
         }
         return $object [$key];
     }
+
+    /**
+     * @param $array
+     *
+     * @return bool
+     */
+    public static function isArray($array)
+    {
+        return ($array !== null) && (is_array($array));
+    }
+
 }

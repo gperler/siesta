@@ -16,8 +16,8 @@
 
 
     <entity name="StudentExam" namespace="SiestaTest\End2End\CollectionMany\Generated" table="StudentExam" targetPath="Generated">
-        <attribute name="studentId" dbName="FK_Student" type="int" dbType="INT"/>
-        <attribute name="examId" dbName="FK_Exam" type="int" dbType="INT"/>
+        <attribute name="studentId" dbName="FK_Student" type="int" dbType="INT" primaryKey="true"/>
+        <attribute name="examId" dbName="FK_Exam" type="int" dbType="INT" primaryKey="true"/>
 
         <reference name="StudentReference" foreignTable="Student" onDelete="cascade">
             <referenceMapping localAttribute="studentId" foreignAttribute="id"/>

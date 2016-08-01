@@ -7,6 +7,7 @@ namespace Siesta\Generator;
 use Siesta\Contract\Generator;
 use Siesta\Contract\Plugin;
 use Siesta\Model\Entity;
+use Siesta\Util\File;
 use Siesta\Util\StringUtil;
 
 abstract class AbstractGenerator implements Generator
@@ -94,5 +95,24 @@ abstract class AbstractGenerator implements Generator
         }
         sort($result);
         return $result;
+    }
+
+    /**
+     * @param Entity $entity
+     * @param string $className
+     *
+     * @return File
+     */
+    protected function getTargetFile(Entity $entity, string $className) : File
+    {
+        $basePath = rtrim($this->basePath, DIRECTORY_SEPARATOR);
+
+        $directoryPath = $basePath . DIRECTORY_SEPARATOR . $entity->getTargetPath();
+
+        $directory = new File($directoryPath);
+        $directory->createDir();
+
+        $targetFileName = $directoryPath . DIRECTORY_SEPARATOR . $className . ".php";
+        return new File($targetFileName);
     }
 }

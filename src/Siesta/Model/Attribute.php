@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Siesta\Model;
 
 use Siesta\NamingStrategy\NamingStrategyRegistry;
+use Siesta\Util\ArrayUtil;
 use Siesta\Util\StringUtil;
 use Siesta\Validator\DefaultAttributeValidator;
 
@@ -79,6 +80,11 @@ class Attribute
      * @var bool
      */
     protected $isForeignKey;
+
+    /**
+     * @var string[]
+     */
+    protected $customAttributeList;
 
     /**
      * Attribute constructor.
@@ -351,6 +357,32 @@ class Attribute
     public function setIsForeignKey()
     {
         $this->isForeignKey = true;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return null|string
+     */
+    public function getCustomAttribute(string $name)
+    {
+        return ArrayUtil::getFromArray($this->customAttributeList, $name);
+    }
+
+    /**
+     * @return \string[]
+     */
+    public function getCustomAttributeList(): array
+    {
+        return $this->customAttributeList;
+    }
+
+    /**
+     * @param \string[] $customAttributeList
+     */
+    public function setCustomAttributeList(array $customAttributeList)
+    {
+        $this->customAttributeList = $customAttributeList;
     }
 
 }

@@ -67,7 +67,7 @@ class MySQLConnection implements Connection
 
         // database does not exist . create it
         if ($this->connection->connect_errno === 1049) {
-            $this->connection = @new \mysqli ($connectionData->host, $connectionData->user, $connectionData->password, null, $connectionData->port);
+            $this->connection = @new \mysqli ($connectionData->host, $connectionData->user, $connectionData->password, "", $connectionData->port);
         }
 
         // check for errors

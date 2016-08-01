@@ -6,7 +6,6 @@ namespace Siesta\Generator;
 
 use Siesta\CodeGenerator\CodeGenerator;
 use Siesta\Model\Entity;
-use Siesta\Util\File;
 
 /**
  * @author Gregor Müller
@@ -69,25 +68,9 @@ class EntityGenerator extends AbstractGenerator
      */
     protected function saveEntity()
     {
-        $targetFile = $this->getTargetFile();
+        $targetFile = $this->getTargetFile($this->entity, $this->entity->getClassShortName());
 
         $this->codeGenerator->writeTo($targetFile);
-    }
-
-    /**
-     * @return File
-     */
-    protected function getTargetFile() : File
-    {
-        $basePath = rtrim($this->basePath, DIRECTORY_SEPARATOR);
-
-        $directoryPath = $basePath . DIRECTORY_SEPARATOR . $this->entity->getTargetPath();
-
-        $directory = new File($directoryPath);
-        $directory->createDir();
-
-        $targetFileName = $directoryPath . DIRECTORY_SEPARATOR . $this->entity->getClassShortName() . ".php";
-        return new File($targetFileName);
     }
 
 }

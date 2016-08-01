@@ -9,6 +9,7 @@ namespace Siesta\Model;
  */
 use Siesta\GeneratorPlugin\ServiceClass\SingletonPlugin;
 use Siesta\NamingStrategy\NamingStrategyRegistry;
+use Siesta\Util\ArrayUtil;
 use Siesta\XML\XMLEntity;
 
 class Entity
@@ -104,6 +105,11 @@ class Entity
      * @var XMLEntity
      */
     protected $xmlEntity;
+
+    /**
+     * @var string[]
+     */
+    protected $customAttributeList;
 
     /**
      * Entity constructor.
@@ -408,11 +414,26 @@ class Entity
      */
     public function getCustomAttribute(string $name)
     {
-        if ($this->xmlEntity === null) {
-            return null;
-        }
-        return $this->xmlEntity->getCustomAttribute($name);
+        return ArrayUtil::getFromArray($this->customAttributeList, $name);
     }
+
+    /**
+     * @return \string[]
+     */
+    public function getCustomAttributeList(): array
+    {
+        return $this->customAttributeList;
+    }
+
+    /**
+     * @param \string[] $customAttributeList
+     */
+    public function setCustomAttributeList(array $customAttributeList)
+    {
+        $this->customAttributeList = $customAttributeList;
+    }
+
+
 
     /**
      * @return string

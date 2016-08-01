@@ -277,6 +277,17 @@ class MethodGenerator
     /**
      *
      */
+    public function addIfElse()
+    {
+        $this->currentIndent--;
+        $this->addLine("} else {");
+        $this->currentIndent++;
+    }
+
+
+    /**
+     *
+     */
     public function addIfEnd()
     {
         $this->currentIndent--;

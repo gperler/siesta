@@ -6,8 +6,6 @@ namespace Siesta\Generator;
 
 use Siesta\CodeGenerator\CodeGenerator;
 use Siesta\Model\Entity;
-use Siesta\Util\File;
-use Siesta\Util\StringUtil;
 
 /**
  * @author Gregor Müller
@@ -45,7 +43,7 @@ class ServiceGenerator extends AbstractGenerator
      */
     protected function saveServiceEntity()
     {
-        $targetFile = $this->getTargetFile();
+        $targetFile = $this->getTargetFile($this->entity, $this->entity->getServiceClassShortName());
 
         $this->codeGenerator->writeTo($targetFile);
     }
@@ -72,22 +70,6 @@ class ServiceGenerator extends AbstractGenerator
         }
 
         $this->codeGenerator->addClassEnd();
-    }
-
-    /**
-     * @return File
-     */
-    protected function getTargetFile() : File
-    {
-        $basePath = rtrim($this->basePath, DIRECTORY_SEPARATOR);
-
-        $directoryPath = $basePath . DIRECTORY_SEPARATOR . $this->entity->getTargetPath();
-
-        $directory = new File($directoryPath);
-        $directory->createDir();
-
-        $targetFileName = $directoryPath . DIRECTORY_SEPARATOR . $this->entity->getServiceClassShortName() . ".php";
-        return new File($targetFileName);
     }
 
 }

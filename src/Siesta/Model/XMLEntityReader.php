@@ -45,6 +45,7 @@ class XMLEntityReader
         $entity->setTargetPath($xmlEntity->getTargetPath());
         $entity->setTableName($xmlEntity->getTableName());
         $entity->setXmlEntity($xmlEntity);
+        $entity->setCustomAttributeList($xmlEntity->getCustomAttributeList());
     }
 
     /**
@@ -106,6 +107,7 @@ class XMLEntityReader
         $attribute->setIsTransient($xmlAttribute->getIsTransient());
         $attribute->setPhpName($xmlAttribute->getPhpName());
         $attribute->setPhpType($xmlAttribute->getPhpType());
+        $attribute->setCustomAttributeList($xmlAttribute->getCustomAttributeList());
     }
 
     /**

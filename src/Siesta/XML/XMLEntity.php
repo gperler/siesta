@@ -398,6 +398,14 @@ class XMLEntity
     }
 
     /**
+     * @return string[]
+     */
+    public function getCustomAttributeList() : array
+    {
+        return $this->xmlAccess->getAttributeList();
+    }
+
+    /**
      * @return string
      */
     public function getClassShortName()

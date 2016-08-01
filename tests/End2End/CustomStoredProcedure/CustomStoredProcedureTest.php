@@ -85,6 +85,18 @@ class CustomStoredProcedureTest extends End2EndTest
 
         $resultSet->close();
 
+        $resultSet = $service->getResultSet('Discovery', 42);
+        while ($resultSet->hasNext()) {
+            $boolValue = $resultSet->getBooleanValue(E2ECustomStoredProcedure::COLUMN_BOOL);
+            $intValue = $resultSet->getIntegerValue(E2ECustomStoredProcedure::COLUMN_INT);
+            $floatValue = $resultSet->getIntegerValue(E2ECustomStoredProcedure::COLUMN_FLOAT);
+            $stringValue = $resultSet->getStringValue(E2ECustomStoredProcedure::COLUMN_STRING);
+            $dateValue = $resultSet->getDateTime(E2ECustomStoredProcedure::COLUMN_DATETIME);
+            $arrayValue = $resultSet->getArray(E2ECustomStoredProcedure::COLUMN_OBJECT);
+            $objectValue = $resultSet->getObject(E2ECustomStoredProcedure::COLUMN_OBJECT);
+        }
+        $resultSet->close();
+
     }
 
     public function testNoResult()

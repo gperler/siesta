@@ -74,6 +74,8 @@ class StudentExam implements ArraySerializable
     {
         $spCall = ($this->_existing) ? "CALL StudentExam_U(" : "CALL StudentExam_I(";
         $connection = ConnectionFactory::getConnection($connectionName);
+        $this->getStudentId(true, $connectionName);
+        $this->getExamId(true, $connectionName);
         return $spCall . Escaper::quoteInt($this->studentId) . ',' . Escaper::quoteInt($this->examId) . ');';
     }
 
@@ -138,7 +140,9 @@ class StudentExam implements ArraySerializable
     public function delete(string $connectionName = null)
     {
         $connection = ConnectionFactory::getConnection($connectionName);
-        $connection->execute("CALL StudentExam_DB_PK()");
+        $studentId = Escaper::quoteInt($this->studentId);
+        $examId = Escaper::quoteInt($this->examId);
+        $connection->execute("CALL StudentExam_DB_PK($studentId,$examId)");
         $this->_existing = false;
     }
 
@@ -153,6 +157,7 @@ class StudentExam implements ArraySerializable
         $arrayAccessor = new ArrayAccessor($data);
         $this->setStudentId($arrayAccessor->getIntegerValue("studentId"));
         $this->setExamId($arrayAccessor->getIntegerValue("examId"));
+        $this->_existing = ($this->studentId !== null) && ($this->examId !== null);
         $StudentReferenceArray = $arrayAccessor->getArray("StudentReference");
         if ($StudentReferenceArray !== null) {
             $StudentReference = StudentService::getInstance()->newInstance();
@@ -214,11 +219,16 @@ class StudentExam implements ArraySerializable
     }
 
     /**
+     * @param bool $generateKey
+     * @param string $connectionName
      * 
      * @return int|null
      */
-    public function getStudentId()
+    public function getStudentId(bool $generateKey = false, string $connectionName = null)
     {
+        if ($generateKey && $this->studentId === null) {
+            $this->studentId = SequencerFactory::nextSequence("", self::TABLE_NAME, $connectionName);
+        }
         return $this->studentId;
     }
 
@@ -233,11 +243,16 @@ class StudentExam implements ArraySerializable
     }
 
     /**
+     * @param bool $generateKey
+     * @param string $connectionName
      * 
      * @return int|null
      */
-    public function getExamId()
+    public function getExamId(bool $generateKey = false, string $connectionName = null)
     {
+        if ($generateKey && $this->examId === null) {
+            $this->examId = SequencerFactory::nextSequence("", self::TABLE_NAME, $connectionName);
+        }
         return $this->examId;
     }
 
@@ -309,7 +324,7 @@ class StudentExam implements ArraySerializable
         if ($entity === null) {
             return false;
         }
-        return false;
+        return $this->getStudentId() === $entity->getStudentId() && $this->getExamId() === $entity->getExamId();
     }
 
 }

@@ -1,10 +1,15 @@
 # Siesta
-Stored procedure based ORM for php
-Installation with composer
+Stored procedure based ORM for php7
+
+# Documentation
+For full documentation, please visit [https://gperler.github.io](https://gperler.github.io)
+
+# Installation with composer
 
 ```
 composer require gm314/siesta
 ```
+
 # Example
 In this example we create an Artist and Label entity, and configure the relationship between them:
 
@@ -20,10 +25,6 @@ $label->addToArtistList($artist);
 // save with cascade. will store both label and artist
 $label->save(true);
 ```
-
-# Documentation
-For full documentation, please visit [https://gperler.github.io](https://gperler.github.io)
-
 
 # Console Commands
 create config file
@@ -43,7 +44,6 @@ reverse engineer
 ```
 vendor/bin/siesta reverse
 ```
-
 
 # Testing
 

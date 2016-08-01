@@ -30,6 +30,39 @@ class StudentExamService
     }
 
     /**
+     * @param int $studentId
+     * @param int $examId
+     * @param string $connectionName
+     * 
+     * @return StudentExam|null
+     */
+    public function getEntityByPrimaryKey(int $studentId = null, int $examId = null, string $connectionName = null)
+    {
+        if ($studentId === null || $examId === null) {
+            return null;
+        }
+        $studentId = Escaper::quoteInt($studentId);
+        $examId = Escaper::quoteInt($examId);
+        $entityList = $this->executeStoredProcedure("CALL StudentExam_SB_PK($studentId,$examId)", $connectionName);
+        return ArrayUtil::getFromArray($entityList, 0);
+    }
+
+    /**
+     * @param int $studentId
+     * @param int $examId
+     * @param string $connectionName
+     * 
+     * @return void
+     */
+    public function deleteEntityByPrimaryKey(int $studentId, int $examId, string $connectionName = null)
+    {
+        $connection = ConnectionFactory::getConnection($connectionName);
+        $studentId = Escaper::quoteInt($studentId);
+        $examId = Escaper::quoteInt($examId);
+        $connection->execute("CALL StudentExam_DB_PK($studentId,$examId)");
+    }
+
+    /**
      * 
      * @return StudentExam
      */
