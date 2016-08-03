@@ -4,9 +4,11 @@ declare(strict_types = 1);
 namespace Siesta\GeneratorPlugin\Entity;
 
 use Siesta\CodeGenerator\CodeGenerator;
+use Siesta\CodeGenerator\MethodGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\GeneratorPlugin\ServiceClass\CollectionAccessPlugin;
 use Siesta\Model\Collection;
+use Siesta\Model\CollectionMany;
 use Siesta\Model\Entity;
 use Siesta\Model\PHPType;
 
@@ -54,7 +56,7 @@ class CollectorGetterSetter extends BasePlugin
 
         foreach ($this->entity->getCollectionList() as $collection) {
             $this->generateCollectionGetter($collection);
-            $this->generateDeleteAll($collection);
+            $this->generateDeleteFrom($collection);
             $this->generateAddToCollection($collection);
         }
 
@@ -106,25 +108,84 @@ class CollectorGetterSetter extends BasePlugin
     /**
      * @param Collection $collection
      */
-    protected function generateDeleteAll(Collection $collection)
+    protected function generateDeleteFrom(Collection $collection)
     {
-        $methodName = "deleteAll" . $collection->getMethodName();
+        $foreignEntity = $collection->getForeignEntity();
+
+        $methodName = "deleteFrom" . $collection->getMethodName();
         $method = $this->codeGenerator->newPublicMethod($methodName);
+        $method->addAttributeParameterList($foreignEntity->getPrimaryKeyAttributeList(), 'null');
         $method->addConnectionNameParameter();
 
         // invoke delete call on service class
-        $foreignEntity = $collection->getForeignEntity();
         $serviceAccess = $foreignEntity->getServiceAccess();
         $deleteMethodName = CollectionAccessPlugin::getDeleteByReferenceName($collection->getForeignReference());
-        $invocationSignature = $this->getServiceClassInvocationSignature();
+        $invocationSignature = $this->getServiceClassInvocationSignature($collection);
+
         $deleteCall = $serviceAccess . '->' . $deleteMethodName . '(' . $invocationSignature . ', $connectionName);';
         $method->addLine($deleteCall);
 
         // reset collection to null
+
+        $foreignPKCheckNull = $this->generateParameterNullCheck($collection);
+        $method->addIfStart($foreignPKCheckNull);
         $method->addLine('$this->' . $collection->getName() . ' = null;');
+        $method->addLine('return;');
+        $method->addIfEnd();
+
+        $this->generateSliceCollectionElement($method, $collection);
 
         $method->end();
     }
+
+
+    protected function generateParameterNullCheck(Collection $collection) {
+        $foreignEntity = $collection->getForeignEntity();
+        $checkList = [];
+        foreach($foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
+            $checkList[] = '$' . $pkAttribute->getPhpName() . ' === null';
+        }
+        return '($this->' . $collection->getName() . ' === null) OR (' .implode($checkList, ' AND ') . ')';
+    }
+
+
+    protected function generateSliceCollectionElement(MethodGenerator $method, Collection $collection) {
+        $collectionMember = '$this->' . $collection->getName();
+
+
+        $method->addForeachStart($collectionMember . ' as $index => $entity');
+
+        $comparePKCheck = $this->getEntityComparePrimaryKeyStatement($collection->getForeignEntity());
+
+        $method->addIfStart($comparePKCheck);
+        $method->addLine('array_splice(' . $collectionMember . ', $index, 1);');
+        $method->addLine('return;');
+
+        $method->addIfEnd();
+
+
+        $method->addForeachEnd();
+    }
+
+
+    /**
+     * @param Entity $foreignEntity
+     *
+     * @return string
+     */
+    protected function getEntityComparePrimaryKeyStatement(Entity $foreignEntity) : string
+    {
+        $compareList = [];
+        foreach ($foreignEntity->getPrimaryKeyAttributeList() as $attribute) {
+            $name = $attribute->getPhpName();
+            $methodName = $attribute->getMethodName();
+
+            $compareList[] = '$' . $name . ' === $entity->get' . $methodName . '()';
+        }
+        return implode(" && ", $compareList);
+    }
+
+
 
     /**
      * @param Collection $collection
@@ -156,12 +217,23 @@ class CollectorGetterSetter extends BasePlugin
     /**
      * @return string
      */
-    protected function getServiceClassInvocationSignature()
+    protected function getServiceClassInvocationSignature(Collection $collection = null)
     {
         $pkList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
             $pkList[] = '$this->get' . $pkAttribute->getMethodName() . '(true, $connectionName)';
         }
+
+        if ($collection === null) {
+            return implode(", ", $pkList);
+        }
+
+        $foreignEntity = $collection->getForeignEntity();
+
+        foreach ($foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
+            $pkList[] = '$' . $pkAttribute->getPhpName();
+        }
+
         return implode(", ", $pkList);
     }
 

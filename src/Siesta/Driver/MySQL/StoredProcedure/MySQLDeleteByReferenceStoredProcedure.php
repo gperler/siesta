@@ -59,7 +59,11 @@ class MySQLDeleteByReferenceStoredProcedure extends MySQLStoredProcedureBase
         $signatureList = [];
         foreach ($this->reference->getReferenceMappingList() as $referenceMapping) {
             $localAttribute = $referenceMapping->getLocalAttribute();
-            $signatureList[] = $this->buildSignatureParameter($localAttribute->getStoredProcedureParameterName(), $localAttribute->getDbType());
+            $signatureList[] = $this->buildSignatureParameterForAttribute($localAttribute);
+        }
+
+        foreach($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
+            $signatureList[] = $this->buildSignatureParameterForAttribute($pkAttribute);
         }
 
         $this->signature = $this->buildSignatureFromList($signatureList);
@@ -74,6 +78,12 @@ class MySQLDeleteByReferenceStoredProcedure extends MySQLStoredProcedureBase
         foreach ($this->reference->getReferenceMappingList() as $referenceMapping) {
             $localAttribute = $referenceMapping->getLocalAttribute();
             $whereList[] = $this->buildWherePart($localAttribute);
+        }
+
+        foreach($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
+            $parameterName = $pkAttribute->getStoredProcedureParameterName();
+            $dbName = $pkAttribute->getDBName();
+            $whereList[] = "($parameterName IS NULL OR ($parameterName = $dbName))";
         }
 
         $where = $this->buildWhereAndSnippet($whereList);

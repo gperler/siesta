@@ -26,46 +26,61 @@ class CollectionTest extends End2EndTest
         $this->generateSchema($schemaFile, __DIR__, $silent);
     }
 
+    public function tearDown() {
+        //$this->deleteGenDir(__DIR__ . "/Generated");
+    }
+
     /**
      *
      */
     public function testCollection()
     {
 
+        $cartItem1 = new CartItem();
+        $cartItem1->setName("Wayfaring Stranger");
+
+        $cartItem2 = new CartItem();
+        $cartItem2->setName("Waterfront");
+
         $cart = new Cart();
         $cart->setName("Jamie Woon");
-
-        $cartItem = new CartItem();
-        $cartItem->setName("Wayfaring Stranger");
-        $cart->addToCartItem($cartItem);
-
-        $cartItem = new CartItem();
-        $cartItem->setName("Waterfront");
-        $cart->addToCartItem($cartItem);
+        $cart->addToCartItem($cartItem1);
+        $cart->addToCartItem($cartItem2);
 
         $this->assertNotNull($cart->getId());
-
         $cart->save(true);
 
+        //
+        // reload cart
+        //
         $cartService = CartEntityService::getInstance();
         $cartReloaded = $cartService->getEntityByPrimaryKey($cart->getId());
 
+        // check items are there
         $cartItemList = $cartReloaded->getCartItem();
         $this->assertSame(2, sizeof($cartItemList));
 
-        $cartItem = new CartItem();
-        $cartItem->setName("Middle");
-        $cartReloaded->addToCartItem($cartItem);
+        $cartItem3 = new CartItem();
+        $cartItem3->setName("Middle");
+        $cartReloaded->addToCartItem($cartItem3);
         $cartReloaded->save(true);
 
         $cartReloaded = $cartService->getEntityByPrimaryKey($cart->getId());
         $cartItemList = $cartReloaded->getCartItem();
         $this->assertSame(3, sizeof($cartItemList));
 
-        $cartReloaded->deleteAllCartItem();
+        $cartReloaded->deleteFromCartItem($cartItem1->getId());
 
+        $this->assertSame(2, sizeof($cartReloaded->getCartItem()));
+        $this->assertSame(2, sizeof($cartReloaded->getCartItem(true)));
+
+
+
+        $cartReloaded->deleteFromCartItem();
         $this->assertSame(0, sizeof($cartReloaded->getCartItem()));
         $this->assertSame(0, sizeof($cartReloaded->getCartItem(true)));
+
+
 
     }
 
@@ -105,10 +120,17 @@ class CollectionTest extends End2EndTest
         $cartItemList = $cartReloaded->getCartItem();
         $this->assertSame(3, sizeof($cartItemList));
 
-        $cartReloaded->deleteAllCartItem();
+        $cartReloaded->deleteFromCartItem($cartItem->getId());
+
+        $this->assertSame(2, sizeof($cartReloaded->getCartItem()));
+        $this->assertSame(2, sizeof($cartReloaded->getCartItem(true)));
+
+
+        $cartReloaded->deleteFromCartItem();
 
         $this->assertSame(0, sizeof($cartReloaded->getCartItem()));
         $this->assertSame(0, sizeof($cartReloaded->getCartItem(true)));
+
 
     }
 
@@ -144,10 +166,10 @@ class CollectionTest extends End2EndTest
         $cartItemList = $cartReloaded->getCartItem();
         $this->assertSame(3, sizeof($cartItemList));
 
-        $cartReloaded->deleteAllCartItem();
+        $cartReloaded->deleteFromCartItem($cartItem->getId1(), $cartItem->getId2());
 
-        $this->assertSame(0, sizeof($cartReloaded->getCartItem()));
-        $this->assertSame(0, sizeof($cartReloaded->getCartItem(true)));
+        $this->assertSame(2, sizeof($cartReloaded->getCartItem()));
+        $this->assertSame(2, sizeof($cartReloaded->getCartItem(true)));
 
     }
 

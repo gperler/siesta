@@ -55,7 +55,7 @@ class CollectionAccessPlugin extends BasePlugin
             $foreignEntity = $reference->getForeignEntity();
             $useList[] = $foreignEntity->getInstantiationClass();
         }
-        return [];
+        return $useList;
     }
 
     /**
@@ -117,18 +117,36 @@ class CollectionAccessPlugin extends BasePlugin
 
         $methodName = self::getDeleteByReferenceName($reference);
         $mappingList = $reference->getReferenceMappingList();
+        $pkList = $this->entity->getPrimaryKeyAttributeList();
 
         $method = $this->codeGenerator->newPublicMethod($methodName);
         $method->addReferenceMappingListParameter($mappingList);
+        $method->addAttributeParameterList($pkList, 'null');
         $method->addConnectionNameParameter();
 
         $method->addQuoteReferenceMappingList($mappingList, true);
+        $method->addQuoteAttributeList($pkList, false);
 
         // stored procedure invocation
         $spName = StoredProcedureNaming::getDeleteByReferenceName($this->entity, $reference);
-        $method->addExecuteStoredProcedureWithMappingList($spName, $mappingList, false);
+        $signatureAttributeList = $this->getSignatureAttributeList($reference);
+        $method->addExecuteStoredProcedureWithAttributeList($spName, $signatureAttributeList, false);
 
         $method->end();
+    }
+
+    /**
+     * @param Reference $reference
+     *
+     * @return array
+     */
+    protected function getSignatureAttributeList(Reference $reference) : array
+    {
+        $attributeList = [];
+        foreach ($reference->getReferenceMappingList() as $mapping) {
+            $attributeList[] = $mapping->getLocalAttribute();
+        }
+        return array_merge($attributeList, $this->entity->getPrimaryKeyAttributeList());
     }
 
 }
