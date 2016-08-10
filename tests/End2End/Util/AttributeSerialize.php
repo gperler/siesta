@@ -51,7 +51,7 @@ class AttributeSerialize implements ArraySerializable
 
     }
 
-    public function toArray()
+    public function toArray() : array
     {
         return [
             "x" => $this->x,

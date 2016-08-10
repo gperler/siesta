@@ -8,6 +8,7 @@ use Siesta\CodeGenerator\CodeGenerator;
 use Siesta\CodeGenerator\MethodGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
+use Siesta\Model\PHPType;
 use Siesta\Model\StoredProcedure;
 
 /**
@@ -22,11 +23,20 @@ class StoredProcedurePlugin extends BasePlugin
      */
     public function getUseClassNameList(Entity $entity) : array
     {
-        return [
+        $useList = [
             'Siesta\Database\Escaper',
             'Siesta\Database\ConnectionFactory',
             'Siesta\Util\ArrayUtil'
         ];
+
+        foreach ($entity->getStoredProcedureList() as $storedProcedure) {
+            foreach ($storedProcedure->getParameterList() as $parameter) {
+                if ($parameter->getPhpType() === PHPType::SIESTA_DATE_TIME) {
+                    $useList[] = 'Siesta\Util\SiestaDateTime';
+                }
+            }
+        }
+        return $useList;
     }
 
     /**

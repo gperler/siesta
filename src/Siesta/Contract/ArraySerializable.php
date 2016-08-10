@@ -14,7 +14,7 @@ interface ArraySerializable
     public function fromArray(array $data);
 
     /**
-     * @return void
+     * @return array
      */
     public function toArray();
 }
