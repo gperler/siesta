@@ -27,7 +27,6 @@ class CollectionTest extends End2EndTest
     }
 
     public function tearDown() {
-        //$this->deleteGenDir(__DIR__ . "/Generated");
     }
 
     /**

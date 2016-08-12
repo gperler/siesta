@@ -27,7 +27,10 @@ class End2EndTest extends \PHPUnit_Framework_TestCase
     protected function deleteGenDir($dirName)
     {
         $file = new File($dirName);
-        $file->deleteRecursively();
+
+        foreach ($file->findFileList("php") as $genFile) {
+            $genFile->delete();
+        }
     }
 
     /**

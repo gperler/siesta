@@ -121,7 +121,7 @@ class AttributeListMigrator
             if ($attribute !== null and $attribute->getIsTransient()) {
                 return;
             }
-            $addList =  $this->migrationStatementFactory->createAddColumnStatement($attribute);
+            $addList = $this->migrationStatementFactory->createAddColumnStatement($attribute);
             $this->addAddStatementList($addList);
             return;
         }
@@ -134,13 +134,30 @@ class AttributeListMigrator
         }
 
         // types identical nothing to do
-        if ($column->getDBType() === $attribute->getDbType() and $column->getIsRequired() === $attribute->getIsRequired()) {
+        if ($this->areIdentical($attribute, $column)) {
             return;
         }
 
         // types not identical
         $modifyList = $this->migrationStatementFactory->createModifiyColumnStatement($attribute);
         $this->addModifyStatementList($modifyList);
+    }
+
+    /**
+     * @param Attribute $attribute
+     * @param ColumnMetaData $column
+     *
+     * @return bool
+     */
+    protected function areIdentical(Attribute $attribute, ColumnMetaData $column) : bool
+    {
+        if ($column->getIsRequired() !== $attribute->getIsRequired()) {
+            return false;
+        }
+        $attributeType = strtoupper($attribute->getDbType());
+        $columnType = strtoupper($column->getDBType());
+
+        return $attributeType === $columnType;
     }
 
     /**

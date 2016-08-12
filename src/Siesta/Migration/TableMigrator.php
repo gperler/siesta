@@ -204,7 +204,9 @@ class TableMigrator
                 $this->alterStatementList[] = str_replace(MigrationStatementFactory::TABLE_PLACE_HOLDER, $this->entity->getDelimitTableName(), $statement);
             }
 
-            // TODO : handle replication table
+            if ($this->entity->getIsReplication()) {
+                $this->alterStatementList[] = str_replace(MigrationStatementFactory::TABLE_PLACE_HOLDER, $this->entity->getReplicationTableName(), $statement);
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 <?php
 // Here you can initialize variables that will be available to your tests
 
-namespace SiestaTest\Functional;
+namespace SiestaTest\End2End;
 
 require_once 'vendor/autoload.php';
 

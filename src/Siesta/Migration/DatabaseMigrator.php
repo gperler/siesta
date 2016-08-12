@@ -190,7 +190,9 @@ class DatabaseMigrator
                     $this->neededTableList[] = $entity->getDelimitTableName();
                 }
 
-                // TODO: handle replication
+                if ($entity->getIsReplication()) {
+                    $this->neededTableList[] = $entity->getReplicationTableName();
+                }
 
                 return $tableMetaData;
             }

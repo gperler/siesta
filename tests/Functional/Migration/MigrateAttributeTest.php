@@ -15,6 +15,7 @@ class MigrateAttributeTest extends \PHPUnit_Framework_TestCase
 
     public function testDatabase()
     {
+
         $testConnection = new TestConnection();
         $testConnection->setFixtureFile(new File(__DIR__ . "/schema/migrate.attribute.test.schema.json"));
 
