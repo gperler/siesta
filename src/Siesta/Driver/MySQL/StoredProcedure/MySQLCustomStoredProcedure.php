@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use Siesta\Database\MigrationStatementFactory;
@@ -71,7 +71,12 @@ class MySQLCustomStoredProcedure extends MySQLStoredProcedureBase
     protected function buildStatement()
     {
         $sql = $this->storedProcedure->getStatement();
-        $this->statement = str_replace(MigrationStatementFactory::TABLE_PLACE_HOLDER, $this->tableName, $sql);
+
+        if ($this->entity->getIsReplication()) {
+            $this->buildStatementForReplication($sql);
+        } else {
+            $this->statement = str_replace(MigrationStatementFactory::TABLE_PLACE_HOLDER, $this->tableName, $sql);
+        }
     }
 
     /**
