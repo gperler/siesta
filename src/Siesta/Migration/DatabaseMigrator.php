@@ -148,9 +148,46 @@ class DatabaseMigrator
         $alterStatementList = $entityMigrator->createAlterStatementList();
         $this->addAlterStatementList($alterStatementList);
 
+        $this->checkDelimit($entity);
+        $this->checkReplication($entity);
+
         // create stored procedures
         $statementList = $this->storedProcedureMigrator->getMigrateProcedureStatementList($this->dataModel, $entity);
         $this->addStatementList($statementList);
+    }
+
+    /**
+     * @param Entity $entity
+     */
+    protected function checkDelimit(Entity $entity)
+    {
+        if (!$entity->getIsDelimit()) {
+            return;
+        }
+        foreach ($this->databaseTableList as $tableMetaData) {
+            if ($tableMetaData->getName() === $entity->getDelimitTableName()) {
+                return;
+            }
+        }
+        $factory = $this->connection->getCreateStatementFactory();
+        $this->addAlterStatementList($factory->buildCreateDelimitTable($entity));
+    }
+
+    /**
+     * @param Entity $entity
+     */
+    protected function checkReplication(Entity $entity)
+    {
+        if (!$entity->getIsReplication()) {
+            return;
+        }
+        foreach ($this->databaseTableList as $tableMetaData) {
+            if ($tableMetaData->getName() === $entity->getReplicationTableName()) {
+                return;
+            }
+        }
+        $factory = $this->connection->getCreateStatementFactory();
+        $this->addAlterStatementList($factory->buildCreateTable($entity));
     }
 
     /**
