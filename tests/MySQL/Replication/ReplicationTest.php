@@ -13,7 +13,7 @@ class ReplicationTest extends MySQLTest
 
     public function setUp()
     {
-        $this->deleteGenDir(__DIR__ . "/Generated");
+        //$this->deleteGenDir(__DIR__ . "/Generated");
         $this->resetSchema();
         $schemaFile = new File(__DIR__ . "/schema/replication.test.xml");
         $this->generateSchema($schemaFile, __DIR__, true);
