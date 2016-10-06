@@ -227,4 +227,11 @@ class Siesta implements LoggerAwareInterface
         NamingStrategyRegistry::setColumnNamingStrategy($strategy);
     }
 
+    /**
+     * @param string|null $fileName
+     */
+    public function setGenericConfigFileName(string $fileName = null)
+    {
+        $this->genericConfigLoader->setConfigFileName($fileName);
+    }
 }

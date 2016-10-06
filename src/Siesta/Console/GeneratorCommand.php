@@ -126,6 +126,10 @@ class GeneratorCommand extends Command
         $this->siesta->setColumnNamingStrategy($this->generatorConfig->getColumnNamingStrategyInstance());
         $connection = ConnectionFactory::getConnection($this->generatorConfig->getConnectionName());
         $this->siesta->setConnection($connection);
+
+        $this->siesta->setGenericConfigFileName($this->generatorConfig->getGenericGeneratorConfiguration());
+
+        $this->generatorConfig->getGenericGeneratorConfiguration();
     }
 
 }

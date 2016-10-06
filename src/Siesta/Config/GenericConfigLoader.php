@@ -39,10 +39,17 @@ class GenericConfigLoader
     {
     }
 
+    public function setConfigFileName(string $filename = null) {
+        if ($filename === null) {
+            return;
+        }
+        $this->configFile = new File($filename);
+    }
+
     /**
      * @param File $file
      */
-    public function setConfigFile(File $file)
+    public function setConfigFile(File $file = null)
     {
         $this->configFile = $file;
     }
