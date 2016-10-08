@@ -97,6 +97,11 @@ class Entity
     protected $storedProcedureList;
 
     /**
+     * @var ValueObject[]
+     */
+    protected $valueObjectList;
+
+    /**
      * @var CollectionMany[]
      */
     protected $foreignCollectionManyList;
@@ -126,6 +131,7 @@ class Entity
         $this->collectionManyList = [];
         $this->foreignCollectionManyList = [];
         $this->storedProcedureList = [];
+        $this->valueObjectList = [];
     }
 
     /**
@@ -207,6 +213,16 @@ class Entity
     }
 
     /**
+     * @return ValueObject
+     */
+    public function newValueObject() : ValueObject
+    {
+        $valueObject = new ValueObject($this);
+        $this->valueObjectList[] = $valueObject;
+        return $valueObject;
+    }
+
+    /**
      *
      */
     public function update()
@@ -225,6 +241,10 @@ class Entity
         }
         foreach ($this->collectionManyList as $collectionMany) {
             $collectionMany->update();
+        }
+
+        foreach ($this->valueObjectList as $valueObject) {
+            $valueObject->update();
         }
 
     }
@@ -380,6 +400,14 @@ class Entity
     }
 
     /**
+     * @return ValueObject[]
+     */
+    public function getValueObjectList(): array
+    {
+        return $this->valueObjectList;
+    }
+
+    /**
      * @param string $name
      *
      * @return null|StoredProcedure
@@ -432,8 +460,6 @@ class Entity
     {
         $this->customAttributeList = $customAttributeList;
     }
-
-
 
     /**
      * @return string

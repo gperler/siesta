@@ -213,6 +213,10 @@ class GenericGeneratorConfig
             return;
         }
 
+        if ($reflect->implementsInterface(Validator::VALUE_OBJECT_VALIDATOR)) {
+            return;
+        }
+
         $error = sprintf(self::ERROR_GENERATOR_VALIDATOR_DOES_NOT_IMPLEMENT, $validator, $this->getName());
         $logger->error($error, self::ERROR_GENERATOR_VALIDATOR_DOES_NOT_IMPLEMENT_CODE);
 

@@ -45,6 +45,12 @@ class XMLReadTest extends \PHPUnit_Framework_TestCase
         $this->assertSame("unicode", $mySQLValueList["collate"]);
         $this->assertSame("MEMORY", $mySQLValueList["engine"]);
 
+        $xmlValueList = $xmlEntity->getXMLValueObjectList();
+        $this->assertSame(2, sizeof($xmlValueList));
+        $this->assertSame("test1", $xmlValueList[0]->getClassName());
+        $this->assertSame("test2", $xmlValueList[1]->getClassName());
+
+
     }
 
     public function testReadAttribute()

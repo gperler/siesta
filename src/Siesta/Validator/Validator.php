@@ -12,6 +12,7 @@ use Siesta\Contract\EntityValidator;
 use Siesta\Contract\IndexValidator;
 use Siesta\Contract\ReferenceValidator;
 use Siesta\Contract\StoredProcedureValidator;
+use Siesta\Contract\ValueObjectValidator;
 use Siesta\Model\Attribute;
 use Siesta\Model\Collection;
 use Siesta\Model\CollectionMany;
@@ -21,6 +22,7 @@ use Siesta\Model\Index;
 use Siesta\Model\Reference;
 use Siesta\Model\StoredProcedure;
 use Siesta\Model\ValidationLogger;
+use Siesta\Model\ValueObject;
 
 /**
  * @author Gregor Müller
@@ -43,6 +45,8 @@ class Validator
     const COLLECTION_MANY_VALIDATOR_INTERFACE = 'Siesta\Contract\CollectionManyValidator';
 
     const STORED_PROCEDURE_VALIDATOR = 'Siesta\Contract\StoredProcedureValidator';
+
+    const VALUE_OBJECT_VALIDATOR = 'Siesta\Contract\ValueObjectValidator';
 
     /**
      * @var DataModelValidator[]
@@ -85,6 +89,11 @@ class Validator
     protected $storedProcedureValidatorList;
 
     /**
+     * @var ValueObjectValidator[]
+     */
+    protected $valueObjectValidatorList;
+
+    /**
      * Validator constructor.
      */
     public function __construct()
@@ -97,6 +106,7 @@ class Validator
         $this->collectionValidatorList = [];
         $this->collectionManyValidatorList = [];
         $this->storedProcedureValidatorList = [];
+        $this->valueObjectValidatorList = [];
     }
 
     /**
@@ -155,8 +165,12 @@ class Validator
             $this->validateCollectionMany($dataModel, $entity, $collectionMany, $logger);
         }
 
-        foreach($entity->getStoredProcedureList() as $storedProcedure) {
+        foreach ($entity->getStoredProcedureList() as $storedProcedure) {
             $this->validateStoredProcedure($dataModel, $entity, $storedProcedure, $logger);
+        }
+
+        foreach ($entity->getValueObjectList() as $valueObject) {
+            $this->validateValueObject($dataModel, $entity, $valueObject, $logger);
         }
     }
 
@@ -239,6 +253,19 @@ class Validator
     }
 
     /**
+     * @param DataModel $dataModel
+     * @param Entity $entity
+     * @param ValueObject $valueObject
+     * @param ValidationLogger $logger
+     */
+    protected function validateValueObject(DataModel $dataModel, Entity $entity, ValueObject $valueObject, ValidationLogger $logger)
+    {
+        foreach ($this->valueObjectValidatorList as $validator) {
+            $validator->validate($dataModel, $entity, $valueObject, $logger);
+        }
+    }
+
+    /**
      * @param GenericGeneratorConfig $config
      */
     protected function addGenericGeneratorConfig(GenericGeneratorConfig $config)
@@ -287,6 +314,10 @@ class Validator
 
         if ($reflect->implementsInterface(self::STORED_PROCEDURE_VALIDATOR)) {
             $this->storedProcedureValidatorList[$validatorClassName] = $validator;
+        }
+
+        if ($reflect->implementsInterface(self::VALUE_OBJECT_VALIDATOR)) {
+            $this->valueObjectValidatorList[$validatorClassName] = $validator;
         }
 
     }

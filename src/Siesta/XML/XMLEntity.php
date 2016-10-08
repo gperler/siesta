@@ -97,6 +97,11 @@ class XMLEntity
     protected $xmlStoredProcedureList;
 
     /**
+     * @var XMLValueObject[]
+     */
+    protected $xmlValueObjectList;
+
+    /**
      * @var XMLAccess
      */
     protected $xmlAccess;
@@ -117,6 +122,7 @@ class XMLEntity
         $this->xmlCollectionList = [];
         $this->xmlCollectionManyList = [];
         $this->xmlStoredProcedureList = [];
+        $this->xmlValueObjectList = [];
         $this->databaseSpecific = [];
     }
 
@@ -161,23 +167,6 @@ class XMLEntity
     }
 
     /**
-     * @param XMLAccess $xmlAccess
-     */
-    public function fromXML(XMLAccess $xmlAccess)
-    {
-        $this->xmlAccess = $xmlAccess;
-        $this->readEntityDataFromXML($xmlAccess);
-        $this->readXMLConstructor($xmlAccess);
-        $this->readXMLServiceClass($xmlAccess);
-        $this->readAttributeDataFromXML($xmlAccess);
-        $this->readReferenceDataFromXML($xmlAccess);
-        $this->readIndexDataFromXML($xmlAccess);
-        $this->readCollectionFromXML($xmlAccess);
-        $this->readCollectionManyFromXML($xmlAccess);
-        $this->readStoredProcedureDataFromXML($xmlAccess);
-    }
-
-    /**
      * @param TableMetaData $table
      */
     public function fromTable(TableMetaData $table)
@@ -207,6 +196,24 @@ class XMLEntity
             $this->xmlIndexList[] = $xmlIndex;
         }
 
+    }
+
+    /**
+     * @param XMLAccess $xmlAccess
+     */
+    public function fromXML(XMLAccess $xmlAccess)
+    {
+        $this->xmlAccess = $xmlAccess;
+        $this->readEntityDataFromXML($xmlAccess);
+        $this->readXMLConstructor($xmlAccess);
+        $this->readXMLServiceClass($xmlAccess);
+        $this->readAttributeDataFromXML($xmlAccess);
+        $this->readReferenceDataFromXML($xmlAccess);
+        $this->readIndexDataFromXML($xmlAccess);
+        $this->readCollectionFromXML($xmlAccess);
+        $this->readCollectionManyFromXML($xmlAccess);
+        $this->readStoredProcedureDataFromXML($xmlAccess);
+        $this->readValueObjectFromXML($xmlAccess);
     }
 
     /**
@@ -322,6 +329,18 @@ class XMLEntity
     }
 
     /**
+     * @param XMLAccess $xmlAccess
+     */
+    protected function readValueObjectFromXML(XMLAccess $xmlAccess)
+    {
+        foreach ($xmlAccess->getXMLChildElementListByName(XMLValueObject::ELEMENT_VALUE_OBJECT) as $xmlValueObjectAccess) {
+            $xmlValueObject = new XMLValueObject();
+            $xmlValueObject->fromXML($xmlValueObjectAccess);
+            $this->xmlValueObjectList[] = $xmlValueObject;
+        }
+    }
+
+    /**
      * @return XMLAttribute[]
      */
     public function getXMLAttributeList() : array
@@ -367,6 +386,14 @@ class XMLEntity
     public function getXMLStoredProcedureList() : array
     {
         return $this->xmlStoredProcedureList;
+    }
+
+    /**
+     * @return XMLValueObject[]
+     */
+    public function getXMLValueObjectList(): array
+    {
+        return $this->xmlValueObjectList;
     }
 
     /**

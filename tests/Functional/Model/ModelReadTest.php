@@ -71,6 +71,11 @@ class ModelReadTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(2, sizeof($mySQLValueList));
         $this->assertSame("unicode", $mySQLValueList["collate"]);
         $this->assertSame("MEMORY", $mySQLValueList["engine"]);
+
+        $valueObjectList = $entity->getValueObjectList();
+        $this->assertSame(2, sizeof($valueObjectList));
+        $this->assertSame("test1", $valueObjectList[0]->getClassName());
+        $this->assertSame("test2", $valueObjectList[1]->getClassName());
     }
 
     public function testReadAttribute()

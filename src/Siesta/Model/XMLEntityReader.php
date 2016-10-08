@@ -31,6 +31,7 @@ class XMLEntityReader
         $this->readCollectionListFromXML($entity, $xmlEntity);
         $this->readCollectionManyListFromXML($entity, $xmlEntity);
         $this->readStoredProcedureListFromXML($entity, $xmlEntity);
+        $this->readValueObjectFromXML($entity, $xmlEntity);
     }
 
     /**
@@ -273,4 +274,17 @@ class XMLEntityReader
         $storedProcedureParameter->setSpName($xmlStoredProcedureParameter->getSpName());
         $storedProcedureParameter->setDbType($xmlStoredProcedureParameter->getDbType());
     }
+
+    /**
+     * @param Entity $entity
+     * @param XMLEntity $xmlEntity
+     */
+    protected function readValueObjectFromXML(Entity $entity, XMLEntity $xmlEntity)
+    {
+        foreach ($xmlEntity->getXMLValueObjectList() as $xmlValueObject) {
+            $valueObject = $entity->newValueObject();
+            $valueObject->setClassName($xmlValueObject->getClassName());
+        }
+    }
+
 }
