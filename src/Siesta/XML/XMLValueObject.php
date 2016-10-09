@@ -11,10 +11,14 @@ class XMLValueObject
 
     const CLASS_NAME = "className";
 
+    const MEMBER_NAME = "memberName";
+
     /**
      * @var string
      */
     protected $className;
+
+    protected $memberName;
 
     /**
      * @param XMLAccess $xmlAccess
@@ -22,6 +26,8 @@ class XMLValueObject
     public function fromXML(XMLAccess $xmlAccess)
     {
         $this->setClassName($xmlAccess->getAttribute(self::CLASS_NAME));
+        $this->setMemberName($xmlAccess->getAttribute(self::MEMBER_NAME));
+
     }
 
     /**
@@ -38,6 +44,22 @@ class XMLValueObject
     public function setClassName(string $className = null)
     {
         $this->className = $className;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberName()
+    {
+        return $this->memberName;
+    }
+
+    /**
+     * @param string $memberName
+     */
+    public function setMemberName(string $memberName = null)
+    {
+        $this->memberName = $memberName;
     }
 
 }

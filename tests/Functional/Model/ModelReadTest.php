@@ -75,7 +75,11 @@ class ModelReadTest extends \PHPUnit_Framework_TestCase
         $valueObjectList = $entity->getValueObjectList();
         $this->assertSame(2, sizeof($valueObjectList));
         $this->assertSame("test1", $valueObjectList[0]->getClassName());
+        $this->assertSame("member1", $valueObjectList[0]->getMemberName());
+
         $this->assertSame("test2", $valueObjectList[1]->getClassName());
+        $this->assertSame("member2", $valueObjectList[1]->getMemberName());
+
     }
 
     public function testReadAttribute()

@@ -16,7 +16,8 @@
         "Siesta\\GeneratorPlugin\\Entity\\ReferenceGetterSetter",
         "Siesta\\GeneratorPlugin\\Entity\\CollectorGetterSetter",
         "Siesta\\GeneratorPlugin\\Entity\\CollectionManyAccess",
-        "Siesta\\GeneratorPlugin\\Entity\\ArePKIdenticalPlugin"
+        "Siesta\\GeneratorPlugin\\Entity\\ArePKIdenticalPlugin",
+        "Siesta\\GeneratorPlugin\\Entity\\ValueObjectPlugin"
       ],
       "config": {
       },

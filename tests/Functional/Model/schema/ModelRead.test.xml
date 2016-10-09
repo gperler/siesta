@@ -4,8 +4,8 @@
         <entity-mysql collate="unicode" engine="MEMORY"/>
         <constructor className="className" constructCall="constructCall" constructFactoryClassName="constructFactoryClassName"/>
         <serviceClass className="\SiestaTest\Functional\XML\Artist\ServiceClass" constructCall="serviceClassConstructFactory" constructFactoryClassName="serviceConstructFactoryClassName"/>
-        <valueObject className="test1"/>
-        <valueObject className="test2"/>
+        <valueObject className="test1" memberName="member1"/>
+        <valueObject className="test2" memberName="member2"/>
     </entity>
 
     <entity name="ArtistEntity1" namespace="\SiestaTest\Functional\XML\Artist\" table="ARTIST2" delimit="true" targetPath="/gen/test/">

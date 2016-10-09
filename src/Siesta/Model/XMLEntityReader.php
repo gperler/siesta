@@ -284,6 +284,7 @@ class XMLEntityReader
         foreach ($xmlEntity->getXMLValueObjectList() as $xmlValueObject) {
             $valueObject = $entity->newValueObject();
             $valueObject->setClassName($xmlValueObject->getClassName());
+            $valueObject->setMemberName($xmlValueObject->getMemberName());
         }
     }
 

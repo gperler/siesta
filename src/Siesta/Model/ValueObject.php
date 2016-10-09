@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Siesta\Model;
 
+use Siesta\Util\StringUtil;
+
 class ValueObject
 {
 
@@ -16,6 +18,11 @@ class ValueObject
      * @var string
      */
     protected $className;
+
+    /**
+     * @var string
+     */
+    protected $memberName;
 
     /**
      * @var Attribute[]
@@ -50,6 +57,22 @@ class ValueObject
     }
 
     /**
+     * @return string
+     */
+    public function getMemberName()
+    {
+        return $this->memberName;
+    }
+
+    /**
+     * @param string $memberName
+     */
+    public function setMemberName(string $memberName = null)
+    {
+        $this->memberName = $memberName;
+    }
+
+    /**
      *
      */
     public function update()
@@ -64,6 +87,48 @@ class ValueObject
                 $this->attributeList[] = $attribute;
             }
         }
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getClassShortName()
+    {
+        if ($this->className === null) {
+            return null;
+        }
+        return StringUtil::getEndAfterLast($this->getClassName(), "\\");
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethodName()
+    {
+        if ($this->memberName !== null) {
+            return ucfirst($this->memberName);
+        }
+        return ucfirst($this->getClassShortName());
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhpName()
+    {
+        if ($this->memberName !== null) {
+            return lcfirst($this->memberName);
+        }
+
+        return lcfirst($this->getClassShortName());
+    }
+
+    /**
+     * @return Attribute[]
+     */
+    public function getAttributeList(): array
+    {
+        return $this->attributeList;
     }
 
 }

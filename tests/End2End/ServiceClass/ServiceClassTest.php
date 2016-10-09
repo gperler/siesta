@@ -7,12 +7,12 @@ use SiestaTest\End2End\ServiceClass\Generated\E2EServiceClass;
 use SiestaTest\End2End\ServiceClass\Generated\E2EServiceClassService;
 use SiestaTest\End2End\Util\End2EndTest;
 
-class CustomStoredProcedureTest extends End2EndTest
+class ServiceClassTest extends End2EndTest
 {
 
     public function setUp()
     {
-        $this->deleteGenDir(__DIR__ . "/Generated");
+        //$this->deleteGenDir(__DIR__ . "/Generated");
         $this->resetSchema();
         $schemaFile = new File(__DIR__ . "/schema/service.class.test.xml");
         $this->generateSchema($schemaFile, __DIR__, true);

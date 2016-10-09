@@ -2,8 +2,8 @@
 <entityList>
     <entity name="ArtistEntity" namespace="\SiestaTest\Functional\XML\Artist\" table="ARTIST" delimit="true" targetPath="/test/123/" replication="true" customAttribute="customValue">
         <entity-mysql collate="unicode" engine="MEMORY"/>
-        <valueObject className="test1"/>
-        <valueObject className="test2"/>
+        <valueObject className="test1" memberName="member1"/>
+        <valueObject className="test2" memberName="member2"/>
         <constructor className="className" constructCall="constructCall" constructFactoryClassName="constructFactoryClassName"/>
         <serviceClass className="serviceClassClassName" constructCall="serviceClassConstructFactory" constructFactoryClassName="serviceConstructFactoryClassName"/>
     </entity>

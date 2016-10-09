@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="ValueObject" namespace="SiestaTest\Functional\ValueObject\Generated" table="ValueObject" targetPath="Generated">
+        <attribute name="id" type="int" dbName="ID" dbType="INT" primaryKey="true" required="false" autoValue="autoincrement"/>
+        <attribute name="priceAmount" type="int" dbType="INT"/>
+        <attribute name="priceCurrency" type="string" dbType="VARCHAR(3)"/>
+
+        <valueObject className="SiestaTest\Functional\ValueObject\Money" memberName="price"/>
+    </entity>
+</entityList>

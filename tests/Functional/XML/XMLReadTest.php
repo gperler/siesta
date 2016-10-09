@@ -48,7 +48,9 @@ class XMLReadTest extends \PHPUnit_Framework_TestCase
         $xmlValueList = $xmlEntity->getXMLValueObjectList();
         $this->assertSame(2, sizeof($xmlValueList));
         $this->assertSame("test1", $xmlValueList[0]->getClassName());
+        $this->assertSame("member1", $xmlValueList[0]->getMemberName());
         $this->assertSame("test2", $xmlValueList[1]->getClassName());
+        $this->assertSame("member2", $xmlValueList[1]->getMemberName());
 
 
     }
