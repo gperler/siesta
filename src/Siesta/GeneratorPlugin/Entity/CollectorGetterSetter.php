@@ -27,6 +27,11 @@ class CollectorGetterSetter extends BasePlugin
         foreach ($entity->getCollectionList() as $collection) {
             $foreignEntity = $collection->getForeignEntity();
             $useList[] = $foreignEntity->getInstantiationClass();
+            $serviceClass = $foreignEntity->getServiceClass();
+            if ($serviceClass !== null) {
+                $useList[] = $serviceClass->getConstructFactoryClassName();
+            }
+
         }
         foreach ($entity->getReferenceList() as $reference) {
             $foreignEntity = $reference->getForeignEntity();

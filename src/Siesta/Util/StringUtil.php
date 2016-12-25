@@ -84,6 +84,7 @@ class StringUtil
     public static function getStartBeforeLast($haystack, $needle)
     {
         $end = self::getEndAfterLast($haystack, $needle);
-        return str_replace($needle . $end, "", $haystack);
+        $length = -1 * (strlen($end) + strlen($needle));
+        return substr($haystack, 0, $length);
     }
 }
