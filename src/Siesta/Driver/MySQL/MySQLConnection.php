@@ -278,8 +278,9 @@ class MySQLConnection implements Connection
      */
     public function close()
     {
-        if ($this->connection !== null) {
+        if ($this->connection) {
             $this->connection->close();
+            $this->connection = null;
         }
     }
 
