@@ -45,4 +45,12 @@ class TestStoredProcedureDefinition implements StoredProcedureDefinition
         return $this->createStatement;
     }
 
+    /**
+     * @return string
+     */
+    public function getProcedureName() : string
+    {
+        return '';
+    }
+
 }

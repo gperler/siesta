@@ -2,6 +2,7 @@
 
 namespace SiestaTest\Functional\Migration;
 
+use Codeception\Util\Debug;
 use Siesta\Migration\DatabaseMigrator;
 use Siesta\Util\File;
 use SiestaTest\TestDatabase\TestConnection;

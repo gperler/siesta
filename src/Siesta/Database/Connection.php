@@ -91,6 +91,11 @@ interface Connection
     /**
      * @return void
      */
+    public function close();
+
+    /**
+     * @return void
+     */
     public function enableForeignKeyChecks();
 
     /**

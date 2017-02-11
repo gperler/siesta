@@ -15,4 +15,9 @@ interface StoredProcedureDefinition
      */
     public function getCreateProcedureStatement();
 
+    /**
+     * @return string
+     */
+    public function getProcedureName() : string;
+
 }

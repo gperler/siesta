@@ -12,7 +12,7 @@ class AttributeTest extends End2EndTest
 
     public function setUp()
     {
-        $silent = true;
+        $silent = false;
         $this->resetSchema();
         $schemaFile = new File(__DIR__ . "/schema/attribute.test.xml");
         $this->generateSchema($schemaFile, __DIR__, $silent);
@@ -22,7 +22,7 @@ class AttributeTest extends End2EndTest
 
     }
 
-    /*
+/*
     public function testDefaultValues()
     {
         $attribute = new E2EAttribute();

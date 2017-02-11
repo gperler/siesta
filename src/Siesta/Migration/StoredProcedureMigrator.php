@@ -25,6 +25,11 @@ class StoredProcedureMigrator
     protected $statementList;
 
     /**
+     * @var string[]
+     */
+    protected $neededProcedureList;
+
+    /**
      * @var DataModel
      */
     protected $dataModel;
@@ -55,6 +60,7 @@ class StoredProcedureMigrator
         $this->dataModel = $dataModel;
         $this->entity = $entity;
         $this->statementList = [];
+        $this->neededProcedureList = [];
 
         $this->addSimpleStoredProcedurStatementList();
         $this->addCustomStoredProcedureStatementList();
@@ -135,16 +141,21 @@ class StoredProcedureMigrator
      */
     protected function addStatement(StoredProcedureDefinition $definition)
     {
-        $dropDefinition = $definition->getDropProcedureStatement();
-        if ($dropDefinition !== null) {
-            // at the moment all stored procedures are deleted
-            //$this->statementList[] = $dropDefinition;
-        }
+        $this->neededProcedureList[] = $definition->getProcedureName();
+
+//        $dropDefinition = $definition->getDropProcedureStatement();
+//        if ($dropDefinition !== null) {
+//            $this->statementList[] = $dropDefinition;
+//        }
 
         $createDefinition = $definition->getCreateProcedureStatement();
         if ($createDefinition !== null) {
             $this->statementList[] = $createDefinition;
         }
+
+    }
+
+    protected function createDropUnusedStatementList() {
 
     }
 

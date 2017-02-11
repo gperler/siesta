@@ -92,7 +92,7 @@ class Migrator implements LoggerAwareInterface
         try {
 
             foreach ($this->databaseMigrator->getDropStoredProcedureStatementList() as $statement) {
-                $this->logger->debug("Executing " . $statement);
+                $this->logger->debug("Dropping " . $statement);
                 $this->connection->execute($statement);
             }
 

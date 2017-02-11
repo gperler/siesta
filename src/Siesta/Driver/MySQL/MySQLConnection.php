@@ -80,7 +80,7 @@ class MySQLConnection implements Connection
             $this->connection->set_charset($connectionData->charSet);
         }
 
-        foreach( $connectionData->postConnectStatementList as $statement) {
+        foreach ($connectionData->postConnectStatementList as $statement) {
             $this->execute($statement);
         }
     }
@@ -271,6 +271,16 @@ class MySQLConnection implements Connection
     public function disableForeignKeyChecks()
     {
         $this->query("set foreign_key_checks=0");
+    }
+
+    /**
+     *
+     */
+    public function close()
+    {
+        if ($this->connection !== null) {
+            $this->connection->close();
+        }
     }
 
     /**

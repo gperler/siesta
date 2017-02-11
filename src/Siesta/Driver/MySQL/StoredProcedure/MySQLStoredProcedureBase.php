@@ -124,6 +124,14 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
     }
 
     /**
+     * @return string
+     */
+    public function getProcedureName() : string
+    {
+        return $this->name;
+    }
+
+    /**
      * @param Attribute[] $attributeList
      *
      * @return string

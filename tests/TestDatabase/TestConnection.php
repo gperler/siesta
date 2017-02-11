@@ -95,6 +95,11 @@ class TestConnection implements Connection
         // TODO: Implement disableForeignKeyChecks() method.
     }
 
+    public function close()
+    {
+
+    }
+
     /**
      * @param string $databaseName here interpreted as file with model
      *

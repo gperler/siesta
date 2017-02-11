@@ -74,7 +74,10 @@ class MySQLMultiQueryResultSet implements ResultSet
     {
         while ($this->connection->more_results()) {
             $this->connection->next_result();
-            $this->connection->use_result();
+            $resultSet = $this->connection->use_result();
+            if ($resultSet !== false) {
+                $resultSet->close();
+            }
         }
     }
 
