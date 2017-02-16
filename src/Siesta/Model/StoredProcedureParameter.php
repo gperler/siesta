@@ -94,6 +94,20 @@ class StoredProcedureParameter
     }
 
     /**
+     * @return int|null
+     */
+    public function getDbLength()
+    {
+        if ($this->getDbType() === null) {
+            return null;
+        }
+        if (preg_match("/VARCHAR\((.*?)\)/i", $this->getDbType(), $regResult)) {
+            return (int)$regResult [1];
+        }
+        return null;
+    }
+
+    /**
      * @param string $dbType
      */
     public function setDbType($dbType)

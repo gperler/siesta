@@ -411,13 +411,14 @@ class MethodGenerator
 
     /**
      * @param string $phpType
-     * @param string $dbType
+     * @param string|null $dbType
      * @param string $variableName
      * @param bool $isObject
+     * @param int|null $maxlength
      *
      * @return string
      */
-    public function getQuoteCall(string $phpType, string $dbType = null, string $variableName, $isObject = false) : string
+    public function getQuoteCall(string $phpType, string $dbType = null, string $variableName, $isObject = false, int $maxlength = null) : string
     {
         if ($isObject) {
             return 'Escaper::quoteObject($connection,' . $variableName . ')';
@@ -442,7 +443,10 @@ class MethodGenerator
             return 'Escaper::quoteArray($connection, ' . $variableName . ')';
         }
 
-        return 'Escaper::quoteString($connection, ' . $variableName . ')';
+        if ($maxlength !== 0 && $maxlength !== null) {
+            return 'Escaper::quoteString($connection, ' . $variableName . ', ' . $maxlength . ')';
+        }
+        return 'Escaper::quoteString($connection, ' . $variableName . ' )';
     }
 
     /**

@@ -140,7 +140,7 @@ class StoredProcedurePlugin extends BasePlugin
 
         foreach ($storedProcedure->getParameterList() as $parameter) {
             $variableName = '$' . $parameter->getName();
-            $quoteCall = $variableName . ' = ' . $method->getQuoteCall($parameter->getPhpType(), $parameter->getDbType(), $variableName) . ';';
+            $quoteCall = $variableName . ' = ' . $method->getQuoteCall($parameter->getPhpType(), $parameter->getDbType(), $variableName, false, $parameter->getDbLength()) . ';';
             $method->addLine($quoteCall);
         }
     }

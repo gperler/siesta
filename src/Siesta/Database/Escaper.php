@@ -113,11 +113,16 @@ class Escaper
      *
      * @return string
      */
-    public static function quoteString(Connection $connection, $value) : string
+    public static function quoteString(Connection $connection, $value, int $maxLength = null) : string
     {
         if ($value === null) {
             return self::NULL;
         }
+
+        if ($maxLength !== 0 && $maxLength !== null) {
+            $value = substr($value, 0, $maxLength);
+        }
+
         return "'" . $connection->escape($value) . "'";
     }
 
