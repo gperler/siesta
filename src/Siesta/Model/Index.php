@@ -103,7 +103,7 @@ class Index
      */
     public function getIndexType()
     {
-        return $this->indexType ? strtolower($this->indexType) : null;
+        return $this->indexType ? strtolower($this->indexType) : 'btree';
     }
 
     /**
