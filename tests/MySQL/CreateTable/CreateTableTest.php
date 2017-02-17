@@ -50,7 +50,7 @@ class CreateTableTest extends \PHPUnit_Framework_TestCase
 
         $queryActualList = $factory->buildCreateTable($model->getEntityByTableName("Artist"));
         $this->assertSame(1, sizeof($queryActualList));
-        $expected = "CREATE TABLE IF NOT EXISTS `Artist` (`id` INT NOT NULL, `smallint` SMALLINT NULL, `int` INT NOT NULL, `string` VARCHAR(100) NULL, `datetime` DATETIME NULL, `date` DATE NULL, `time` TIME NULL, PRIMARY KEY (`id`,`string`))";
+        $expected = "CREATE TABLE IF NOT EXISTS `Artist` (`id` INT NOT NULL, `smallint` SMALLINT NULL, `int` INT NOT NULL, `string` VARCHAR(100) NOT NULL, `datetime` DATETIME NULL, `date` DATE NULL, `time` TIME NULL, PRIMARY KEY (`id`,`string`))";
         $this->assertSame($expected, $queryActualList[0]);
         $connection->execute($queryActualList[0]);
     }
@@ -76,17 +76,17 @@ class CreateTableTest extends \PHPUnit_Framework_TestCase
         $connection->execute($queryActualList[0]);
 
         $queryActualList = $factory->buildCreateTable($model->getEntityByTableName("CD"));
-        $expected = "CREATE TABLE IF NOT EXISTS `CD` (`id` VARCHAR(36) NULL, `name` VARCHAR(36) NOT NULL, `fk_artist` INT NULL, PRIMARY KEY (`id`), CONSTRAINT `CD_artist` FOREIGN KEY (`fk_artist`) REFERENCES `Artist` (`id`) ON DELETE SET NULL ON UPDATE CASCADE)";
+        $expected = "CREATE TABLE IF NOT EXISTS `CD` (`id` VARCHAR(36) NOT NULL, `name` VARCHAR(36) NOT NULL, `fk_artist` INT NULL, PRIMARY KEY (`id`), CONSTRAINT `CD_artist` FOREIGN KEY (`fk_artist`) REFERENCES `Artist` (`id`) ON DELETE SET NULL ON UPDATE CASCADE)";
         $this->assertSame($expected, $queryActualList[0]);
         $connection->execute($queryActualList[0]);
 
         $queryActualList = $factory->buildCreateTable($model->getEntityByTableName("Owner"));
-        $expected = "CREATE TABLE IF NOT EXISTS `Owner` (`a` VARCHAR(36) NULL, `b` VARCHAR(36) NULL, PRIMARY KEY (`a`,`b`))";
+        $expected = "CREATE TABLE IF NOT EXISTS `Owner` (`a` VARCHAR(36) NOT NULL, `b` VARCHAR(36) NOT NULL, PRIMARY KEY (`a`,`b`))";
         $this->assertSame($expected, $queryActualList[0]);
         $connection->execute($queryActualList[0]);
 
         $queryActualList = $factory->buildCreateTable($model->getEntityByTableName("Label"));
-        $expected = "CREATE TABLE IF NOT EXISTS `Label` (`id` VARCHAR(36) NULL, `fk_a` VARCHAR(36) NULL, `fk_b` VARCHAR(36) NULL, PRIMARY KEY (`id`), CONSTRAINT `Label_owner` FOREIGN KEY (`fk_a`,`fk_b`) REFERENCES `Owner` (`a`,`b`) ON DELETE CASCADE ON UPDATE NO ACTION)";
+        $expected = "CREATE TABLE IF NOT EXISTS `Label` (`id` VARCHAR(36) NOT NULL, `fk_a` VARCHAR(36) NULL, `fk_b` VARCHAR(36) NULL, PRIMARY KEY (`id`), CONSTRAINT `Label_owner` FOREIGN KEY (`fk_a`,`fk_b`) REFERENCES `Owner` (`a`,`b`) ON DELETE CASCADE ON UPDATE NO ACTION)";
         $this->assertSame($expected, $queryActualList[0]);
         $connection->execute($queryActualList[0]);
     }
@@ -107,7 +107,7 @@ class CreateTableTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($factory);
 
         $queryActualList = $factory->buildCreateTable($model->getEntityByTableName("IndexTest"));
-        $expected = "CREATE TABLE IF NOT EXISTS `IndexTest` (`id` INT NOT NULL, `smallint` SMALLINT NULL, `int` INT NOT NULL, `string` VARCHAR(100) NULL, `datetime` DATETIME NULL, `date` DATE NULL, `time` TIME NULL, PRIMARY KEY (`id`,`string`), UNIQUE INDEX `index1` USING btree (`string` (10) ASC), INDEX `index2` USING btree (`datetime` ASC, `date` ASC))";
+        $expected = "CREATE TABLE IF NOT EXISTS `IndexTest` (`id` INT NOT NULL, `smallint` SMALLINT NULL, `int` INT NOT NULL, `string` VARCHAR(100) NOT NULL, `datetime` DATETIME NULL, `date` DATE NULL, `time` TIME NULL, PRIMARY KEY (`id`,`string`), UNIQUE INDEX `index1` USING btree (`string` (10) ASC), INDEX `index2` USING btree (`datetime` ASC, `date` ASC))";
         $this->assertSame($expected, $queryActualList[0]);
         $connection->execute($queryActualList[0]);
 

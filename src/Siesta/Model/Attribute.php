@@ -272,7 +272,7 @@ class Attribute
      */
     public function getIsRequired()
     {
-        return $this->isRequired;
+        return $this->isRequired || $this->isPrimaryKey;
     }
 
     /**
