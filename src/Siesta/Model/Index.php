@@ -103,7 +103,7 @@ class Index
      */
     public function getIndexType()
     {
-        return strtolower($this->indexType);
+        return $this->indexType ? strtolower($this->indexType) : null;
     }
 
     /**
