@@ -71,6 +71,20 @@ class CollectionManyAccess extends BasePlugin
 
             $foreignEntity = $collectionMany->getForeignEntity();
             $useList[] = $foreignEntity->getInstantiationClass();
+
+            $serviceClass = $foreignEntity->getServiceClass();
+            if ($serviceClass === null) {
+                continue;
+            }
+
+            if ($serviceClass->getClassName() !== null) {
+                $useList[] = $serviceClass->getClassName();
+            }
+
+            if ($serviceClass->getConstructFactoryClassName() !== null) {
+                $useList[] = $serviceClass->getConstructFactoryClassName();
+            }
+
         }
 
         foreach ($entity->getReferenceList() as $reference) {
