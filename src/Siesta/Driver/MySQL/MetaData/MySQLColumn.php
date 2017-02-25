@@ -47,6 +47,7 @@ class MySQLColumn implements ColumnMetaData
 
     const DB_TYPE_MAPPING = [
         "BIT(1)" => "BIT",
+        "TINYINT(4)" => "TINYINT",
         "SMALLINT(6)" => "SMALLINT",
         "MEDIUMINT(9)" => "MEDIUMINT",
         "INT(11)" => "INT",

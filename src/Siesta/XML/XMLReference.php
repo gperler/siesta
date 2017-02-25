@@ -23,6 +23,8 @@ class XMLReference
 
     const ON_UPDATE = "onUpdate";
 
+    const NO_CONSTRAINT = "noConstraint";
+
     /**
      * @var string
      */
@@ -49,6 +51,11 @@ class XMLReference
     protected $onUpdate;
 
     /**
+     * @var bool
+     */
+    protected $noConstraint;
+
+    /**
      * @var XMLReferenceMapping[]
      */
     protected $xmlReferenceMappingList;
@@ -68,6 +75,7 @@ class XMLReference
         $this->setConstraintName($xmlAccess->getAttribute(self::CONSTRAINT_NAME));
         $this->setOnDelete($xmlAccess->getAttribute(self::ON_DELETE));
         $this->setOnUpdate($xmlAccess->getAttribute(self::ON_UPDATE));
+        $this->setNoConstraint($xmlAccess->getAttributeAsBool(self::NO_CONSTRAINT));
 
         foreach ($xmlAccess->getXMLChildElementListByName(XMLReferenceMapping::ELEMENT_REFERENCE_MAPPING_NAME) as $referenceMappingXMLAccess) {
             $xmlReferenceMapping = new XMLReferenceMapping();
@@ -88,6 +96,7 @@ class XMLReference
         $xmlWrite->setAttribute(self::CONSTRAINT_NAME, $this->getConstraintName());
         $xmlWrite->setAttribute(self::ON_UPDATE, $this->getOnUpdate());
         $xmlWrite->setAttribute(self::ON_DELETE, $this->getOnDelete());
+        $xmlWrite->setBoolAttribute(self::NO_CONSTRAINT, $this->getNoConstraint());
         foreach ($this->getXmlReferenceMappingList() as $xmlReferenceMapping) {
             $xmlReferenceMapping->toXML($xmlWrite);
         }
@@ -100,6 +109,7 @@ class XMLReference
         $this->setForeignTable($constraintMetaData->getForeignTable());
         $this->setOnDelete($constraintMetaData->getOnDelete());
         $this->setOnUpdate($constraintMetaData->getOnUpdate());
+        $this->setNoConstraint(false);
 
         foreach ($constraintMetaData->getConstraintMappingList() as $constraintMappingMetaData) {
             $xmlReferenceMapping = new XMLReferenceMapping();
@@ -170,6 +180,22 @@ class XMLReference
     public function setOnUpdate($onUpdate)
     {
         $this->onUpdate = $onUpdate;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getNoConstraint(): bool
+    {
+        return $this->noConstraint;
+    }
+
+    /**
+     * @param boolean $noConstraint
+     */
+    public function setNoConstraint(bool $noConstraint)
+    {
+        $this->noConstraint = $noConstraint;
     }
 
     /**

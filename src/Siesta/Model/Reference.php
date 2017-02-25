@@ -55,6 +55,11 @@ class Reference
     /**
      * @var bool
      */
+    protected $noConstraint;
+
+    /**
+     * @var bool
+     */
     protected $collectionRefersTo;
 
     /**
@@ -197,6 +202,22 @@ class Reference
     public function setOnUpdate(string $onUpdate = null)
     {
         $this->onUpdate = $onUpdate;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getNoConstraint(): bool
+    {
+        return $this->noConstraint;
+    }
+
+    /**
+     * @param boolean $noConstraint
+     */
+    public function setNoConstraint(bool $noConstraint)
+    {
+        $this->noConstraint = $noConstraint;
     }
 
     /**

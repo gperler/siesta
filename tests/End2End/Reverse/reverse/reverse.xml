@@ -160,13 +160,13 @@
     <attribute name="postcode" type="string" dbName="postcode" dbType="VARCHAR(255)" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_customer" name="B97FF0589395C3F3" constraintName="FK_B97FF0589395C3F3" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_customer" name="B97FF0589395C3F3" constraintName="FK_B97FF0589395C3F3" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="customerId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_province" name="B97FF058E946114A" constraintName="FK_B97FF058E946114A" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_province" name="B97FF058E946114A" constraintName="FK_B97FF058E946114A" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="provinceId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_country" name="B97FF058F92F3E70" constraintName="FK_B97FF058F92F3E70" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_country" name="B97FF058F92F3E70" constraintName="FK_B97FF058F92F3E70" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="countryId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_B97FF058F92F3E70" type="btree" unique="false">
@@ -193,10 +193,10 @@
     <attribute name="originType" type="string" dbName="origin_type" dbType="VARCHAR(255)"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_order" name="ACA6E0F28D9F6D38" constraintName="FK_ACA6E0F28D9F6D38" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order" name="ACA6E0F28D9F6D38" constraintName="FK_ACA6E0F28D9F6D38" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_order_item" name="ACA6E0F2E415FB15" constraintName="FK_ACA6E0F2E415FB15" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order_item" name="ACA6E0F2E415FB15" constraintName="FK_ACA6E0F2E415FB15" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderItemId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_ACA6E0F28D9F6D38" type="btree" unique="false">
@@ -214,10 +214,10 @@
     <attribute name="token" type="string" dbName="token" dbType="VARCHAR(255)" required="true"/>
     <attribute name="expiresAt" type="int" dbName="expires_at" dbType="INT"/>
     <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
-    <reference foreignTable="sylius_api_client" name="7D83AA7F19EB6921" constraintName="FK_7D83AA7F19EB6921" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_api_client" name="7D83AA7F19EB6921" constraintName="FK_7D83AA7F19EB6921" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="clientId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_user" name="7D83AA7FA76ED395" constraintName="FK_7D83AA7FA76ED395" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_user" name="7D83AA7FA76ED395" constraintName="FK_7D83AA7FA76ED395" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_7D83AA7F5F37A13B" type="btree" unique="true">
@@ -239,10 +239,10 @@
     <attribute name="redirectUri" type="string" dbName="redirect_uri" dbType="LONGTEXT" required="true"/>
     <attribute name="expiresAt" type="int" dbName="expires_at" dbType="INT"/>
     <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
-    <reference foreignTable="sylius_api_client" name="C840417919EB6921" constraintName="FK_C840417919EB6921" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_api_client" name="C840417919EB6921" constraintName="FK_C840417919EB6921" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="clientId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_user" name="C8404179A76ED395" constraintName="FK_C8404179A76ED395" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_user" name="C8404179A76ED395" constraintName="FK_C8404179A76ED395" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_C84041795F37A13B" type="btree" unique="true">
@@ -271,10 +271,10 @@
     <attribute name="token" type="string" dbName="token" dbType="VARCHAR(255)" required="true"/>
     <attribute name="expiresAt" type="int" dbName="expires_at" dbType="INT"/>
     <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
-    <reference foreignTable="sylius_api_client" name="4457852519EB6921" constraintName="FK_4457852519EB6921" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_api_client" name="4457852519EB6921" constraintName="FK_4457852519EB6921" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="clientId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_user" name="44578525A76ED395" constraintName="FK_44578525A76ED395" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_user" name="44578525A76ED395" constraintName="FK_44578525A76ED395" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_445785255F37A13B" type="btree" unique="true">
@@ -306,10 +306,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="currencyId" type="int" dbName="currency_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_currency" name="AE491F9338248176" constraintName="FK_AE491F9338248176" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_currency" name="AE491F9338248176" constraintName="FK_AE491F9338248176" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="currencyId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_channel" name="AE491F9372F5A1AA" constraintName="FK_AE491F9372F5A1AA" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_channel" name="AE491F9372F5A1AA" constraintName="FK_AE491F9372F5A1AA" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_AE491F9372F5A1AA" type="btree" unique="false">
@@ -323,10 +323,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="localeId" type="int" dbName="locale_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_channel" name="786B7A8472F5A1AA" constraintName="FK_786B7A8472F5A1AA" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_channel" name="786B7A8472F5A1AA" constraintName="FK_786B7A8472F5A1AA" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_locale" name="786B7A84E559DFD1" constraintName="FK_786B7A84E559DFD1" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_locale" name="786B7A84E559DFD1" constraintName="FK_786B7A84E559DFD1" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="localeId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_786B7A8472F5A1AA" type="btree" unique="false">
@@ -340,10 +340,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="paymentMethodId" type="int" dbName="payment_method_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_payment_method" name="B0C0002B5AA1164F" constraintName="FK_B0C0002B5AA1164F" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_payment_method" name="B0C0002B5AA1164F" constraintName="FK_B0C0002B5AA1164F" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="paymentMethodId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_channel" name="B0C0002B72F5A1AA" constraintName="FK_B0C0002B72F5A1AA" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_channel" name="B0C0002B72F5A1AA" constraintName="FK_B0C0002B72F5A1AA" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_B0C0002B72F5A1AA" type="btree" unique="false">
@@ -357,10 +357,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="shippingMethodId" type="int" dbName="shipping_method_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_shipping_method" name="6858B18E5F7D6850" constraintName="FK_6858B18E5F7D6850" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_shipping_method" name="6858B18E5F7D6850" constraintName="FK_6858B18E5F7D6850" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="shippingMethodId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_channel" name="6858B18E72F5A1AA" constraintName="FK_6858B18E72F5A1AA" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_channel" name="6858B18E72F5A1AA" constraintName="FK_6858B18E72F5A1AA" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_6858B18E72F5A1AA" type="btree" unique="false">
@@ -374,10 +374,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="taxonomyId" type="int" dbName="taxonomy_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_channel" name="4BE9652E72F5A1AA" constraintName="FK_4BE9652E72F5A1AA" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_channel" name="4BE9652E72F5A1AA" constraintName="FK_4BE9652E72F5A1AA" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_taxonomy" name="4BE9652E9557E6F6" constraintName="FK_4BE9652E9557E6F6" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_taxonomy" name="4BE9652E9557E6F6" constraintName="FK_4BE9652E9557E6F6" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="taxonomyId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_4BE9652E72F5A1AA" type="btree" unique="false">
@@ -397,7 +397,7 @@
     <attribute name="message" type="string" dbName="message" dbType="LONGTEXT" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_contact_topic" name="8B0BBF201F55203D" constraintName="FK_8B0BBF201F55203D" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_contact_topic" name="8B0BBF201F55203D" constraintName="FK_8B0BBF201F55203D" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="topicId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_8B0BBF201F55203D" type="btree" unique="false">
@@ -414,7 +414,7 @@
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
     <attribute name="title" type="string" dbName="title" dbType="VARCHAR(255)" required="true"/>
     <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_contact_topic" name="6681216F2C2AC5D3" constraintName="FK_6681216F2C2AC5D3" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_contact_topic" name="6681216F2C2AC5D3" constraintName="FK_6681216F2C2AC5D3" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_contact_topic_translation_uniq_trans" type="btree" unique="true">
@@ -477,10 +477,10 @@
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
     <attribute name="currency" type="string" dbName="currency" dbType="VARCHAR(3)"/>
-    <reference foreignTable="sylius_address" name="7E82D5E64D4CFF2B" constraintName="FK_7E82D5E64D4CFF2B" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_address" name="7E82D5E64D4CFF2B" constraintName="FK_7E82D5E64D4CFF2B" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="shippingAddressId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_address" name="7E82D5E679D0C0E4" constraintName="FK_7E82D5E679D0C0E4" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_address" name="7E82D5E679D0C0E4" constraintName="FK_7E82D5E679D0C0E4" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="billingAddressId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_7E82D5E6E7927C74" type="btree" unique="true">
@@ -500,10 +500,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="customerId" type="int" dbName="customer_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="groupId" type="int" dbName="group_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_customer" name="7FCF9B059395C3F3" constraintName="FK_7FCF9B059395C3F3" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_customer" name="7FCF9B059395C3F3" constraintName="FK_7FCF9B059395C3F3" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="customerId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_group" name="7FCF9B05FE54D947" constraintName="FK_7FCF9B05FE54D947" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_group" name="7FCF9B05FE54D947" constraintName="FK_7FCF9B05FE54D947" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="groupId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_7FCF9B059395C3F3" type="btree" unique="false">
@@ -551,13 +551,13 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <attribute name="shippingState" type="string" dbName="shipping_state" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_shipment" name="4A2769867BE036FC" constraintName="FK_4A2769867BE036FC" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_shipment" name="4A2769867BE036FC" constraintName="FK_4A2769867BE036FC" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="shipmentId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_order_item" name="4A276986E415FB15" constraintName="FK_4A276986E415FB15" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order_item" name="4A276986E415FB15" constraintName="FK_4A276986E415FB15" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderItemId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_product_variant" name="4A276986FBE8234" constraintName="FK_4A276986FBE8234" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_product_variant" name="4A276986FBE8234" constraintName="FK_4A276986FBE8234" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="stockableId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_4A276986FBE8234" type="btree" unique="false">
@@ -602,16 +602,16 @@
     <attribute name="checkoutState" type="string" dbName="checkout_state" dbType="VARCHAR(255)" required="true"/>
     <attribute name="paymentState" type="string" dbName="payment_state" dbType="VARCHAR(255)" required="true"/>
     <attribute name="shippingState" type="string" dbName="shipping_state" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_address" name="6196A1F94D4CFF2B" constraintName="FK_6196A1F94D4CFF2B" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_address" name="6196A1F94D4CFF2B" constraintName="FK_6196A1F94D4CFF2B" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="shippingAddressId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_channel" name="6196A1F972F5A1AA" constraintName="FK_6196A1F972F5A1AA" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_channel" name="6196A1F972F5A1AA" constraintName="FK_6196A1F972F5A1AA" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_address" name="6196A1F979D0C0E4" constraintName="FK_6196A1F979D0C0E4" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_address" name="6196A1F979D0C0E4" constraintName="FK_6196A1F979D0C0E4" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="billingAddressId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_customer" name="6196A1F99395C3F3" constraintName="FK_6196A1F99395C3F3" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_customer" name="6196A1F99395C3F3" constraintName="FK_6196A1F99395C3F3" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="customerId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_6196A1F996901F54" type="btree" unique="true">
@@ -640,7 +640,7 @@
     <attribute name="author" type="string" dbName="author" dbType="VARCHAR(255)" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_order" name="8EA9CF098D9F6D38" constraintName="FK_8EA9CF098D9F6D38" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order" name="8EA9CF098D9F6D38" constraintName="FK_8EA9CF098D9F6D38" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_8EA9CF098D9F6D38" type="btree" unique="false">
@@ -653,7 +653,7 @@
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="value" type="string" dbName="value" dbType="VARCHAR(255)"/>
-    <reference foreignTable="sylius_order" name="5757A18E8D9F6D38" constraintName="FK_5757A18E8D9F6D38" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order" name="5757A18E8D9F6D38" constraintName="FK_5757A18E8D9F6D38" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_5757A18E8D9F6D38" type="btree" unique="false">
@@ -670,10 +670,10 @@
     <attribute name="adjustmentsTotal" type="int" dbName="adjustments_total" dbType="INT" required="true"/>
     <attribute name="total" type="int" dbName="total" dbType="INT" required="true"/>
     <attribute name="isImmutable" type="string" dbName="is_immutable" dbType="TINYINT(1)" required="true"/>
-    <reference foreignTable="sylius_product_variant" name="77B587ED3B69A9AF" constraintName="FK_77B587ED3B69A9AF" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_product_variant" name="77B587ED3B69A9AF" constraintName="FK_77B587ED3B69A9AF" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="variantId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_order" name="77B587ED8D9F6D38" constraintName="FK_77B587ED8D9F6D38" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order" name="77B587ED8D9F6D38" constraintName="FK_77B587ED8D9F6D38" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_77B587ED8D9F6D38" type="btree" unique="false">
@@ -696,13 +696,13 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_payment_method" name="D9191BD419883967" constraintName="FK_D9191BD419883967" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_payment_method" name="D9191BD419883967" constraintName="FK_D9191BD419883967" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="methodId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_credit_card" name="D9191BD47048FD0F" constraintName="FK_D9191BD47048FD0F" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_credit_card" name="D9191BD47048FD0F" constraintName="FK_D9191BD47048FD0F" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="creditCardId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_order" name="D9191BD48D9F6D38" constraintName="FK_D9191BD48D9F6D38" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order" name="D9191BD48D9F6D38" constraintName="FK_D9191BD48D9F6D38" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_D9191BD419883967" type="btree" unique="false">
@@ -733,7 +733,7 @@
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="description" type="string" dbName="description" dbType="VARCHAR(255)"/>
     <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_payment_method" name="966BE3A12C2AC5D3" constraintName="FK_966BE3A12C2AC5D3" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_payment_method" name="966BE3A12C2AC5D3" constraintName="FK_966BE3A12C2AC5D3" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_payment_method_translation_uniq_trans" type="btree" unique="true">
@@ -763,7 +763,7 @@
     <attribute name="treeLevel" type="int" dbName="tree_level" dbType="INT" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_permission" name="C5160A4E727ACA70" constraintName="FK_C5160A4E727ACA70" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_permission" name="C5160A4E727ACA70" constraintName="FK_C5160A4E727ACA70" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_C5160A4E727ACA70" type="btree" unique="false">
@@ -782,16 +782,16 @@
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
     <attribute name="variantSelectionMethod" type="string" dbName="variant_selection_method" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_product_archetype" name="677B9B74732C6CC7" constraintName="FK_677B9B74732C6CC7" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_product_archetype" name="677B9B74732C6CC7" constraintName="FK_677B9B74732C6CC7" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="archetypeId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_tax_category" name="677B9B749DF894ED" constraintName="FK_677B9B749DF894ED" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_tax_category" name="677B9B749DF894ED" constraintName="FK_677B9B749DF894ED" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="taxCategoryId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_shipping_category" name="677B9B749E2D1A41" constraintName="FK_677B9B749E2D1A41" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_shipping_category" name="677B9B749E2D1A41" constraintName="FK_677B9B749E2D1A41" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="shippingCategoryId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_zone" name="677B9B74E64AACD3" constraintName="FK_677B9B74E64AACD3" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_zone" name="677B9B74E64AACD3" constraintName="FK_677B9B74E64AACD3" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="restrictedZone" foreignAttribute="id"/>
     </reference>
     <index name="IDX_677B9B74732C6CC7" type="btree" unique="false">
@@ -814,7 +814,7 @@
     <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_product_archetype" name="A4001B52727ACA70" constraintName="FK_A4001B52727ACA70" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_product_archetype" name="A4001B52727ACA70" constraintName="FK_A4001B52727ACA70" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_A4001B5277153098" type="btree" unique="true">
@@ -828,10 +828,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="archetypeId" type="int" dbName="archetype_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="attributeId" type="int" dbName="attribute_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_product_archetype" name="97763342732C6CC7" constraintName="FK_97763342732C6CC7" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_archetype" name="97763342732C6CC7" constraintName="FK_97763342732C6CC7" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="archetypeId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_product_attribute" name="97763342B6E62EFA" constraintName="FK_97763342B6E62EFA" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_attribute" name="97763342B6E62EFA" constraintName="FK_97763342B6E62EFA" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="attributeId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_97763342732C6CC7" type="btree" unique="false">
@@ -845,10 +845,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="productArchetypeId" type="int" dbName="product_archetype_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="optionId" type="int" dbName="option_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_product_option" name="BCE763A7A7C41D6F" constraintName="FK_BCE763A7A7C41D6F" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_option" name="BCE763A7A7C41D6F" constraintName="FK_BCE763A7A7C41D6F" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="optionId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_product_archetype" name="BCE763A7FE884EAC" constraintName="FK_BCE763A7FE884EAC" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_archetype" name="BCE763A7FE884EAC" constraintName="FK_BCE763A7FE884EAC" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="productArchetypeId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_BCE763A7FE884EAC" type="btree" unique="false">
@@ -864,7 +864,7 @@
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_product_archetype" name="E0BA36D2C2AC5D3" constraintName="FK_E0BA36D2C2AC5D3" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_archetype" name="E0BA36D2C2AC5D3" constraintName="FK_E0BA36D2C2AC5D3" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_product_archetype_translation_uniq_trans" type="btree" unique="true">
@@ -890,7 +890,7 @@
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
     <attribute name="presentation" type="string" dbName="presentation" dbType="VARCHAR(255)" required="true"/>
     <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_product_attribute" name="93850EBA2C2AC5D3" constraintName="FK_93850EBA2C2AC5D3" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_attribute" name="93850EBA2C2AC5D3" constraintName="FK_93850EBA2C2AC5D3" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_product_attribute_translation_uniq_trans" type="btree" unique="true">
@@ -907,10 +907,10 @@
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" required="true"/>
     <attribute name="attributeId" type="int" dbName="attribute_id" dbType="INT" required="true"/>
     <attribute name="value" type="string" dbName="value" dbType="LONGTEXT"/>
-    <reference foreignTable="sylius_product" name="8A053E544584665A" constraintName="FK_8A053E544584665A" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product" name="8A053E544584665A" constraintName="FK_8A053E544584665A" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="productId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_product_attribute" name="8A053E54B6E62EFA" constraintName="FK_8A053E54B6E62EFA" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_attribute" name="8A053E54B6E62EFA" constraintName="FK_8A053E54B6E62EFA" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="attributeId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_8A053E544584665A" type="btree" unique="false">
@@ -924,10 +924,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_product" name="F9EF269B4584665A" constraintName="FK_F9EF269B4584665A" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product" name="F9EF269B4584665A" constraintName="FK_F9EF269B4584665A" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="productId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_channel" name="F9EF269B72F5A1AA" constraintName="FK_F9EF269B72F5A1AA" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_channel" name="F9EF269B72F5A1AA" constraintName="FK_F9EF269B72F5A1AA" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_F9EF269B4584665A" type="btree" unique="false">
@@ -950,7 +950,7 @@
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
     <attribute name="presentation" type="string" dbName="presentation" dbType="VARCHAR(255)" required="true"/>
     <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_product_option" name="CBA491AD2C2AC5D3" constraintName="FK_CBA491AD2C2AC5D3" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_option" name="CBA491AD2C2AC5D3" constraintName="FK_CBA491AD2C2AC5D3" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_product_option_translation_uniq_trans" type="btree" unique="true">
@@ -966,7 +966,7 @@
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="optionId" type="int" dbName="option_id" dbType="INT" required="true"/>
     <attribute name="value" type="string" dbName="value" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_product_option" name="F7FF7D4BA7C41D6F" constraintName="FK_F7FF7D4BA7C41D6F" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_option" name="F7FF7D4BA7C41D6F" constraintName="FK_F7FF7D4BA7C41D6F" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="optionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_F7FF7D4BA7C41D6F" type="btree" unique="false">
@@ -977,10 +977,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="optionId" type="int" dbName="option_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_product" name="2B5FF0094584665A" constraintName="FK_2B5FF0094584665A" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product" name="2B5FF0094584665A" constraintName="FK_2B5FF0094584665A" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="productId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_product_option" name="2B5FF009A7C41D6F" constraintName="FK_2B5FF009A7C41D6F" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_option" name="2B5FF009A7C41D6F" constraintName="FK_2B5FF009A7C41D6F" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="optionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_2B5FF0094584665A" type="btree" unique="false">
@@ -994,10 +994,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="taxonId" type="int" dbName="taxon_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_product" name="169C6CD94584665A" constraintName="FK_169C6CD94584665A" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product" name="169C6CD94584665A" constraintName="FK_169C6CD94584665A" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="productId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_taxon" name="169C6CD9DE13F470" constraintName="FK_169C6CD9DE13F470" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_taxon" name="169C6CD9DE13F470" constraintName="FK_169C6CD9DE13F470" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="taxonId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_169C6CD94584665A" type="btree" unique="false">
@@ -1018,7 +1018,7 @@
     <attribute name="metaDescription" type="string" dbName="meta_description" dbType="VARCHAR(255)"/>
     <attribute name="shortDescription" type="string" dbName="short_description" dbType="LONGTEXT"/>
     <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_product" name="105A9082C2AC5D3" constraintName="FK_105A9082C2AC5D3" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product" name="105A9082C2AC5D3" constraintName="FK_105A9082C2AC5D3" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_105A908989D9B62" type="btree" unique="true">
@@ -1054,7 +1054,7 @@
     <attribute name="height" type="float" dbName="height" dbType="DOUBLE"/>
     <attribute name="depth" type="float" dbName="depth" dbType="DOUBLE"/>
     <attribute name="weight" type="float" dbName="weight" dbType="DOUBLE"/>
-    <reference foreignTable="sylius_product" name="A29B5234584665A" constraintName="FK_A29B5234584665A" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product" name="A29B5234584665A" constraintName="FK_A29B5234584665A" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="productId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_A29B5234584665A" type="btree" unique="false">
@@ -1074,7 +1074,7 @@
     <attribute name="path" type="string" dbName="path" dbType="VARCHAR(255)" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_product_variant" name="C6B77D5D3B69A9AF" constraintName="FK_C6B77D5D3B69A9AF" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_product_variant" name="C6B77D5D3B69A9AF" constraintName="FK_C6B77D5D3B69A9AF" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="variantId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_C6B77D5D3B69A9AF" type="btree" unique="false">
@@ -1085,10 +1085,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="variantId" type="int" dbName="variant_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="optionValueId" type="int" dbName="option_value_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_product_variant" name="76CDAFA13B69A9AF" constraintName="FK_76CDAFA13B69A9AF" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_variant" name="76CDAFA13B69A9AF" constraintName="FK_76CDAFA13B69A9AF" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="variantId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_product_option_value" name="76CDAFA1D957CA06" constraintName="FK_76CDAFA1D957CA06" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_product_option_value" name="76CDAFA1D957CA06" constraintName="FK_76CDAFA1D957CA06" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="optionValueId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_76CDAFA13B69A9AF" type="btree" unique="false">
@@ -1120,7 +1120,7 @@
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
     <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
-    <reference foreignTable="sylius_promotion" name="933D0915139DF194" constraintName="FK_933D0915139DF194" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_promotion" name="933D0915139DF194" constraintName="FK_933D0915139DF194" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_933D0915139DF194" type="btree" unique="false">
@@ -1131,10 +1131,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_promotion" name="1A044F64139DF194" constraintName="FK_1A044F64139DF194" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_promotion" name="1A044F64139DF194" constraintName="FK_1A044F64139DF194" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_channel" name="1A044F6472F5A1AA" constraintName="FK_1A044F6472F5A1AA" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_channel" name="1A044F6472F5A1AA" constraintName="FK_1A044F6472F5A1AA" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="channelId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_1A044F64139DF194" type="btree" unique="false">
@@ -1156,7 +1156,7 @@
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
     <attribute name="perCustomerUsageLimit" type="int" dbName="per_customer_usage_limit" dbType="INT"/>
-    <reference foreignTable="sylius_promotion" name="B04EBA85139DF194" constraintName="FK_B04EBA85139DF194" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_promotion" name="B04EBA85139DF194" constraintName="FK_B04EBA85139DF194" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_B04EBA85139DF194" type="btree" unique="false">
@@ -1167,10 +1167,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="promotionCouponId" type="int" dbName="promotion_coupon_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_promotion_coupon" name="D58E3BC417B24436" constraintName="FK_D58E3BC417B24436" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_promotion_coupon" name="D58E3BC417B24436" constraintName="FK_D58E3BC417B24436" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="promotionCouponId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_order" name="D58E3BC48D9F6D38" constraintName="FK_D58E3BC48D9F6D38" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order" name="D58E3BC48D9F6D38" constraintName="FK_D58E3BC48D9F6D38" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_D58E3BC48D9F6D38" type="btree" unique="false">
@@ -1184,10 +1184,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_promotion" name="BF9CF6FB139DF194" constraintName="FK_BF9CF6FB139DF194" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_promotion" name="BF9CF6FB139DF194" constraintName="FK_BF9CF6FB139DF194" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_order" name="BF9CF6FB8D9F6D38" constraintName="FK_BF9CF6FB8D9F6D38" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order" name="BF9CF6FB8D9F6D38" constraintName="FK_BF9CF6FB8D9F6D38" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_BF9CF6FB8D9F6D38" type="btree" unique="false">
@@ -1201,10 +1201,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="orderItemId" type="int" dbName="order_item_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_promotion" name="49838ED1139DF194" constraintName="FK_49838ED1139DF194" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_promotion" name="49838ED1139DF194" constraintName="FK_49838ED1139DF194" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_order_item" name="49838ED1E415FB15" constraintName="FK_49838ED1E415FB15" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order_item" name="49838ED1E415FB15" constraintName="FK_49838ED1E415FB15" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderItemId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_49838ED1E415FB15" type="btree" unique="false">
@@ -1220,7 +1220,7 @@
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
     <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
-    <reference foreignTable="sylius_promotion" name="2C188EA8139DF194" constraintName="FK_2C188EA8139DF194" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_promotion" name="2C188EA8139DF194" constraintName="FK_2C188EA8139DF194" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_2C188EA8139DF194" type="btree" unique="false">
@@ -1233,7 +1233,7 @@
     <attribute name="countryId" type="int" dbName="country_id" dbType="INT"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="isoName" type="string" dbName="iso_name" dbType="VARCHAR(255)"/>
-    <reference foreignTable="sylius_country" name="B5618FE4F92F3E70" constraintName="FK_B5618FE4F92F3E70" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_country" name="B5618FE4F92F3E70" constraintName="FK_B5618FE4F92F3E70" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="countryId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_B5618FE4F92F3E70" type="btree" unique="false">
@@ -1267,7 +1267,7 @@
     <attribute name="treeLevel" type="int" dbName="tree_level" dbType="INT" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_role" name="8C606FE3727ACA70" constraintName="FK_8C606FE3727ACA70" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_role" name="8C606FE3727ACA70" constraintName="FK_8C606FE3727ACA70" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_8C606FE3727ACA70" type="btree" unique="false">
@@ -1278,10 +1278,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="roleId" type="int" dbName="role_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="permissionId" type="int" dbName="permission_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_role" name="45CEE9B8D60322AC" constraintName="FK_45CEE9B8D60322AC" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_role" name="45CEE9B8D60322AC" constraintName="FK_45CEE9B8D60322AC" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="roleId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_permission" name="45CEE9B8FED90CCA" constraintName="FK_45CEE9B8FED90CCA" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_permission" name="45CEE9B8FED90CCA" constraintName="FK_45CEE9B8FED90CCA" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="permissionId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_45CEE9B8D60322AC" type="btree" unique="false">
@@ -1346,10 +1346,10 @@
     <attribute name="tracking" type="string" dbName="tracking" dbType="VARCHAR(255)"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_shipping_method" name="FD707B3319883967" constraintName="FK_FD707B3319883967" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_shipping_method" name="FD707B3319883967" constraintName="FK_FD707B3319883967" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="methodId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_order" name="FD707B338D9F6D38" constraintName="FK_FD707B338D9F6D38" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_order" name="FD707B338D9F6D38" constraintName="FK_FD707B338D9F6D38" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_FD707B3319883967" type="btree" unique="false">
@@ -1378,10 +1378,10 @@
     <attribute name="isEnabled" type="string" dbName="is_enabled" dbType="TINYINT(1)" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_shipping_category" name="5FB0EE1112469DE2" constraintName="FK_5FB0EE1112469DE2" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_shipping_category" name="5FB0EE1112469DE2" constraintName="FK_5FB0EE1112469DE2" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="categoryId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_zone" name="5FB0EE119F2C3FAB" constraintName="FK_5FB0EE119F2C3FAB" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_zone" name="5FB0EE119F2C3FAB" constraintName="FK_5FB0EE119F2C3FAB" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="zoneId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_5FB0EE1112469DE2" type="btree" unique="false">
@@ -1397,7 +1397,7 @@
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_shipping_method" name="2B37DB3D2C2AC5D3" constraintName="FK_2B37DB3D2C2AC5D3" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_shipping_method" name="2B37DB3D2C2AC5D3" constraintName="FK_2B37DB3D2C2AC5D3" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_shipping_method_translation_uniq_trans" type="btree" unique="true">
@@ -1414,7 +1414,7 @@
     <attribute name="methodId" type="int" dbName="method_id" dbType="INT" required="true"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
     <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
-    <reference foreignTable="sylius_shipping_method" name="3BC30EE019883967" constraintName="FK_3BC30EE019883967" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_shipping_method" name="3BC30EE019883967" constraintName="FK_3BC30EE019883967" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="methodId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_3BC30EE019883967" type="btree" unique="false">
@@ -1440,10 +1440,10 @@
     <attribute name="calculator" type="string" dbName="calculator" dbType="VARCHAR(255)" required="true"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_tax_category" name="3CD86B2E12469DE2" constraintName="FK_3CD86B2E12469DE2" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_tax_category" name="3CD86B2E12469DE2" constraintName="FK_3CD86B2E12469DE2" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="categoryId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_zone" name="3CD86B2E9F2C3FAB" constraintName="FK_3CD86B2E9F2C3FAB" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_zone" name="3CD86B2E9F2C3FAB" constraintName="FK_3CD86B2E9F2C3FAB" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="zoneId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_3CD86B2E12469DE2" type="btree" unique="false">
@@ -1463,10 +1463,10 @@
     <attribute name="treeLevel" type="int" dbName="tree_level" dbType="INT" required="true"/>
     <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
     <attribute name="path" type="string" dbName="path" dbType="VARCHAR(255)"/>
-    <reference foreignTable="sylius_taxon" name="CFD811CA727ACA70" constraintName="FK_CFD811CA727ACA70" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_taxon" name="CFD811CA727ACA70" constraintName="FK_CFD811CA727ACA70" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_taxonomy" name="CFD811CA9557E6F6" constraintName="FK_CFD811CA9557E6F6" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_taxonomy" name="CFD811CA9557E6F6" constraintName="FK_CFD811CA9557E6F6" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="taxonomyId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_CFD811CA9557E6F6" type="btree" unique="false">
@@ -1485,7 +1485,7 @@
     <attribute name="permalink" type="string" dbName="permalink" dbType="VARCHAR(255)" required="true"/>
     <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
     <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_taxon" name="1487DFCF2C2AC5D3" constraintName="FK_1487DFCF2C2AC5D3" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_taxon" name="1487DFCF2C2AC5D3" constraintName="FK_1487DFCF2C2AC5D3" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="permalink_uidx" type="btree" unique="true">
@@ -1504,7 +1504,7 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="rootId" type="int" dbName="root_id" dbType="INT"/>
-    <reference foreignTable="sylius_taxon" name="2A9E3D279066886" constraintName="FK_2A9E3D279066886" onUpdate="restrict" onDelete="set null">
+    <reference foreignTable="sylius_taxon" name="2A9E3D279066886" constraintName="FK_2A9E3D279066886" onUpdate="restrict" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="rootId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_2A9E3D279066886" type="btree" unique="false">
@@ -1517,7 +1517,7 @@
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <reference foreignTable="sylius_taxonomy" name="9F3F90D92C2AC5D3" constraintName="FK_9F3F90D92C2AC5D3" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_taxonomy" name="9F3F90D92C2AC5D3" constraintName="FK_9F3F90D92C2AC5D3" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
     <index name="sylius_taxonomy_translation_uniq_trans" type="btree" unique="true">
@@ -1547,7 +1547,7 @@
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
-    <reference foreignTable="sylius_customer" name="569A33C09395C3F3" constraintName="FK_569A33C09395C3F3" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_customer" name="569A33C09395C3F3" constraintName="FK_569A33C09395C3F3" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="customerId" foreignAttribute="id"/>
     </reference>
     <index name="UNIQ_569A33C09395C3F3" type="btree" unique="true">
@@ -1561,7 +1561,7 @@
     <attribute name="provider" type="string" dbName="provider" dbType="VARCHAR(255)" required="true"/>
     <attribute name="identifier" type="string" dbName="identifier" dbType="VARCHAR(255)" required="true"/>
     <attribute name="accessToken" type="string" dbName="access_token" dbType="VARCHAR(255)"/>
-    <reference foreignTable="sylius_user" name="C3471B78A76ED395" constraintName="FK_C3471B78A76ED395" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_user" name="C3471B78A76ED395" constraintName="FK_C3471B78A76ED395" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
     <index name="user_provider" type="btree" unique="true">
@@ -1576,10 +1576,10 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="userId" type="int" dbName="user_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="roleId" type="int" dbName="role_id" dbType="INT" primaryKey="true" required="true"/>
-    <reference foreignTable="sylius_user" name="1DA28211A76ED395" constraintName="FK_1DA28211A76ED395" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_user" name="1DA28211A76ED395" constraintName="FK_1DA28211A76ED395" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_role" name="1DA28211D60322AC" constraintName="FK_1DA28211D60322AC" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_role" name="1DA28211D60322AC" constraintName="FK_1DA28211D60322AC" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="roleId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_1DA28211A76ED395" type="btree" unique="false">
@@ -1604,16 +1604,16 @@
     <attribute name="provinceId" type="int" dbName="province_id" dbType="INT"/>
     <attribute name="zoneId" type="int" dbName="zone_id" dbType="INT"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(8)" required="true"/>
-    <reference foreignTable="sylius_zone" name="E8B5ABF34B0E929B" constraintName="FK_E8B5ABF34B0E929B" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_zone" name="E8B5ABF34B0E929B" constraintName="FK_E8B5ABF34B0E929B" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="belongsTo" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_zone" name="E8B5ABF39F2C3FAB" constraintName="FK_E8B5ABF39F2C3FAB" onUpdate="restrict" onDelete="cascade">
+    <reference foreignTable="sylius_zone" name="E8B5ABF39F2C3FAB" constraintName="FK_E8B5ABF39F2C3FAB" onUpdate="restrict" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="zoneId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_province" name="E8B5ABF3E946114A" constraintName="FK_E8B5ABF3E946114A" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_province" name="E8B5ABF3E946114A" constraintName="FK_E8B5ABF3E946114A" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="provinceId" foreignAttribute="id"/>
     </reference>
-    <reference foreignTable="sylius_country" name="E8B5ABF3F92F3E70" constraintName="FK_E8B5ABF3F92F3E70" onUpdate="restrict" onDelete="restrict">
+    <reference foreignTable="sylius_country" name="E8B5ABF3F92F3E70" constraintName="FK_E8B5ABF3F92F3E70" onUpdate="restrict" onDelete="restrict" noConstraint="false">
       <referenceMapping localAttribute="countryId" foreignAttribute="id"/>
     </reference>
     <index name="IDX_E8B5ABF34B0E929B" type="btree" unique="false">

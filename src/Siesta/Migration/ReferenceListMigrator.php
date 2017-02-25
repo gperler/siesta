@@ -70,6 +70,10 @@ class ReferenceListMigrator
         // iterate references from model and retrieve alter statements
         foreach ($this->referenceList as $reference) {
 
+            if ($reference->getNoConstraint()) {
+                continue;
+            }
+
             // check if a corresponding database reference exists
             $constraint = $this->getConstraintByReference($reference);
 

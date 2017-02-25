@@ -135,6 +135,7 @@ class XMLEntityReader
         $reference->setForeignTable($xmlReference->getForeignTable());
         $reference->setOnUpdate($xmlReference->getOnUpdate());
         $reference->setOnDelete($xmlReference->getOnDelete());
+        $reference->setNoConstraint($xmlReference->getNoConstraint());
 
         foreach ($xmlReference->getXmlReferenceMappingList() as $xmlReferenceMapping) {
             $referenceMapping = $reference->newReferenceMapping();
