@@ -288,6 +288,9 @@ class MySQLTableCreator
     {
         $sql = "";
         foreach ($this->entity->getReferenceList() as $reference) {
+            if ($reference->getNoConstraint()) {
+                continue;
+            }
             $sql .= $this->buildForeignKeyConstraint($reference);
         }
         return $sql;
