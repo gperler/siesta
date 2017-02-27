@@ -1,4 +1,10 @@
-# Siesta
+# Siesta stored procedure based ORM for php 7
+
+[![License](https://poser.pugx.org/gm314/siesta/license)](https://packagist.org/packages/gm314/siesta)
+[![Latest Stable Version](https://poser.pugx.org/gm314/siesta/v/stable)](https://packagist.org/packages/gm314/siesta)
+[![Total Downloads](https://poser.pugx.org/gm314/siesta/downloads)](https://packagist.org/packages/gm314/siesta)
+[![Latest Unstable Version](https://poser.pugx.org/gm314/siesta/v/unstable)](https://packagist.org/packages/gm314/siesta)
+
 Stored procedure based ORM for php7
 
 # Documentation
