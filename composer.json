@@ -1,6 +1,6 @@
 {
   "name": "gm314/siesta",
-  "description": "PHP ORM Library",
+  "description": "PHP 7 ORM Library",
   "require": {
     "php": ">=7.0.0",
     "symfony/console": "*",

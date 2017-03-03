@@ -74,6 +74,9 @@ class FromResultSetPlugin extends BasePlugin
         $method->addLine('$this->_rawSQLResult = $resultSet->getNext();');
 
         foreach ($this->entity->getAttributeList() as $attribute) {
+            if ($attribute->getIsTransient()) {
+                continue;
+            }
             $assignment = $this->getAssignment($attribute);
             $method->addLine($assignment);
         }
