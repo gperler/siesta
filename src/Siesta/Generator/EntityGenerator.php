@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Siesta\Generator;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\Model\Entity;
 
 /**
@@ -19,9 +19,9 @@ class EntityGenerator extends AbstractGenerator
     protected $entity;
 
     /**
-     * @var CodeGenerator
+     * @var ClassGenerator
      */
-    protected $codeGenerator;
+    protected $classGenerator;
 
     /**
      * @var string
@@ -34,7 +34,7 @@ class EntityGenerator extends AbstractGenerator
      */
     public function generate(Entity $entity, string $baseDir)
     {
-        $this->codeGenerator = new CodeGenerator();
+        $this->classGenerator = new ClassGenerator($entity->getClassName());
         $this->entity = $entity;
         $this->basePath = $baseDir;
 
@@ -44,23 +44,18 @@ class EntityGenerator extends AbstractGenerator
 
     protected function generateEntity()
     {
-        $this->codeGenerator->addNamespace($this->entity->getNamespaceName());
 
         foreach ($this->getUseClassNameList($this->entity) as $useClass) {
-            $this->codeGenerator->addUse($useClass);
+            $this->classGenerator->addUsedClassName($useClass);
         }
 
-        $this->codeGenerator->newLine();
-
-        $this->codeGenerator->addClassStart($this->entity->getClassShortName(), null, $this->getImplementedInterfaceList());
-
-        $this->codeGenerator->newLine();
+        foreach($this->getImplementedInterfaceList() as $interfaceName) {
+            $this->classGenerator->addImplements($interfaceName);
+        }
 
         foreach ($this->pluginList as $plugin) {
-            $plugin->generate($this->entity, $this->codeGenerator);
+            $plugin->generate($this->entity, $this->classGenerator);
         }
-
-        $this->codeGenerator->addClassEnd();
     }
 
     /**
@@ -69,8 +64,7 @@ class EntityGenerator extends AbstractGenerator
     protected function saveEntity()
     {
         $targetFile = $this->getTargetFile($this->entity, $this->entity->getClassShortName());
-
-        $this->codeGenerator->writeTo($targetFile);
+        $this->classGenerator->writeToFile($targetFile);
     }
 
 }

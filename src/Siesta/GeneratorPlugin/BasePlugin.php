@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\Contract\Plugin;
 use Siesta\Model\Entity;
 
@@ -17,18 +17,18 @@ abstract class BasePlugin implements Plugin
     protected $entity;
 
     /**
-     * @var CodeGenerator
+     * @var ClassGenerator
      */
-    protected $codeGenerator;
+    protected $classGenerator;
 
     /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    protected function setup(Entity $entity, CodeGenerator $codeGenerator)
+    protected function setup(Entity $entity, ClassGenerator $classGenerator)
     {
         $this->entity = $entity;
-        $this->codeGenerator = $codeGenerator;
+        $this->classGenerator = $classGenerator;
     }
 
     /**

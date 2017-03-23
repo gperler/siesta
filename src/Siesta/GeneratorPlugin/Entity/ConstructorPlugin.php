@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
 
@@ -12,15 +12,6 @@ use Siesta\Model\Entity;
  */
 class ConstructorPlugin extends BasePlugin
 {
-    /**
-     * @param Entity $entity
-     *
-     * @return array
-     */
-    public function getUseClassNameList(Entity $entity) : array
-    {
-        return [];
-    }
 
     /**
      * @return array
@@ -34,28 +25,26 @@ class ConstructorPlugin extends BasePlugin
 
     /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
-        $method = $this->codeGenerator->newPublicConstructor();
-        $method->addLine('$this->_existing = false;');
+        $method = $this->classGenerator->addConstructor();
+        $method->addCodeLine('$this->_existing = false;');
 
         // check for attribute default values
         foreach ($entity->getAttributeList() as $attribute) {
             if ($attribute->getDefaultValue() === null) {
                 continue;
             }
-            $method->addLine('$this->' . $attribute->getPhpName() . ' = ' . $attribute->getDefaultValue() . ';');
+            $method->addCodeLine('$this->' . $attribute->getPhpName() . ' = ' . $attribute->getDefaultValue() . ';');
         }
 
         foreach ($entity->getCollectionManyList() as $collectionMany) {
-            $method->addLine('$this->' . $collectionMany->getName() . 'Mapping = [];');
+            $method->addCodeLine('$this->' . $collectionMany->getName() . 'Mapping = [];');
         }
-
-        $method->end();
     }
 
 }

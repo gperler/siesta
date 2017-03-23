@@ -4,42 +4,21 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
 
-/**
- * @author Gregor Müller
- */
 class ArePKIdenticalPlugin extends BasePlugin
 {
     const METHOD_ARE_PK_IDENTICAL = "arePrimaryKeyIdentical";
 
     /**
      * @param Entity $entity
-     *
-     * @return string[]
+     * @param ClassGenerator $classGenerator
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        return [];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getDependantPluginList() : array
-    {
-        return [];
-    }
-
-    /**
-     * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
-     */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
-    {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
         $this->generateArePKIdentical();
     }
 
@@ -48,25 +27,24 @@ class ArePKIdenticalPlugin extends BasePlugin
      */
     protected function generateArePKIdentical()
     {
-        $className = $this->entity->getClassShortName();
 
-        $method = $this->codeGenerator->newPublicMethod(self::METHOD_ARE_PK_IDENTICAL);
+        $method = $this->classGenerator->addPublicMethod(self::METHOD_ARE_PK_IDENTICAL);
+
+        $className = $this->entity->getClassName();
         $method->addParameter($className, 'entity', 'null');
-        $method->setReturnType('bool');
+        $method->setReturnType('bool', false);
 
-        // check for null
         $method->addIfStart('$entity === null');
-        $method->addLine('return false;');
+        $method->addCodeLine('return false;');
         $method->addIfEnd();
 
-        $method->addLine('return ' . $this->getExpression() . ';');
-        $method->end();
+        $method->addCodeLine('return ' . $this->getCompareExpression() . ';');
     }
 
     /**
      * @return string
      */
-    protected function getExpression() : string
+    protected function getCompareExpression() : string
     {
         if (!$this->entity->hasPrimaryKey()) {
             return 'false';

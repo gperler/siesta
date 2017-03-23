@@ -18,11 +18,11 @@ class AttributeTest extends End2EndTest
         $this->generateSchema($schemaFile, __DIR__, $silent);
     }
 
-    public function testX() {
+    public function testX()
+    {
 
     }
 
-/*
     public function testDefaultValues()
     {
         $attribute = new E2EAttribute();
@@ -93,7 +93,6 @@ class AttributeTest extends End2EndTest
         $this->assertNotNull($object);
         $this->assertSame(77, $object->getX());
         $this->assertSame(19, $object->getY());
-
 
         $array = $resultSet->getArray("array");
         $this->assertNotNull($array);
@@ -191,8 +190,6 @@ class AttributeTest extends End2EndTest
         $this->assertSame("0x2A, BF", $attributeReloaded->getFromArray("LDX"));
         $this->assertSame("y", $attributeReloaded->getFromArray("x"));
 
-
-
     }
 
     public function testJSONAndArray()
@@ -234,5 +231,5 @@ class AttributeTest extends End2EndTest
 
         $fileJSON = json_encode($file->loadAsJSONArray());
         $this->assertSame($fileJSON, $attributeJSON);
-    }*/
+    }
 }

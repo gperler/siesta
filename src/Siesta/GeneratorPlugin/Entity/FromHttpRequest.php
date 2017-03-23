@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
 
@@ -18,10 +18,10 @@ class FromHttpRequest extends BasePlugin
         ];
     }
 
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $codeGenerator)
     {
 
-        $method = $codeGenerator->newPublicMethod("fromHttpRequest");
+        $method = $codeGenerator->addPublicMethod("fromHttpRequest");
         $method->addParameter("Request", "request");
 
         foreach ($entity->getAttributeList() as $attribute) {
@@ -29,10 +29,8 @@ class FromHttpRequest extends BasePlugin
             $httpRequestParameter = $attribute->getCustomAttribute("httpParamName");
             $setterMethod = '$this->set' . $attribute->getMethodName();
 
-            $method->addLine($setterMethod . '($request->get("' . $httpRequestParameter . '"));');
+            $method->addCodeLine($setterMethod . '($request->get("' . $httpRequestParameter . '"));');
         }
-
-        $method->end();
     }
 
 }

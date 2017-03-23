@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
 use Siesta\Model\ValueObject;
@@ -28,9 +28,13 @@ class ValueObjectPlugin extends BasePlugin
         return $useStatementList;
     }
 
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    /**
+     * @param Entity $entity
+     * @param ClassGenerator $classGenerator
+     */
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
         $this->generateMemberList();
         foreach ($this->entity->getValueObjectList() as $valueObject) {
@@ -54,7 +58,7 @@ class ValueObjectPlugin extends BasePlugin
      */
     protected function generateMember(ValueObject $valueObject)
     {
-        $this->codeGenerator->addProtectedMember($valueObject->getPhpName(), $valueObject->getClassShortName());
+        $this->classGenerator->addProtectedProperty($valueObject->getPhpName(), $valueObject->getClassName());
     }
 
     protected function generateValueObjectGetter(ValueObject $valueObject)
@@ -62,23 +66,21 @@ class ValueObjectPlugin extends BasePlugin
         $memberName = '$this->' . $valueObject->getPhpName();
         $classShortName = $valueObject->getClassShortName();
 
-        $method = $this->codeGenerator->newPublicMethod('get' . $valueObject->getMethodName());
-        $method->setReturnType($classShortName, true);
+        $method = $this->classGenerator->addPublicMethod('get' . $valueObject->getMethodName());
+        $method->setReturnType($valueObject->getClassName(), true);
 
         $method->addIfStart($memberName . ' === null');
 
-        $method->addLine($memberName . ' = new ' . $classShortName . '();');
+        $method->addCodeLine($memberName . ' = new ' . $classShortName . '();');
 
         foreach ($valueObject->getAttributeList() as $attribute) {
             $methodName = $attribute->getMethodName();
-            $method->addLine($memberName . '->set' . $methodName . '($this->get' . $methodName . '());');
+            $method->addCodeLine($memberName . '->set' . $methodName . '($this->get' . $methodName . '());');
         }
 
         $method->addIfEnd();
 
-        $method->addLine('return ' . $memberName . ';');
-
-        $method->end();
+        $method->addCodeLine('return ' . $memberName . ';');
     }
 
     protected function generateValueObjectSetter(ValueObject $valueObject)
@@ -86,36 +88,32 @@ class ValueObjectPlugin extends BasePlugin
         $memberName = '$this->' . $valueObject->getPhpName();
         $classShortName = $valueObject->getClassShortName();
 
-        $method = $this->codeGenerator->newPublicMethod('set' . $valueObject->getMethodName());
-        $method->addParameter($classShortName, 'valueObject', 'null');
+        $method = $this->classGenerator->addPublicMethod('set' . $valueObject->getMethodName());
+        $method->addParameter($valueObject->getClassName(), 'valueObject', 'null');
 
         $method->addIfStart('$valueObject === null');
-        $method->addLine($memberName . ' = null;');
+        $method->addCodeLine($memberName . ' = null;');
         foreach ($valueObject->getAttributeList() as $attribute) {
             $methodName = $attribute->getMethodName();
-            $method->addLine('$this->set' . $methodName . '(null);');
+            $method->addCodeLine('$this->set' . $methodName . '(null);');
         }
-        $method->addLine('return;');
+        $method->addCodeLine('return;');
         $method->addIfEnd();
 
         $method->addIfStart($memberName . ' === null');
 
-        $method->addLine($memberName . ' = new ' . $classShortName . '();');
+        $method->addCodeLine($memberName . ' = new ' . $classShortName . '();');
 
         $method->addIfEnd();
 
         foreach ($valueObject->getAttributeList() as $attribute) {
             $methodName = $attribute->getMethodName();
-            $method->addLine('$this->set' . $methodName . '($valueObject->get' . $methodName . '());');
+            $method->addCodeLine('$this->set' . $methodName . '($valueObject->get' . $methodName . '());');
         }
         foreach ($valueObject->getAttributeList() as $attribute) {
             $methodName = $attribute->getMethodName();
-            $method->addLine($memberName . '->set' . $methodName . '($valueObject->get' . $methodName . '());');
+            $method->addCodeLine($memberName . '->set' . $methodName . '($valueObject->get' . $methodName . '());');
         }
-
-
-        $method->end();
-
     }
 
 }

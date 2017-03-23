@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
+use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
@@ -53,26 +54,18 @@ class CollectionAccessPlugin extends BasePlugin
                 continue;
             }
             $foreignEntity = $reference->getForeignEntity();
-            $useList[] = $foreignEntity->getInstantiationClass();
+            $useList[] = $foreignEntity->getInstantiationClassName();
         }
         return $useList;
     }
 
     /**
-     * @return string[]
-     */
-    public function getDependantPluginList() : array
-    {
-        return [];
-    }
-
-    /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
         foreach ($this->entity->getReferenceList() as $reference) {
             if (!$reference->doesCollectionRefersTo()) {
@@ -94,19 +87,19 @@ class CollectionAccessPlugin extends BasePlugin
         $methodName = self::getSelectByReferenceName($reference);
         $mappingList = $reference->getReferenceMappingList();
 
-        $method = $this->codeGenerator->newPublicMethod($methodName);
-        $method->addReferenceMappingListParameter($mappingList);
-        $method->addConnectionNameParameter();
-        $method->setReturnType($foreignEntity->getInstantiationClassShortName() . '[]');
+        $method = $this->classGenerator->addPublicMethod($methodName);
+        $helper = new GeneratorHelper($method);
 
-        $method->addQuoteReferenceMappingList($mappingList, true);
+        $helper->addReferenceMappingListParameter($mappingList);
+        $helper->addConnectionNameParameter();
+        $method->setReturnType($foreignEntity->getInstantiationClassName() . '[]');
+
+        $helper->addQuoteReferenceMappingList($mappingList, true);
 
         // stored procedure invocation
         $spName = StoredProcedureNaming::getSelectByReferenceName($this->entity, $reference);
-        $signature = $method->getSPInvocationSignatureFromReferenceMapping($mappingList);
-        $method->addLine('return $this->executeStoredProcedure("CALL ' . $spName . ' (' . $signature . ')", $connectionName);');
-
-        $method->end();
+        $signature = $helper->getSPInvocationSignatureFromReferenceMapping($mappingList);
+        $method->addCodeLine('return $this->executeStoredProcedure("CALL ' . $spName . ' (' . $signature . ')", $connectionName);');
     }
 
     /**
@@ -119,20 +112,20 @@ class CollectionAccessPlugin extends BasePlugin
         $mappingList = $reference->getReferenceMappingList();
         $pkList = $this->entity->getPrimaryKeyAttributeList();
 
-        $method = $this->codeGenerator->newPublicMethod($methodName);
-        $method->addReferenceMappingListParameter($mappingList);
-        $method->addAttributeParameterList($pkList, 'null');
-        $method->addConnectionNameParameter();
+        $method = $this->classGenerator->addPublicMethod($methodName);
+        $helper = new GeneratorHelper($method);
 
-        $method->addQuoteReferenceMappingList($mappingList, true);
-        $method->addQuoteAttributeList($pkList, false);
+        $helper->addReferenceMappingListParameter($mappingList);
+        $helper->addAttributeParameterList($pkList, 'null');
+        $helper->addConnectionNameParameter();
+
+        $helper->addQuoteReferenceMappingList($mappingList, true);
+        $helper->addQuoteAttributeList($pkList, false);
 
         // stored procedure invocation
         $spName = StoredProcedureNaming::getDeleteByReferenceName($this->entity, $reference);
         $signatureAttributeList = $this->getSignatureAttributeList($reference);
-        $method->addExecuteStoredProcedureWithAttributeList($spName, $signatureAttributeList, false);
-
-        $method->end();
+        $helper->addExecuteStoredProcedureWithAttributeList($spName, $signatureAttributeList, false);
     }
 
     /**

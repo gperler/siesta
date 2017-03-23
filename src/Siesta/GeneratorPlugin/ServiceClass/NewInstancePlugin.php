@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
 
@@ -56,11 +56,11 @@ class NewInstancePlugin extends BasePlugin
 
     /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
         $this->generateNewInstance();
     }
@@ -71,15 +71,12 @@ class NewInstancePlugin extends BasePlugin
     protected function generateNewInstance()
     {
 
-        $instantiationClass = $this->entity->getInstantiationClassShortName();
+        $instantiationClass = $this->entity->getInstantiationClassName();
 
-        $method = $this->codeGenerator->newPublicMethod(self::METHOD_NEW_INSTANCE);
+        $method = $this->classGenerator->addPublicMethod(self::METHOD_NEW_INSTANCE);
         $method->setReturnType($instantiationClass);
 
-        $method->addLine('return ' . $this->getConstructCall() . ';');
-
-        $method->end();
-
+        $method->addCodeLine('return ' . $this->getConstructCall() . ';');
     }
 
     /**

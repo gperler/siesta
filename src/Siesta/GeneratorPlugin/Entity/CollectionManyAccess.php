@@ -3,8 +3,9 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
-use Siesta\CodeGenerator\CodeGenerator;
-use Siesta\CodeGenerator\MethodGenerator;
+use Nitria\ClassGenerator;
+use Nitria\Method;
+use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\GeneratorPlugin\ServiceClass\ForeignCollectionManyPlugin;
@@ -67,10 +68,10 @@ class CollectionManyAccess extends BasePlugin
         $useList = [];
         foreach ($entity->getCollectionManyList() as $collectionMany) {
             $mappingEntity = $collectionMany->getMappingEntity();
-            $useList[] = $mappingEntity->getInstantiationClass();
+            $useList[] = $mappingEntity->getInstantiationClassName();
 
             $foreignEntity = $collectionMany->getForeignEntity();
-            $useList[] = $foreignEntity->getInstantiationClass();
+            $useList[] = $foreignEntity->getInstantiationClassName();
 
             $serviceClass = $foreignEntity->getServiceClass();
             if ($serviceClass === null) {
@@ -98,20 +99,12 @@ class CollectionManyAccess extends BasePlugin
     }
 
     /**
-     * @return string[]
-     */
-    public function getDependantPluginList() : array
-    {
-        return [];
-    }
-
-    /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
         foreach ($this->entity->getCollectionManyList() as $collectionMany) {
             $this->generateCollectionManyGetter($collectionMany);
@@ -129,21 +122,19 @@ class CollectionManyAccess extends BasePlugin
         $methodName = self::getGetterName($collectionMany);
         $foreignEntity = $collectionMany->getForeignEntity();
 
-        $method = $this->codeGenerator->newPublicMethod($methodName);
+        $method = $this->classGenerator->addPublicMethod($methodName);
         $method->addParameter(PHPType::BOOL, 'forceReload', 'false');
         $method->addParameter(PHPType::STRING, 'connectionName', 'null');
-        $method->setReturnType($foreignEntity->getInstantiationClassShortName() . '[]');
+        $method->setReturnType($foreignEntity->getInstantiationClassName() . '[]');
 
         $memberName = '$this->' . $collectionMany->getName();
 
         // check if member is null or reload is forced then do reload
         $method->addIfStart($memberName . ' === null || $forceReload');
-        $method->addLine($memberName . ' = ' . $this->generateCollectionManyGetterSPCall($collectionMany));
+        $method->addCodeLine($memberName . ' = ' . $this->generateCollectionManyGetterSPCall($collectionMany));
         $method->addIfEnd();
 
-        $method->addLine('return ' . $memberName . ';');
-        $method->end();
-
+        $method->addCodeLine('return ' . $memberName . ';');
     }
 
     /**
@@ -177,25 +168,23 @@ class CollectionManyAccess extends BasePlugin
         $methodName = self::getAddToCollectionName($collectionMany);
 
         $foreignEntity = $collectionMany->getForeignEntity();
-        $foreignClass = $foreignEntity->getInstantiationClassShortName();
+        $foreignClass = $foreignEntity->getInstantiationClassName();
         $foreignReference = $collectionMany->getForeignReference();
         $mappingEntity = $collectionMany->getMappingEntity();
         $mappingReference = $collectionMany->getMappingReference();
 
-        $method = $this->codeGenerator->newPublicMethod($methodName);
+        $method = $this->classGenerator->addPublicMethod($methodName);
         $method->addParameter($foreignClass, 'entity');
 
         // create mapping entity
-        $method->addLine('$mapping = ' . $mappingEntity->getServiceAccess() . '->' . NewInstancePlugin::METHOD_NEW_INSTANCE . '();');
+        $method->addCodeLine('$mapping = ' . $mappingEntity->getServiceAccess() . '->' . NewInstancePlugin::METHOD_NEW_INSTANCE . '();');
 
         // assign both references
-        $method->addLine('$mapping->set' . $mappingReference->getMethodName() . '($this);');
-        $method->addLine('$mapping->set' . $foreignReference->getMethodName() . '($entity);');
+        $method->addCodeLine('$mapping->set' . $mappingReference->getMethodName() . '($this);');
+        $method->addCodeLine('$mapping->set' . $foreignReference->getMethodName() . '($entity);');
 
         // add mapping entity to local list
-        $method->addLine('$this->' . $collectionMany->getName() . 'Mapping[] = $mapping;');
-
-        $method->end();
+        $method->addCodeLine('$this->' . $collectionMany->getName() . 'Mapping[] = $mapping;');
     }
 
     /**
@@ -203,26 +192,26 @@ class CollectionManyAccess extends BasePlugin
      */
     public function generateDeleteFromCollection(CollectionMany $collectionMany)
     {
+
         $foreignEntity = $collectionMany->getForeignEntity();
         $methodName = self::getDeleteFromCollectionName($collectionMany);
 
-        $method = $this->codeGenerator->newPublicMethod($methodName);
-        $method->addAttributeParameterList($foreignEntity->getPrimaryKeyAttributeList(), 'null');
-        $method->addConnectionNameParameter();
+        $method = $this->classGenerator->addPublicMethod($methodName);
+        $helper = new GeneratorHelper($method);
 
-        $method->addConnectionLookup();
+        $helper->addAttributeParameterList($foreignEntity->getPrimaryKeyAttributeList(), 'null');
+        $helper->addConnectionNameParameter();
 
-        $this->quoteParameter($method, $collectionMany);
+        $helper->addConnectionLookup();
+
+        $this->quoteParameter($method, $helper, $collectionMany);
 
         // add stored procedure invocation
         $spName = StoredProcedureNaming::getDeleteCollectionManyAssignmentName($collectionMany);
         $signature = $this->getInvocationSignature($foreignEntity);
-        $method->addExecuteStoredProcedure($spName, $signature, false);
+        $helper->addExecuteStoredProcedure($spName, $signature, false);
 
         $this->generateArraySlice($method, $collectionMany);
-
-        $method->end();
-
     }
 
     /**
@@ -233,30 +222,28 @@ class CollectionManyAccess extends BasePlugin
         $foreignEntity = $collectionMany->getForeignEntity();
         $methodName = self::getDeleteFromAssigned($collectionMany);
 
-        $method = $this->codeGenerator->newPublicMethod($methodName);
-        $method->addAttributeParameterList($foreignEntity->getPrimaryKeyAttributeList(), 'null');
-        $method->addConnectionNameParameter();
+        $method = $this->classGenerator->addPublicMethod($methodName);
+        $helper = new GeneratorHelper($method);
+        $helper->addAttributeParameterList($foreignEntity->getPrimaryKeyAttributeList(), 'null');
+        $helper->addConnectionNameParameter();
 
-        $method->addConnectionLookup();
+        $helper->addConnectionLookup();
 
-        $this->quoteParameter($method, $collectionMany);
+        $this->quoteParameter($method, $helper, $collectionMany);
 
         // add stored procedure invocation
         $spName = StoredProcedureNaming::getDeleteByCollectionManyName($collectionMany);
         $signature = $this->getInvocationSignature($foreignEntity);
-        $method->addExecuteStoredProcedure($spName, $signature, false);
+        $helper->addExecuteStoredProcedure($spName, $signature, false);
 
         $this->generateArraySlice($method, $collectionMany);
-
-        // done
-        $method->end();
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param CollectionMany $collectionMany
      */
-    protected function generateArraySlice(MethodGenerator $method, CollectionMany $collectionMany)
+    protected function generateArraySlice(Method $method, CollectionMany $collectionMany)
     {
         $foreignEntity = $collectionMany->getForeignEntity();
 
@@ -266,17 +253,17 @@ class CollectionManyAccess extends BasePlugin
         $collectionMappingMember = $collectionMember . 'Mapping';
 
         $method->addIfStart($idNullCheck);
-        $method->addLine($collectionMember . ' = [];');
-        $method->addLine($collectionMappingMember . ' = [];');
-        $method->addLine('return;');
+        $method->addCodeLine($collectionMember . ' = [];');
+        $method->addCodeLine($collectionMappingMember . ' = [];');
+        $method->addCodeLine('return;');
         $method->addIfEnd();
 
         $method->addIfStart($collectionMember . ' !== null');
         $method->addForeachStart($collectionMember . ' as $index => $entity');
         $compareCondition = $this->getEntityComparePrimaryKeyStatement($foreignEntity);
         $method->addIfStart($compareCondition);
-        $method->addLine('array_splice(' . $collectionMember . ', $index, 1);');
-        $method->addLine('break;');
+        $method->addCodeLine('array_splice(' . $collectionMember . ', $index, 1);');
+        $method->addCodeLine('break;');
         $method->addIfEnd();
         $method->addForeachEnd();
         $method->addIfEnd();
@@ -285,8 +272,8 @@ class CollectionManyAccess extends BasePlugin
         $method->addForeachStart($collectionMappingMember . ' as $index => $mapping');
         $compareCondition = $this->getMappingCompareForeignKey($collectionMany);
         $method->addIfStart($compareCondition);
-        $method->addLine('array_splice(' . $collectionMappingMember . ', $index, 1);');
-        $method->addLine('break;');
+        $method->addCodeLine('array_splice(' . $collectionMappingMember . ', $index, 1);');
+        $method->addCodeLine('break;');
         $method->addIfEnd();
         $method->addForeachEnd();
         $method->addIfEnd();
@@ -337,26 +324,26 @@ class CollectionManyAccess extends BasePlugin
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
+     * @param GeneratorHelper $helper
      * @param CollectionMany $collectionMany
      */
-    protected function quoteParameter(MethodGenerator $method, CollectionMany $collectionMany)
+    protected function quoteParameter(Method $method, GeneratorHelper $helper, CollectionMany $collectionMany)
     {
         $foreignEntity = $collectionMany->getForeignEntity();
         $foreignPKList = $foreignEntity->getPrimaryKeyAttributeList();
 
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
             $variableName = $this->geVariableName("local", $this->entity, $pkAttribute);
-            $quoteCall = $method->getQuoteCall($pkAttribute->getPhpType(), $pkAttribute->getDbType(), '$this->' . $pkAttribute->getPhpName(), $pkAttribute->getIsObject());
-            $method->addLine($variableName . ' = ' . $quoteCall . ';');
+            $quoteCall = $helper->generateQuoteCall($pkAttribute->getPhpType(), $pkAttribute->getDbType(), '$this->' . $pkAttribute->getPhpName(), $pkAttribute->getIsObject());
+            $method->addCodeLine($variableName . ' = ' . $quoteCall . ';');
         }
 
         foreach ($foreignPKList as $foreignPKAttribute) {
             $variableName = $this->geVariableName("foreign", $foreignEntity, $foreignPKAttribute);
-            $quoteCall = $method->getQuoteCall($foreignPKAttribute->getPhpType(), $foreignPKAttribute->getDbType(), '$' . $foreignPKAttribute->getPhpName(), $foreignPKAttribute->getIsObject());
-            $method->addLine($variableName . ' = ' . $quoteCall . ';');
+            $quoteCall = $helper->generateQuoteCall($foreignPKAttribute->getPhpType(), $foreignPKAttribute->getDbType(), '$' . $foreignPKAttribute->getPhpName(), $foreignPKAttribute->getIsObject());
+            $method->addCodeLine($variableName . ' = ' . $quoteCall . ';');
         }
-
     }
 
     /**

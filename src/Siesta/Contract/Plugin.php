@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Siesta\Contract;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\Model\Entity;
 
 /**
@@ -32,8 +32,8 @@ interface Plugin
 
     /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator);
+    public function generate(Entity $entity, ClassGenerator $classGenerator);
 
 }

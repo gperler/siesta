@@ -34,7 +34,6 @@ class GenericGenerator
     }
 
     /**
-     * @return Generator
      */
     protected function setup()
     {

@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
-use Siesta\CodeGenerator\CodeGenerator;
-use Siesta\CodeGenerator\MethodGenerator;
+use Civis\Common\ArrayUtil;
+use Nitria\ClassGenerator;
+use Nitria\Method;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\GeneratorPlugin\ServiceClass\NewInstancePlugin;
 use Siesta\Model\Attribute;
@@ -13,7 +14,6 @@ use Siesta\Model\Collection;
 use Siesta\Model\Entity;
 use Siesta\Model\PHPType;
 use Siesta\Model\Reference;
-use Siesta\Util\ArrayUtil;
 
 /**
  * @author Gregor Müller
@@ -43,9 +43,8 @@ class ArrayConverterPlugin extends BasePlugin
     {
         $useClassList = [
             'Siesta\Util\ArrayAccessor',
-            'Siesta\Contract\ArraySerializable',
-            'Siesta\Util\DefaultCycleDetector',
-            'Siesta\Contract\CycleDetector'
+            'Siesta\Util\DefaultCycleDetector'
+
         ];
         foreach ($entity->getReferenceList() as $reference) {
             $foreignEntity = $reference->getForeignEntity();
@@ -60,26 +59,19 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @return string[]
      */
-    public function getDependantPluginList() : array
-    {
-        return [];
-    }
-
-    /**
-     * @return string[]
-     */
     public function getInterfaceList() : array
     {
-        return ['ArraySerializable'];
+        return ['Siesta\Contract\ArraySerializable'];
     }
 
     /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
+        $this->generateProperties();
         $this->generateFromArray();
         $this->generateToArray();
     }
@@ -87,14 +79,18 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      *
      */
+    protected function generateProperties()
+    {
+        $this->classGenerator->addProtectedProperty("_initialArray", "array");
+    }
+
+    /**
+     *
+     */
     protected function generateFromArray()
     {
-        $method = $this->codeGenerator->newPublicMethod(self::METHOD_FROM_ARRAY);
+        $method = $this->classGenerator->addPublicMethod(self::METHOD_FROM_ARRAY);
         $method->addParameter("array", "data");
-
-        // store raw data
-        $method->addLine('$this->_rawJSON = $data;');
-        $method->addLine('$arrayAccessor = new ArrayAccessor($data);');
 
         $this->generateAttributeListFromArray($method);
 
@@ -104,14 +100,16 @@ class ArrayConverterPlugin extends BasePlugin
 
         $this->generateCollectionListFromArray($method);
 
-        $method->end();
     }
 
     /**
-     *
+     * @param Method $method
      */
-    protected function generateAttributeListFromArray(MethodGenerator $method)
+    protected function generateAttributeListFromArray(Method $method)
     {
+        $method->addCodeLine('$this->_initialArray = $data;');
+        $method->addCodeLine('$arrayAccessor = new ArrayAccessor($data);');
+
         foreach ($this->entity->getAttributeList() as $attribute) {
             $this->generateAttributeFromArray($method, $attribute);
             $this->generateObjectAttributeFromArray($method, $attribute);
@@ -119,10 +117,10 @@ class ArrayConverterPlugin extends BasePlugin
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param Attribute $attribute
      */
-    protected function generateAttributeFromArray(MethodGenerator $method, Attribute $attribute)
+    protected function generateAttributeFromArray(Method $method, Attribute $attribute)
     {
         $name = $attribute->getPhpName();
 
@@ -131,14 +129,14 @@ class ArrayConverterPlugin extends BasePlugin
             return;
         }
 
-        $method->addLine('$this->set' . $attribute->getMethodName() . '($arrayAccessor->' . $accessorMethod . '("' . $name . '"));');
+        $method->addCodeLine('$this->set' . $attribute->getMethodName() . '($arrayAccessor->' . $accessorMethod . '("' . $name . '"));');
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param Attribute $attribute
      */
-    protected function generateObjectAttributeFromArray(MethodGenerator $method, Attribute $attribute)
+    protected function generateObjectAttributeFromArray(Method $method, Attribute $attribute)
     {
         if (!$attribute->getIsObject() || !$attribute->implementsArraySerializable()) {
             return;
@@ -148,24 +146,24 @@ class ArrayConverterPlugin extends BasePlugin
         $type = $attribute->getPhpType();
 
         // access array raw data and make sure it is not null
-        $method->addLine('$' . $name . 'Array = $arrayAccessor->getArray("' . $name . '");');
+        $method->addCodeLine('$' . $name . 'Array = $arrayAccessor->getArray("' . $name . '");');
         $method->addIfStart('$' . $name . 'Array !== null');
 
         // instantiate new object and initialize it from array
-        $method->addLine('$' . $name . ' = new ' . $type . '();');
-        $method->addLine('$' . $name . '->fromArray($' . $name . 'Array);');
+        $method->addCodeLine('$' . $name . ' = new ' . $type . '();');
+        $method->addCodeLine('$' . $name . '->fromArray($' . $name . 'Array);');
 
         // invoke setter to store object
-        $method->addLine('$this->set' . $attribute->getMethodName() . '($' . $name . ');');
+        $method->addCodeLine('$this->set' . $attribute->getMethodName() . '($' . $name . ');');
 
         // done
         $method->addIfEnd();
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      */
-    protected function generateReferenceListFromArray(MethodGenerator $method)
+    protected function generateReferenceListFromArray(Method $method)
     {
         foreach ($this->entity->getReferenceList() as $reference) {
             $this->generateReferenceFromArray($method, $reference);
@@ -173,32 +171,32 @@ class ArrayConverterPlugin extends BasePlugin
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param Reference $reference
      */
-    protected function generateReferenceFromArray(MethodGenerator $method, Reference $reference)
+    protected function generateReferenceFromArray(Method $method, Reference $reference)
     {
         $foreignEntity = $reference->getForeignEntity();
         $name = $reference->getName();
 
         // get data from array and make sure it is not null
-        $method->addLine('$' . $name . 'Array = $arrayAccessor->getArray("' . $name . '");');
+        $method->addCodeLine('$' . $name . 'Array = $arrayAccessor->getArray("' . $name . '");');
         $method->addIfStart('$' . $name . 'Array !== null');
 
         // instantiate new object and initialize it from array
-        $method->addLine('$' . $name . ' = ' . $foreignEntity->getServiceAccess() . '->' . NewInstancePlugin::METHOD_NEW_INSTANCE . '();');
-        $method->addLine('$' . $name . '->' . self::METHOD_FROM_ARRAY . '($' . $name . 'Array);');
+        $method->addCodeLine('$' . $name . ' = ' . $foreignEntity->getServiceAccess() . '->' . NewInstancePlugin::METHOD_NEW_INSTANCE . '();');
+        $method->addCodeLine('$' . $name . '->' . self::METHOD_FROM_ARRAY . '($' . $name . 'Array);');
 
         // invoke setter to store attribute
-        $method->addLine('$this->set' . $reference->getMethodName() . '($' . $name . ');');
+        $method->addCodeLine('$this->set' . $reference->getMethodName() . '($' . $name . ');');
 
         $method->addIfEnd();
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      */
-    protected function generateCollectionListFromArray(MethodGenerator $method)
+    protected function generateCollectionListFromArray(Method $method)
     {
         foreach ($this->entity->getCollectionList() as $collection) {
             $this->generateCollectionFromArray($method, $collection);
@@ -206,25 +204,25 @@ class ArrayConverterPlugin extends BasePlugin
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param Collection $collection
      */
-    protected function generateCollectionFromArray(MethodGenerator $method, Collection $collection)
+    protected function generateCollectionFromArray(Method $method, Collection $collection)
     {
         $foreignEntity = $collection->getForeignEntity();
         $name = $collection->getName();
 
         // get collection data and make sure it exists
-        $method->addLine('$' . $name . 'Array = $arrayAccessor->getArray("' . $name . '");');
+        $method->addCodeLine('$' . $name . 'Array = $arrayAccessor->getArray("' . $name . '");');
         $method->addIfStart('$' . $name . 'Array !== null');
 
         // iterate array data
         $method->addForeachStart('$' . $name . 'Array as $entityArray');
 
         // instantiate new foreign entity initialize it and add it to the collection
-        $method->addLine('$' . $name . ' = ' . $foreignEntity->getServiceAccess() . '->' . NewInstancePlugin::METHOD_NEW_INSTANCE . '();');
-        $method->addLine('$' . $name . '->' . self::METHOD_FROM_ARRAY . '($entityArray);');
-        $method->addLine('$this->' . CollectorGetterSetter::METHOD_ADD_TO_PREFIX . $collection->getMethodName() . '($' . $name . ');');
+        $method->addCodeLine('$' . $name . ' = ' . $foreignEntity->getServiceAccess() . '->' . NewInstancePlugin::METHOD_NEW_INSTANCE . '();');
+        $method->addCodeLine('$' . $name . '->' . self::METHOD_FROM_ARRAY . '($entityArray);');
+        $method->addCodeLine('$this->' . CollectorGetterSetter::METHOD_ADD_TO_PREFIX . $collection->getMethodName() . '($' . $name . ');');
 
         $method->addForeachEnd();
 
@@ -233,9 +231,9 @@ class ArrayConverterPlugin extends BasePlugin
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      */
-    protected function addCheckExisting(MethodGenerator $method)
+    protected function addCheckExisting(Method $method)
     {
         if (!$this->entity->hasPrimaryKey()) {
             return;
@@ -248,7 +246,7 @@ class ArrayConverterPlugin extends BasePlugin
 
         $pkCheck = implode(" && ", $pkCheckList);
 
-        $method->addLine('$this->_existing = ' . $pkCheck . ';');
+        $method->addCodeLine('$this->_existing = ' . $pkCheck . ';');
     }
 
     /**
@@ -256,8 +254,8 @@ class ArrayConverterPlugin extends BasePlugin
      */
     protected function generateToArray()
     {
-        $method = $this->codeGenerator->newPublicMethod(self::METHOD_TO_ARRAY);
-        $method->addParameter('CycleDetector', 'cycleDetector', 'null');
+        $method = $this->classGenerator->addPublicMethod(self::METHOD_TO_ARRAY);
+        $method->addParameter('Siesta\Contract\CycleDetector', 'cycleDetector', 'null');
         $method->setReturnType('array', true);
 
         $this->generateCycleDetection($method);
@@ -268,53 +266,52 @@ class ArrayConverterPlugin extends BasePlugin
 
         $this->generateCollectionListToArray($method);
 
-        $method->addLine('return $result;');
-        $method->end();
+        $method->addCodeLine('return $result;');
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      */
-    protected function generateCycleDetection(MethodGenerator $method)
+    protected function generateCycleDetection(Method $method)
     {
         $method->addIfStart('$cycleDetector === null');
-        $method->addLine('$cycleDetector = new DefaultCycleDetector();');
+        $method->addCodeLine('$cycleDetector = new DefaultCycleDetector();');
         $method->addIfEnd();
-        $method->newLine();
+        $method->addNewLine();
 
         // canProceed
         $method->addIfStart('!$cycleDetector->canProceed(self::TABLE_NAME, $this)');
-        $method->addLine('return null;');
+        $method->addCodeLine('return null;');
         $method->addIfEnd();
-        $method->newLine();
+        $method->addNewLine();
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      */
-    protected function generateAttributeListToArray(MethodGenerator $method)
+    protected function generateAttributeListToArray(Method $method)
     {
 
-        $method->addLine('$result = [');
+        $method->addCodeLine('$result = [');
         $method->incrementIndent();
         foreach ($this->entity->getAttributeList() as $index => $attribute) {
             $line = $this->generateAttributeToArray($method, $attribute);
             if (($index + 1) !== sizeof($this->entity->getAttributeList())) {
                 $line .= ",";
             }
-            $method->addLine($line);
+            $method->addCodeLine($line);
         }
-        $method->decrementIndex();
-        $method->addLine('];');
+        $method->decrementIndent();
+        $method->addCodeLine('];');
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param Attribute $attribute
      *
      * @return string
      */
-    protected function generateAttributeToArray(MethodGenerator $method, Attribute $attribute)
+    protected function generateAttributeToArray(Method $method, Attribute $attribute)
     {
         $name = $attribute->getPhpName();
         $type = $attribute->getPhpType();
@@ -332,9 +329,9 @@ class ArrayConverterPlugin extends BasePlugin
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      */
-    protected function generateReferenceListToArray(MethodGenerator $method)
+    protected function generateReferenceListToArray(Method $method)
     {
         foreach ($this->entity->getReferenceList() as $reference) {
             $this->generateReferenceToArray($method, $reference);
@@ -342,21 +339,21 @@ class ArrayConverterPlugin extends BasePlugin
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param Reference $reference
      */
-    protected function generateReferenceToArray(MethodGenerator $method, Reference $reference)
+    protected function generateReferenceToArray(Method $method, Reference $reference)
     {
         $name = $reference->getName();
         $method->addIfStart('$this->' . $name . ' !== null');
-        $method->addLine('$result["' . $name . '"] = $this->' . $name . '->' . self::METHOD_TO_ARRAY . '($cycleDetector);');
+        $method->addCodeLine('$result["' . $name . '"] = $this->' . $name . '->' . self::METHOD_TO_ARRAY . '($cycleDetector);');
         $method->addIfEnd();
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      */
-    protected function generateCollectionListToArray(MethodGenerator $method)
+    protected function generateCollectionListToArray(Method $method)
     {
         foreach ($this->entity->getCollectionList() as $collection) {
             $this->generateCollectionToArray($method, $collection);
@@ -364,17 +361,17 @@ class ArrayConverterPlugin extends BasePlugin
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param Collection $collection
      */
-    protected function generateCollectionToArray(MethodGenerator $method, Collection $collection)
+    protected function generateCollectionToArray(Method $method, Collection $collection)
     {
         $name = $collection->getName();
-        $method->addLine('$result["' . $name . '"] = [];');
+        $method->addCodeLine('$result["' . $name . '"] = [];');
 
         $method->addIfStart('$this->' . $name . ' !== null');
         $method->addForeachStart('$this->' . $name . ' as $entity');
-        $method->addLine('$result["' . $name . '"][] = $entity->' . self::METHOD_TO_ARRAY . '($cycleDetector);');
+        $method->addCodeLine('$result["' . $name . '"][] = $entity->' . self::METHOD_TO_ARRAY . '($cycleDetector);');
         $method->addForeachEnd();
         $method->addIfEnd();
     }

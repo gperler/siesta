@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Siesta\Generator;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Codeception\Util\Debug;
+use Nitria\ClassGenerator;
 use Siesta\Model\Entity;
 
 /**
@@ -19,18 +20,22 @@ class ServiceGenerator extends AbstractGenerator
     protected $entity;
 
     /**
-     * @var CodeGenerator
+     * @var ClassGenerator
      */
-    protected $codeGenerator;
+    protected $classGenerator;
 
     /**
      * @var string
      */
     protected $basePath;
 
+    /**
+     * @param Entity $entity
+     * @param string $baseDir
+     */
     public function generate(Entity $entity, string $baseDir)
     {
-        $this->codeGenerator = new CodeGenerator();
+        $this->classGenerator = new ClassGenerator($entity->getServiceClassName());
         $this->entity = $entity;
         $this->basePath = $baseDir;
 
@@ -44,8 +49,7 @@ class ServiceGenerator extends AbstractGenerator
     protected function saveServiceEntity()
     {
         $targetFile = $this->getTargetFile($this->entity, $this->entity->getServiceClassShortName());
-
-        $this->codeGenerator->writeTo($targetFile);
+        $this->classGenerator->writeToFile($targetFile);
     }
 
     /**
@@ -53,23 +57,18 @@ class ServiceGenerator extends AbstractGenerator
      */
     protected function generateServiceEntity()
     {
-        $this->codeGenerator->addNamespace($this->entity->getNamespaceName());
 
         foreach ($this->getUseClassNameList($this->entity) as $useClass) {
-            $this->codeGenerator->addUse($useClass);
+            $this->classGenerator->addUsedClassName($useClass);
         }
 
-        $this->codeGenerator->newLine();
-
-        $this->codeGenerator->addClassStart($this->entity->getServiceClassShortName(), null, $this->getImplementedInterfaceList());
-
-        $this->codeGenerator->newLine();
+        foreach ($this->getImplementedInterfaceList() as $interfaceName) {
+            $this->classGenerator->addImplements($interfaceName);
+        }
 
         foreach ($this->pluginList as $plugin) {
-            $plugin->generate($this->entity, $this->codeGenerator);
+            $plugin->generate($this->entity, $this->classGenerator);
         }
-
-        $this->codeGenerator->addClassEnd();
     }
 
 }

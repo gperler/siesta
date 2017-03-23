@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Attribute;
 use Siesta\Model\Entity;
@@ -46,24 +46,25 @@ class AttributeGetterSetterPlugin extends BasePlugin
 
     /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
         foreach ($entity->getAttributeList() as $attribute) {
+
             if ($attribute->getIsPrimaryKey()) {
                 $this->generatePrimaryKeyGetter($attribute);
             } else {
                 $this->generateGetter($attribute);
             }
 
-            $this->generateSetter($attribute, $codeGenerator);
+            $this->generateSetter($attribute);
 
             if ($attribute->getPhpType() === PHPType::ARRAY) {
-                $this->generateAddTo($attribute, $codeGenerator);
-                $this->generateGetFrom($attribute, $codeGenerator);
+                $this->generateAddToArrayType($attribute);
+                $this->generateGetFromArrayType($attribute);
             }
 
         }
@@ -75,12 +76,10 @@ class AttributeGetterSetterPlugin extends BasePlugin
     protected function generateGetter(Attribute $attribute)
     {
         $methodName = "get" . $attribute->getMethodName();
-        $method = $this->codeGenerator->newPublicMethod($methodName);
-        $method->setReturnType($attribute->getPhpType(), true);
+        $method = $this->classGenerator->addPublicMethod($methodName);
+        $method->setReturnType($attribute->getFullyQualifiedTypeName());
 
-        $method->addLine('return $this->' . $attribute->getPhpName() . ';');
-        $method->end();
-
+        $method->addCodeLine('return $this->' . $attribute->getPhpName() . ';');
     }
 
     /**
@@ -89,80 +88,71 @@ class AttributeGetterSetterPlugin extends BasePlugin
     protected function generatePrimaryKeyGetter(Attribute $attribute)
     {
         $methodName = "get" . $attribute->getMethodName();
-        $method = $this->codeGenerator->newPublicMethod($methodName);
+        $method = $this->classGenerator->addPublicMethod($methodName);
         $method->addParameter(PHPType::BOOL, 'generateKey', 'false');
         $method->addParameter(PHPType::STRING, 'connectionName', 'null');
         $method->setReturnType($attribute->getPhpType(), true);
+
         $autoValue = $attribute->getAutoValue();
 
         $memberName = '$this->' . $attribute->getPhpName();
 
         $method->addIfStart('$generateKey && ' . $memberName . ' === null');
-        $method->addLine($memberName . ' = SequencerFactory::nextSequence("' . $autoValue . '", self::TABLE_NAME, $connectionName);');
+        $method->addCodeLine($memberName . ' = SequencerFactory::nextSequence("' . $autoValue . '", self::TABLE_NAME, $connectionName);');
         $method->addIfEnd();
 
-        $method->addLine('return ' . $memberName . ';');
-        $method->end();
+        $method->addCodeLine('return ' . $memberName . ';');
     }
 
     /**
      * @param Attribute $attribute
-     * @param CodeGenerator $codeGenerator
      */
-    protected function generateSetter(Attribute $attribute, CodeGenerator $codeGenerator)
+    protected function generateSetter(Attribute $attribute)
     {
         $name = $attribute->getPhpName();
         $type = $attribute->getPhpType();
         $methodName = "set" . $attribute->getMethodName();
 
-        $method = $this->codeGenerator->newPublicMethod($methodName);
-        $method->addParameter($type, $name, 'null');
+        $method = $this->classGenerator->addPublicMethod($methodName);
+        $method->addParameter($attribute->getFullyQualifiedTypeName(), $name, 'null');
 
         if ($type === PHPType::STRING) {
 
             $length = $attribute->getLength() !== null ? $attribute->getLength() : 'null';
-            $method->addLine('$this->' . $name . ' = StringUtil::trimToNull($' . $name . ", " . $length . ");");
+            $method->addCodeLine('$this->' . $name . ' = StringUtil::trimToNull($' . $name . ", " . $length . ");");
         } else {
-            $method->addLine('$this->' . $name . ' = $' . $name . ";");
+            $method->addCodeLine('$this->' . $name . ' = $' . $name . ";");
         }
-
-        $method->end();
-
     }
 
     /**
      * @param Attribute $attribute
-     * @param CodeGenerator $codeGenerator
      */
-    protected function generateAddTo(Attribute $attribute, CodeGenerator $codeGenerator)
+    protected function generateAddToArrayType(Attribute $attribute)
     {
         $methodName = "addTo" . $attribute->getMethodName();
-        $method = $this->codeGenerator->newPublicMethod($methodName);
+        $method = $this->classGenerator->addPublicMethod($methodName);
         $method->addParameter(PHPType::STRING, "key");
-        $method->addParameter("", "value", 'null');
+        $method->addParameter(null, "value", 'null');
 
         $memberName = '$this->' . $attribute->getPhpName();
 
         $method->addIfStart($memberName . ' === null');
-        $method->addLine($memberName . ' = [];');
+        $method->addCodeLine($memberName . ' = [];');
         $method->addIfEnd();
 
-        $method->addLine($memberName . '[$key] = $value;');
-
-        $method->end();
+        $method->addCodeLine($memberName . '[$key] = $value;');
     }
 
-    protected function generateGetFrom(Attribute $attribute, CodeGenerator $codeGenerator)
+    protected function generateGetFromArrayType(Attribute $attribute)
     {
         $methodName = "getFrom" . $attribute->getMethodName();
-        $method = $this->codeGenerator->newPublicMethod($methodName);
+        $method = $this->classGenerator->addPublicMethod($methodName);
         $method->addParameter(PHPType::STRING, "key");
-        $method->setReturnType('mixed', true);
+        $method->setReturnType(null, true);
         $memberName = '$this->' . $attribute->getPhpName();
 
-        $method->addLine('return ArrayUtil::getFromArray(' . $memberName . ', $key);');
-
-        $method->end();
+        $method->addCodeLine('return ArrayUtil::getFromArray(' . $memberName . ', $key);');
 
     }
 

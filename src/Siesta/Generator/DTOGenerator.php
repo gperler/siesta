@@ -4,32 +4,22 @@ declare(strict_types = 1);
 
 namespace Siesta\Generator;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\Model\Entity;
-use Siesta\Util\File;
 
 class DTOGenerator extends AbstractGenerator
 {
     public function generate(Entity $entity, string $baseDir)
     {
-        $codeGenerator = new CodeGenerator();
-        $codeGenerator->addNamespace($entity->getNamespaceName());
+        $classGenerator = new ClassGenerator($entity->getClassName() . "DTO");
 
         foreach ($this->getUseClassNameList($entity) as $useClass) {
-            $codeGenerator->addUse($useClass);
+            $classGenerator->addUsedClassName($useClass);
         }
-
-        $codeGenerator->newLine();
-
-        $codeGenerator->addClassStart($entity->getClassShortName() . "DTO");
 
         foreach ($this->pluginList as $plugin) {
-            $plugin->generate($entity, $codeGenerator);
+            $plugin->generate($entity, $classGenerator);
         }
-
-        $codeGenerator->addClassEnd();
-
-        //$codeGenerator->writeTo(...);
     }
 
 }

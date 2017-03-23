@@ -7,8 +7,6 @@ namespace Siesta\Generator;
 use Siesta\Contract\Generator;
 use Siesta\Contract\Plugin;
 use Siesta\Model\Entity;
-use Siesta\Util\File;
-use Siesta\Util\StringUtil;
 
 abstract class AbstractGenerator implements Generator
 {
@@ -51,11 +49,7 @@ abstract class AbstractGenerator implements Generator
         $interfaceList = array_unique($interfaceList);
         sort($interfaceList);
 
-        if (sizeof($interfaceList) === 0) {
-            return null;
-        }
-
-        return implode(", ", $interfaceList);
+        return $interfaceList;
     }
 
     /**
@@ -70,49 +64,19 @@ abstract class AbstractGenerator implements Generator
         foreach ($this->pluginList as $plugin) {
             $useClassList = array_merge($useClassList, $plugin->getUseClassNameList($entity));
         }
-        $useClassList = array_unique($useClassList);
-
-        return $this->cleanUseClassNameList($entity, $useClassList);
-    }
-
-    /**
-     * @param Entity $entity
-     * @param array $useClassList
-     *
-     * @return string[]
-     */
-    protected function cleanUseClassNameList(Entity $entity, array $useClassList) : array
-    {
-        $result = [];
-        foreach ($useClassList as $useClass) {
-            $useClass = ltrim($useClass, "\\");
-
-            $namespaceName = StringUtil::getStartBeforeLast($useClass, "\\");
-            if ($namespaceName !== $entity->getNamespaceName()) {
-                $result[] = $useClass;
-            }
-
-        }
-        sort($result);
-        return $result;
+        return $useClassList;
     }
 
     /**
      * @param Entity $entity
      * @param string $className
      *
-     * @return File
+     * @return string
      */
-    protected function getTargetFile(Entity $entity, string $className) : File
+    protected function getTargetFile(Entity $entity, string $className) : string
     {
         $basePath = rtrim($this->basePath, DIRECTORY_SEPARATOR);
-
-        $directoryPath = $basePath . DIRECTORY_SEPARATOR . $entity->getTargetPath();
-
-        $directory = new File($directoryPath);
-        $directory->createDir();
-
-        $targetFileName = $directoryPath . DIRECTORY_SEPARATOR . $className . ".php";
-        return new File($targetFileName);
+        return $basePath . DIRECTORY_SEPARATOR . $entity->getTargetPath() . DIRECTORY_SEPARATOR . $className . ".php";
     }
+
 }

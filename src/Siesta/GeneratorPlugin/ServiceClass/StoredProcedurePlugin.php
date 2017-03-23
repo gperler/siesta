@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
-use Siesta\CodeGenerator\CodeGenerator;
-use Siesta\CodeGenerator\MethodGenerator;
+use Nitria\ClassGenerator;
+use Nitria\Method;
+use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
 use Siesta\Model\PHPType;
@@ -26,7 +27,7 @@ class StoredProcedurePlugin extends BasePlugin
         $useList = [
             'Siesta\Database\Escaper',
             'Siesta\Database\ConnectionFactory',
-            'Siesta\Util\ArrayUtil'
+            'Civis\Common\ArrayUtil'
         ];
 
         foreach ($entity->getStoredProcedureList() as $storedProcedure) {
@@ -51,11 +52,11 @@ class StoredProcedurePlugin extends BasePlugin
 
     /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
         foreach ($this->entity->getStoredProcedureList() as $storedProcedure) {
             $this->generateStoreProcedureCall($storedProcedure);
@@ -68,7 +69,7 @@ class StoredProcedurePlugin extends BasePlugin
     private function generateStoreProcedureCall(StoredProcedure $storedProcedure)
     {
 
-        $method = $this->codeGenerator->newPublicMethod($storedProcedure->getName());
+        $method = $this->classGenerator->addPublicMethod($storedProcedure->getName());
 
         $this->addParameter($method, $storedProcedure);
         $this->addReturnType($method, $storedProcedure);
@@ -92,68 +93,67 @@ class StoredProcedurePlugin extends BasePlugin
         if ($storedProcedure->isResultTypeNone()) {
             $this->generateNoneResultType($method);
         }
-
-        $method->end();
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param StoredProcedure $storedProcedure
      */
-    private function addParameter(MethodGenerator $method, StoredProcedure $storedProcedure)
+    private function addParameter(Method $method, StoredProcedure $storedProcedure)
     {
         foreach ($storedProcedure->getParameterList() as $parameter) {
             $method->addParameter($parameter->getPhpType(), $parameter->getName(), 'null');
         }
-        $method->addConnectionNameParameter();
+        $helper = new GeneratorHelper($method);
+        $helper->addConnectionNameParameter();
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param StoredProcedure $storedProcedure
      */
-    public function addReturnType(MethodGenerator $method, StoredProcedure $storedProcedure)
+    public function addReturnType(Method $method, StoredProcedure $storedProcedure)
     {
         if ($storedProcedure->isResultTypeNone()) {
             return;
         }
         if ($storedProcedure->isResultSetResult()) {
-            $method->setReturnType('ResultSet');
+            $method->setReturnType('Siesta\Database\ResultSet');
         }
-        $instantiationClass = $this->entity->getInstantiationClassShortName();
+        $instantiationClass = $this->entity->getInstantiationClassName();
         if ($storedProcedure->isEntityResult()) {
             $method->setReturnType($instantiationClass, true);
         }
 
         if ($storedProcedure->isListResult()) {
-            $method->setReturnType($instantiationClass . '[]');
+            $method->setReturnType($instantiationClass . '[]', false);
         }
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param StoredProcedure $storedProcedure
      */
-    protected function addQuote(MethodGenerator $method, StoredProcedure $storedProcedure)
+    protected function addQuote(Method $method, StoredProcedure $storedProcedure)
     {
-        $method->addConnectionLookup();
+        $helper = new GeneratorHelper($method);
+        $helper->addConnectionLookup();
 
         foreach ($storedProcedure->getParameterList() as $parameter) {
             $variableName = '$' . $parameter->getName();
-            $quoteCall = $variableName . ' = ' . $method->getQuoteCall($parameter->getPhpType(), $parameter->getDbType(), $variableName, false, $parameter->getDbLength()) . ';';
-            $method->addLine($quoteCall);
+            $helper->addQuoteCall($parameter->getPhpType(), $parameter->getDbType(), $variableName, false, $parameter->getDbLength());
         }
     }
 
     /**
-     * @param MethodGenerator $method
+     * @param Method $method
      * @param StoredProcedure $storedProcedure
      */
-    private function generateStoredProcedureSQL(MethodGenerator $method, StoredProcedure $storedProcedure)
+    private function generateStoredProcedureSQL(Method $method, StoredProcedure $storedProcedure)
     {
         $dbName = $storedProcedure->getDBName();
         $invocationSignature = $this->generateInvocationSignature($storedProcedure);
-        $method->addLine('$spCall = "CALL ' . $dbName . '(' . $invocationSignature . ')";');
+        $method->addCodeLine('$spCall = "CALL ' . $dbName . '(' . $invocationSignature . ')";');
     }
 
     /**
@@ -173,34 +173,34 @@ class StoredProcedurePlugin extends BasePlugin
     /**
      *
      */
-    private function generateEntityResultType(MethodGenerator $method)
+    private function generateEntityResultType(Method $method)
     {
-        $method->addLine('$entityList = $this->' . ExecuteStoredProcedurePlugin::METHOD_EXECUTE_SP . '($spCall);');
-        $method->addLine('return ArrayUtil::getFromArray($entityList, 0);');
+        $method->addCodeLine('$entityList = $this->' . ExecuteStoredProcedurePlugin::METHOD_EXECUTE_SP . '($spCall);');
+        $method->addCodeLine('return ArrayUtil::getFromArray($entityList, 0);');
     }
 
     /**
      *
      */
-    private function generateListResultType(MethodGenerator $method)
+    private function generateListResultType(Method $method)
     {
-        $method->addLine('return $this->' . ExecuteStoredProcedurePlugin::METHOD_EXECUTE_SP . '($spCall);');
+        $method->addCodeLine('return $this->' . ExecuteStoredProcedurePlugin::METHOD_EXECUTE_SP . '($spCall);');
     }
 
     /**
      *
      */
-    private function generateResultSetResultType(MethodGenerator $method)
+    private function generateResultSetResultType(Method $method)
     {
-        $method->addLine('return $connection->executeStoredProcedure($spCall);');
+        $method->addCodeLine('return $connection->executeStoredProcedure($spCall);');
     }
 
     /**
      *
      */
-    private function generateNoneResultType(MethodGenerator $method)
+    private function generateNoneResultType(Method $method)
     {
-        $method->addLine('$connection->execute($spCall);');
+        $method->addCodeLine('$connection->execute($spCall);');
     }
 
 }

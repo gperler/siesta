@@ -496,6 +496,17 @@ class Entity
     /**
      * @return string
      */
+    public function getServiceClassName()
+    {
+        if ($this->serviceClass === null) {
+            return $this->getClassName() . self::SERVICE_CLASS_SUFFIX;
+        }
+        return $this->serviceClass->getClassName();
+    }
+
+    /**
+     * @return string
+     */
     public function getTargetPath() : string
     {
         if ($this->targetPath !== null) {
@@ -651,7 +662,7 @@ class Entity
     /**
      * @return string|null
      */
-    public function getInstantiationClass() : string
+    public function getInstantiationClassName() : string
     {
         if ($this->constructor === null) {
             return $this->getClassName();

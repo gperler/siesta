@@ -18,7 +18,7 @@ class PHPType
 
     const SIESTA_DATE_TIME = "SiestaDateTime";
 
-    const SIESTA_DATE_TIME_NS = "";
+    const SIESTA_DATE_TIME_CLASS_NAME = 'Siesta\Util\SiestaDateTime';
 
 
 }

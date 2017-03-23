@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
-use Siesta\CodeGenerator\CodeGenerator;
-use Siesta\CodeGenerator\MethodGenerator;
+use Nitria\ClassGenerator;
+use Nitria\Method;
+use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
@@ -24,7 +25,7 @@ class GetEntityByIdPlugin extends BasePlugin
      */
     public function getUseClassNameList(Entity $entity) : array
     {
-        return ['Siesta\Util\ArrayUtil'];
+        return ['Civis\Common\ArrayUtil'];
     }
 
     /**
@@ -37,11 +38,11 @@ class GetEntityByIdPlugin extends BasePlugin
 
     /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
         if (!$this->entity->hasPrimaryKey()) {
             return;
@@ -56,28 +57,28 @@ class GetEntityByIdPlugin extends BasePlugin
     {
         $pkAttributeList = $this->entity->getPrimaryKeyAttributeList();
 
-        $method = $this->codeGenerator->newPublicMethod(self::METHOD_ENTITY_BY_PK);
-        $method->addAttributeParameterList($pkAttributeList, 'null');
-        $method->setReturnType($this->entity->getInstantiationClassShortName(), true);
+        $method = $this->classGenerator->addPublicMethod(self::METHOD_ENTITY_BY_PK);
+        $helper = new GeneratorHelper($method);
 
-        $method->addConnectionNameParameter();
+        $helper->addAttributeParameterList($pkAttributeList, 'null');
+        $method->setReturnType($this->entity->getInstantiationClassName(), true);
+
+        $helper->addConnectionNameParameter();
 
         $this->generateCheckPrimaryKey($method);
 
-        $method->addQuoteAttributeList($pkAttributeList);
+        $helper->addQuoteAttributeList($pkAttributeList);
 
         $spName = StoredProcedureNaming::getSelectByPrimaryKeyName($this->entity);
-        $signature = $method->getSPInvocationSignature($pkAttributeList);
-        $method->addLine('$entityList = $this->executeStoredProcedure("CALL ' . $spName . '(' . $signature . ')", $connectionName);');
-        $method->addLine('return ArrayUtil::getFromArray($entityList, 0);');
-
-        $method->end();
+        $signature = $helper->getSPInvocationSignature($pkAttributeList);
+        $method->addCodeLine('$entityList = $this->executeStoredProcedure("CALL ' . $spName . '(' . $signature . ')", $connectionName);');
+        $method->addCodeLine('return ArrayUtil::getFromArray($entityList, 0);');
     }
 
     /**
-     * @param MethodGenerator $generator
+     * @param Method $generator
      */
-    protected function generateCheckPrimaryKey(MethodGenerator $generator)
+    protected function generateCheckPrimaryKey(Method $generator)
     {
         $pkCheckList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
@@ -86,7 +87,7 @@ class GetEntityByIdPlugin extends BasePlugin
         $condition = implode(" || ", $pkCheckList);
         $generator->addIfStart($condition);
 
-        $generator->addLine('return null;');
+        $generator->addCodeLine('return null;');
 
         $generator->addIfEnd();
     }

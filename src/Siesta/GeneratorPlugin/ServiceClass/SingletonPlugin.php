@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
 use Siesta\Model\ServiceClass;
@@ -43,20 +43,12 @@ class SingletonPlugin extends BasePlugin
     }
 
     /**
-     * @return string[]
-     */
-    public function getDependantPluginList() : array
-    {
-        return [];
-    }
-
-    /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
         $this->generateSingleton();
     }
@@ -66,33 +58,18 @@ class SingletonPlugin extends BasePlugin
      */
     protected function generateSingleton()
     {
-        $instantiationClass = $this->getInstantiationClass();
 
-        $this->codeGenerator->addStaticProtectedMember("instance", $instantiationClass);
+        $className = $this->entity->getServiceClassName();
+        $classShortName = $this->entity->getServiceClassShortName();
+        $this->classGenerator->addProtectedStaticProperty("instance", $className);
 
-        $method = $this->codeGenerator->newPublicStaticMethod(self::METHOD_SINGLETON);
-        $method->setReturnType($instantiationClass);
+        $method = $this->classGenerator->addPublicStaticMethod(self::METHOD_SINGLETON);
+        $method->setReturnType($className);
 
         $method->addIfStart('self::$instance === null');
-        $method->addLine('self::$instance = new ' . $instantiationClass . '();');
+        $method->addCodeLine('self::$instance = new ' . $classShortName . '();');
         $method->addIfEnd();
-        $method->addLine('return self::$instance;');
-
-        $method->end();
-
-    }
-
-    /**
-     * @return null|string
-     */
-    protected function getInstantiationClass()
-    {
-        $serviceClass = $this->entity->getServiceClass();
-        if ($serviceClass !== null && $serviceClass->getClassShortName() !== null) {
-            return $serviceClass->getClassShortName();
-        }
-        return $this->entity->getServiceClassShortName();
-
+        $method->addCodeLine('return self::$instance;');
     }
 
 }

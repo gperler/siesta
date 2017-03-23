@@ -178,6 +178,20 @@ class Attribute
     /**
      * @return string
      */
+    public function getFullyQualifiedTypeName()
+    {
+        if ($this->phpType === PHPType::SIESTA_DATE_TIME) {
+            return PHPType::SIESTA_DATE_TIME_CLASS_NAME;
+        }
+        if ($this->className !== null) {
+            return $this->className;
+        }
+        return $this->phpType;
+    }
+
+    /**
+     * @return string
+     */
     public function getDBName()
     {
         if ($this->dbName !== null) {

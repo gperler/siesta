@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Codeception\Util\Debug;
+use Nitria\ClassGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
 
@@ -16,44 +17,11 @@ class MemberPlugin extends BasePlugin
 
     /**
      * @param Entity $entity
-     *
-     * @return string[]
+     * @param ClassGenerator $classGenerator
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $useList = [];
-        foreach ($entity->getAttributeList() as $attribute) {
-            if ($attribute->getPhpType() === "SiestaDateTime") {
-                $useList[] = 'Siesta\Util\SiestaDateTime';
-            }
-            if ($attribute->getClassName() !== null) {
-                $useList[] = $attribute->getClassName();
-            }
-        }
-
-        foreach ($entity->getReferenceList() as $reference) {
-            $foreignEntity = $reference->getForeignEntity();
-            $useList[] = $foreignEntity->getInstantiationClass();
-        }
-
-        return $useList;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getDependantPluginList() : array
-    {
-        return [];
-    }
-
-    /**
-     * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
-     */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
-    {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
         $this->generateStandardMember();
         $this->generateAttributeMember();
         $this->generateReferenceMember();
@@ -66,11 +34,7 @@ class MemberPlugin extends BasePlugin
      */
     protected function generateStandardMember()
     {
-
-        $this->codeGenerator->addProtectedMember("_existing", "bool");
-        $this->codeGenerator->addProtectedMember("_rawJSON", "array");
-        $this->codeGenerator->addProtectedMember("_rawSQLResult", "array");
-
+        $this->classGenerator->addProtectedProperty("_existing", "bool");
     }
 
     /**
@@ -79,7 +43,7 @@ class MemberPlugin extends BasePlugin
     protected function generateAttributeMember()
     {
         foreach ($this->entity->getAttributeList() as $attribute) {
-            $this->codeGenerator->addProtectedMember($attribute->getPhpName(), $attribute->getPhpType());
+            $this->classGenerator->addProtectedProperty($attribute->getPhpName(), $attribute->getFullyQualifiedTypeName());
         }
     }
 
@@ -90,7 +54,7 @@ class MemberPlugin extends BasePlugin
     {
         foreach ($this->entity->getReferenceList() as $reference) {
             $foreignEntity = $reference->getForeignEntity();
-            $this->codeGenerator->addProtectedMember($reference->getName(), $foreignEntity->getInstantiationClassShortName());
+            $this->classGenerator->addProtectedProperty($reference->getName(), $foreignEntity->getInstantiationClassName());
         }
     }
 
@@ -101,7 +65,7 @@ class MemberPlugin extends BasePlugin
     {
         foreach ($this->entity->getCollectionList() as $collection) {
             $foreignEntity = $collection->getForeignEntity();
-            $this->codeGenerator->addProtectedMember($collection->getName(), $foreignEntity->getInstantiationClassShortName() . '[]');
+            $this->classGenerator->addProtectedProperty($collection->getName(), $foreignEntity->getInstantiationClassName() . '[]');
         }
     }
 
@@ -113,10 +77,10 @@ class MemberPlugin extends BasePlugin
         foreach ($this->entity->getCollectionManyList() as $collectionMany) {
             $foreignEntity = $collectionMany->getForeignEntity();
 
-            $this->codeGenerator->addProtectedMember($collectionMany->getName(), $foreignEntity->getInstantiationClassShortName() . '[]');
+            $this->classGenerator->addProtectedProperty($collectionMany->getName(), $foreignEntity->getInstantiationClassName() . '[]');
 
             $mappingEntity = $collectionMany->getMappingEntity();
-            $this->codeGenerator->addProtectedMember($collectionMany->getName() . 'Mapping', $mappingEntity->getInstantiationClassShortName() . '[]');
+            $this->classGenerator->addProtectedProperty($collectionMany->getName() . 'Mapping', $mappingEntity->getInstantiationClassName() . '[]');
         }
     }
 }

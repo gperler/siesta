@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Attribute;
 use Siesta\Model\Entity;
@@ -38,26 +38,18 @@ class FromResultSetPlugin extends BasePlugin
     public function getUseClassNameList(Entity $entity) : array
     {
         return [
-            'Siesta\Database\ResultSet',
-            'Siesta\Util\ArrayUtil'
+            'Civis\Common\ArrayUtil'
         ];
     }
 
     /**
-     * @return string[]
-     */
-    public function getDependantPluginList() : array
-    {
-        return [];
-    }
-
-    /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
+        $this->addProperty();
         $this->generateFromResultSetMethod();
         $this->generateGetAdditionalColumn();
     }
@@ -65,23 +57,29 @@ class FromResultSetPlugin extends BasePlugin
     /**
      *
      */
+    protected function addProperty()
+    {
+        $this->classGenerator->addProtectedProperty("_rawSQLResult", "array");
+    }
+
+    /**
+     *
+     */
     protected function generateFromResultSetMethod()
     {
-        $method = $this->codeGenerator->newPublicMethod(self::METHOD_FROM_RESULT_SET);
-        $method->addParameter('ResultSet', 'resultSet');
+        $method = $this->classGenerator->addPublicMethod(self::METHOD_FROM_RESULT_SET);
+        $method->addParameter('Siesta\Database\ResultSet', 'resultSet');
 
-        $method->addLine('$this->_existing = true;');
-        $method->addLine('$this->_rawSQLResult = $resultSet->getNext();');
+        $method->addCodeLine('$this->_existing = true;');
+        $method->addCodeLine('$this->_rawSQLResult = $resultSet->getNext();');
 
         foreach ($this->entity->getAttributeList() as $attribute) {
             if ($attribute->getIsTransient()) {
                 continue;
             }
             $assignment = $this->getAssignment($attribute);
-            $method->addLine($assignment);
+            $method->addCodeLine($assignment);
         }
-
-        $method->end();
     }
 
     /**
@@ -103,13 +101,11 @@ class FromResultSetPlugin extends BasePlugin
      */
     protected function generateGetAdditionalColumn()
     {
-        $method = $this->codeGenerator->newPublicMethod(self::METHOD_GET_ADDITIONAL_COLUMN);
+        $method = $this->classGenerator->addPublicMethod(self::METHOD_GET_ADDITIONAL_COLUMN);
         $method->addParameter(PHPType::STRING, 'key');
         $method->setReturnType(PHPType::STRING, true);
 
-        $method->addLine('return ArrayUtil::getFromArray($this->_rawSQLResult, $key);');
-        $method->end();
-
+        $method->addCodeLine('return ArrayUtil::getFromArray($this->_rawSQLResult, $key);');
     }
 
 }

@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
+use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\GeneratorPlugin\Entity\SavePlugin;
 use Siesta\Model\Entity;
@@ -36,11 +37,11 @@ class BatchSavePlugin extends BasePlugin
 
     /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
         $this->generateBatchSave();
     }
 
@@ -49,19 +50,19 @@ class BatchSavePlugin extends BasePlugin
      */
     protected function generateBatchSave()
     {
-        $method = $this->codeGenerator->newPublicMethod(self::METHOD_BATCH_SAVE);
-        $method->addParameter($this->entity->getInstantiationClassShortName() . '[]', 'entityList');
-        $method->addConnectionNameParameter();
+        $method = $this->classGenerator->addPublicMethod(self::METHOD_BATCH_SAVE);
+        $helper = new GeneratorHelper($method);
+
+        $method->addParameter($this->entity->getInstantiationClassName() . '[]', 'entityList');
+        $helper->addConnectionNameParameter();
 
         // create the batch call
-        $method->addLine('$batchCall = "";');
+        $method->addCodeLine('$batchCall = "";');
         $method->addForeachStart('$entityList as $entity');
-        $method->addLine('$batchCall .= $entity->' . SavePlugin::METHOD_CREATE_SP_CALL_STATEMENT . '();');
+        $method->addCodeLine('$batchCall .= $entity->' . SavePlugin::METHOD_CREATE_SP_CALL_STATEMENT . '();');
         $method->addForeachEnd();
 
-        $method->addConnectionLookup();
-        $method->addLine('$connection->execute($batchCall);');
-
-        $method->end();
+        $helper->addConnectionLookup();
+        $method->addCodeLine('$connection->execute($batchCall);');
     }
 }

@@ -4,7 +4,9 @@
   "require": {
     "php": ">=7.0.0",
     "symfony/console": "*",
-    "psr/log": "*"
+    "psr/log": "*",
+    "gm314/nitria": "0.1.4",
+    "gm314/common": "0.1.1"
   },
   "require-dev": {
     "codeception/codeception": "*",

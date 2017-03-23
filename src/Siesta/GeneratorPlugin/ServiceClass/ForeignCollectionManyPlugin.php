@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
+use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\CollectionMany;
@@ -46,29 +47,11 @@ class ForeignCollectionManyPlugin extends BasePlugin
 
     /**
      * @param Entity $entity
-     *
-     * @return string[]
+     * @param ClassGenerator $classGenerator
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        return [];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getDependantPluginList() : array
-    {
-        return [];
-    }
-
-    /**
-     * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
-     */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
-    {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
         foreach ($this->entity->getForeignCollectionManyList() as $collectionMany) {
             $this->generateAccessMethod($collectionMany);
@@ -86,18 +69,18 @@ class ForeignCollectionManyPlugin extends BasePlugin
         $entityClass = $this->entity->getInstantiationClassShortName();
 
         $methodName = self::getEntityByReferenceName($collectionMany);
-        $method = $this->codeGenerator->newPublicMethod($methodName);
-        $method->addAttributeParameterList($pkAttributeList);
-        $method->addConnectionNameParameter();
+        $method = $this->classGenerator->addPublicMethod($methodName);
+        $helper = new GeneratorHelper($method);
+
+        $helper->addAttributeParameterList($pkAttributeList);
+        $helper->addConnectionNameParameter();
         $method->setReturnType($entityClass . '[]');
 
-        $method->addQuoteAttributeList($pkAttributeList, true);
+        $helper->addQuoteAttributeList($pkAttributeList, true);
 
         $spName = StoredProcedureNaming::getSelectByCollectionManyName($collectionMany);
-        $signature = $method->getSPInvocationSignature($pkAttributeList);
-        $method->addLine('return $this->executeStoredProcedure("CALL ' . $spName . '(' . $signature . ')", $connectionName);');
-
-        $method->end();
+        $signature = $helper->getSPInvocationSignature($pkAttributeList);
+        $method->addCodeLine('return $this->executeStoredProcedure("CALL ' . $spName . '(' . $signature . ')", $connectionName);');
     }
 
     /**
@@ -108,17 +91,17 @@ class ForeignCollectionManyPlugin extends BasePlugin
         $pkAttributeList = $this->entity->getPrimaryKeyAttributeList();
         $methodName = self::deleteEntityByReferenceName($collectionMany);
 
-        $method = $this->codeGenerator->newPublicMethod($methodName);
-        $method->addAttributeParameterList($pkAttributeList);
-        $method->addConnectionNameParameter();
+        $method = $this->classGenerator->addPublicMethod($methodName);
+        $helper = new GeneratorHelper($method);
 
-        $method->addQuoteAttributeList($pkAttributeList, true);
+        $helper->addAttributeParameterList($pkAttributeList);
+        $helper->addConnectionNameParameter();
+
+        $helper->addQuoteAttributeList($pkAttributeList, true);
 
         $spName = StoredProcedureNaming::getDeleteByCollectionManyName($collectionMany);
-        $signature = $method->getSPInvocationSignature($pkAttributeList);
-        $method->addLine('$connection->execute("CALL ' . $spName . '(' . $signature . ')");');
-
-        $method->end();
+        $signature = $helper->getSPInvocationSignature($pkAttributeList);
+        $method->addCodeLine('$connection->execute("CALL ' . $spName . '(' . $signature . ')");');
     }
 
 }

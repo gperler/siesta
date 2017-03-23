@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
-use Siesta\CodeGenerator\CodeGenerator;
+use Nitria\ClassGenerator;
+use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
@@ -23,24 +24,16 @@ class DeleteEntityByIdPlugin extends BasePlugin
      */
     public function getUseClassNameList(Entity $entity) : array
     {
-        return ['Siesta\Util\ArrayUtil'];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getDependantPluginList() : array
-    {
-        return [];
+        return ['Civis\Common\ArrayUtil'];
     }
 
     /**
      * @param Entity $entity
-     * @param CodeGenerator $codeGenerator
+     * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, CodeGenerator $codeGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
-        $this->setup($entity, $codeGenerator);
+        $this->setup($entity, $classGenerator);
 
         if (!$entity->hasPrimaryKey()) {
             return;
@@ -56,16 +49,16 @@ class DeleteEntityByIdPlugin extends BasePlugin
     {
         $pkAttributeList = $this->entity->getPrimaryKeyAttributeList();
 
-        $method = $this->codeGenerator->newPublicMethod(self::METHOD_DELETE_ENTITY_BY_PK);
-        $method->addAttributeParameterList($pkAttributeList);
-        $method->addConnectionNameParameter();
+        $method = $this->classGenerator->addPublicMethod(self::METHOD_DELETE_ENTITY_BY_PK);
+        $helper = new GeneratorHelper($method);
 
-        $method->addQuoteAttributeList($pkAttributeList, true);
+        $helper->addAttributeParameterList($pkAttributeList);
+        $helper->addConnectionNameParameter();
+
+        $helper->addQuoteAttributeList($pkAttributeList, true);
 
         $spName = StoredProcedureNaming::getDeleteByPrimaryKeyName($this->entity);
-        $method->addExecuteStoredProcedureWithAttributeList($spName, $pkAttributeList, false);
-
-        $method->end();
+        $helper->addExecuteStoredProcedureWithAttributeList($spName, $pkAttributeList, false);
     }
 
 }
