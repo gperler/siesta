@@ -490,7 +490,10 @@ class Entity
      */
     public function getServiceClassShortName()
     {
-        return $this->getClassShortName() . self::SERVICE_CLASS_SUFFIX;
+        if ($this->serviceClass === null) {
+            return $this->getClassShortName() . self::SERVICE_CLASS_SUFFIX;
+        }
+        return $this->serviceClass->getClassShortName();
     }
 
     /**
