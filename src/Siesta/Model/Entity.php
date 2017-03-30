@@ -507,6 +507,22 @@ class Entity
     /**
      * @return string
      */
+    public function getServiceGenerationClassName()
+    {
+        return $this->getClassName() . self::SERVICE_CLASS_SUFFIX;
+    }
+
+    /**
+     * @return string
+     */
+    public function getServiceGenerationClassNameShort()
+    {
+        return $this->getClassShortName() . self::SERVICE_CLASS_SUFFIX;
+    }
+
+    /**
+     * @return string
+     */
     public function getTargetPath() : string
     {
         if ($this->targetPath !== null) {
@@ -671,6 +687,28 @@ class Entity
             return $this->constructor->getClassName();
         }
         return $this->getClassName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getServiceClassInstantiationClassName()
+    {
+        if ($this->serviceClass === null) {
+            return $this->getServiceGenerationClassName();
+        }
+        return $this->serviceClass->getClassName();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getServiceClassInstantiationClassNameShort()
+    {
+        if ($this->serviceClass === null) {
+            return $this->getServiceGenerationClassNameShort();
+        }
+        return $this->serviceClass->getClassShortName();
     }
 
     /**
