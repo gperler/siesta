@@ -6,9 +6,7 @@ use Siesta\Model\ValidationLogger;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\File;
 
-/**
- * @author Gregor Müller
- */
+
 class GenericConfigLoader
 {
 

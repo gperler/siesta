@@ -3,5 +3,7 @@ vendor
 !**/.gitkeep
 tests/_output/*
 bin
-config
+config/HelloWorld.entity.xml
+config/siesta.config.json
+config/siesta.reverse.config.json
 test.php

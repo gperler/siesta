@@ -9,9 +9,7 @@ use Siesta\Exception\InvalidConfigurationException;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\File;
 
-/**
- * @author Gregor Müller
- */
+
 class Config
 {
 

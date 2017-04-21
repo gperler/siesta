@@ -7,9 +7,7 @@ use Siesta\Util\ArrayUtil;
 use Siesta\Util\ClassUtil;
 use Siesta\Validator\Validator;
 
-/**
- * @author Gregor Müller
- */
+
 class GenericGeneratorConfig
 {
     const GENERATOR_INTERFACE = 'Siesta\Contract\Generator';

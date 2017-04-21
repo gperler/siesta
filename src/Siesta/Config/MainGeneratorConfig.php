@@ -9,9 +9,7 @@ use Siesta\Util\ClassUtil;
 use Siesta\Util\File;
 use Siesta\Util\SiestaDateTime;
 
-/**
- * @author Gregor Müller
- */
+
 class MainGeneratorConfig
 {
 
