@@ -763,7 +763,7 @@ class Entity
      *
      * @return XMLAccess[]
      */
-    public function get(string $childName) {
+    public function getXMLChildElementListByName(string $childName) {
         return $this->xmlEntity->getXMLChildElementListByName($childName);
     }
 
