@@ -10,6 +10,7 @@ namespace Siesta\Model;
 use Siesta\GeneratorPlugin\ServiceClass\SingletonPlugin;
 use Siesta\NamingStrategy\NamingStrategyRegistry;
 use Siesta\Util\ArrayUtil;
+use Siesta\XML\XMLAccess;
 use Siesta\XML\XMLEntity;
 
 class Entity
@@ -755,6 +756,15 @@ class Entity
     public function setXmlEntity(XMLEntity $xmlEntity)
     {
         $this->xmlEntity = $xmlEntity;
+    }
+
+    /**
+     * @param string $childName
+     *
+     * @return XMLAccess[]
+     */
+    public function get(string $childName) {
+        return $this->xmlEntity->getXMLChildElementListByName($childName);
     }
 
 }

@@ -349,6 +349,14 @@ class XMLEntity
     }
 
     /**
+     * @param string $childname
+     *
+     * @return XMLAccess[]
+     */
+    public function getXMLChildElementListByName(string $childname) {
+        return $this->xmlAccess->getXMLChildElementListByName($childname);
+    }
+    /**
      * @return XMLReference[]
      */
     public function getXMLReferenceList() : array

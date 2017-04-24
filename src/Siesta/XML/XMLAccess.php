@@ -60,7 +60,7 @@ class XMLAccess
     /**
      * @param string $tagName
      *
-     * @return array
+     * @return XMLAccess[]
      */
     public function getXMLChildElementListByName(string $tagName) : array
     {
