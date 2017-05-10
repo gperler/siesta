@@ -11,6 +11,7 @@ use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\GeneratorPlugin\ServiceClass\NewInstancePlugin;
 use Siesta\Model\Attribute;
 use Siesta\Model\Collection;
+use Siesta\Model\DBType;
 use Siesta\Model\Entity;
 use Siesta\Model\PHPType;
 use Siesta\Model\Reference;
@@ -321,8 +322,20 @@ class ArrayConverterPlugin extends BasePlugin
             return '"' . $name . '" => ($this->' . $methodName . '() !== null) ? $this->' . $methodName . '()->toArray() : null';
         }
 
+
+
         if ($type === PHPType::SIESTA_DATE_TIME) {
-            return '"' . $name . '" => ($this->' . $methodName . '() !== null) ? $this->' . $methodName . '()->getJSONDateTime() : null';
+            if ($attribute->getDbType() === DBType::DATE) {
+                return '"' . $name . '" => ($this->' . $methodName . '() !== null) ? $this->' . $methodName . '()->getSQLDate() : null';
+            }
+
+            if ($attribute->getDbType() === DBType::DATETIME) {
+                return '"' . $name . '" => ($this->' . $methodName . '() !== null) ? $this->' . $methodName . '()->getJSONDateTime() : null';
+            }
+
+            if ($attribute->getDbType() === DBType::TIME) {
+                return '"' . $name . '" => ($this->' . $methodName . '() !== null) ? $this->' . $methodName . '()->getSQLTime() : null';
+            }
         }
 
         return '"' . $name . '" => $this->' . $methodName . '()';

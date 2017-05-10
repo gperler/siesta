@@ -219,7 +219,7 @@ class AttributeTest extends End2EndTest
 
         $time = $attribute->getPTime();
         $this->assertNotNull($time);
-        $this->assertSame("2016-07-13T11:42:12", $time->getJSONDateTime());
+        $this->assertSame("11:42:12", $time->getSQLTime());
 
         $object = $attribute->getObject();
         $this->assertNotNull($object);
