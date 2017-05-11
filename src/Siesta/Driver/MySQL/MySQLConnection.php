@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL;
 
 use Siesta\Database\Connection;
@@ -48,7 +49,7 @@ class MySQLConnection implements Connection
     /**
      *
      */
-    public function getDatabase() : string
+    public function getDatabase(): string
     {
         return $this->database;
     }
@@ -105,7 +106,7 @@ class MySQLConnection implements Connection
      * @throws UniqueConstraintViolationException
      * @return ResultSet
      */
-    public function query(string $query) : ResultSet
+    public function query(string $query): ResultSet
     {
         $result = $this->connection->query($query);
 
@@ -130,7 +131,7 @@ class MySQLConnection implements Connection
      * @throws TableDoesNotExistException
      * @throws UniqueConstraintViolationException
      */
-    public function multiQuery(string $query) : ResultSet
+    public function multiQuery(string $query): ResultSet
     {
         $result = $this->connection->multi_query($query);
         if (!$result) {
@@ -174,7 +175,7 @@ class MySQLConnection implements Connection
      * @throws UniqueConstraintViolationException
      * @return ResultSet
      */
-    public function executeStoredProcedure(string $query) : ResultSet
+    public function executeStoredProcedure(string $query): ResultSet
     {
         $result = $this->connection->multi_query($query);
 
@@ -240,8 +241,6 @@ class MySQLConnection implements Connection
         }
         $result->close();
 
-        $r = ($sequence) ? $sequence : 1;
-
         return ($sequence) ? $sequence : 1;
     }
 
@@ -289,7 +288,7 @@ class MySQLConnection implements Connection
      *
      * @return DatabaseMetaData
      */
-    public function getDatabaseMetaData(string $databaseName = null) : DatabaseMetaData
+    public function getDatabaseMetaData(string $databaseName = null): DatabaseMetaData
     {
         return new MySQLDatabase($this, $databaseName);
     }
@@ -297,7 +296,7 @@ class MySQLConnection implements Connection
     /**
      * @return MigrationStatementFactory
      */
-    public function getMigrationStatementFactory() : MigrationStatementFactory
+    public function getMigrationStatementFactory(): MigrationStatementFactory
     {
         return new MySQLMigrationStatementFactory();
     }
@@ -305,7 +304,7 @@ class MySQLConnection implements Connection
     /**
      * @return CreateStatementFactory
      */
-    public function getCreateStatementFactory() : CreateStatementFactory
+    public function getCreateStatementFactory(): CreateStatementFactory
     {
         return new MySQLCreateStatementFactory();
     }
@@ -313,7 +312,7 @@ class MySQLConnection implements Connection
     /**
      * @return StoredProcedureFactory
      */
-    public function getStoredProcedureFactory() : StoredProcedureFactory
+    public function getStoredProcedureFactory(): StoredProcedureFactory
     {
         return new MySQLStoredProcedureFactory();
     }

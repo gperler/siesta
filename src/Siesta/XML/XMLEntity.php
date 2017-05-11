@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -92,6 +92,11 @@ class XMLEntity
     protected $xmlCollectionManyList;
 
     /**
+     * @var XMLDynamicCollection[]
+     */
+    protected $xmlDynamicCollectionList;
+
+    /**
      * @var XMLStoredProcedure[]
      */
     protected $xmlStoredProcedureList;
@@ -121,6 +126,7 @@ class XMLEntity
         $this->xmlIndexList = [];
         $this->xmlCollectionList = [];
         $this->xmlCollectionManyList = [];
+        $this->xmlDynamicCollectionList = [];
         $this->xmlStoredProcedureList = [];
         $this->xmlValueObjectList = [];
         $this->databaseSpecific = [];
@@ -128,8 +134,6 @@ class XMLEntity
 
     /**
      * @param XMLWrite $parent
-     *
-     * @return string
      */
     public function toXML(XMLWrite $parent)
     {
@@ -212,6 +216,7 @@ class XMLEntity
         $this->readIndexDataFromXML($xmlAccess);
         $this->readCollectionFromXML($xmlAccess);
         $this->readCollectionManyFromXML($xmlAccess);
+        $this->readDynamicCollection($xmlAccess);
         $this->readStoredProcedureDataFromXML($xmlAccess);
         $this->readValueObjectFromXML($xmlAccess);
     }
@@ -307,6 +312,18 @@ class XMLEntity
     /**
      * @param XMLAccess $xmlAccess
      */
+    protected function readDynamicCollection(XMLAccess $xmlAccess)
+    {
+        foreach ($xmlAccess->getXMLChildElementListByName(XMLDynamicCollection::ELEMENT_DYNAMIC_COLLECTION_NAME) as $xmlDynamicCollectionAccess) {
+            $xmlDynamicCollection = new XMLDynamicCollection();
+            $xmlDynamicCollection->fromXML($xmlDynamicCollectionAccess);
+            $this->xmlDynamicCollectionList[] = $xmlDynamicCollection;
+        }
+    }
+
+    /**
+     * @param XMLAccess $xmlAccess
+     */
     protected function readCollectionManyFromXML(XMLAccess $xmlAccess)
     {
         foreach ($xmlAccess->getXMLChildElementListByName(XMLCollectionMany::ELEMENT_COLLECTION_MANY_NAME) as $xmlCollectionManyAccess) {
@@ -343,7 +360,7 @@ class XMLEntity
     /**
      * @return XMLAttribute[]
      */
-    public function getXMLAttributeList() : array
+    public function getXMLAttributeList(): array
     {
         return $this->xmlAttributeList;
     }
@@ -353,13 +370,15 @@ class XMLEntity
      *
      * @return XMLAccess[]
      */
-    public function getXMLChildElementListByName(string $childname) {
+    public function getXMLChildElementListByName(string $childname)
+    {
         return $this->xmlAccess->getXMLChildElementListByName($childname);
     }
+
     /**
      * @return XMLReference[]
      */
-    public function getXMLReferenceList() : array
+    public function getXMLReferenceList(): array
     {
         return $this->xmlReferenceList;
     }
@@ -367,7 +386,7 @@ class XMLEntity
     /**
      * @return XMLIndex[]
      */
-    public function getXMLIndexList() : array
+    public function getXMLIndexList(): array
     {
         return $this->xmlIndexList;
     }
@@ -375,7 +394,7 @@ class XMLEntity
     /**
      * @return XMLCollection[]
      */
-    public function getXMLCollectionList() : array
+    public function getXMLCollectionList(): array
     {
         return $this->xmlCollectionList;
     }
@@ -383,15 +402,23 @@ class XMLEntity
     /**
      * @return XMLCollectionMany[]
      */
-    public function getXMLCollectionManyList() : array
+    public function getXMLCollectionManyList(): array
     {
         return $this->xmlCollectionManyList;
     }
 
     /**
+     * @return XMLDynamicCollection[]
+     */
+    public function getXMLDynamicCollectionList(): array
+    {
+        return $this->xmlDynamicCollectionList;
+    }
+
+    /**
      * @return XMLStoredProcedure[]
      */
-    public function getXMLStoredProcedureList() : array
+    public function getXMLStoredProcedureList(): array
     {
         return $this->xmlStoredProcedureList;
     }
@@ -435,7 +462,7 @@ class XMLEntity
     /**
      * @return string[]
      */
-    public function getCustomAttributeList() : array
+    public function getCustomAttributeList(): array
     {
         return $this->xmlAccess->getAttributeList();
     }
@@ -527,7 +554,7 @@ class XMLEntity
     /**
      * @return bool
      */
-    public function getIsReplication() : bool
+    public function getIsReplication(): bool
     {
         return $this->isReplication;
     }

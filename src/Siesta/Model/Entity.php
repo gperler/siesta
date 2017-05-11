@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -58,6 +58,11 @@ class Entity
     protected $isReplication;
 
     /**
+     * @var bool
+     */
+    protected $isDynamicCollectionTarget;
+
+    /**
      * @var Constructor
      */
     protected $constructor;
@@ -93,6 +98,11 @@ class Entity
     protected $collectionManyList;
 
     /**
+     * @var DynamicCollection[]
+     */
+    protected $dynamicCollectionList;
+
+    /**
      * @var StoredProcedure[]
      */
     protected $storedProcedureList;
@@ -125,11 +135,13 @@ class Entity
     public function __construct(DataModel $dataModel)
     {
         $this->dataModel = $dataModel;
+        $this->isDynamicCollectionTarget = false;
         $this->attributeList = [];
         $this->referenceList = [];
         $this->indexList = [];
         $this->collectionList = [];
         $this->collectionManyList = [];
+        $this->dynamicCollectionList = [];
         $this->foreignCollectionManyList = [];
         $this->storedProcedureList = [];
         $this->valueObjectList = [];
@@ -138,7 +150,7 @@ class Entity
     /**
      * @return Constructor
      */
-    public function newConstructor() : Constructor
+    public function newConstructor(): Constructor
     {
         $this->constructor = new Constructor();
         return $this->constructor;
@@ -147,7 +159,7 @@ class Entity
     /**
      * @return ServiceClass
      */
-    public function newServiceClass() : ServiceClass
+    public function newServiceClass(): ServiceClass
     {
         $this->serviceClass = new ServiceClass();
         return $this->serviceClass;
@@ -156,7 +168,7 @@ class Entity
     /**
      * @return Attribute
      */
-    public function newAttribute() : Attribute
+    public function newAttribute(): Attribute
     {
         $attribute = new Attribute($this);
         $this->attributeList[] = $attribute;
@@ -166,7 +178,7 @@ class Entity
     /**
      * @return Reference
      */
-    public function newReference() : Reference
+    public function newReference(): Reference
     {
         $reference = new Reference($this->dataModel, $this);
         $this->referenceList[] = $reference;
@@ -176,7 +188,7 @@ class Entity
     /**
      * @return Index
      */
-    public function newIndex() : Index
+    public function newIndex(): Index
     {
         $index = new Index($this);
         $this->indexList[] = $index;
@@ -186,7 +198,7 @@ class Entity
     /**
      * @return Collection
      */
-    public function newCollection() : Collection
+    public function newCollection(): Collection
     {
         $collection = new Collection($this->dataModel, $this);
         $this->collectionList[] = $collection;
@@ -196,7 +208,7 @@ class Entity
     /**
      * @return CollectionMany
      */
-    public function newCollectionMany() : CollectionMany
+    public function newCollectionMany(): CollectionMany
     {
         $collectionMany = new CollectionMany($this->dataModel, $this);
         $this->collectionManyList[] = $collectionMany;
@@ -204,9 +216,19 @@ class Entity
     }
 
     /**
+     * @return DynamicCollection
+     */
+    public function newDynamicCollection(): DynamicCollection
+    {
+        $dynamicCollection = new DynamicCollection($this->dataModel, $this);
+        $this->dynamicCollectionList[] = $dynamicCollection;
+        return $dynamicCollection;
+    }
+
+    /**
      * @return StoredProcedure
      */
-    public function newStoredProcedure() : StoredProcedure
+    public function newStoredProcedure(): StoredProcedure
     {
         $storedProcedure = new StoredProcedure($this);
         $this->storedProcedureList[] = $storedProcedure;
@@ -216,7 +238,7 @@ class Entity
     /**
      * @return ValueObject
      */
-    public function newValueObject() : ValueObject
+    public function newValueObject(): ValueObject
     {
         $valueObject = new ValueObject($this);
         $this->valueObjectList[] = $valueObject;
@@ -243,17 +265,37 @@ class Entity
         foreach ($this->collectionManyList as $collectionMany) {
             $collectionMany->update();
         }
-
+        foreach ($this->dynamicCollectionList as $dynamicCollection) {
+            $dynamicCollection->update();
+        }
         foreach ($this->valueObjectList as $valueObject) {
             $valueObject->update();
         }
 
     }
 
+    public function setIsDynamicCollectionTarget()
+    {
+        if ($this->isDynamicCollectionTarget) {
+            return;
+        }
+        $this->isDynamicCollectionTarget = true;
+
+        $this->attributeList = array_merge($this->attributeList, DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this));
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsDynamicCollectionTarget(): bool
+    {
+        return $this->isDynamicCollectionTarget;
+    }
+
     /**
      * @return Attribute[]
      */
-    public function getPrimaryKeyAttributeList() : array
+    public function getPrimaryKeyAttributeList(): array
     {
         $primaryKeyAttributeList = [];
         foreach ($this->attributeList as $attribute) {
@@ -267,7 +309,7 @@ class Entity
     /**
      * @return bool
      */
-    public function hasPrimaryKey() : bool
+    public function hasPrimaryKey(): bool
     {
         foreach ($this->attributeList as $attribute) {
             if ($attribute->getIsPrimaryKey()) {
@@ -355,7 +397,7 @@ class Entity
     /**
      * @return Attribute[]
      */
-    public function getAttributeList() : array
+    public function getAttributeList(): array
     {
         return $this->attributeList;
     }
@@ -363,7 +405,7 @@ class Entity
     /**
      * @return Reference[]
      */
-    public function getReferenceList() : array
+    public function getReferenceList(): array
     {
         return $this->referenceList;
     }
@@ -371,7 +413,7 @@ class Entity
     /**
      * @return Index[]
      */
-    public function getIndexList() : array
+    public function getIndexList(): array
     {
         return $this->indexList;
     }
@@ -379,7 +421,7 @@ class Entity
     /**
      * @return Collection[]
      */
-    public function getCollectionList() : array
+    public function getCollectionList(): array
     {
         return $this->collectionList;
     }
@@ -387,15 +429,23 @@ class Entity
     /**
      * @return CollectionMany[]
      */
-    public function getCollectionManyList() : array
+    public function getCollectionManyList(): array
     {
         return $this->collectionManyList;
     }
 
     /**
+     * @return DynamicCollection[]
+     */
+    public function getDynamicCollectionList(): array
+    {
+        return $this->dynamicCollectionList;
+    }
+
+    /**
      * @return StoredProcedure[]
      */
-    public function getStoredProcedureList() : array
+    public function getStoredProcedureList(): array
     {
         return $this->storedProcedureList;
     }
@@ -524,7 +574,7 @@ class Entity
     /**
      * @return string
      */
-    public function getTargetPath() : string
+    public function getTargetPath(): string
     {
         if ($this->targetPath !== null) {
             return $this->targetPath;
@@ -607,7 +657,7 @@ class Entity
     /**
      * @return bool
      */
-    public function getIsReplication() : bool
+    public function getIsReplication(): bool
     {
         return $this->isReplication;
     }
@@ -623,7 +673,7 @@ class Entity
     /**
      * @return string
      */
-    public function getReplicationTableName() : string
+    public function getReplicationTableName(): string
     {
         return $this->getTableName() . self::REPLICATION_TABLE_SUFFIX;
     }
@@ -663,7 +713,7 @@ class Entity
     /**
      * @return string
      */
-    public function getInstantiationClassShortName() : string
+    public function getInstantiationClassShortName(): string
     {
         if ($this->constructor === null) {
             return $this->getClassShortName();
@@ -679,7 +729,7 @@ class Entity
     /**
      * @return string|null
      */
-    public function getInstantiationClassName() : string
+    public function getInstantiationClassName(): string
     {
         if ($this->constructor === null) {
             return $this->getClassName();
@@ -715,7 +765,7 @@ class Entity
     /**
      * @return string
      */
-    public function getServiceAccess() : string
+    public function getServiceAccess(): string
     {
         if ($this->serviceClass !== null && $this->serviceClass->getConstructCall() !== null) {
             return $this->serviceClass->getConstructCall();
@@ -763,7 +813,8 @@ class Entity
      *
      * @return XMLAccess[]
      */
-    public function getXMLChildElementListByName(string $childName) {
+    public function getXMLChildElementListByName(string $childName)
+    {
         return $this->xmlEntity->getXMLChildElementListByName($childName);
     }
 

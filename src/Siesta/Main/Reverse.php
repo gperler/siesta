@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Siesta\Main;
 
-use Siesta\Contract\AttributeNamingStrategy;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Database\MetaData\DatabaseMetaData;

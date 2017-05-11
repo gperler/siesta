@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+
+
+
+
+    <entity name="Document" namespace="SiestaTest\End2End\DynamicCollection\Generated" table="Document" targetPath="Generated">
+
+        <attribute name="id" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+        <attribute name="name" type="string" dbType="VARCHAR(100)"/>
+
+
+    </entity>
+
+    <entity name="OtherTable" namespace="SiestaTest\End2End\DynamicCollection\Generated" table="Report" targetPath="Generated">
+
+        <attribute name="id" type="string" dbType="VARCHAR(36)" primaryKey="true" required="true" autoValue="uuid"/>
+
+        <dynamic-collection name="documentList" foreignTable="Document"/>
+
+        <dynamic-collection name="documentList2" foreignTable="Document"/>
+
+    </entity>
+
+
+
+
+
+
+
+</entityList>

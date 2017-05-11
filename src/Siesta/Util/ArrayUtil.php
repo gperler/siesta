@@ -13,7 +13,7 @@ class ArrayUtil
      * @param array $object
      * @param string $key
      *
-     * @return string|null
+     * @return string|null|mixed
      */
     public static function getFromArray($object, $key = null)
     {

@@ -156,6 +156,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
                 return $referenceMapping->getLocalColumnName();
             }
         }
+        return '';
     }
 
     /**

@@ -17,6 +17,7 @@
         "Siesta\\GeneratorPlugin\\Entity\\ReferenceGetterSetter",
         "Siesta\\GeneratorPlugin\\Entity\\CollectorGetterSetter",
         "Siesta\\GeneratorPlugin\\Entity\\CollectionManyAccess",
+        "Siesta\\GeneratorPlugin\\Entity\\DynamicCollectionPlugin",
         "Siesta\\GeneratorPlugin\\Entity\\ArePKIdenticalPlugin",
         "Siesta\\GeneratorPlugin\\Entity\\ValueObjectPlugin"
       ],
@@ -30,6 +31,7 @@
         "Siesta\\Validator\\DefaultIndexValidator",
         "Siesta\\Validator\\DefaultCollectionValidator",
         "Siesta\\Validator\\DefaultCollectionManyValidator",
+        "Siesta\\Validator\\DefaultDynamicCollectionValidator",
         "Siesta\\Validator\\DefaultStoredProcedureValidator",
         "Siesta\\Validator\\DefaultValueObjectValidator"
       ]
@@ -43,6 +45,7 @@
         "Siesta\\GeneratorPlugin\\ServiceClass\\DeleteEntityByIdPlugin",
         "Siesta\\GeneratorPlugin\\ServiceClass\\CollectionAccessPlugin",
         "Siesta\\GeneratorPlugin\\ServiceClass\\ForeignCollectionManyPlugin",
+        "Siesta\\GeneratorPlugin\\ServiceClass\\DynamicCollectionAccessPlugin",
         "Siesta\\GeneratorPlugin\\ServiceClass\\StoredProcedurePlugin",
         "Siesta\\GeneratorPlugin\\ServiceClass\\NewInstancePlugin",
         "Siesta\\GeneratorPlugin\\ServiceClass\\ExecuteStoredProcedurePlugin",

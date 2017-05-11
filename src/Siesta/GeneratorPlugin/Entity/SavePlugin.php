@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -27,7 +27,7 @@ class SavePlugin extends BasePlugin
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         return [
             'Siesta\Database\Escaper',
@@ -72,6 +72,8 @@ class SavePlugin extends BasePlugin
         $this->generateCollectionSave($method);
 
         $this->generateCollectionManySave($method);
+
+        $this->generateDynamicCollectionSave($method);
     }
 
     /**
@@ -149,6 +151,21 @@ class SavePlugin extends BasePlugin
     }
 
     /**
+     * @param Method $method
+     */
+    protected function generateDynamicCollectionSave(Method $method)
+    {
+        foreach ($this->entity->getDynamicCollectionList() as $dynamicCollection) {
+            $method->addIfStart('$this->' . $dynamicCollection->getName() . ' !== null');
+            $method->addForeachStart('$this->' . $dynamicCollection->getName() . ' as $entity');
+            $method->addCodeLine('$entity->save($cascade, $cycleDetector, $connectionName);');
+            $method->addForeachEnd();
+            $method->addIfEnd();
+            $method->addNewLine();
+        }
+    }
+
+    /**
      *
      */
     protected function generateCreateSPCall()
@@ -187,7 +204,7 @@ class SavePlugin extends BasePlugin
     /**
      * @return string[]
      */
-    protected function getQuoteCallList(GeneratorHelper $helper) : array
+    protected function getQuoteCallList(GeneratorHelper $helper): array
     {
         $list = [];
         foreach ($this->entity->getAttributeList() as $attribute) {

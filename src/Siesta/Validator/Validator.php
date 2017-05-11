@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Validator;
 
@@ -8,6 +8,7 @@ use Siesta\Contract\AttributeValidator;
 use Siesta\Contract\CollectionManyValidator;
 use Siesta\Contract\CollectionValidator;
 use Siesta\Contract\DataModelValidator;
+use Siesta\Contract\DynamicCollectionValidator;
 use Siesta\Contract\EntityValidator;
 use Siesta\Contract\IndexValidator;
 use Siesta\Contract\ReferenceValidator;
@@ -17,6 +18,7 @@ use Siesta\Model\Attribute;
 use Siesta\Model\Collection;
 use Siesta\Model\CollectionMany;
 use Siesta\Model\DataModel;
+use Siesta\Model\DynamicCollection;
 use Siesta\Model\Entity;
 use Siesta\Model\Index;
 use Siesta\Model\Reference;
@@ -43,6 +45,8 @@ class Validator
     const COLLECTION_VALIDATOR_INTERFACE = 'Siesta\Contract\CollectionValidator';
 
     const COLLECTION_MANY_VALIDATOR_INTERFACE = 'Siesta\Contract\CollectionManyValidator';
+
+    const DYNAMIC_COLLECTION_VALIDATOR = 'Siesta\Contract\DynamicCollectionValidator';
 
     const STORED_PROCEDURE_VALIDATOR = 'Siesta\Contract\StoredProcedureValidator';
 
@@ -84,6 +88,11 @@ class Validator
     protected $collectionManyValidatorList;
 
     /**
+     * @var DynamicCollectionValidator[]
+     */
+    protected $dynamicCollectionValidatorList;
+
+    /**
      * @var StoredProcedureValidator[]
      */
     protected $storedProcedureValidatorList;
@@ -105,6 +114,7 @@ class Validator
         $this->indexValidatorList = [];
         $this->collectionValidatorList = [];
         $this->collectionManyValidatorList = [];
+        $this->dynamicCollectionValidatorList = [];
         $this->storedProcedureValidatorList = [];
         $this->valueObjectValidatorList = [];
     }
@@ -131,7 +141,6 @@ class Validator
         foreach ($dataModel->getEntityList() as $entity) {
             $this->validateEntity($dataModel, $entity, $logger);
         }
-
     }
 
     /**
@@ -163,6 +172,10 @@ class Validator
 
         foreach ($entity->getCollectionManyList() as $collectionMany) {
             $this->validateCollectionMany($dataModel, $entity, $collectionMany, $logger);
+        }
+
+        foreach($entity->getDynamicCollectionList() as $dynamicCollection) {
+            $this->validateDynamicCollection($dataModel, $entity, $dynamicCollection, $logger);
         }
 
         foreach ($entity->getStoredProcedureList() as $storedProcedure) {
@@ -242,6 +255,19 @@ class Validator
     /**
      * @param DataModel $dataModel
      * @param Entity $entity
+     * @param DynamicCollection $dynamicCollection
+     * @param ValidationLogger $logger
+     */
+    protected function validateDynamicCollection(DataModel $dataModel, Entity $entity, DynamicCollection $dynamicCollection, ValidationLogger $logger)
+    {
+        foreach ($this->dynamicCollectionValidatorList as $validator) {
+            $validator->validate($dataModel, $entity, $dynamicCollection, $logger);
+        }
+    }
+
+    /**
+     * @param DataModel $dataModel
+     * @param Entity $entity
      * @param StoredProcedure $storedProcedure
      * @param ValidationLogger $logger
      */
@@ -310,6 +336,10 @@ class Validator
 
         if ($reflect->implementsInterface(self::COLLECTION_MANY_VALIDATOR_INTERFACE)) {
             $this->collectionManyValidatorList[$validatorClassName] = $validator;
+        }
+
+        if ($reflect->implementsInterface(self::DYNAMIC_COLLECTION_VALIDATOR)) {
+            $this->dynamicCollectionValidatorList[$validatorClassName] = $validator;
         }
 
         if ($reflect->implementsInterface(self::STORED_PROCEDURE_VALIDATOR)) {

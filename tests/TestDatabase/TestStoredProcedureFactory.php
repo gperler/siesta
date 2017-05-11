@@ -72,4 +72,14 @@ class TestStoredProcedureFactory implements StoredProcedureFactory
         return new TestStoredProcedureDefinition();
     }
 
+    public function createSelectByDynamicCollectionProcedure(DataModel $dataModel, Entity $entity): StoredProcedureDefinition
+    {
+        return new TestStoredProcedureDefinition();
+    }
+
+    public function createDeleteByDynamicCollectionProcedure(DataModel $dataModel, Entity $entity): StoredProcedureDefinition
+    {
+        return new TestStoredProcedureDefinition();
+    }
+
 }

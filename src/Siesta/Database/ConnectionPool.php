@@ -72,7 +72,7 @@ class ConnectionPool
      * @return Connection
      * @throws InvalidConfigurationException
      */
-    public function getConnection($name = null)
+    public function getConnection($name = null) : Connection
     {
         if ($name === null) {
             return $this->getDefaultConnection();

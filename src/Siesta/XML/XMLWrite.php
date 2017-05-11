@@ -82,11 +82,10 @@ class XMLWrite
 
     /**
      * @param string $name
-     * @param string|null $value
      *
      * @return XMLWrite
      */
-    public function appendChild(string $name, string $value = null)
+    public function appendChild(string $name)
     {
         $element = $this->document->createElement($name);
         $this->element->appendChild($element);

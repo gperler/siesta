@@ -7,7 +7,6 @@ use Siesta\Util\ArrayUtil;
 use Siesta\Util\ClassUtil;
 use Siesta\Validator\Validator;
 
-
 class GenericGeneratorConfig
 {
     const GENERATOR_INTERFACE = 'Siesta\Contract\Generator';
@@ -188,6 +187,7 @@ class GenericGeneratorConfig
         if ($reflect->implementsInterface(Validator::DATAMODEL_VALIDATOR_INTERFACE)) {
             return;
         }
+
         if ($reflect->implementsInterface(Validator::ENTIY_VALIDATOR_INTERFACE)) {
             return;
         }
@@ -195,18 +195,27 @@ class GenericGeneratorConfig
         if ($reflect->implementsInterface(Validator::ATTRIBUTE_VALIDATOR_INTERFACE)) {
             return;
         }
+
         if ($reflect->implementsInterface(Validator::REFERENCE_VALIDATOR_INTERFACE)) {
             return;
         }
+
         if ($reflect->implementsInterface(Validator::INDEX_VALIDATOR_INTERFACE)) {
             return;
         }
+
         if ($reflect->implementsInterface(Validator::COLLECTION_VALIDATOR_INTERFACE)) {
             return;
         }
+
         if ($reflect->implementsInterface(Validator::COLLECTION_MANY_VALIDATOR_INTERFACE)) {
             return;
         }
+
+        if ($reflect->implementsInterface(Validator::DYNAMIC_COLLECTION_VALIDATOR)) {
+            return;
+        }
+
         if ($reflect->implementsInterface(Validator::STORED_PROCEDURE_VALIDATOR)) {
             return;
         }

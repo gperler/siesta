@@ -5,6 +5,7 @@ namespace Siesta\Model;
 use Siesta\XML\XMLAttribute;
 use Siesta\XML\XMLCollection;
 use Siesta\XML\XMLCollectionMany;
+use Siesta\XML\XMLDynamicCollection;
 use Siesta\XML\XMLEntity;
 use Siesta\XML\XMLIndex;
 use Siesta\XML\XMLIndexPart;
@@ -30,6 +31,7 @@ class XMLEntityReader
         $this->readIndexListFromXML($entity, $xmlEntity);
         $this->readCollectionListFromXML($entity, $xmlEntity);
         $this->readCollectionManyListFromXML($entity, $xmlEntity);
+        $this->readDynamicCollectionListFromXML($entity, $xmlEntity);
         $this->readStoredProcedureListFromXML($entity, $xmlEntity);
         $this->readValueObjectFromXML($entity, $xmlEntity);
     }
@@ -235,6 +237,28 @@ class XMLEntityReader
         $collectionMany->setName($xmlCollectionMany->getName());
         $collectionMany->setForeignTable($xmlCollectionMany->getForeignTable());
         $collectionMany->setMappingTable($xmlCollectionMany->getMappingTable());
+    }
+
+    /**
+     * @param Entity $entity
+     * @param XMLEntity $xmlEntity
+     */
+    protected function readDynamicCollectionListFromXML(Entity $entity, XMLEntity $xmlEntity)
+    {
+        foreach ($xmlEntity->getXMLDynamicCollectionList() as $xmlDynamicCollection) {
+            $dynamicCollection = $entity->newDynamicCollection();
+            $this->readDynamicCollectionFromXML($dynamicCollection, $xmlDynamicCollection);
+        }
+    }
+
+    /**
+     * @param DynamicCollection $dynamicCollection
+     * @param XMLDynamicCollection $xmlDynamicCollection
+     */
+    protected function readDynamicCollectionFromXML(DynamicCollection $dynamicCollection, XMLDynamicCollection $xmlDynamicCollection)
+    {
+        $dynamicCollection->setName($xmlDynamicCollection->getName());
+        $dynamicCollection->setForeignTable($xmlDynamicCollection->getForeignTable());
     }
 
     /**

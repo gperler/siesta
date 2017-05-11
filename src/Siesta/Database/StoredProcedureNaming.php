@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Database;
 
 use Siesta\Model\CollectionMany;
@@ -20,6 +21,10 @@ class StoredProcedureNaming
 
     const FIND_BY_COLLECTOR = "_FB_C_";
 
+    const FIND_BY_DYNAMIC_COLLECTION = "_FB_DC";
+
+    const DELETE_BY_DYNAMIC_COLLECTION = "_DB_DC";
+
     const DELETE_BY_REFERENCE = "_DB_R_";
 
     const DELETE_BY_PRIMARY_KEY = "_DB_PK";
@@ -38,7 +43,7 @@ class StoredProcedureNaming
     /**
      * @return StoredProcedureNaming
      */
-    public static function getInstance() : StoredProcedureNaming
+    public static function getInstance(): StoredProcedureNaming
     {
         if (!self::$instance) {
             self::$instance = new StoredProcedureNaming();
@@ -51,7 +56,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getSPInsertName(Entity $entity) : string
+    public static function getSPInsertName(Entity $entity): string
     {
         $name = $entity->getTableName() . self::INSERT_SUFFIX;
         return self::getInstance()->getUniqueName($name);
@@ -62,7 +67,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getUpdateName(Entity $entity) : string
+    public static function getUpdateName(Entity $entity): string
     {
         $name = $entity->getTableName() . self::UPDATE_SUFFIX;
         return self::getInstance()->getUniqueName($name);
@@ -73,7 +78,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getSelectByPrimaryKeyName(Entity $entity) : string
+    public static function getSelectByPrimaryKeyName(Entity $entity): string
     {
         $name = sprintf(self::SELECT_BY_PRIMARY_KEY, $entity->getTableName());
         return self::getInstance()->getUniqueName($name);
@@ -84,7 +89,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getSelectByPrimaryKeyDelimitName(Entity $entity) : string
+    public static function getSelectByPrimaryKeyDelimitName(Entity $entity): string
     {
         $name = $entity->getTableName() . self::SELECT_BY_PRIMARY_KEY_DELIMIT;
         return self::getInstance()->getUniqueName($name);
@@ -96,7 +101,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getSelectByReferenceName(Entity $entity, Reference $reference) : string
+    public static function getSelectByReferenceName(Entity $entity, Reference $reference): string
     {
         $name = sprintf(self::SELECT_BY_REFERENCE, $entity->getTableName(), $reference->getName());
         return self::getInstance()->getUniqueName($name);
@@ -107,7 +112,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getSelectByCollectionManyName(CollectionMany $collectionMany) : string
+    public static function getSelectByCollectionManyName(CollectionMany $collectionMany): string
     {
         $name = $collectionMany->getName();
         $foreignEntity = $collectionMany->getForeignEntity();
@@ -122,7 +127,29 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getDeleteByPrimaryKeyName(Entity $entity) : string
+    public static function getSelectByDynamicCollectionName(Entity $entity)
+    {
+        $spName = $entity->getTableName() . self::FIND_BY_DYNAMIC_COLLECTION;
+        return self::getInstance()->getUniqueName($spName);
+    }
+
+    /**
+     * @param Entity $entity
+     *
+     * @return string
+     */
+    public static function getDeleteByDynamicCollectionName(Entity $entity)
+    {
+        $spName = $entity->getTableName() . self::DELETE_BY_DYNAMIC_COLLECTION;
+        return self::getInstance()->getUniqueName($spName);
+    }
+
+    /**
+     * @param Entity $entity
+     *
+     * @return string
+     */
+    public static function getDeleteByPrimaryKeyName(Entity $entity): string
     {
         $name = $entity->getTableName() . self::DELETE_BY_PRIMARY_KEY;
         return self::getInstance()->getUniqueName($name);
@@ -134,7 +161,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getDeleteByReferenceName(Entity $entity, Reference $reference) : string
+    public static function getDeleteByReferenceName(Entity $entity, Reference $reference): string
     {
         $name = $entity->getTableName() . self::DELETE_BY_REFERENCE . $reference->getName();
         return self::getInstance()->getUniqueName($name);
@@ -145,7 +172,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getDeleteByCollectionManyName(CollectionMany $collectionMany) : string
+    public static function getDeleteByCollectionManyName(CollectionMany $collectionMany): string
     {
         $name = $collectionMany->getName();
         $foreignEntity = $collectionMany->getForeignEntity();
@@ -160,7 +187,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getDeleteCollectionManyAssignmentName(CollectionMany $collectionMany) : string
+    public static function getDeleteCollectionManyAssignmentName(CollectionMany $collectionMany): string
     {
         $name = $collectionMany->getName();
         $entity = $collectionMany->getEntity();
@@ -175,7 +202,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getCopyToMemoryTable(Entity $entity) : string
+    public static function getCopyToMemoryTable(Entity $entity): string
     {
         $name = $entity->getTableName() . self::COPY_TO_MEMORY_SUFFIX;
         return self::getInstance()->getUniqueName($name);

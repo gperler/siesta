@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Migration;
 
@@ -62,10 +62,11 @@ class StoredProcedureMigrator
         $this->statementList = [];
         $this->neededProcedureList = [];
 
-        $this->addSimpleStoredProcedurStatementList();
+        $this->addSimpleStoredProcedureStatementList();
         $this->addCustomStoredProcedureStatementList();
         $this->addCollectionStoredProcedureList();
         $this->addCollectionManyStoredProcedureList();
+        $this->addDynamicCollectionStoreProcedureList();
 
         return $this->statementList;
     }
@@ -73,7 +74,7 @@ class StoredProcedureMigrator
     /**
      *
      */
-    protected function addSimpleStoredProcedurStatementList()
+    protected function addSimpleStoredProcedureStatementList()
     {
         $selectDefinition = $this->factory->createSelectByPKStoredProcedure($this->dataModel, $this->entity);
         $this->addStatement($selectDefinition);
@@ -111,11 +112,11 @@ class StoredProcedureMigrator
             if (!$reference->doesCollectionRefersTo()) {
                 continue;
             }
-            $procedureDefiniton = $this->factory->createSelectByReferenceStoredProcedure($this->dataModel, $this->entity, $reference);
-            $this->addStatement($procedureDefiniton);
+            $procedureDefinition = $this->factory->createSelectByReferenceStoredProcedure($this->dataModel, $this->entity, $reference);
+            $this->addStatement($procedureDefinition);
 
-            $procedureDefiniton = $this->factory->createDeleteByReferenceStoredProcedure($this->dataModel, $this->entity, $reference);
-            $this->addStatement($procedureDefiniton);
+            $procedureDefinition = $this->factory->createDeleteByReferenceStoredProcedure($this->dataModel, $this->entity, $reference);
+            $this->addStatement($procedureDefinition);
         }
     }
 
@@ -136,6 +137,18 @@ class StoredProcedureMigrator
         }
     }
 
+    protected function addDynamicCollectionStoreProcedureList()
+    {
+        if (!$this->entity->getIsDynamicCollectionTarget()) {
+            return;
+        }
+        $procedureDefinition = $this->factory->createDeleteByDynamicCollectionProcedure($this->dataModel, $this->entity);
+        $this->addStatement($procedureDefinition);
+
+        $procedureDefinition = $this->factory->createSelectByDynamicCollectionProcedure($this->dataModel, $this->entity);
+        $this->addStatement($procedureDefinition);
+    }
+
     /**
      * @param StoredProcedureDefinition $definition
      */
@@ -143,10 +156,10 @@ class StoredProcedureMigrator
     {
         $this->neededProcedureList[] = $definition->getProcedureName();
 
-//        $dropDefinition = $definition->getDropProcedureStatement();
-//        if ($dropDefinition !== null) {
-//            $this->statementList[] = $dropDefinition;
-//        }
+        //        $dropDefinition = $definition->getDropProcedureStatement();
+        //        if ($dropDefinition !== null) {
+        //            $this->statementList[] = $dropDefinition;
+        //        }
 
         $createDefinition = $definition->getCreateProcedureStatement();
         if ($createDefinition !== null) {
@@ -155,7 +168,8 @@ class StoredProcedureMigrator
 
     }
 
-    protected function createDropUnusedStatementList() {
+    protected function createDropUnusedStatementList()
+    {
 
     }
 

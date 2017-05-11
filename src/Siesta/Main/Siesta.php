@@ -163,11 +163,10 @@ class Siesta implements LoggerAwareInterface
 
     /**
      * @param string $baseDir
-     * @param bool $dropUnusedTables
      *
      * @throws InvalidConfigurationException
      */
-    protected function generateClasses(string $baseDir, bool $dropUnusedTables = true)
+    protected function generateClasses(string $baseDir)
     {
         $this->setup();
         $this->prepareModel();
@@ -182,7 +181,7 @@ class Siesta implements LoggerAwareInterface
      */
     public function migrateDirect(string $baseDir, bool $dropUnusedTables = true)
     {
-        $this->generateClasses($baseDir, $dropUnusedTables);
+        $this->generateClasses($baseDir);
         $this->migrator->migrateDirect($this->dataModel, $this->getConnection(), $dropUnusedTables);
 
     }
@@ -196,7 +195,7 @@ class Siesta implements LoggerAwareInterface
      */
     public function migrateToFile(string $baseDir, File $targetFile, bool $dropUnusedTables = true)
     {
-        $this->generateClasses($baseDir, $dropUnusedTables);
+        $this->generateClasses($baseDir);
         $this->migrator->migrateToSQLFile($this->dataModel, $this->getConnection(), $targetFile, $dropUnusedTables);
     }
 

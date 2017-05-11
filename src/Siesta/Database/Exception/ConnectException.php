@@ -20,9 +20,9 @@ class ConnectException extends SQLException
     /**
      * @param ConnectionData $connectionData
      * @param string $message
-     * @param int $code
+     * @param $code
      */
-    public function __construct(ConnectionData $connectionData, string $message = "", int $code = 0)
+    public function __construct(ConnectionData $connectionData, string $message = "", $code = 0)
     {
         parent::__construct($message, $code);
         $this->connectionData = $connectionData;

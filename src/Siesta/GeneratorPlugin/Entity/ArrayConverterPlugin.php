@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -12,6 +12,7 @@ use Siesta\GeneratorPlugin\ServiceClass\NewInstancePlugin;
 use Siesta\Model\Attribute;
 use Siesta\Model\Collection;
 use Siesta\Model\DBType;
+use Siesta\Model\DynamicCollection;
 use Siesta\Model\Entity;
 use Siesta\Model\PHPType;
 use Siesta\Model\Reference;
@@ -40,7 +41,7 @@ class ArrayConverterPlugin extends BasePlugin
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         $useClassList = [
             'Siesta\Util\ArrayAccessor',
@@ -60,7 +61,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @return string[]
      */
-    public function getInterfaceList() : array
+    public function getInterfaceList(): array
     {
         return ['Siesta\Contract\ArraySerializable'];
     }
@@ -100,6 +101,8 @@ class ArrayConverterPlugin extends BasePlugin
         $this->generateReferenceListFromArray($method);
 
         $this->generateCollectionListFromArray($method);
+
+        $this->generateDynamicCollectionListFromArray($method);
 
     }
 
@@ -234,6 +237,43 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Method $method
      */
+    protected function generateDynamicCollectionListFromArray(Method $method)
+    {
+        foreach ($this->entity->getDynamicCollectionList() as $dynamicCollection) {
+            $this->generateDynamicCollectionFromArray($method, $dynamicCollection);
+        }
+    }
+
+    /**
+     * @param Method $method
+     * @param DynamicCollection $dynamicCollection
+     */
+    protected function generateDynamicCollectionFromArray(Method $method, DynamicCollection $dynamicCollection)
+    {
+        $foreignEntity = $dynamicCollection->getForeignEntity();
+        $name = $dynamicCollection->getName();
+
+        // get collection data and make sure it exists
+        $method->addCodeLine('$' . $name . 'Array = $arrayAccessor->getArray("' . $name . '");');
+        $method->addIfStart('$' . $name . 'Array !== null');
+
+        // iterate array data
+        $method->addForeachStart('$' . $name . 'Array as $entityArray');
+
+        // instantiate new foreign entity initialize it and add it to the collection
+        $method->addCodeLine('$' . $name . ' = ' . $foreignEntity->getServiceAccess() . '->' . NewInstancePlugin::METHOD_NEW_INSTANCE . '();');
+        $method->addCodeLine('$' . $name . '->' . self::METHOD_FROM_ARRAY . '($entityArray);');
+        $method->addCodeLine('$this->' . CollectorGetterSetter::METHOD_ADD_TO_PREFIX . $dynamicCollection->getMethodName() . '($' . $name . ');');
+
+        $method->addForeachEnd();
+
+        $method->addIfEnd();
+
+    }
+
+    /**
+     * @param Method $method
+     */
     protected function addCheckExisting(Method $method)
     {
         if (!$this->entity->hasPrimaryKey()) {
@@ -267,6 +307,8 @@ class ArrayConverterPlugin extends BasePlugin
 
         $this->generateCollectionListToArray($method);
 
+        $this->generateDynamicCollectionListToArray($method);
+
         $method->addCodeLine('return $result;');
     }
 
@@ -296,7 +338,7 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addCodeLine('$result = [');
         $method->incrementIndent();
         foreach ($this->entity->getAttributeList() as $index => $attribute) {
-            $line = $this->generateAttributeToArray($method, $attribute);
+            $line = $this->generateAttributeToArray($attribute);
             if (($index + 1) !== sizeof($this->entity->getAttributeList())) {
                 $line .= ",";
             }
@@ -312,7 +354,7 @@ class ArrayConverterPlugin extends BasePlugin
      *
      * @return string
      */
-    protected function generateAttributeToArray(Method $method, Attribute $attribute)
+    protected function generateAttributeToArray(Attribute $attribute)
     {
         $name = $attribute->getPhpName();
         $type = $attribute->getPhpType();
@@ -321,8 +363,6 @@ class ArrayConverterPlugin extends BasePlugin
         if ($attribute->getIsObject() && $attribute->implementsArraySerializable()) {
             return '"' . $name . '" => ($this->' . $methodName . '() !== null) ? $this->' . $methodName . '()->toArray() : null';
         }
-
-
 
         if ($type === PHPType::SIESTA_DATE_TIME) {
             if ($attribute->getDbType() === DBType::DATE) {
@@ -380,6 +420,32 @@ class ArrayConverterPlugin extends BasePlugin
     protected function generateCollectionToArray(Method $method, Collection $collection)
     {
         $name = $collection->getName();
+        $method->addCodeLine('$result["' . $name . '"] = [];');
+
+        $method->addIfStart('$this->' . $name . ' !== null');
+        $method->addForeachStart('$this->' . $name . ' as $entity');
+        $method->addCodeLine('$result["' . $name . '"][] = $entity->' . self::METHOD_TO_ARRAY . '($cycleDetector);');
+        $method->addForeachEnd();
+        $method->addIfEnd();
+    }
+
+    /**
+     * @param Method $method
+     */
+    protected function generateDynamicCollectionListToArray(Method $method)
+    {
+        foreach ($this->entity->getDynamicCollectionList() as $dynamicCollection) {
+            $this->generateDynamicCollectionToArray($method, $dynamicCollection);
+        }
+    }
+
+    /**
+     * @param Method $method
+     * @param DynamicCollection $dynamicCollection
+     */
+    protected function generateDynamicCollectionToArray(Method $method, DynamicCollection $dynamicCollection)
+    {
+        $name = $dynamicCollection->getName();
         $method->addCodeLine('$result["' . $name . '"] = [];');
 
         $method->addIfStart('$this->' . $name . ' !== null');

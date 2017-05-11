@@ -111,7 +111,7 @@ class DefaultReferenceValidator implements ReferenceValidator
 
     /**
      * @param string $text
-     * @param string $code
+     * @param int $code
      */
     protected function error(string $text, int $code)
     {

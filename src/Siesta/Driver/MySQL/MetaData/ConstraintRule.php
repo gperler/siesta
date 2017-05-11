@@ -48,6 +48,7 @@ class ConstraintRule
                 return $schema;
             }
         }
+        return null;
     }
 
 }

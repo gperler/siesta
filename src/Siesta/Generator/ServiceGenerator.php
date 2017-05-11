@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Generator;
 
-use Codeception\Util\Debug;
 use Nitria\ClassGenerator;
 use Siesta\Model\Entity;
 
