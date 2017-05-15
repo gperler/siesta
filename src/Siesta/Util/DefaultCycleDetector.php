@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Util;
 
@@ -12,7 +12,7 @@ class DefaultCycleDetector implements CycleDetector
 {
 
     /**
-     * @var array
+     * @var boolean[]
      */
     private $visitedList;
 
@@ -32,32 +32,16 @@ class DefaultCycleDetector implements CycleDetector
      */
     public function canProceed($tableName, $visitor)
     {
-        $entityList = ArrayUtil::getFromArray($this->visitedList, $tableName);
+        $hash = spl_object_hash($visitor);
 
-        if ($entityList === null) {
-            $this->visitedList [$tableName] = [];
-            $this->addVisit($tableName, $visitor);
+        $visited = ArrayUtil::getFromArray($this->visitedList, $hash);
+
+        if ($visited === null) {
+            $this->visitedList[$hash] = true;
             return true;
         }
 
-        foreach ($entityList as $entity) {
-            if ($visitor->arePrimaryKeyIdentical($entity)) {
-                return false;
-            }
-        }
-
-        $this->addVisit($tableName, $visitor);
-
-        return true;
-    }
-
-    /**
-     * @param $technicalName
-     * @param $visitor
-     */
-    private function addVisit($technicalName, $visitor)
-    {
-        $this->visitedList [$technicalName] [] = $visitor;
+        return false;
     }
 
 }
