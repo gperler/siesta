@@ -32,7 +32,7 @@ class SavePlugin extends BasePlugin
         return [
             'Siesta\Database\Escaper',
             'Siesta\Database\ConnectionFactory',
-            'Siesta\Util\DefaultCycleDetector'
+            'Siesta\Util\SaveCycleDetector'
         ];
     }
 
@@ -82,7 +82,7 @@ class SavePlugin extends BasePlugin
     protected function generateCycleDetection(Method $method)
     {
         $method->addIfStart('$cycleDetector === null');
-        $method->addCodeLine('$cycleDetector = new DefaultCycleDetector();');
+        $method->addCodeLine('$cycleDetector = new SaveCycleDetector();');
         $method->addIfEnd();
         $method->addNewLine();
 

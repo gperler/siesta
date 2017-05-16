@@ -8,7 +8,7 @@ use Siesta\Contract\CycleDetector;
 /**
  * @author Gregor Müller
  */
-class DefaultCycleDetector implements CycleDetector
+class ArrayCycleDetector implements CycleDetector
 {
 
     /**

@@ -45,7 +45,7 @@ class ArrayConverterPlugin extends BasePlugin
     {
         $useClassList = [
             'Siesta\Util\ArrayAccessor',
-            'Siesta\Util\DefaultCycleDetector'
+            'Siesta\Util\ArrayCycleDetector'
 
         ];
         foreach ($entity->getReferenceList() as $reference) {
@@ -318,7 +318,7 @@ class ArrayConverterPlugin extends BasePlugin
     protected function generateCycleDetection(Method $method)
     {
         $method->addIfStart('$cycleDetector === null');
-        $method->addCodeLine('$cycleDetector = new DefaultCycleDetector();');
+        $method->addCodeLine('$cycleDetector = new ArrayCycleDetector();');
         $method->addIfEnd();
         $method->addNewLine();
 
