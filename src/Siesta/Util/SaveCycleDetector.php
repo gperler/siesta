@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siesta\Util;
 
+use Siesta\Contract\Comparable;
 use Siesta\Contract\CycleDetector;
 
 class SaveCycleDetector implements CycleDetector
@@ -27,7 +28,7 @@ class SaveCycleDetector implements CycleDetector
      *
      * @return bool
      */
-    public function canProceed($tableName, $visitor)
+    public function canProceed(string $tableName, Comparable $visitor) : bool
     {
         $entityList = ArrayUtil::getFromArray($this->visitedList, $tableName);
 

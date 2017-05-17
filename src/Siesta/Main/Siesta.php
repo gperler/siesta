@@ -1,12 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Main;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Siesta\Config\GenericConfigLoader;
+use Siesta\Contract\DataModelUpdater;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Exception\InvalidConfigurationException;
@@ -66,6 +67,11 @@ class Siesta implements LoggerAwareInterface
     protected $connection;
 
     /**
+     * @var DataModelUpdater
+     */
+    protected $dataModelUpdater;
+
+    /**
      * Siesta constructor.
      */
     public function __construct()
@@ -83,6 +89,8 @@ class Siesta implements LoggerAwareInterface
         $this->mainGenerator = new MainGenerator();
 
         $this->migrator = new Migrator();
+
+        $this->dataModelUpdater = new NoUpdate();
     }
 
     /**
@@ -156,7 +164,11 @@ class Siesta implements LoggerAwareInterface
     {
         $xmlEntityList = $this->directoryScanner->getXmlEntityList();
         $this->dataModel->addXMLEntityList($xmlEntityList);
+
+        $this->dataModelUpdater->preUpdateModel($this->dataModel);
         $this->dataModel->update();
+        $this->dataModelUpdater->postUpdateModel($this->dataModel);
+
         $this->validator->validateDataModel($this->dataModel, $this->validationLogger);
         $this->checkValidationError();
     }
@@ -232,5 +244,13 @@ class Siesta implements LoggerAwareInterface
     public function setGenericConfigFileName(string $fileName = null)
     {
         $this->genericConfigLoader->setConfigFileName($fileName);
+    }
+
+    /**
+     * @param DataModelUpdater $dataModelUpdater
+     */
+    public function setDataModelUpdater(DataModelUpdater $dataModelUpdater)
+    {
+        $this->dataModelUpdater = $dataModelUpdater;
     }
 }

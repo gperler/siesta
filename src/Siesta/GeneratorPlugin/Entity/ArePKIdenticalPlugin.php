@@ -12,6 +12,16 @@ class ArePKIdenticalPlugin extends BasePlugin
 {
     const METHOD_ARE_PK_IDENTICAL = "arePrimaryKeyIdentical";
 
+
+    /**
+     * @return string[]
+     */
+    public function getInterfaceList() : array
+    {
+        return ['Siesta\Contract\Comparable'];
+    }
+
+
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
@@ -31,14 +41,18 @@ class ArePKIdenticalPlugin extends BasePlugin
         $method = $this->classGenerator->addPublicMethod(self::METHOD_ARE_PK_IDENTICAL);
 
         $className = $this->entity->getClassName();
-        $method->addParameter($className, 'entity', 'null');
+        $method->addParameter('Siesta\Contract\Comparable', 'entity', 'null');
         $method->setReturnType('bool', false);
 
         $method->addIfStart('$entity === null');
         $method->addCodeLine('return false;');
         $method->addIfEnd();
 
+        $method->addIfStart('$entity instanceof self');
         $method->addCodeLine('return ' . $this->getCompareExpression() . ';');
+        $method->addIfEnd();
+
+        $method->addCodeLine('return false;');
     }
 
     /**
