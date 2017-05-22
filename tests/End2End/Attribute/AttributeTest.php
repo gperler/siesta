@@ -89,10 +89,10 @@ class AttributeTest extends End2EndTest
         $this->assertNotNull($time);
         $this->assertSame("10:11:12", $time->getSQLTime());
 
-        $object = $resultSet->getObject("object");
+        $object = $resultSet->getArray("object");
         $this->assertNotNull($object);
-        $this->assertSame(77, $object->getX());
-        $this->assertSame(19, $object->getY());
+        $this->assertSame(77, $object["x"]);
+        $this->assertSame(19, $object["y"]);
 
         $array = $resultSet->getArray("array");
         $this->assertNotNull($array);

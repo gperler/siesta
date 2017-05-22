@@ -147,7 +147,7 @@ class GeneratorHelper
             $name = $attribute->getPhpName();
             $variableName = '$' . $name;
             $source = ($fromMember) ? '$this->' . $name : $variableName;
-            $quoteCall = $this->generateQuoteCall($attribute->getPhpType(), $attribute->getDbType(), $source, $attribute->getIsObject());
+            $quoteCall = $this->generateQuoteCall($attribute->getPhpType(), $attribute->getDbType(), $source, $attribute->getIsObject(), null, $attribute->implementsArraySerializable());
             $this->method->addCodeLine($variableName . ' = ' . $quoteCall . ';');
         }
     }
@@ -161,8 +161,12 @@ class GeneratorHelper
      *
      * @return string
      */
-    public function generateQuoteCall(string $phpType, string $dbType = null, string $variableName, $isObject = false, int $maxLength = null) : string
+    public function generateQuoteCall(string $phpType, string $dbType = null, string $variableName, $isObject = false, int $maxLength = null, bool $arraySerializable = false) : string
     {
+        if ($isObject && $arraySerializable) {
+            return 'Escaper::quoteArraySerializable($connection, ' . $variableName . ')';
+        }
+
         if ($isObject) {
             return 'Escaper::quoteObject($connection,' . $variableName . ')';
         }

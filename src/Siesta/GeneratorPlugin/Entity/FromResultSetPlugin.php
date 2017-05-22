@@ -77,6 +77,20 @@ class FromResultSetPlugin extends BasePlugin
             if ($attribute->getIsTransient()) {
                 continue;
             }
+            if ($attribute->implementsArraySerializable() && $attribute->getIsObject()) {
+
+                $type = $attribute->getPhpType();
+
+                $method->addCodeLine('$' .$attribute->getPhpName() . 'Array = $resultSet->getArray("' . $attribute->getDBName() . '");' );
+                $method->addIfStart('$' .$attribute->getPhpName() . "Array !== null");
+                $method->addCodeLine('$this->' . $attribute->getPhpName() . '= new ' . $type . '();');
+                $method->addCodeLine('$this->' . $attribute->getPhpName() . '->fromArray($' . $attribute->getPhpName() . 'Array );');
+
+                $method->addIfEnd();
+                continue;
+            }
+
+
             $assignment = $this->getAssignment($attribute);
             $method->addCodeLine($assignment);
         }
@@ -90,9 +104,10 @@ class FromResultSetPlugin extends BasePlugin
     protected function getAssignment(Attribute $attribute) : string
     {
         $method = ArrayUtil::getFromArray(self::RESULT_SET_ACCESS_MAPPING, $attribute->getPhpType());
-        if ($method === null) {
-            $method = "getObject";
+        if ($method === null && $attribute->implementsArraySerializable()) {
+            $method = $attribute->implementsArraySerializable() ? "getArray" : "getObject";
         }
+
         return '$this->' . $attribute->getPhpName() . ' = $resultSet->' . $method . '("' . $attribute->getDBName() . '");';
     }
 

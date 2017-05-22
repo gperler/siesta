@@ -12,7 +12,7 @@ class CustomStoredProcedureTest extends End2EndTest
 
     public function setUp()
     {
-        $this->deleteGenDir(__DIR__ . "/Generated");
+        //$this->deleteGenDir(__DIR__ . "/Generated");
         $this->resetSchema();
         $schemaFile = new File(__DIR__ . "/schema/custom.stored.procedure.test.xml");
         $this->generateSchema($schemaFile, __DIR__, true);
@@ -93,7 +93,8 @@ class CustomStoredProcedureTest extends End2EndTest
             $stringValue = $resultSet->getStringValue(E2ECustomStoredProcedure::COLUMN_STRING);
             $dateValue = $resultSet->getDateTime(E2ECustomStoredProcedure::COLUMN_DATETIME);
             $arrayValue = $resultSet->getArray(E2ECustomStoredProcedure::COLUMN_OBJECT);
-            $objectValue = $resultSet->getObject(E2ECustomStoredProcedure::COLUMN_OBJECT);
+
+            $objectValue = $resultSet->getArray(E2ECustomStoredProcedure::COLUMN_OBJECT);
         }
         $resultSet->close();
 
