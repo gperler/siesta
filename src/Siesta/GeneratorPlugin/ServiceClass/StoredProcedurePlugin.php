@@ -102,7 +102,8 @@ class StoredProcedurePlugin extends BasePlugin
     private function addParameter(Method $method, StoredProcedure $storedProcedure)
     {
         foreach ($storedProcedure->getParameterList() as $parameter) {
-            $method->addParameter($parameter->getPhpType(), $parameter->getName(), 'null');
+            $type = $parameter->getPhpType() === PHPType::SIESTA_DATE_TIME ? PHPType::SIESTA_DATE_TIME_CLASS_NAME : $parameter->getPhpType();
+            $method->addParameter($type, $parameter->getName(), 'null');
         }
         $helper = new GeneratorHelper($method);
         $helper->addConnectionNameParameter();

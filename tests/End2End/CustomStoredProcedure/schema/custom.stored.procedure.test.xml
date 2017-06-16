@@ -30,6 +30,7 @@
         <storedProcedure name="updateTable" modifies="true" resultType="none">
             <parameter name="stringParam" spName="P_STRING_PARAM" type="string" dbType="VARCHAR(100)"/>
             <parameter name="intParam" spName="P_INT_PARAM" type="int" dbType="INT"/>
+            <parameter name="dateParam" spName="P_DATE" type="SiestaDateTime" dbType="DATETIME"/>
             <sql>
                UPDATE E2ECustomStoredProcedure SET `string` = P_STRING_PARAM, `int` = P_INT_PARAM;
             </sql>
