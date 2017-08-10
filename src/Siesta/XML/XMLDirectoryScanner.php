@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -21,6 +21,11 @@ class XMLDirectoryScanner
     protected $xmlEntityList;
 
     /**
+     * @var XMLEntityExtension[]
+     */
+    protected $xmlEntityExtensionList;
+
+    /**
      * DirectoryScanner constructor.
      *
      * @param ValidationLogger $logger
@@ -29,6 +34,7 @@ class XMLDirectoryScanner
     {
         $this->validationLogger = $logger;
         $this->xmlEntityList = [];
+        $this->xmlEntityExtensionList = [];
     }
 
     /**
@@ -46,7 +52,7 @@ class XMLDirectoryScanner
 
     /**
      * @param string $fileExtension
-     * @param null $baseDir
+     * @param string $baseDir
      */
     public function addFileExtension(string $fileExtension, string $baseDir = null)
     {
@@ -71,9 +77,8 @@ class XMLDirectoryScanner
     protected function processFile(File $file)
     {
         $xmlReader = new XMLReader($file);
-        $xmlEntityList = $xmlReader->getEntityList();
-
-        $this->xmlEntityList = array_merge($this->xmlEntityList, $xmlEntityList);
+        $this->xmlEntityList = array_merge($this->xmlEntityList, $xmlReader->getEntityList());
+        $this->xmlEntityExtensionList = array_merge($this->xmlEntityExtensionList, $xmlReader->getEntityExtensionList());
     }
 
     /**
@@ -81,7 +86,44 @@ class XMLDirectoryScanner
      */
     public function getXmlEntityList()
     {
+        $this->mergeExtensionToEntity();
         return $this->xmlEntityList;
     }
-    
+
+    /**
+     *
+     */
+    protected function mergeExtensionToEntity()
+    {
+        foreach ($this->xmlEntityExtensionList as $xmlEntityExtension) {
+            $tableName = $xmlEntityExtension->getTableName();
+            if (!$tableName === null) {
+                $this->validationLogger->warn("found extension without tablename", 0);
+                continue;
+            }
+
+            $xmlEntity = $this->getXMLEntityByTableName($xmlEntityExtension->getTableName());
+            if ($xmlEntity === null) {
+                $this->validationLogger->warn("Extension for " . $tableName . " no entity found.", 0);
+                continue;
+            }
+            $xmlEntity->addExtension($xmlEntityExtension);
+        }
+    }
+
+    /**
+     * @param string $tableName
+     *
+     * @return null|XMLEntity
+     */
+    protected function getXMLEntityByTableName(string $tableName)
+    {
+        foreach ($this->xmlEntityList as $xmlEntity) {
+            if ($xmlEntity->getTableName() === $tableName) {
+                return $xmlEntity;
+            }
+        }
+        return null;
+
+    }
 }

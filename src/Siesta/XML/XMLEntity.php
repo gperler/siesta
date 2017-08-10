@@ -222,6 +222,21 @@ class XMLEntity
     }
 
     /**
+     * @param XMLEntityExtension $xmlEntityExtension
+     */
+    public function addExtension(XMLEntityExtension $xmlEntityExtension)
+    {
+        $this->xmlAttributeList = array_merge($this->xmlAttributeList, $xmlEntityExtension->getXMLAttributeList());
+        $this->xmlReferenceList = array_merge($this->xmlReferenceList, $xmlEntityExtension->getXMLReferenceList());
+        $this->xmlIndexList = array_merge($this->xmlIndexList, $xmlEntityExtension->getXMLIndexList());
+        $this->xmlCollectionList = array_merge($this->xmlCollectionList, $xmlEntityExtension->getXMLCollectionList());
+        $this->xmlCollectionManyList = array_merge($this->xmlCollectionManyList, $xmlEntityExtension->getXMLCollectionManyList());
+        $this->xmlDynamicCollectionList = array_merge($this->xmlDynamicCollectionList, $xmlEntityExtension->getXMLDynamicCollectionList());
+        $this->xmlStoredProcedureList = array_merge($this->xmlStoredProcedureList, $xmlEntityExtension->getXMLStoredProcedureList());
+        $this->xmlValueObjectList = array_merge($this->xmlValueObjectList, $xmlEntityExtension->getXMLValueObjectList());
+    }
+
+    /**
      * @param XMLAccess $xmlAccess
      */
     protected function readEntityDataFromXML(XMLAccess $xmlAccess)
