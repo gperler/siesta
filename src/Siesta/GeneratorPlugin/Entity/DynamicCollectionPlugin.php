@@ -15,10 +15,31 @@ use Siesta\Model\PHPType;
 
 class DynamicCollectionPlugin extends BasePlugin
 {
+
+
     public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
         $this->setup($entity, $classGenerator);
         $this->generateDynamicCollectionList();
+        $this->addUseStatement();
+    }
+
+    private function addUseStatement()
+    {
+        $contructor = $this->entity->getConstructor();
+        if ($contructor !== null) {
+            $factoryClassName = $contructor->getConstructFactoryClassName();
+            if ($factoryClassName !== null) {
+                $this->classGenerator->addUsedClassName($factoryClassName);
+            }
+        }
+        $serviceClass = $this->entity->getServiceClass();
+        if ($serviceClass !== null) {
+            $factoryClassName = $serviceClass->getConstructFactoryClassName();
+            if ($factoryClassName !== null) {
+                $this->classGenerator->addUsedClassName($factoryClassName);
+            }
+        }
     }
 
     protected function generateDynamicCollectionList()
