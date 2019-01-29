@@ -7,7 +7,7 @@ use Siesta\Exception\SiestaException;
 /**
  * @author Gregor Müller
  */
-class SQLException extends \Exception implements SiestaException
+class SQLException extends \RuntimeException implements SiestaException
 {
 
     /**

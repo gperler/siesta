@@ -7,7 +7,7 @@ namespace Siesta\Exception;
 /**
  * @author Gregor Müller
  */
-class InvalidConfigurationException extends \Exception implements SiestaException
+class InvalidConfigurationException extends \RuntimeException implements SiestaException
 {
 
 }

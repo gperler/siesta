@@ -8,7 +8,7 @@ use Siesta\Util\ObjectUtil;
 /**
  * @author Gregor Müller
  */
-class XMLNotValidException extends \Exception implements SiestaException
+class XMLNotValidException extends \RuntimeException implements SiestaException
 {
 
     const ERROR_MESSAGE = "%s Code : %s Level : %s Column: %s";

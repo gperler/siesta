@@ -156,11 +156,10 @@ class StoredProcedureMigrator
     {
         $this->neededProcedureList[] = $definition->getProcedureName();
 
-        //        $dropDefinition = $definition->getDropProcedureStatement();
-        //        if ($dropDefinition !== null) {
-        //            $this->statementList[] = $dropDefinition;
-        //        }
-
+        $dropDefinition = $definition->getDropProcedureStatement();
+        if ($dropDefinition !== null) {
+            $this->statementList[] = $dropDefinition;
+        }
         $createDefinition = $definition->getCreateProcedureStatement();
         if ($createDefinition !== null) {
             $this->statementList[] = $createDefinition;
