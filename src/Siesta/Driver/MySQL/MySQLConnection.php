@@ -16,6 +16,7 @@ use Siesta\Database\Exception\UniqueConstraintViolationException;
 use Siesta\Database\MetaData\DatabaseMetaData;
 use Siesta\Database\MigrationStatementFactory;
 use Siesta\Database\ResultSet;
+use Siesta\Database\StoredProcedureDefinition;
 use Siesta\Database\StoredProcedureFactory;
 use Siesta\Driver\MySQL\MetaData\MySQLDatabase;
 
@@ -316,6 +317,5 @@ class MySQLConnection implements Connection
     {
         return new MySQLStoredProcedureFactory();
     }
-
 }
 

@@ -19,15 +19,23 @@ class StoredProcedureMigrator
      */
     protected $factory;
 
+
+    /**
+     * @var StoredProcedureDefinition[]
+     */
+    private $activeStoredProcedureList;
+
+    /**
+     * @var StoredProcedureDefinition[]
+     */
+    protected $neededProcedureList;
+
     /**
      * @var string[]
      */
     protected $statementList;
 
-    /**
-     * @var string[]
-     */
-    protected $neededProcedureList;
+
 
     /**
      * @var DataModel
@@ -41,12 +49,13 @@ class StoredProcedureMigrator
 
     /**
      * StoredProcedureMigrator constructor.
-     *
      * @param StoredProcedureFactory $factory
+     * @param StoredProcedureDefinition[] $activeStoredProcedureList
      */
-    public function __construct(StoredProcedureFactory $factory)
+    public function __construct(StoredProcedureFactory $factory, array $activeStoredProcedureList)
     {
         $this->factory = $factory;
+        $this->activeStoredProcedureList = $activeStoredProcedureList;
     }
 
     /**
@@ -154,7 +163,7 @@ class StoredProcedureMigrator
      */
     protected function addStatement(StoredProcedureDefinition $definition)
     {
-        $this->neededProcedureList[] = $definition->getProcedureName();
+        $this->neededProcedureList[] = $definition;
 
         $dropDefinition = $definition->getDropProcedureStatement();
         if ($dropDefinition !== null) {
@@ -164,12 +173,50 @@ class StoredProcedureMigrator
         if ($createDefinition !== null) {
             $this->statementList[] = $createDefinition;
         }
-
     }
 
-    protected function createDropUnusedStatementList()
+
+    public function getStoredProcedureMigrationList(): array
     {
+        $statementList = [];
+        $processedProcedureList = [];
 
+        foreach ($this->neededProcedureList as $neededStoreProcedure) {
+            $activeStoreProcedure = $this->getActiveStoredProcedureByName($neededStoreProcedure->getProcedureName());
+
+            // does not exist > create
+            if ($activeStoreProcedure === null) {
+                $statementList[] = $neededStoreProcedure->getCreateProcedureStatement();
+                $processedProcedureList[] = $neededStoreProcedure->getProcedureName();
+                continue;
+            }
+
+            // does exist but differs > drop and create
+            if ($activeStoreProcedure->getCreateProcedureStatement() !== $neededStoreProcedure->getCreateProcedureStatement()) {
+                $statementList[] = $activeStoreProcedure->getDropProcedureStatement();
+                $statementList[] = $neededStoreProcedure->getCreateProcedureStatement();
+                $processedProcedureList[] = $neededStoreProcedure->getProcedureName();
+            }
+        }
+
+        foreach($this->activeStoredProcedureList as $activeStoredProcedure) {
+            if (!in_array($activeStoreProcedure->getProcedureName(), $processedProcedureList)) {
+                $statementList[] = $activeStoreProcedure->getDropProcedureStatement();
+            }
+        }
+        return $statementList;
     }
+
+
+    private function getActiveStoredProcedureByName(string $procedureName): StoredProcedureDefinition
+    {
+        foreach ($this->activeStoredProcedureList as $activeStoredProcedure) {
+            if ($activeStoredProcedure->getProcedureName() === $procedureName) {
+                return $activeStoredProcedure;
+            }
+        }
+        return null;
+    }
+
 
 }

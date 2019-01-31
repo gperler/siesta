@@ -1,11 +1,13 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\MetaData;
 
 use Siesta\Database\Connection;
 use Siesta\Database\CreateStatementFactory;
 use Siesta\Database\MetaData\DatabaseMetaData;
 use Siesta\Database\MetaData\TableMetaData;
+use Siesta\Model\StoredProcedure;
 
 /**
  * @author Gregor Müller
@@ -57,7 +59,7 @@ class MySQLDatabase implements DatabaseMetaData
     /**
      * @return array
      */
-    public function getTableList() : array
+    public function getTableList(): array
     {
         return $this->tableList;
     }
@@ -96,7 +98,7 @@ class MySQLDatabase implements DatabaseMetaData
     /**
      * @return TableDTO[]
      */
-    protected function getTableDTO() : array
+    protected function getTableDTO(): array
     {
         $tableDTOList = [];
 
@@ -111,17 +113,22 @@ class MySQLDatabase implements DatabaseMetaData
     }
 
     /**
-     * @return string[]
+     * @return StoredProcedure[]
      */
-    public function getStoredProcedureList() : array
+    public function getStoredProcedureList(): array
     {
-        $spNameList = [];
+        $spList = [];
         $sql = sprintf(self::SQL_GET_SP_LIST, $this->connection->getDatabase());
         $resultSet = $this->connection->query($sql);
         while ($resultSet->hasNext()) {
-            $spNameList[] = $resultSet->getStringValue(self::ROUTINE_NAME);
+            $procedureName = $resultSet->getStringValue(self::ROUTINE_NAME);
+            $spList[] = new MySQLStoredProcedure($procedureName);
         }
-        return $spNameList;
+        foreach ($spList as $sp) {
+            $sp->load($this->connection);
+        }
+
+        return $spList;
     }
 
 }

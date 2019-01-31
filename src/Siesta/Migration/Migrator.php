@@ -82,8 +82,8 @@ class Migrator implements LoggerAwareInterface
     {
         $this->setup($dataModel, $connection);
         $dropping = $dropUnusedTables ? " dropping unused tables " : " not dropping unused tables";
-        $datbase = $this->connection->getDatabase();
-        $this->logger->info("Direct migration of database " . $datbase . $dropping);
+        $database = $this->connection->getDatabase();
+        $this->logger->info("Direct migration of database " . $database . $dropping);
 
         $this->databaseMigrator->createAlterStatementList($dropUnusedTables);
 

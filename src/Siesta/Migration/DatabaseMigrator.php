@@ -40,7 +40,7 @@ class DatabaseMigrator
     /**
      * @var StoredProcedureFactory
      */
-    protected $storedProcedureFactoy;
+    protected $storedProcedureFactory;
 
     /**
      * @var StoredProcedureMigrator
@@ -84,7 +84,9 @@ class DatabaseMigrator
         $this->databaseMetaData = $connection->getDatabaseMetaData();
 
         $this->storedProcedureFactory = $connection->getStoredProcedureFactory();
-        $this->storedProcedureMigrator = new StoredProcedureMigrator($this->storedProcedureFactory);
+
+        $activeStoredProcedureList = $this->databaseMetaData->getStoredProcedureList();
+        $this->storedProcedureMigrator = new StoredProcedureMigrator($this->storedProcedureFactory, $activeStoredProcedureList);
 
         $this->migrationStatementFactory = $connection->getMigrationStatementFactory();
 
