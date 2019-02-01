@@ -7,6 +7,7 @@ namespace Siesta\Driver\MySQL\MetaData;
 use Siesta\Database\Connection;
 use Siesta\Database\StoredProcedureDefinition;
 use Siesta\Driver\MySQL\MySQLStoredProcedureFactory;
+use Siesta\Util\ArrayUtil;
 
 class MySQLStoredProcedure implements StoredProcedureDefinition
 {
@@ -48,10 +49,16 @@ class MySQLStoredProcedure implements StoredProcedureDefinition
         $resultSet = $connection->query($query);
 
         while ($resultSet->hasNext()) {
-            $this->createProcedureStatement = $resultSet->getStringValue("Create Procedure");
+            $this->createProcedureStatement = $resultSet->getStringValue("Create Procedure") . ';';
         }
-
         $resultSet->close();
+
+        preg_match("/CREATE(.*?) PROCEDURE.*?/", $this->createProcedureStatement, $matches);
+
+        $match = ArrayUtil::getFromArray($matches, 1);
+        if ($match) {
+            $this->createProcedureStatement = str_replace($match, "", $this->createProcedureStatement);
+        }
     }
 
     /**

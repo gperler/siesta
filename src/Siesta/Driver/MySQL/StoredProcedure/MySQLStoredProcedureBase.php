@@ -15,7 +15,7 @@ use Siesta\Model\StoredProcedureParameter;
 abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
 {
 
-    const CREATE_PROCEDURE = "CREATE PROCEDURE %s %s %s BEGIN %s END;";
+    const CREATE_PROCEDURE = "CREATE PROCEDURE %s%s %s BEGIN %s END;";
 
     const READS_DATA = "NOT DETERMINISTIC READS SQL DATA SQL SECURITY INVOKER";
 

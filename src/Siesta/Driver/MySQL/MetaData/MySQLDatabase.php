@@ -87,10 +87,6 @@ class MySQLDatabase implements DatabaseMetaData
         $tableDTOList = $this->getTableDTO();
 
         foreach ($tableDTOList as $tableDTO) {
-            // do not care about sequencer table
-            if ($tableDTO->name === CreateStatementFactory::SEQUENCER_TABLE_NAME) {
-                continue;
-            }
             $this->tableList[] = new MySQLTable($this->connection, $tableDTO);
         }
     }

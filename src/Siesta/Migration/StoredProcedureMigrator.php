@@ -182,11 +182,13 @@ class StoredProcedureMigrator
             }
 
             // does exist but differs > drop and create
-            if ($activeStoreProcedure->getCreateProcedureStatement() !== $neededStoreProcedure->getCreateProcedureStatement()) {
+            if (!$this->areStoredProceduresIdentical($activeStoreProcedure, $neededStoreProcedure)) {
                 $this->addStatement($neededStoreProcedure->getDropProcedureStatement());
                 $this->addStatement($neededStoreProcedure->getCreateProcedureStatement());
-                $processedProcedureList[] = $neededStoreProcedure->getProcedureName();
             }
+
+            $processedProcedureList[] = $neededStoreProcedure->getProcedureName();
+
         }
 
         foreach ($this->activeStoredProcedureList as $activeStoredProcedure) {
@@ -196,6 +198,21 @@ class StoredProcedureMigrator
         }
         return $this->statementList;
     }
+
+    /**
+     * @param StoredProcedureDefinition $active
+     * @param StoredProcedureDefinition $needed
+     * @return bool
+     */
+    private function areStoredProceduresIdentical(StoredProcedureDefinition $active, StoredProcedureDefinition $needed)
+    {
+        $activeCreate = preg_replace('/\s+/', ' ', $active->getCreateProcedureStatement());
+        $neededCreate = preg_replace('/\s+/', ' ', $needed->getCreateProcedureStatement());
+        $neededCreate = preg_replace('/NOT DETERMINISTIC /', '', $neededCreate);
+        return $activeCreate === $neededCreate;
+    }
+
+
 
     /**
      * @param string|null $statement
