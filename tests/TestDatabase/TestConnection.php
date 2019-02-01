@@ -101,9 +101,9 @@ class TestConnection implements Connection
     }
 
     /**
-     * @param string $databaseName here interpreted as file with model
-     *
+     * @param string|null $databaseName
      * @return DatabaseMetaData
+     * @throws \SiestaTest\TestUtil\TestException
      */
     public function getDatabaseMetaData(string $databaseName = null): DatabaseMetaData
     {

@@ -49,7 +49,7 @@ class ReverseTest extends End2EndTest
 
         $dbMigrator = new DatabaseMigrator($datamodel, $connection);
 
-        $this->assertSame(0, sizeof($dbMigrator->getAlterStatementList()));
+        $this->assertSame(1, sizeof($dbMigrator->getAlterStatementList()));
 
     }
 

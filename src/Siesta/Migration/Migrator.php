@@ -132,11 +132,10 @@ class Migrator implements LoggerAwareInterface
 
         $this->databaseMigrator->createAlterStatementList($dropUnusedTables);
 
-        $dropProcedureStatementList = $this->databaseMigrator->getDropStoredProcedureStatementList();
         $alterStatementList = $this->databaseMigrator->getAlterStatementList();
         $statementList = $this->databaseMigrator->getCreateStoredProcedureStatementList();
 
-        $statementList = array_merge($dropProcedureStatementList, $alterStatementList, $statementList);
+        $statementList = array_merge($alterStatementList, $statementList);
 
         $targetFile->putContents(implode(";" . PHP_EOL, $statementList));
     }

@@ -78,4 +78,19 @@ class MySQLStoredProcedure implements StoredProcedureDefinition
         return $this->procedureName;
     }
 
+    /**
+     * @param string $createProcedureStatement
+     */
+    public function setCreateProcedureStatement(string $createProcedureStatement)
+    {
+        $this->createProcedureStatement = $createProcedureStatement;
+    }
+
+    /**
+     * @param string $dropProcedureStatement
+     */
+    public function setDropProcedureStatement(string $dropProcedureStatement)
+    {
+        $this->dropProcedureStatement = $dropProcedureStatement;
+    }
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<entityList>
+
+
+    <entity name="migrateEntity1" namespace="migrateEntity1" table="migrateEntity1">
+        <attribute name="1-primary1" type="int" dbType="INT" primaryKey="true" required="true"/>
+        <attribute name="toAdd" type="int" dbType="INT"/>
+
+        <reference name="referenceAdd" foreignTable="migrateEntity2" onDelete="set null" onUpdate="set null">
+            <referenceMapping localAttribute="toAdd" foreignAttribute="primary1"/>
+        </reference>
+    </entity>
+
+    <entity name="migrateEntity2" namespace="migrateEntity2" table="migrateEntity2">
+        <attribute name="2-primary1" type="int" dbType="INT" primaryKey="true" required="true"/>
+        <attribute name="2-primary2" type="int" dbType="INT" primaryKey="true" required="true"/>
+    </entity>
+
+
+</entityList>
+

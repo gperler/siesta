@@ -1,8 +1,9 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Migration;
 
+use Codeception\Util\Debug;
 use Siesta\Database\Connection;
 use Siesta\Database\CreateStatementFactory;
 use Siesta\Database\MetaData\DatabaseMetaData;
@@ -61,16 +62,6 @@ class DatabaseMigrator
     /**
      * @var string[]
      */
-    protected $dropStoredProcedureStatementList;
-
-    /**
-     * @var string[]
-     */
-    protected $createStoredProcedureStatementList;
-
-    /**
-     * @var string[]
-     */
     protected $alterStatementList;
 
     /**
@@ -81,33 +72,54 @@ class DatabaseMigrator
     {
         $this->dataModel = $dataModel;
         $this->connection = $connection;
-        $this->databaseMetaData = $connection->getDatabaseMetaData();
-
-        $this->storedProcedureFactory = $connection->getStoredProcedureFactory();
-
-        $activeStoredProcedureList = $this->databaseMetaData->getStoredProcedureList();
-        $this->storedProcedureMigrator = new StoredProcedureMigrator($this->storedProcedureFactory, $activeStoredProcedureList);
-
-        $this->migrationStatementFactory = $connection->getMigrationStatementFactory();
-
-        $this->neededTableList = [CreateStatementFactory::SEQUENCER_TABLE_NAME];
-        $this->dropStoredProcedureStatementList = [];
         $this->alterStatementList = [];
-        $this->createStoredProcedureStatementList = [];
+        $this->databaseMetaData = $connection->getDatabaseMetaData();
+        $this->storedProcedureFactory = $connection->getStoredProcedureFactory();
+        $this->migrationStatementFactory = $connection->getMigrationStatementFactory();
+        $this->databaseTableList = $this->databaseMetaData->getTableList();
+
+        $this->createStoredProcedureMigrator();
+        $this->checkSequencerTable();
+    }
+
+    /**
+     *
+     */
+    private function checkSequencerTable()
+    {
+        $this->neededTableList = [CreateStatementFactory::SEQUENCER_TABLE_NAME];
+        $tableMetaData = $this->getTableMetaDataByName(CreateStatementFactory::SEQUENCER_TABLE_NAME);
+
+        if ($tableMetaData !== null) {
+            return;
+        }
+
+        $createStatementFactory = $this->connection->getCreateStatementFactory();
+
+
+        $sequencerTableCreateStatement = $createStatementFactory->buildSequencerTable();
+
+        $this->addAlterStatementList([$sequencerTableCreateStatement]);
+    }
+
+    /**
+     *
+     */
+    private function createStoredProcedureMigrator()
+    {
+        $activeStoredProcedureList = $this->databaseMetaData->getStoredProcedureList();
+        $createStatementFactory = $this->connection->getCreateStatementFactory();
+        $sequencerStoredProcedure = $createStatementFactory->buildSequencerStoredProcedure();
+        $this->storedProcedureMigrator = new StoredProcedureMigrator($this->storedProcedureFactory, $activeStoredProcedureList, $sequencerStoredProcedure);
 
     }
+
 
     /**
      * @param bool $dropUnusedTables
      */
     public function createAlterStatementList(bool $dropUnusedTables)
     {
-        $this->createDropAllProcedureStatementList();
-
-        $factory = $this->connection->getCreateStatementFactory();
-        $this->addStatementList($factory->buildSequencer());
-
-        $this->databaseTableList = $this->databaseMetaData->getTableList();
 
         foreach ($this->dataModel->getEntityList() as $entity) {
             $this->migrateEntity($entity);
@@ -118,16 +130,6 @@ class DatabaseMigrator
         }
     }
 
-    /**
-     *
-     */
-    private function createDropAllProcedureStatementList()
-    {
-        $storedProcedureNameList = $this->databaseMetaData->getStoredProcedureList();
-        foreach ($storedProcedureNameList as $storedProcedureName) {
-            $this->dropStoredProcedureStatementList[] = $this->storedProcedureFactory->createDropStatementForProcedureName($storedProcedureName);
-        }
-    }
 
     /**
      * @param Entity $entity
@@ -140,7 +142,6 @@ class DatabaseMigrator
 
         // if database entity does not exist, create it
         if ($tableMetaData === null) {
-
             $this->setupEntityInDatabase($entity);
             return;
         }
@@ -154,8 +155,7 @@ class DatabaseMigrator
         $this->checkReplication($entity);
 
         // create stored procedures
-        $statementList = $this->storedProcedureMigrator->getMigrateProcedureStatementList($this->dataModel, $entity);
-        $this->addStatementList($statementList);
+        $this->storedProcedureMigrator->createProcedureStatementList($this->dataModel, $entity);
     }
 
     /**
@@ -207,8 +207,7 @@ class DatabaseMigrator
             $this->addAlterStatementList($factory->buildCreateDelimitTable($entity));
         }
 
-        $spMigrationList = $this->storedProcedureMigrator->getMigrateProcedureStatementList($this->dataModel, $entity);
-        $this->addStatementList($spMigrationList);
+        $this->storedProcedureMigrator->createProcedureStatementList($this->dataModel, $entity);
     }
 
     /**
@@ -219,20 +218,33 @@ class DatabaseMigrator
     private function getTableMetaDataByEntity(Entity $entity)
     {
         $tableName = $entity->getTableName();
+        $tableMetaData = $this->getTableMetaDataByName($tableName);
+        if ($tableMetaData === null) {
+            return null;
+        }
 
+        $this->neededTableList[] = $tableName;
+
+        if ($entity->getIsDelimit()) {
+            $this->neededTableList[] = $entity->getDelimitTableName();
+        }
+
+        if ($entity->getIsReplication()) {
+            $this->neededTableList[] = $entity->getReplicationTableName();
+        }
+
+        return $tableMetaData;
+    }
+
+
+    /**
+     * @param string $tableName
+     * @return null|TableMetaData
+     */
+    private function getTableMetaDataByName(string $tableName)
+    {
         foreach ($this->databaseTableList as $tableMetaData) {
             if ($tableMetaData->getName() === $tableName) {
-
-                $this->neededTableList[] = $tableName;
-
-                if ($entity->getIsDelimit()) {
-                    $this->neededTableList[] = $entity->getDelimitTableName();
-                }
-
-                if ($entity->getIsReplication()) {
-                    $this->neededTableList[] = $entity->getReplicationTableName();
-                }
-
                 return $tableMetaData;
             }
         }
@@ -259,29 +271,11 @@ class DatabaseMigrator
     }
 
     /**
-     * @param array $statementList
-     *
-     * @return void
-     */
-    private function addStatementList(array $statementList)
-    {
-        $this->createStoredProcedureStatementList = array_merge($this->createStoredProcedureStatementList, $statementList);
-    }
-
-    /**
      * @param array $alterStatementList
      */
     private function addAlterStatementList(array $alterStatementList)
     {
         $this->alterStatementList = array_merge($this->alterStatementList, $alterStatementList);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getDropStoredProcedureStatementList()
-    {
-        return $this->dropStoredProcedureStatementList;
     }
 
     /**
@@ -299,9 +293,8 @@ class DatabaseMigrator
      */
     public function getCreateStoredProcedureStatementList()
     {
-        return $this->createStoredProcedureStatementList;
+        return $this->storedProcedureMigrator->getStoredProcedureMigrationList();
     }
-
 
 
 }
