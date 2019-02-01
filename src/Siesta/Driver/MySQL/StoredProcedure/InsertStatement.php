@@ -45,7 +45,7 @@ class InsertStatement
         $this->columnList = [];
         $this->valueList = [];
         $this->parameterList = [];
-        $this->extractColumAndValueList();
+        $this->extractColumnAndValueList();
     }
 
     /**
@@ -111,7 +111,7 @@ class InsertStatement
     /**
      * @return void
      */
-    private function extractColumAndValueList()
+    private function extractColumnAndValueList()
     {
 
         foreach ($this->entity->getAttributeList() as $attribute) {

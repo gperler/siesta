@@ -19,12 +19,12 @@ class TestStoredProcedureFactory implements StoredProcedureFactory
 
     public function createCustomStoredProcedure(DataModel $dataModel, Entity $entity, StoredProcedure $storedProcedure) : StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return new TestStoredProcedureDefinition("");
     }
 
     public function createInsertStoredProcedure(DataModel $dataModel, Entity $entity) : StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return new TestStoredProcedureDefinition("drop_insert " . $entity->getTableName(), "create_insert " . $entity->getTableName());
     }
 
     public function createUpdateStoredProcedure(DataModel $dataModel, Entity $entity) : StoredProcedureDefinition

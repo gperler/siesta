@@ -90,17 +90,13 @@ class Migrator implements LoggerAwareInterface
         $this->connection->disableForeignKeyChecks();
 
         try {
-            $this->logger->warning("Altering datamodel");
-
             foreach ($this->databaseMigrator->getAlterStatementList() as $statement) {
                 $this->logger->warning($statement);
                 $this->connection->query($statement);
             }
 
-            $this->logger->warning("Altering stored procedures");
-
             foreach ($this->databaseMigrator->getAlterStoredProcedureStatementList() as $statement) {
-                $this->logger->debug($statement);
+                $this->logger->warning($statement);
                 $this->connection->query($statement);
             }
 
