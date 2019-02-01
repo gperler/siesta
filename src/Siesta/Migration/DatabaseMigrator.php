@@ -291,7 +291,7 @@ class DatabaseMigrator
      * will contain stored procedure create and drop statements as well as sequencer
      * @return String[]
      */
-    public function getCreateStoredProcedureStatementList()
+    public function getAlterStoredProcedureStatementList()
     {
         return $this->storedProcedureMigrator->getStoredProcedureMigrationList();
     }

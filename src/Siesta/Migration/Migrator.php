@@ -90,18 +90,12 @@ class Migrator implements LoggerAwareInterface
         $this->connection->disableForeignKeyChecks();
 
         try {
-
-//            foreach ($this->databaseMigrator->getDropStoredProcedureStatementList() as $statement) {
-//                $this->logger->debug("Dropping " . $statement);
-//                $this->connection->execute($statement);
-//            }
-
             foreach ($this->databaseMigrator->getAlterStatementList() as $statement) {
                 $this->logger->warning("Altering " . $statement);
                 $this->connection->query($statement);
             }
 
-            foreach ($this->databaseMigrator->getCreateStoredProcedureStatementList() as $statement) {
+            foreach ($this->databaseMigrator->getAlterStoredProcedureStatementList() as $statement) {
                 $this->logger->debug("Executing " . $statement);
                 $this->connection->query($statement);
             }
@@ -133,7 +127,7 @@ class Migrator implements LoggerAwareInterface
         $this->databaseMigrator->createAlterStatementList($dropUnusedTables);
 
         $alterStatementList = $this->databaseMigrator->getAlterStatementList();
-        $statementList = $this->databaseMigrator->getCreateStoredProcedureStatementList();
+        $statementList = $this->databaseMigrator->getAlterStoredProcedureStatementList();
 
         $statementList = array_merge($alterStatementList, $statementList);
 

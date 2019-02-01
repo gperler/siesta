@@ -25,7 +25,7 @@ class MigrateStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $migrator = new DatabaseMigrator($datamodel, $testConnection);
         $migrator->createAlterStatementList(true);
 
-        $alterStatementList = $migrator->getCreateStoredProcedureStatementList();
+        $alterStatementList = $migrator->getAlterStoredProcedureStatementList();
 
         Debug::debug(json_encode($alterStatementList, JSON_PRETTY_PRINT));
 
