@@ -200,6 +200,13 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($resultSet->hasNext());
         $resultSet->close();
 
+
+
+        $resultSet = $connection->query("CALL `$spName` (7)");
+        $this->assertTrue($resultSet->hasNext());
+        $this->assertFalse($resultSet->hasNext());
+        $resultSet->close();
+
     }
 
 }
