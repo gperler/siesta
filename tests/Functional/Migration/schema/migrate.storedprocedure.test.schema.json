@@ -59,5 +59,42 @@
       "constraintList": [
       ]
     }
+  ],
+  "storedProcedureList" : [
+    {
+      "name" : "insert_do_not_change_entity",
+      "createStatement" : "create insert_do_not_change_entity",
+      "dropStatement" : "drop insert_do_not_change_entity"
+    },
+    {
+      "name": "update_do_not_change_entity",
+      "createStatement" : "create update_do_not_change_entity",
+      "dropStatement" : "drop update_do_not_change_entity"
+    },
+    {
+      "name" : "custom_do_not_change_entity_do_not_change_entity",
+      "createStatement" : "create custom_do_not_change_entity_do_not_change_entity",
+      "dropStatement" : "drop custom_do_not_change_entity_do_not_change_entity"
+    },
+    {
+      "name": "insert_change_entity",
+      "createStatement" : "create insert_change_entity_CHANGE",
+      "dropStatement" : "drop insert_change_entity"
+    },
+    {
+      "name": "update_change_entity",
+      "createStatement" : "create update_change_entity_CHANGE",
+      "dropStatement" : "drop update_change_entity"
+    },
+    {
+      "name" : "custom_change_entity_change_entity",
+      "createStatement" : "create custom_change_entity_change_entity_CHANGE",
+      "dropStatement" : "drop custom_change_entity_change_entity"
+    },
+    {
+      "name": "not_needed_anymore",
+      "createStatement" : "create not_needed_anymore",
+      "dropStatement" : "drop not_needed_anymore"
+    }
   ]
 }

@@ -84,7 +84,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $connection->execute($create);
 
         // invoke the sp
-        $connection->executeStoredProcedure("CALL `Artist_I`(7, 'test', '2006-04-29 21:00:00', 123, 12.4);");
+        $connection->executeStoredProcedure("CALL `Artist_insert`(7, 'test', '2006-04-29 21:00:00', 123, 12.4);");
 
         $resultSet = $connection->query("SELECT * FROM Artist");
         $this->assertTrue($resultSet->hasNext());
@@ -120,7 +120,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $connection->execute($drop);
         $connection->execute($create);
 
-        $connection->executeStoredProcedure("CALL `Artist_U` (7, 'test-u', '2016-04-29 21:00:00', 42, 19.08);");
+        $connection->executeStoredProcedure("CALL `Artist_update` (7, 'test-u', '2016-04-29 21:00:00', 42, 19.08);");
 
         $resultSet = $connection->query("SELECT * FROM Artist");
         $this->assertTrue($resultSet->hasNext());
@@ -156,7 +156,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $connection->execute($drop);
         $connection->execute($create);
 
-        $connection->executeStoredProcedure("CALL `Artist_DB_PK` (7);");
+        $connection->executeStoredProcedure("CALL `Artist_delete_by_pk` (7);");
 
         $resultSet = $connection->query("SELECT * FROM Artist");
         $this->assertFalse($resultSet->hasNext());

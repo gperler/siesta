@@ -2,7 +2,13 @@
 <entityList>
 
 
-    <entity name="migrateEntity1" namespace="migrateEntity1" table="migrateEntity1">
+    <entity name="do_not_change_entity" namespace="migrateEntity1" table="do_not_change_entity">
+
+        <storedProcedure name="do_not_change_entity" modifies="false" resultType="list">
+            <sql>
+            </sql>
+        </storedProcedure>
+
         <attribute name="1-primary1" type="int" dbType="INT" primaryKey="true" required="true"/>
         <attribute name="toAdd" type="int" dbType="INT"/>
 
@@ -11,7 +17,19 @@
         </reference>
     </entity>
 
-    <entity name="migrateEntity2" namespace="migrateEntity2" table="migrateEntity2">
+    <entity name="new_entity" namespace="migrateEntity2" table="new_entity">
+        <attribute name="2-primary1" type="int" dbType="INT" primaryKey="true" required="true"/>
+        <attribute name="2-primary2" type="int" dbType="INT" primaryKey="true" required="true"/>
+    </entity>
+
+
+    <entity name="change_entity" namespace="migrateEntity2" table="change_entity">
+
+        <storedProcedure name="change_entity" modifies="false" resultType="list">
+            <sql>
+            </sql>
+        </storedProcedure>
+
         <attribute name="2-primary1" type="int" dbType="INT" primaryKey="true" required="true"/>
         <attribute name="2-primary2" type="int" dbType="INT" primaryKey="true" required="true"/>
     </entity>

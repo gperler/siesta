@@ -11,6 +11,9 @@ use SiestaTest\TestDatabase\MetaData\TestDatabaseMetaData;
 class TestDatabaseTest extends \PHPUnit_Framework_TestCase
 {
 
+    /**
+     * @throws \SiestaTest\TestUtil\TestException
+     */
     public function testDatabase()
     {
         $testDatabase = new TestDatabaseMetaData(new File(__DIR__ . "/schema/database.test.schema.json"));
@@ -35,6 +38,18 @@ class TestDatabaseTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(true, $column->getIsRequired());
         $this->assertSame(true, $column->getIsPrimaryKey());
 
+
+        //
+        //
+
+        $spList = $testDatabase->getStoredProcedureList();
+        $this->assertNotNull($spList);
+        $this->assertCount(2, $spList);
+
+        $sp1 = $spList[0];
+        $this->assertSame("sp1", $sp1->getProcedureName());
+        $this->assertSame("create sp1", $sp1->getCreateProcedureStatement());
+        $this->assertSame("drop sp1", $sp1->getDropProcedureStatement());
 
 
     }

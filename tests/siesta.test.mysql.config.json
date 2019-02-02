@@ -2,12 +2,12 @@
   "version": "1.0",
   "connection": [
     {
-      "name": "esiesta",
+      "name": "siesta_test",
       "driver": "Siesta\\Driver\\MySQL\\MySQLDriver",
       "isDefault": true,
       "host": "127.0.0.1",
       "port": 3306,
-      "database": "siesta2_test",
+      "database": "siesta_test",
       "user": "root",
       "password": "",
       "charset": "utf8",
