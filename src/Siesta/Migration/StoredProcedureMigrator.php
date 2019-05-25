@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Siesta\Migration;
 
+use Codeception\Util\Debug;
 use Siesta\Database\StoredProcedureDefinition;
 use Siesta\Database\StoredProcedureFactory;
 use Siesta\Model\DataModel;
@@ -177,12 +178,16 @@ class StoredProcedureMigrator
             // does not exist > create
             if ($activeStoreProcedure === null) {
                 $this->addStatement($neededStoreProcedure->getCreateProcedureStatement());
+                Debug::debug("Create");
+                Debug::debug($neededStoreProcedure);
                 $processedProcedureList[] = $neededStoreProcedure->getProcedureName();
                 continue;
             }
 
             // does exist but differs > drop and create
             if (!$this->areStoredProceduresIdentical($activeStoreProcedure, $neededStoreProcedure)) {
+                Debug::debug("change");
+                Debug::debug($neededStoreProcedure);
                 $this->addStatement($neededStoreProcedure->getDropProcedureStatement());
                 $this->addStatement($neededStoreProcedure->getCreateProcedureStatement());
             }
@@ -193,6 +198,8 @@ class StoredProcedureMigrator
 
         foreach ($this->activeStoredProcedureList as $activeStoredProcedure) {
             if (!in_array($activeStoredProcedure->getProcedureName(), $processedProcedureList)) {
+                Debug::debug("drop");
+                Debug::debug($activeStoredProcedure);
                 $this->addStatement($activeStoredProcedure->getDropProcedureStatement());
             }
         }
@@ -206,12 +213,8 @@ class StoredProcedureMigrator
      */
     private function areStoredProceduresIdentical(StoredProcedureDefinition $active, StoredProcedureDefinition $needed)
     {
-        $activeCreate = preg_replace('/\s+/', ' ', $active->getCreateProcedureStatement());
-        $neededCreate = preg_replace('/\s+/', ' ', $needed->getCreateProcedureStatement());
-        $neededCreate = preg_replace('/NOT DETERMINISTIC /', '', $neededCreate);
-        return $activeCreate === $neededCreate;
+        return $active->getCreateProcedureStatement() === $needed->getCreateProcedureStatement();
     }
-
 
 
     /**

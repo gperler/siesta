@@ -49,52 +49,52 @@ class TestStoredProcedureFactory implements StoredProcedureFactory
 
     public function createDeleteByPKStoredProcedure(DataModel $dataModel, Entity $entity): StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return $this->createStoredProcedureDefinition($entity, "delete");
     }
 
     public function createSelectByPKStoredProcedure(DataModel $dataModel, Entity $entity): StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return $this->createStoredProcedureDefinition($entity, "select");
     }
 
     public function createCopyToReplicationTableStoredProcedure(DataModel $dataModel, Entity $entity): StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return $this->createStoredProcedureDefinition($entity, "create_copy_to_replication");
     }
 
     public function createSelectByReferenceStoredProcedure(DataModel $dataModel, Entity $entity, Reference $reference): StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return $this->createStoredProcedureDefinition($entity, "select_by_reference");
     }
 
     public function createDeleteByReferenceStoredProcedure(DataModel $dataModel, Entity $entity, Reference $reference): StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return $this->createStoredProcedureDefinition($entity, "delete_by_reference");
     }
 
     public function createSelectByCollectionManyStoredProcedure(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany): StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return $this->createStoredProcedureDefinition($entity, "select_by_collection_many");
     }
 
     public function createDeleteByCollectionManyStoredProcedure(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany): StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return $this->createStoredProcedureDefinition($entity, "delete_by_collection_many");
     }
 
     public function createDeleteCollectionManyAssignmentStoredProcedure(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany): StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return $this->createStoredProcedureDefinition($entity, "delete_by_collection_many");
     }
 
     public function createSelectByDynamicCollectionProcedure(DataModel $dataModel, Entity $entity): StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return $this->createStoredProcedureDefinition($entity, "select_by_dynamic_collection");
     }
 
     public function createDeleteByDynamicCollectionProcedure(DataModel $dataModel, Entity $entity): StoredProcedureDefinition
     {
-        return new TestStoredProcedureDefinition();
+        return $this->createStoredProcedureDefinition($entity, "delete_by_dynamic_collection");
     }
 
 }

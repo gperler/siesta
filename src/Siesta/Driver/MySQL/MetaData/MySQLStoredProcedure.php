@@ -74,7 +74,7 @@ class MySQLStoredProcedure implements StoredProcedureDefinition
      */
     public function getCreateProcedureStatement()
     {
-        return $this->createProcedureStatement;
+        return preg_replace('/\s+/', ' ', $this->createProcedureStatement);
     }
 
     /**

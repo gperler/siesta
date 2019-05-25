@@ -2,6 +2,7 @@
 
 namespace SiestaTest\Functional\Migration;
 
+use Codeception\Util\Debug;
 use Siesta\Migration\DatabaseMigrator;
 use Siesta\Util\File;
 use SiestaTest\TestDatabase\TestConnection;
@@ -25,6 +26,8 @@ class MigrateStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $migrator->createAlterStatementList(true);
 
         $alterStatementList = $migrator->getAlterStoredProcedureStatementList();
+
+        Debug::debug($alterStatementList);
 
         $this->assertCount(9, $alterStatementList);
 

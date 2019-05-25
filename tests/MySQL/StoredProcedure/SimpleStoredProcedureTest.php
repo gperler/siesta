@@ -61,7 +61,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $connection->execute($drop);
         $connection->execute($create);
 
-        $this->assertSame("CREATE PROCEDURE `Artist_customStoredProcedure`(IN P_PARAM1 VARCHAR(100), IN P_PARAM2 DATETIME) NOT DETERMINISTIC READS SQL DATA SQL SECURITY INVOKER BEGIN SELECT * FROM `Artist` WHERE column1 = P_PARAM1 AND column2 = P_PARAM2; END;", $create);
+        $this->assertSame("CREATE PROCEDURE `Artist_customStoredProcedure`(IN P_PARAM1 VARCHAR(100), IN P_PARAM2 DATETIME) READS SQL DATA SQL SECURITY INVOKER BEGIN SELECT * FROM `Artist` WHERE column1 = P_PARAM1 AND column2 = P_PARAM2; END;", $create);
         $this->assertSame("DROP PROCEDURE IF EXISTS `Artist_customStoredProcedure`", $drop);
 
     }

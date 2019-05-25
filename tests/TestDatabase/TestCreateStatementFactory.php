@@ -22,7 +22,7 @@ class TestCreateStatementFactory implements CreateStatementFactory
 
     public function buildSequencerStoredProcedure(): StoredProcedureDefinition
     {
-        return new MySQLStoredProcedure("test");
+        return new TestStoredProcedureDefinition("sequencer", "drop sequencer", "create sequencer");
     }
 
     public function buildSequencerTable(): string

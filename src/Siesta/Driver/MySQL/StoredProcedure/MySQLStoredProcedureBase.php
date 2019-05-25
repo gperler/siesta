@@ -17,9 +17,11 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
 
     const CREATE_PROCEDURE = "CREATE PROCEDURE %s%s %s BEGIN %s END;";
 
-    const READS_DATA = "NOT DETERMINISTIC READS SQL DATA SQL SECURITY INVOKER";
+    const READS_DATA = "READS SQL DATA SQL SECURITY INVOKER";
 
-    const MODIFIES_DATA = "NOT DETERMINISTIC MODIFIES SQL DATA SQL SECURITY INVOKER";
+    const MODIFIES_DATA = "MODIFIES SQL DATA SQL SECURITY INVOKER";
+
+    const DETERMINISTIC = "DETERMINISTIC ";
 
     const SELECT_WHERE = "SELECT * FROM %s WHERE %s;";
 
@@ -48,6 +50,11 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
      * @var bool
      */
     protected $modifies;
+
+    /**
+     * @var bool
+     */
+    protected $deterministic;
 
     /**
      * @var string
@@ -88,6 +95,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
     public function __construct(DataModel $dataModel, Entity $entity)
     {
         $this->entity = $entity;
+        $this->deterministic = false;
         $this->isReplication = $entity->getIsReplication();
     }
 
@@ -106,13 +114,14 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
      */
     public function getCreateProcedureStatement()
     {
-        $config = ($this->modifies) ? self::MODIFIES_DATA : self::READS_DATA;
+        $config = ($this->deterministic) ? self::DETERMINISTIC : '';
+        $config .= ($this->modifies) ? self::MODIFIES_DATA : self::READS_DATA;
 
         $name = $this->quote($this->name);
 
         $definition = sprintf(self::CREATE_PROCEDURE, $name, $this->signature, $config, $this->statement);
 
-        return $definition;
+        return preg_replace('/\s+/', ' ', $definition);
     }
 
     /**
