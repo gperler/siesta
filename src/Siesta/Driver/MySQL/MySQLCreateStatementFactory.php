@@ -1,8 +1,11 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL;
 
 use Siesta\Database\CreateStatementFactory;
+use Siesta\Database\StoredProcedureDefinition;
+use Siesta\Driver\MySQL\MetaData\MySQLStoredProcedure;
 use Siesta\Model\Entity;
 use Siesta\Util\File;
 
@@ -17,16 +20,28 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
     const DROP_SEQUENCER_SP = "DROP PROCEDURE IF EXISTS %s";
 
     /**
-     * @return string[]
+     * @return StoredProcedureDefinition
      */
-    public function buildSequencer() : array
+    public function buildSequencerStoredProcedure(): StoredProcedureDefinition
     {
         $sequencerFile = new File(__DIR__ . "/Sequencer/Sequencer.sql");
-        $statementList = [];
-        $statementList[] = sprintf(self::CREATE_SEQUENCE_TABLE, CreateStatementFactory::SEQUENCER_TABLE_NAME);
-        $statementList[] = sprintf(self::DROP_SEQUENCER_SP, CreateStatementFactory::SEQUENCER_SP_NAME);
-        $statementList[] = preg_replace('/\s\s+/', ' ', $sequencerFile->getContents());
-        return $statementList;
+
+        $storedProcedure = new MySQLStoredProcedure(CreateStatementFactory::SEQUENCER_SP_NAME);
+
+        $createStatement = $sequencerFile->getContents();
+        $storedProcedure->setCreateProcedureStatement($createStatement);
+
+        $dropStatement = sprintf(self::DROP_SEQUENCER_SP, CreateStatementFactory::SEQUENCER_SP_NAME);
+        $storedProcedure->setDropProcedureStatement($dropStatement);
+        return $storedProcedure;
+    }
+
+    /**
+     * @return string
+     */
+    public function buildSequencerTable(): string
+    {
+        return sprintf(self::CREATE_SEQUENCE_TABLE, CreateStatementFactory::SEQUENCER_TABLE_NAME);
     }
 
     /**
@@ -34,7 +49,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
      *
      * @return string[]
      */
-    public function buildCreateTable(Entity $entity) : array
+    public function buildCreateTable(Entity $entity): array
     {
         $statementList = [];
         $tableBuilder = new MySQLTableCreator($entity);
@@ -47,7 +62,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
      *
      * @return string[]
      */
-    public function buildCreateDelimitTable(Entity $entity) : array
+    public function buildCreateDelimitTable(Entity $entity): array
     {
         $statementList = [];
         $tableBuilder = new MySQLTableCreator($entity);

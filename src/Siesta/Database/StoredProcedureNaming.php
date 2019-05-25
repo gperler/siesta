@@ -13,7 +13,7 @@ use Siesta\Model\Reference;
 class StoredProcedureNaming
 {
 
-    const SELECT_BY_PRIMARY_KEY = "%s_SB_PK";
+    const SELECT_BY_PRIMARY_KEY = "%s_select_by_pk";
 
     const SELECT_BY_PRIMARY_KEY_DELIMIT = "_SB_PK_D";
 
@@ -25,15 +25,15 @@ class StoredProcedureNaming
 
     const DELETE_BY_DYNAMIC_COLLECTION = "_DB_DC";
 
-    const DELETE_BY_REFERENCE = "_DB_R_";
+    const DELETE_BY_REFERENCE = "_delete_by_reference_";
 
-    const DELETE_BY_PRIMARY_KEY = "_DB_PK";
+    const DELETE_BY_PRIMARY_KEY = "_delete_by_pk";
 
-    const UPDATE_SUFFIX = "_U";
+    const UPDATE_SUFFIX = "_update";
 
-    const INSERT_SUFFIX = "_I";
+    const INSERT_SUFFIX = "_insert";
 
-    const COPY_TO_MEMORY_SUFFIX = "_COPY";
+    const COPY_TO_MEMORY_SUFFIX = "_copy";
 
     /**
      * @var StoredProcedureNaming

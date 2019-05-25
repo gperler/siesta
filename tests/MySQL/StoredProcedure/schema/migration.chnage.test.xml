@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+
+    <entity name="Artist" namespace="Artist" table="Artist">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true"/>
+        <attribute name="column1" type="string" dbType="VARCHAR(101)"/>
+        <attribute name="column2" type="SiestaDateTime" dbType="DATETIME"/>
+
+        <storedProcedure name="customStoredProcedure" modifies="false" resultType="single">
+            <parameter name="param1" spName="P_PARAM1" type="string" dbType="VARCHAR(100)"/>
+            <parameter name="param2" spName="P_PARAM2" type="SiestaDateTime" dbType="DATETIME"/>
+            <sql>
+                SELECT * FROM !TABLE! WHERE column1 = P_PARAM1 AND column2 = P_PARAM2;
+            </sql>
+        </storedProcedure>
+    </entity>
+
+
+    <entity name="Label" namespace="Label" table="Label">
+        <attribute name="id" type="int" dbType="INT" primaryKey="true" required="true"/>
+        <attribute name="column1" type="string" dbType="VARCHAR(100)"/>
+        <attribute name="column2" type="SiestaDateTime" dbType="DATETIME"/>
+
+        <storedProcedure name="customStoredProcedure" modifies="false" resultType="single">
+            <parameter name="param1" spName="P_PARAM1" type="string" dbType="VARCHAR(100)"/>
+            <parameter name="param2" spName="P_PARAM2" type="SiestaDateTime" dbType="DATETIME"/>
+            <sql>
+                SELECT * FROM !TABLE! WHERE column1 = P_PARAM1 AND column2 = P_PARAM2;
+            </sql>
+        </storedProcedure>
+
+    </entity>
+
+</entityList>

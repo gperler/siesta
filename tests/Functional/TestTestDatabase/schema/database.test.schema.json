@@ -41,5 +41,18 @@
         }
       ]
     }
+  ],
+  "storedProcedureList": [
+    {
+      "name": "sp1",
+      "createStatement": "create sp1",
+      "dropStatement": "drop sp1"
+    },
+    {
+      "name": "sp2",
+      "createStatement": "create sp2",
+      "dropStatement": "drop sp2"
+
+    }
   ]
 }

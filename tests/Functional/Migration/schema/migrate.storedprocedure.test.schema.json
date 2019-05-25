@@ -1,0 +1,115 @@
+{
+  "tableList": [
+    {
+      "name": "migrateEntity1",
+      "columnList": [
+        {
+          "dbType": "INT",
+          "dbName": "1-primary1",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        },
+        {
+          "dbType": "INT",
+          "dbName": "1-primary2",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        },
+        {
+          "dbType": "INT",
+          "dbName": "1-foreign",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        }
+      ],
+      "indexList": [
+      ],
+      "constraintList": [
+        {
+          "name": "dropConstraint",
+          "constraintName": "migrateEntity1_dropConstraint",
+          "foreignTable": "migrateEntity2",
+          "onUpdate": "cascade",
+          "onDelete": "set null",
+          "constraintMappingList": [
+            {
+              "foreignColumn": "first_id",
+              "localColumn": "1-foreign"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "migrateEntity2",
+      "columnList": [
+        {
+          "dbType": "INT",
+          "dbName": "2-primary1",
+          "phpType": "int",
+          "isRequired": true,
+          "isPrimaryKey": true
+        }
+      ],
+      "indexList": [
+      ],
+      "constraintList": [
+      ]
+    }
+  ],
+  "storedProcedureList": [
+    {
+      "name": "sequencer",
+      "createStatement": "create sequencer",
+      "dropStatement": "drop sequencer"
+    },
+    {
+      "name": "select_do_not_change_entity",
+      "createStatement": "create select_do_not_change_entity",
+      "dropStatement": "drop select_do_not_change_entity"
+    },
+    {
+      "name": "delete_do_not_change_entity",
+      "createStatement": "create delete_do_not_change_entity",
+      "dropStatement": "drop delete_do_not_change_entity"
+    },
+    {
+      "name": "insert_do_not_change_entity",
+      "createStatement": "create insert_do_not_change_entity",
+      "dropStatement": "drop insert_do_not_change_entity"
+    },
+    {
+      "name": "update_do_not_change_entity",
+      "createStatement": "create update_do_not_change_entity",
+      "dropStatement": "drop update_do_not_change_entity"
+    },
+    {
+      "name": "custom_do_not_change_entity_do_not_change_entity",
+      "createStatement": "create custom_do_not_change_entity_do_not_change_entity",
+      "dropStatement": "drop custom_do_not_change_entity_do_not_change_entity"
+    },
+    {
+      "name": "insert_change_entity",
+      "createStatement": "create insert_change_entity_CHANGE",
+      "dropStatement": "drop insert_change_entity"
+    },
+    {
+      "name": "update_change_entity",
+      "createStatement": "create update_change_entity_CHANGE",
+      "dropStatement": "drop update_change_entity"
+    },
+    {
+      "name": "custom_change_entity_change_entity",
+      "createStatement": "create custom_change_entity_change_entity_CHANGE",
+      "dropStatement": "drop custom_change_entity_change_entity"
+    },
+    {
+      "name": "not_needed_anymore",
+      "createStatement": "create not_needed_anymore",
+      "dropStatement": "drop not_needed_anymore"
+    }
+  ]
+}

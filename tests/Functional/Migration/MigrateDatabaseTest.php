@@ -5,6 +5,7 @@ namespace SiestaTest\Functional\Migration;
 use Siesta\Migration\DatabaseMigrator;
 use Siesta\Util\File;
 use SiestaTest\TestDatabase\TestConnection;
+use SiestaTest\TestDatabase\TestCreateStatementFactory;
 use SiestaTest\TestUtil\DataModelHelper;
 
 /**
@@ -26,9 +27,10 @@ class MigrateDatabaseTest extends \PHPUnit_Framework_TestCase
 
         $alterStatementList = $migrator->getAlterStatementList();
 
-        $this->assertSame(2, sizeof($alterStatementList));
-        $this->assertSame("create table 'AddTable'", $alterStatementList[0]);
-        $this->assertSame("drop table 'ToDelete'", $alterStatementList[1]);
+        $this->assertSame(3, sizeof($alterStatementList));
+        $this->assertSame(TestCreateStatementFactory::SEQUENCER_TABLE_CREATE, $alterStatementList[0]);
+        $this->assertSame("create table 'AddTable'", $alterStatementList[1]);
+        $this->assertSame("drop table 'ToDelete'", $alterStatementList[2]);
     }
 
 }

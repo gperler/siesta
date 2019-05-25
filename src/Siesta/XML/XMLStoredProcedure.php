@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -17,6 +17,8 @@ class XMLStoredProcedure
 
     const MODIFIES = "modifies";
 
+    const DETERMINISTIC = "deterministic";
+
     const RESULT_TYPE = "resultType";
 
     /**
@@ -28,6 +30,11 @@ class XMLStoredProcedure
      * @var bool
      */
     protected $modifies;
+
+    /**
+     * @var bool
+     */
+    protected $deterministic;
 
     /**
      * @var string
@@ -44,6 +51,7 @@ class XMLStoredProcedure
      */
     protected $xmlParameterList;
 
+
     /**
      * XMLStoredProcedure constructor.
      */
@@ -59,8 +67,10 @@ class XMLStoredProcedure
     {
         $this->setName($xmlAccess->getAttribute(self::NAME));
         $this->setModifies($xmlAccess->getAttributeAsBool(self::MODIFIES));
+        $this->setDeterministic($xmlAccess->getAttributeAsBool(self::DETERMINISTIC));
         $this->setResultType($xmlAccess->getAttribute(self::RESULT_TYPE));
         $this->setStatement($xmlAccess->getFirstChildByNameContent(self::ELEMENT_SQL_NAME));
+
 
         foreach ($xmlAccess->getXMLChildElementListByName(XMLStoredProcedureParameter::ELEMENT_PARAMETER_NAME) as $key => $xmlParameterAccess) {
             $xmlParameter = new XMLStoredProcedureParameter();
@@ -100,6 +110,23 @@ class XMLStoredProcedure
     {
         $this->modifies = $modifies;
     }
+
+    /**
+     * @return bool
+     */
+    public function isDeterministic(): bool
+    {
+        return $this->deterministic;
+    }
+
+    /**
+     * @param bool $deterministic
+     */
+    public function setDeterministic(bool $deterministic)
+    {
+        $this->deterministic = $deterministic;
+    }
+
 
     /**
      * @return string

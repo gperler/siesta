@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Siesta\Migration;
 
+use Codeception\Util\Debug;
 use Siesta\Database\StoredProcedureDefinition;
 use Siesta\Database\StoredProcedureFactory;
 use Siesta\Model\DataModel;
@@ -17,58 +18,63 @@ class StoredProcedureMigrator
     /**
      * @var StoredProcedureFactory
      */
-    protected $factory;
+    private $factory;
+
+
+    /**
+     * @var StoredProcedureDefinition[]
+     */
+    private $activeStoredProcedureList;
+
+    /**
+     * @var StoredProcedureDefinition[]
+     */
+    private $neededProcedureList;
 
     /**
      * @var string[]
      */
-    protected $statementList;
+    private $statementList;
 
-    /**
-     * @var string[]
-     */
-    protected $neededProcedureList;
 
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    private $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    private $entity;
 
     /**
      * StoredProcedureMigrator constructor.
-     *
      * @param StoredProcedureFactory $factory
+     * @param array $activeStoredProcedureList
+     * @param StoredProcedureDefinition $sequencerStoredProcedure
      */
-    public function __construct(StoredProcedureFactory $factory)
+    public function __construct(StoredProcedureFactory $factory, array $activeStoredProcedureList, StoredProcedureDefinition $sequencerStoredProcedure)
     {
         $this->factory = $factory;
+        $this->activeStoredProcedureList = $activeStoredProcedureList;
+        $this->neededProcedureList = [$sequencerStoredProcedure];
     }
 
     /**
      * @param DataModel $dataModel
      * @param Entity $entity
      *
-     * @return string[]
      */
-    public function getMigrateProcedureStatementList(DataModel $dataModel, Entity $entity)
+    public function createProcedureStatementList(DataModel $dataModel, Entity $entity)
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
-        $this->statementList = [];
-        $this->neededProcedureList = [];
 
         $this->addSimpleStoredProcedureStatementList();
         $this->addCustomStoredProcedureStatementList();
         $this->addCollectionStoredProcedureList();
         $this->addCollectionManyStoredProcedureList();
         $this->addDynamicCollectionStoreProcedureList();
-
-        return $this->statementList;
     }
 
     /**
@@ -77,19 +83,21 @@ class StoredProcedureMigrator
     protected function addSimpleStoredProcedureStatementList()
     {
         $selectDefinition = $this->factory->createSelectByPKStoredProcedure($this->dataModel, $this->entity);
-        $this->addStatement($selectDefinition);
+        $this->addNeededProcedure($selectDefinition);
 
         $insertDefinition = $this->factory->createInsertStoredProcedure($this->dataModel, $this->entity);
-        $this->addStatement($insertDefinition);
+        $this->addNeededProcedure($insertDefinition);
 
         $updateDefinition = $this->factory->createUpdateStoredProcedure($this->dataModel, $this->entity);
-        $this->addStatement($updateDefinition);
+        $this->addNeededProcedure($updateDefinition);
 
         $deleteDefinition = $this->factory->createDeleteByPKStoredProcedure($this->dataModel, $this->entity);
-        $this->addStatement($deleteDefinition);
+        $this->addNeededProcedure($deleteDefinition);
 
-        $copyToReplication = $this->factory->createCopyToReplicationTableStoredProcedure($this->dataModel, $this->entity);
-        $this->addStatement($copyToReplication);
+        if ($this->entity->getIsReplication()) {
+            $copyToReplication = $this->factory->createCopyToReplicationTableStoredProcedure($this->dataModel, $this->entity);
+            $this->addNeededProcedure($copyToReplication);
+        }
     }
 
     /**
@@ -99,7 +107,7 @@ class StoredProcedureMigrator
     {
         foreach ($this->entity->getStoredProcedureList() as $storedProcedure) {
             $procedureDefinition = $this->factory->createCustomStoredProcedure($this->dataModel, $this->entity, $storedProcedure);
-            $this->addStatement($procedureDefinition);
+            $this->addNeededProcedure($procedureDefinition);
         }
     }
 
@@ -113,10 +121,10 @@ class StoredProcedureMigrator
                 continue;
             }
             $procedureDefinition = $this->factory->createSelectByReferenceStoredProcedure($this->dataModel, $this->entity, $reference);
-            $this->addStatement($procedureDefinition);
+            $this->addNeededProcedure($procedureDefinition);
 
             $procedureDefinition = $this->factory->createDeleteByReferenceStoredProcedure($this->dataModel, $this->entity, $reference);
-            $this->addStatement($procedureDefinition);
+            $this->addNeededProcedure($procedureDefinition);
         }
     }
 
@@ -127,13 +135,13 @@ class StoredProcedureMigrator
     {
         foreach ($this->entity->getCollectionManyList() as $collectionMany) {
             $procedureDefinition = $this->factory->createSelectByCollectionManyStoredProcedure($this->dataModel, $this->entity, $collectionMany);
-            $this->addStatement($procedureDefinition);
+            $this->addNeededProcedure($procedureDefinition);
 
             $procedureDefinition = $this->factory->createDeleteByCollectionManyStoredProcedure($this->dataModel, $this->entity, $collectionMany);
-            $this->addStatement($procedureDefinition);
+            $this->addNeededProcedure($procedureDefinition);
 
             $procedureDefinition = $this->factory->createDeleteCollectionManyAssignmentStoredProcedure($this->dataModel, $this->entity, $collectionMany);
-            $this->addStatement($procedureDefinition);
+            $this->addNeededProcedure($procedureDefinition);
         }
     }
 
@@ -143,33 +151,93 @@ class StoredProcedureMigrator
             return;
         }
         $procedureDefinition = $this->factory->createDeleteByDynamicCollectionProcedure($this->dataModel, $this->entity);
-        $this->addStatement($procedureDefinition);
+        $this->addNeededProcedure($procedureDefinition);
 
         $procedureDefinition = $this->factory->createSelectByDynamicCollectionProcedure($this->dataModel, $this->entity);
-        $this->addStatement($procedureDefinition);
+        $this->addNeededProcedure($procedureDefinition);
     }
 
     /**
      * @param StoredProcedureDefinition $definition
      */
-    protected function addStatement(StoredProcedureDefinition $definition)
+    protected function addNeededProcedure(StoredProcedureDefinition $definition)
     {
-        $this->neededProcedureList[] = $definition->getProcedureName();
-
-        $dropDefinition = $definition->getDropProcedureStatement();
-        if ($dropDefinition !== null) {
-            $this->statementList[] = $dropDefinition;
-        }
-        $createDefinition = $definition->getCreateProcedureStatement();
-        if ($createDefinition !== null) {
-            $this->statementList[] = $createDefinition;
-        }
-
+        $this->neededProcedureList[] = $definition;
     }
 
-    protected function createDropUnusedStatementList()
-    {
 
+    /**
+     * @return array
+     */
+    public function getStoredProcedureMigrationList(): array
+    {
+        $this->statementList = [];
+        $processedProcedureList = [];
+
+        foreach ($this->neededProcedureList as $neededStoreProcedure) {
+            $activeStoreProcedure = $this->getActiveStoredProcedureByName($neededStoreProcedure->getProcedureName());
+
+            // does not exist > create
+            if ($activeStoreProcedure === null) {
+                $this->addStatement($neededStoreProcedure->getCreateProcedureStatement());
+                $processedProcedureList[] = $neededStoreProcedure->getProcedureName();
+                continue;
+            }
+
+            // does exist but differs > drop and create
+            if (!$this->areStoredProceduresIdentical($activeStoreProcedure, $neededStoreProcedure)) {
+                $this->addStatement($neededStoreProcedure->getDropProcedureStatement());
+                $this->addStatement($neededStoreProcedure->getCreateProcedureStatement());
+            }
+
+            $processedProcedureList[] = $neededStoreProcedure->getProcedureName();
+
+        }
+
+        foreach ($this->activeStoredProcedureList as $activeStoredProcedure) {
+            if (!in_array($activeStoredProcedure->getProcedureName(), $processedProcedureList)) {
+                $this->addStatement($activeStoredProcedure->getDropProcedureStatement());
+            }
+        }
+        return $this->statementList;
     }
+
+    /**
+     * @param StoredProcedureDefinition $active
+     * @param StoredProcedureDefinition $needed
+     * @return bool
+     */
+    private function areStoredProceduresIdentical(StoredProcedureDefinition $active, StoredProcedureDefinition $needed)
+    {
+        return $active->getCreateProcedureStatement() === $needed->getCreateProcedureStatement();
+    }
+
+
+    /**
+     * @param string|null $statement
+     */
+    private function addStatement(string $statement = null)
+    {
+        if ($statement === null) {
+            return;
+        }
+        $this->statementList[] = $statement;
+    }
+
+
+    /**
+     * @param string $procedureName
+     * @return StoredProcedureDefinition
+     */
+    private function getActiveStoredProcedureByName(string $procedureName)
+    {
+        foreach ($this->activeStoredProcedureList as $activeStoredProcedure) {
+            if ($activeStoredProcedure->getProcedureName() === $procedureName) {
+                return $activeStoredProcedure;
+            }
+        }
+        return null;
+    }
+
 
 }

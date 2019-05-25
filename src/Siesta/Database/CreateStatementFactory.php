@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Database;
 
 use Siesta\Model\Entity;
@@ -15,22 +16,27 @@ interface CreateStatementFactory
     const SEQUENCER_SP_NAME = "SEQUENCER_GETSEQUENCE";
 
     /**
-     * @return string[]
+     * @return StoredProcedureDefinition
      */
-    public function buildSequencer() : array;
+    public function buildSequencerStoredProcedure(): StoredProcedureDefinition;
+
+    /**
+     * @return string
+     */
+    public function buildSequencerTable(): string;
 
     /**
      * @param Entity $entity
      *
      * @return string[]
      */
-    public function buildCreateTable(Entity $entity) : array;
+    public function buildCreateTable(Entity $entity): array;
 
     /**
      * @param Entity $entity
      *
      * @return string[]
      */
-    public function buildCreateDelimitTable(Entity $entity) : array;
+    public function buildCreateDelimitTable(Entity $entity): array;
 
 }

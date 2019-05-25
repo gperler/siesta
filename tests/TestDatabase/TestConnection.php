@@ -30,7 +30,7 @@ class TestConnection implements Connection
         // TODO: Implement useDatabase() method.
     }
 
-    public function getDatabase() : string
+    public function getDatabase(): string
     {
         // TODO: Implement getDatabase() method.
     }
@@ -40,12 +40,12 @@ class TestConnection implements Connection
         // TODO: Implement connect() method.
     }
 
-    public function query(string $query) : ResultSet
+    public function query(string $query): ResultSet
     {
         // TODO: Implement query() method.
     }
 
-    public function multiQuery(string $query) : ResultSet
+    public function multiQuery(string $query): ResultSet
     {
         // TODO: Implement multiQuery() method.
     }
@@ -55,7 +55,7 @@ class TestConnection implements Connection
 
     }
 
-    public function executeStoredProcedure(string $query) : ResultSet
+    public function executeStoredProcedure(string $query): ResultSet
     {
         // TODO: Implement executeStoredProcedure() method.
     }
@@ -101,26 +101,26 @@ class TestConnection implements Connection
     }
 
     /**
-     * @param string $databaseName here interpreted as file with model
-     *
+     * @param string|null $databaseName
      * @return DatabaseMetaData
+     * @throws \SiestaTest\TestUtil\TestException
      */
-    public function getDatabaseMetaData(string $databaseName = null) : DatabaseMetaData
+    public function getDatabaseMetaData(string $databaseName = null): DatabaseMetaData
     {
         return new TestDatabaseMetaData($this->fixtureFile);
     }
 
-    public function getMigrationStatementFactory() : MigrationStatementFactory
+    public function getMigrationStatementFactory(): MigrationStatementFactory
     {
         return new TestMigrationStatementFactory();
     }
 
-    public function getCreateStatementFactory() : CreateStatementFactory
+    public function getCreateStatementFactory(): CreateStatementFactory
     {
         return new TestCreateStatementFactory();
     }
 
-    public function getStoredProcedureFactory() : StoredProcedureFactory
+    public function getStoredProcedureFactory(): StoredProcedureFactory
     {
         return new TestStoredProcedureFactory();
     }

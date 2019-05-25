@@ -82,27 +82,21 @@ class Migrator implements LoggerAwareInterface
     {
         $this->setup($dataModel, $connection);
         $dropping = $dropUnusedTables ? " dropping unused tables " : " not dropping unused tables";
-        $datbase = $this->connection->getDatabase();
-        $this->logger->info("Direct migration of database " . $datbase . $dropping);
+        $database = $this->connection->getDatabase();
+        $this->logger->info("Direct migration of database " . $database . $dropping);
 
         $this->databaseMigrator->createAlterStatementList($dropUnusedTables);
 
         $this->connection->disableForeignKeyChecks();
 
         try {
-
-//            foreach ($this->databaseMigrator->getDropStoredProcedureStatementList() as $statement) {
-//                $this->logger->debug("Dropping " . $statement);
-//                $this->connection->execute($statement);
-//            }
-
             foreach ($this->databaseMigrator->getAlterStatementList() as $statement) {
-                $this->logger->warning("Altering " . $statement);
+                $this->logger->warning($statement);
                 $this->connection->query($statement);
             }
 
-            foreach ($this->databaseMigrator->getCreateStoredProcedureStatementList() as $statement) {
-                $this->logger->debug("Executing " . $statement);
+            foreach ($this->databaseMigrator->getAlterStoredProcedureStatementList() as $statement) {
+                $this->logger->warning($statement);
                 $this->connection->query($statement);
             }
 
@@ -132,11 +126,10 @@ class Migrator implements LoggerAwareInterface
 
         $this->databaseMigrator->createAlterStatementList($dropUnusedTables);
 
-        $dropProcedureStatementList = $this->databaseMigrator->getDropStoredProcedureStatementList();
         $alterStatementList = $this->databaseMigrator->getAlterStatementList();
-        $statementList = $this->databaseMigrator->getCreateStoredProcedureStatementList();
+        $statementList = $this->databaseMigrator->getAlterStoredProcedureStatementList();
 
-        $statementList = array_merge($dropProcedureStatementList, $alterStatementList, $statementList);
+        $statementList = array_merge($alterStatementList, $statementList);
 
         $targetFile->putContents(implode(";" . PHP_EOL, $statementList));
     }

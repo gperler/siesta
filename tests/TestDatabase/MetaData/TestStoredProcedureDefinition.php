@@ -1,39 +1,40 @@
 <?php
 
-namespace SiestaTest\TestDatabase;
+declare(strict_types=1);
+
+namespace SiestaTest\TestDatabase\MetaData;
 
 use Siesta\Database\StoredProcedureDefinition;
+use Siesta\Util\ArrayUtil;
 
 class TestStoredProcedureDefinition implements StoredProcedureDefinition
 {
-
     /**
      * @var string
      */
     private $name;
 
     /**
-     * @var
-     */
-    private $dropStatement;
-
-    /**
-     * @var
+     * @var string
      */
     private $createStatement;
 
     /**
-     * TestStoredProcedureDefinition constructor.
-     * @param null $name
-     * @param null $dropStatement
-     * @param null $createStatement
+     * @var string
      */
-    public function __construct($name = "", $dropStatement = null, $createStatement = null)
+    private $dropStatement;
+
+    /**
+     * TestStoredProcedureDefinition constructor.
+     * @param array $storedProcedureData
+     */
+    public function __construct(array $storedProcedureData)
     {
-        $this->name = $name;
-        $this->dropStatement = $dropStatement;
-        $this->createStatement = $createStatement;
+        $this->name = ArrayUtil::getFromArray($storedProcedureData, "name");
+        $this->createStatement = ArrayUtil::getFromArray($storedProcedureData, "createStatement");
+        $this->dropStatement = ArrayUtil::getFromArray($storedProcedureData, "dropStatement");
     }
+
 
     /**
      * @return null|string
@@ -54,9 +55,10 @@ class TestStoredProcedureDefinition implements StoredProcedureDefinition
     /**
      * @return string
      */
-    public function getProcedureName() : string
+    public function getProcedureName(): string
     {
         return $this->name;
     }
+
 
 }

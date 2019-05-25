@@ -61,7 +61,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $connection->execute($drop);
         $connection->execute($create);
 
-        $this->assertSame("CREATE PROCEDURE `Artist_customStoredProcedure` (IN P_PARAM1 VARCHAR(100), IN P_PARAM2 DATETIME) NOT DETERMINISTIC READS SQL DATA SQL SECURITY INVOKER BEGIN SELECT * FROM `Artist` WHERE column1 = P_PARAM1 AND column2 = P_PARAM2; END;", $create);
+        $this->assertSame("CREATE PROCEDURE `Artist_customStoredProcedure`(IN P_PARAM1 VARCHAR(100), IN P_PARAM2 DATETIME) READS SQL DATA SQL SECURITY INVOKER BEGIN SELECT * FROM `Artist` WHERE column1 = P_PARAM1 AND column2 = P_PARAM2; END;", $create);
         $this->assertSame("DROP PROCEDURE IF EXISTS `Artist_customStoredProcedure`", $drop);
 
     }
@@ -84,7 +84,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $connection->execute($create);
 
         // invoke the sp
-        $connection->executeStoredProcedure("CALL `Artist_I`(7, 'test', '2006-04-29 21:00:00', 123, 12.4);");
+        $connection->executeStoredProcedure("CALL `Artist_insert`(7, 'test', '2006-04-29 21:00:00', 123, 12.4);");
 
         $resultSet = $connection->query("SELECT * FROM Artist");
         $this->assertTrue($resultSet->hasNext());
@@ -120,7 +120,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $connection->execute($drop);
         $connection->execute($create);
 
-        $connection->executeStoredProcedure("CALL `Artist_U` (7, 'test-u', '2016-04-29 21:00:00', 42, 19.08);");
+        $connection->executeStoredProcedure("CALL `Artist_update` (7, 'test-u', '2016-04-29 21:00:00', 42, 19.08);");
 
         $resultSet = $connection->query("SELECT * FROM Artist");
         $this->assertTrue($resultSet->hasNext());
@@ -156,7 +156,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $connection->execute($drop);
         $connection->execute($create);
 
-        $connection->executeStoredProcedure("CALL `Artist_DB_PK` (7);");
+        $connection->executeStoredProcedure("CALL `Artist_delete_by_pk` (7);");
 
         $resultSet = $connection->query("SELECT * FROM Artist");
         $this->assertFalse($resultSet->hasNext());
@@ -187,7 +187,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
 
         $spName = sprintf(StoredProcedureNaming::SELECT_BY_PRIMARY_KEY, "Artist");
 
-        $resultSet = $connection->query("CALL `$spName` (7)");
+        $resultSet = $connection->executeStoredProcedure("CALL `$spName` (7)");
         $this->assertTrue($resultSet->hasNext());
 
         $dateTime = $resultSet->getDateTime("column2");
@@ -199,7 +199,6 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($resultSet->hasNext());
         $resultSet->close();
-
     }
 
 }

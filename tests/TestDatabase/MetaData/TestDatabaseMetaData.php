@@ -3,6 +3,7 @@
 namespace SiestaTest\TestDatabase\MetaData;
 
 use Siesta\Database\MetaData\DatabaseMetaData;
+use Siesta\Database\StoredProcedureDefinition;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\File;
 use SiestaTest\TestUtil\TestException;
@@ -15,10 +16,17 @@ class TestDatabaseMetaData implements DatabaseMetaData
 
     const TABLE_LIST = "tableList";
 
+    const STORED_PROCEDURE_LIST = "storedProcedureList";
+
     /**
      * @var TestTableMetaData[]
      */
     protected $tableList;
+
+    /**
+     * @var TestStoredProcedureDefinition[]
+     */
+    private $storedProcedureList;
 
     /**
      * TestDatabaseMetaData constructor.
@@ -34,24 +42,40 @@ class TestDatabaseMetaData implements DatabaseMetaData
         }
         $valueList = $modelFile->loadAsJSONArray();
 
-        $tableList = ArrayUtil::getFromArray($valueList, self::TABLE_LIST);
-
-        if ($tableList === null || !is_array($tableList)) {
-            throw new TestException("model file empty or does not contain " . self::TABLE_LIST);
-        }
-        $this->parseJSON($tableList);
-
+        $this->parseTableMetaData($valueList);
+        $this->parseStoredProcedureMetaData($valueList);
     }
 
     /**
-     * @param array $tableList
+     * @param array|null $valueList
+     * @throws TestException
      */
-    protected function parseJSON(array $tableList)
+    private function parseTableMetaData(array $valueList = null)
     {
+        $tableList = ArrayUtil::getFromArray($valueList, self::TABLE_LIST);
+        if ($tableList === null || !is_array($tableList)) {
+            throw new TestException("model file empty or does not contain " . self::TABLE_LIST);
+        }
         foreach ($tableList as $table) {
             $this->tableList[] = new TestTableMetaData($table);
         }
     }
+
+    /**
+     * @param array|null $valueList
+     */
+    private function parseStoredProcedureMetaData(array $valueList = null)
+    {
+        $storedProcedureList = ArrayUtil::getFromArray($valueList, self::STORED_PROCEDURE_LIST);
+        if ($storedProcedureList === null || !is_array($storedProcedureList)) {
+            $this->storedProcedureList = [];
+            return;
+        }
+        foreach ($storedProcedureList as $storedProcedure) {
+            $this->storedProcedureList[] = new TestStoredProcedureDefinition($storedProcedure);
+        }
+    }
+
 
     public function refresh()
     {
@@ -61,7 +85,7 @@ class TestDatabaseMetaData implements DatabaseMetaData
     /**
      * @return TestTableMetaData[]
      */
-    public function getTableList() : array
+    public function getTableList(): array
     {
         return $this->tableList;
     }
@@ -81,9 +105,12 @@ class TestDatabaseMetaData implements DatabaseMetaData
         return null;
     }
 
-    public function getStoredProcedureList() : array
+    /**
+     * @return StoredProcedureDefinition[]
+     */
+    public function getStoredProcedureList(): array
     {
-        return [];
+        return $this->storedProcedureList;
     }
 
 }
