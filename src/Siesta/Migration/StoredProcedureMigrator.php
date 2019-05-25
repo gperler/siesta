@@ -94,8 +94,10 @@ class StoredProcedureMigrator
         $deleteDefinition = $this->factory->createDeleteByPKStoredProcedure($this->dataModel, $this->entity);
         $this->addNeededProcedure($deleteDefinition);
 
-        $copyToReplication = $this->factory->createCopyToReplicationTableStoredProcedure($this->dataModel, $this->entity);
-        $this->addNeededProcedure($copyToReplication);
+        if ($this->entity->getIsReplication()) {
+            $copyToReplication = $this->factory->createCopyToReplicationTableStoredProcedure($this->dataModel, $this->entity);
+            $this->addNeededProcedure($copyToReplication);
+        }
     }
 
     /**
@@ -178,16 +180,12 @@ class StoredProcedureMigrator
             // does not exist > create
             if ($activeStoreProcedure === null) {
                 $this->addStatement($neededStoreProcedure->getCreateProcedureStatement());
-                Debug::debug("Create");
-                Debug::debug($neededStoreProcedure);
                 $processedProcedureList[] = $neededStoreProcedure->getProcedureName();
                 continue;
             }
 
             // does exist but differs > drop and create
             if (!$this->areStoredProceduresIdentical($activeStoreProcedure, $neededStoreProcedure)) {
-                Debug::debug("change");
-                Debug::debug($neededStoreProcedure);
                 $this->addStatement($neededStoreProcedure->getDropProcedureStatement());
                 $this->addStatement($neededStoreProcedure->getCreateProcedureStatement());
             }
@@ -198,8 +196,6 @@ class StoredProcedureMigrator
 
         foreach ($this->activeStoredProcedureList as $activeStoredProcedure) {
             if (!in_array($activeStoredProcedure->getProcedureName(), $processedProcedureList)) {
-                Debug::debug("drop");
-                Debug::debug($activeStoredProcedure);
                 $this->addStatement($activeStoredProcedure->getDropProcedureStatement());
             }
         }

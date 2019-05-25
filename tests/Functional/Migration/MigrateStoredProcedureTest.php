@@ -2,7 +2,6 @@
 
 namespace SiestaTest\Functional\Migration;
 
-use Codeception\Util\Debug;
 use Siesta\Migration\DatabaseMigrator;
 use Siesta\Util\File;
 use SiestaTest\TestDatabase\TestConnection;
@@ -27,24 +26,27 @@ class MigrateStoredProcedureTest extends \PHPUnit_Framework_TestCase
 
         $alterStatementList = $migrator->getAlterStoredProcedureStatementList();
 
-        Debug::debug($alterStatementList);
 
-        $this->assertCount(9, $alterStatementList);
+        $this->assertCount(13, $alterStatementList);
 
         // new sps create statement
-        $this->assertSame("create insert_new_entity", $alterStatementList[0]);
-        $this->assertSame("create update_new_entity", $alterStatementList[1]);
+        $this->assertSame("create select_new_entity", $alterStatementList[0]);
+        $this->assertSame("create insert_new_entity", $alterStatementList[1]);
+        $this->assertSame("create update_new_entity", $alterStatementList[2]);
+        $this->assertSame("create delete_new_entity", $alterStatementList[3]);
 
         // change sps drop and create
-        $this->assertSame("drop insert_change_entity", $alterStatementList[2]);
-        $this->assertSame("create insert_change_entity", $alterStatementList[3]);
-        $this->assertSame("drop update_change_entity", $alterStatementList[4]);
-        $this->assertSame("create update_change_entity", $alterStatementList[5]);
-        $this->assertSame("drop custom_change_entity_change_entity", $alterStatementList[6]);
-        $this->assertSame("create custom_change_entity_change_entity", $alterStatementList[7]);
+        $this->assertSame("create select_change_entity", $alterStatementList[4]);
+        $this->assertSame("drop insert_change_entity", $alterStatementList[5]);
+        $this->assertSame("create insert_change_entity", $alterStatementList[6]);
+        $this->assertSame("drop update_change_entity", $alterStatementList[7]);
+        $this->assertSame("create update_change_entity", $alterStatementList[8]);
+        $this->assertSame("create delete_change_entity", $alterStatementList[9]);
+        $this->assertSame("drop custom_change_entity_change_entity", $alterStatementList[10]);
+        $this->assertSame("create custom_change_entity_change_entity", $alterStatementList[11]);
 
         // not needed anymore
-        $this->assertSame("drop not_needed_anymore", $alterStatementList[8]);
+        $this->assertSame("drop not_needed_anymore", $alterStatementList[12]);
     }
 
 }
