@@ -2,11 +2,11 @@
   "name": "gm314/siesta",
   "description": "PHP 7 ORM Library",
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.1.0",
     "symfony/console": "*",
     "psr/log": "*",
-    "gm314/nitria": "0.1.7",
-    "gm314/common": "0.1.1"
+    "gm314/nitria": "*",
+    "gm314/common": "*"
   },
   "require-dev": {
     "codeception/codeception": "*",
