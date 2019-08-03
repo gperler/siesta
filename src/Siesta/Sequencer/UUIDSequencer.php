@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Sequencer;
 
@@ -13,27 +13,25 @@ class UUIDSequencer implements Sequencer
 
     const PHP_TYPE = PHPType::STRING;
 
+    /**
+     * @param string $tableName
+     * @param string|null $connectionName
+     * @return string
+     */
     public function getNextSequence(string $tableName, string $connectionName = null)
     {
-        return sprintf('%s-%04x-%04x-%04x%04x%04x', // 32 bits for "time_low"
-            dechex(microtime(true) * 10000),
+        $microTime = dechex(microtime(true) * 10000);
+        if (strlen($microTime) === 11) {
+            $microTime = "0" . $microTime;
+        }
 
-            // 16 bits for "time_mid"
-            mt_rand(0, 0xffff),
-
-            mt_rand(0, 0xffff),
-
-            // 16 bits for "time_hi_and_version",
-            // four most significant bits holds version number 4
+        return sprintf("%s-%s-%04x-%04x-%04x%04x%04x",
+            substr($microTime, 0, 8),
+            substr($microTime, 8, 4),
             mt_rand(0, 0x0fff) | 0x4000,
-
-            // 16 bits, 8 bits for "clk_seq_hi_res",
-            // 8 bits for "clk_seq_low",
-            // two most significant bits holds zero and one for variant DCE1.1
             mt_rand(0, 0x3fff) | 0x8000,
-
-            // 48 bits for "node"
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff));
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        );
     }
 
 }

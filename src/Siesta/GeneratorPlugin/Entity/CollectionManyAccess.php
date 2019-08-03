@@ -174,7 +174,10 @@ class CollectionManyAccess extends BasePlugin
         $mappingReference = $collectionMany->getMappingReference();
 
         $method = $this->classGenerator->addPublicMethod($methodName);
+        $method->setReturnType($mappingEntity->getClassName(), false);
+
         $method->addParameter($foreignClass, 'entity');
+
 
         // create mapping entity
         $method->addCodeLine('$mapping = ' . $mappingEntity->getServiceAccess() . '->' . NewInstancePlugin::METHOD_NEW_INSTANCE . '();');
@@ -185,6 +188,7 @@ class CollectionManyAccess extends BasePlugin
 
         // add mapping entity to local list
         $method->addCodeLine('$this->' . $collectionMany->getName() . 'Mapping[] = $mapping;');
+        $method->addCodeLine('return $mapping;');
     }
 
     /**

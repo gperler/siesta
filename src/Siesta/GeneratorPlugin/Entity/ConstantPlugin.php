@@ -23,7 +23,7 @@ class ConstantPlugin extends BasePlugin
         $classGenerator->addConstant("TABLE_NAME", '"' . $entity->getTableName() . '"');
 
         if ($entity->getIsDelimit()) {
-            $classGenerator->addConstant("DELIMIT_TABLE_NAME", '"' . $entity->getTableName() . '"');
+            $classGenerator->addConstant("DELIMIT_TABLE_NAME", '"' . $entity->getDelimitTableName() . '"');
         }
         foreach ($entity->getAttributeList() as $attribute) {
             $constantName = strtoupper("COLUMN_" . $attribute->getPhpName());
