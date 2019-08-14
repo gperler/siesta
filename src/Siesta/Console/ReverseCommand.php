@@ -2,6 +2,7 @@
 
 namespace Siesta\Console;
 
+use ReflectionException;
 use Siesta\Config\Config;
 use Siesta\Config\ReverseConfig;
 use Siesta\Database\Exception\ConnectException;
@@ -63,6 +64,7 @@ class ReverseCommand extends Command
      * @param OutputInterface $output
      *
      * @return void
+     * @throws ReflectionException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -96,6 +98,7 @@ class ReverseCommand extends Command
 
     /**
      * @return void
+     * @throws ReflectionException
      */
     protected function getConfiguration()
     {

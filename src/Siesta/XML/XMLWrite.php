@@ -4,29 +4,31 @@ declare(strict_types = 1);
 
 namespace Siesta\XML;
 
+use DOMDocument;
+use DOMElement;
 use Siesta\Util\File;
 
 class XMLWrite
 {
 
     /**
-     * @var \DOMDocument
+     * @var DOMDocument
      */
     protected $document;
 
     /**
-     * @var \DOMElement
+     * @var DOMElement
      */
     protected $element;
 
     /**
      * XMLWrite constructor.
      *
-     * @param \DOMDocument $document
-     * @param \DOMElement|null $element
+     * @param DOMDocument $document
+     * @param DOMElement|null $element
      * @param string|null $tagName
      */
-    public function __construct(\DOMDocument $document, \DOMElement $element = null, string $tagName = null)
+    public function __construct(DOMDocument $document, DOMElement $element = null, string $tagName = null)
     {
         $this->document = $document;
         if ($element !== null) {

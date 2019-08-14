@@ -7,6 +7,7 @@ namespace Siesta\GeneratorPlugin\Entity;
 use Civis\Common\ArrayUtil;
 use Nitria\ClassGenerator;
 use Nitria\Method;
+use ReflectionException;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\GeneratorPlugin\ServiceClass\NewInstancePlugin;
 use Siesta\Model\Attribute;
@@ -69,6 +70,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
+     * @throws ReflectionException
      */
     public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
@@ -87,7 +89,7 @@ class ArrayConverterPlugin extends BasePlugin
     }
 
     /**
-     *
+     * @throws ReflectionException
      */
     protected function generateFromArray()
     {
@@ -108,6 +110,7 @@ class ArrayConverterPlugin extends BasePlugin
 
     /**
      * @param Method $method
+     * @throws ReflectionException
      */
     protected function generateAttributeListFromArray(Method $method)
     {
@@ -139,6 +142,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Method $method
      * @param Attribute $attribute
+     * @throws ReflectionException
      */
     protected function generateObjectAttributeFromArray(Method $method, Attribute $attribute)
     {
@@ -291,7 +295,7 @@ class ArrayConverterPlugin extends BasePlugin
     }
 
     /**
-     *
+     * @throws ReflectionException
      */
     protected function generateToArray()
     {
@@ -331,6 +335,7 @@ class ArrayConverterPlugin extends BasePlugin
 
     /**
      * @param Method $method
+     * @throws ReflectionException
      */
     protected function generateAttributeListToArray(Method $method)
     {
@@ -349,10 +354,9 @@ class ArrayConverterPlugin extends BasePlugin
     }
 
     /**
-     * @param Method $method
      * @param Attribute $attribute
-     *
      * @return string
+     * @throws ReflectionException
      */
     protected function generateAttributeToArray(Attribute $attribute)
     {

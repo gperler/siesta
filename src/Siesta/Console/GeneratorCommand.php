@@ -2,6 +2,7 @@
 
 namespace Siesta\Console;
 
+use ReflectionException;
 use Siesta\Config\Config;
 use Siesta\Config\MainGeneratorConfig;
 use Siesta\Database\ConnectionFactory;
@@ -65,6 +66,7 @@ class GeneratorCommand extends Command
      * @param OutputInterface $output
      *
      * @return void
+     * @throws ReflectionException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -103,6 +105,7 @@ class GeneratorCommand extends Command
 
     /**
      * @return void
+     * @throws ReflectionException
      */
     protected function getConfiguration()
     {

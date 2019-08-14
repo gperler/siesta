@@ -19,6 +19,16 @@ class XMLEntityExtension
     protected $tableName;
 
     /**
+     * @var XMLConstructor
+     */
+    protected $xmlConstructor;
+
+    /**
+     * @var XMLServiceClass
+     */
+    protected $xmlServiceClass;
+
+    /**
      * @var XMLAttribute[]
      */
     protected $xmlAttributeList;
@@ -76,7 +86,6 @@ class XMLEntityExtension
         $this->xmlDynamicCollectionList = [];
         $this->xmlStoredProcedureList = [];
         $this->xmlValueObjectList = [];
-        $this->databaseSpecific = [];
     }
 
     /**
@@ -85,6 +94,8 @@ class XMLEntityExtension
     public function fromXML(XMLAccess $xmlAccess)
     {
         $this->xmlAccess = $xmlAccess;
+        $this->readXMLConstructor($xmlAccess);
+        $this->readXMLServiceClass($xmlAccess);
         $this->readEntityDataFromXML($xmlAccess);
         $this->readAttributeDataFromXML($xmlAccess);
         $this->readReferenceDataFromXML($xmlAccess);
@@ -94,6 +105,33 @@ class XMLEntityExtension
         $this->readDynamicCollection($xmlAccess);
         $this->readStoredProcedureDataFromXML($xmlAccess);
         $this->readValueObjectFromXML($xmlAccess);
+    }
+
+    /**
+     * @param XMLAccess $xmlAccess
+     */
+    protected function readXMLConstructor(XMLAccess $xmlAccess)
+    {
+        $xmlConstructorAccess = $xmlAccess->getFirstChildByName(XMLConstructor::ELEMENT_CONSTRUCTOR_NAME);
+        if ($xmlConstructorAccess === null) {
+            return;
+        }
+        $this->xmlConstructor = new XMLConstructor();
+        $this->xmlConstructor->fromXML($xmlConstructorAccess);
+    }
+
+    /**
+     * @param XMLAccess $xmlAccess
+     */
+    protected function readXMLServiceClass(XMLAccess $xmlAccess)
+    {
+        $xmlServiceClass = $xmlAccess->getFirstChildByName(XMLServiceClass::ELEMENT_SERVICE_CLASS_NAME);
+        if ($xmlServiceClass === null) {
+            return;
+        }
+        $this->xmlServiceClass = new XMLServiceClass();
+        $this->xmlServiceClass->fromXMLAccess($xmlServiceClass);
+
     }
 
     /**
@@ -326,5 +364,22 @@ class XMLEntityExtension
     {
         $this->xmlAccess = $xmlAccess;
     }
+
+    /**
+     * @return XMLConstructor
+     */
+    public function getXmlConstructor(): XMLConstructor
+    {
+        return $this->xmlConstructor;
+    }
+
+    /**
+     * @return XMLServiceClass
+     */
+    public function getXmlServiceClass(): XMLServiceClass
+    {
+        return $this->xmlServiceClass;
+    }
+
 
 }

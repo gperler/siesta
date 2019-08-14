@@ -6,7 +6,11 @@
     "symfony/console": "*",
     "psr/log": "*",
     "gm314/nitria": "*",
-    "gm314/common": "*"
+    "gm314/common": "*",
+    "ext-dom" : "*",
+    "ext-libxml" : "*",
+    "ext-json" : "*",
+    "ext-mysqli" : "*"
   },
   "require-dev": {
     "codeception/codeception": "*",

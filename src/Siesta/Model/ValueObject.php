@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Siesta\Model;
 
+use ReflectionClass;
+use ReflectionException;
 use Siesta\Util\StringUtil;
 
 class ValueObject
@@ -73,11 +75,11 @@ class ValueObject
     }
 
     /**
-     *
+     * @throws ReflectionException
      */
     public function update()
     {
-        $reflect = new \ReflectionClass($this->className);
+        $reflect = new ReflectionClass($this->className);
 
         foreach ($this->entity->getAttributeList() as $attribute) {
             $setter = 'set' . $attribute->getMethodName();

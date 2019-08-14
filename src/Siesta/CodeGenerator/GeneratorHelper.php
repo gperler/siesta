@@ -6,6 +6,7 @@ namespace Siesta\CodeGenerator;
 
 use Civis\Common\ArrayUtil;
 use Nitria\Method;
+use ReflectionException;
 use Siesta\Model\Attribute;
 use Siesta\Model\DBType;
 use Siesta\Model\PHPType;
@@ -14,7 +15,7 @@ use Siesta\Model\ReferenceMapping;
 class GeneratorHelper
 {
 
-    const TYPE_ECAPE_MAPPING = [
+    const TYPE_ESCAPE_MAPPING = [
         PHPType::BOOL => "quoteBool",
         PHPType::INT => "quoteInt",
         PHPType::FLOAT => "quoteFloat",
@@ -101,6 +102,7 @@ class GeneratorHelper
      * @param ReferenceMapping[] $referenceMappingList
      * @param bool $forceConnectionLookup
      * @param bool $fromMember
+     * @throws ReflectionException
      */
     public function addQuoteReferenceMappingList(array $referenceMappingList, bool $forceConnectionLookup = false, bool $fromMember = false)
     {
@@ -118,7 +120,7 @@ class GeneratorHelper
      * @param bool $isObject
      * @param int|null $maxLength
      */
-    public function addQuoteCall(string $phpType, string $dbType = null, string $variableName, $isObject = false, int $maxLength = null)
+    public function addQuoteCall(string $phpType, ?string $dbType, string $variableName, $isObject = false, int $maxLength = null)
     {
         $assignment = $variableName . ' = ';
         $quoteCall = $this->generateQuoteCall($phpType, $dbType, $variableName, $isObject, $maxLength);
@@ -129,6 +131,7 @@ class GeneratorHelper
      * @param Attribute[] $attributeList
      * @param bool $forceConnectionLookup
      * @param bool $fromMember
+     * @throws ReflectionException
      */
     public function addQuoteAttributeList(array $attributeList, bool $forceConnectionLookup = false, bool $fromMember = false)
     {
@@ -158,10 +161,10 @@ class GeneratorHelper
      * @param string $variableName
      * @param bool $isObject
      * @param int|null $maxLength
-     *
+     * @param bool $arraySerializable
      * @return string
      */
-    public function generateQuoteCall(string $phpType, string $dbType = null, string $variableName, $isObject = false, int $maxLength = null, bool $arraySerializable = false) : string
+    public function generateQuoteCall(string $phpType, ?string $dbType, string $variableName, $isObject = false, int $maxLength = null, bool $arraySerializable = false) : string
     {
         if ($isObject && $arraySerializable) {
             return 'Escaper::quoteArraySerializable($connection, ' . $variableName . ')';
@@ -181,7 +184,7 @@ class GeneratorHelper
             return 'Escaper::quoteTime(' . $variableName . ')';
         }
 
-        $quoteFunction = ArrayUtil::getFromArray(self::TYPE_ECAPE_MAPPING, $phpType);
+        $quoteFunction = ArrayUtil::getFromArray(self::TYPE_ESCAPE_MAPPING, $phpType);
         if ($quoteFunction !== null) {
             return 'Escaper::' . $quoteFunction . '(' . $variableName . ')';
         }

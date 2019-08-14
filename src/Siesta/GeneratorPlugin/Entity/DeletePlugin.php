@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Siesta\GeneratorPlugin\Entity;
 
 use Nitria\ClassGenerator;
+use ReflectionException;
 use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
@@ -25,6 +26,7 @@ class DeletePlugin extends BasePlugin
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
+     * @throws ReflectionException
      */
     public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
@@ -34,7 +36,7 @@ class DeletePlugin extends BasePlugin
     }
 
     /**
-     *
+     * @throws ReflectionException
      */
     protected function generateDeleteMethod()
     {

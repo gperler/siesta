@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Siesta\XML;
 
+use DOMElement;
 use Siesta\Util\StringUtil;
 
 /**
@@ -12,14 +13,15 @@ class XMLAccess
 {
 
     /**
-     * @var \DOMElement
+     * @var DOMElement
      */
     protected $sourceElement;
 
     /**
-     *
+     * XMLAccess constructor.
+     * @param DOMElement $sourceElement
      */
-    public function __construct(\DOMElement $sourceElement)
+    public function __construct(DOMElement $sourceElement)
     {
         $this->sourceElement = $sourceElement;
     }

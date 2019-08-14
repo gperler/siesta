@@ -2,6 +2,7 @@
 
 namespace Siesta\Console;
 
+use ReflectionException;
 use Siesta\Config\Config;
 use Siesta\Database\ConnectionData;
 use Siesta\Database\ConnectionFactory;
@@ -51,6 +52,7 @@ class InitCommand extends Command
      * @param OutputInterface $output
      *
      * @return void
+     * @throws ReflectionException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -71,6 +73,7 @@ class InitCommand extends Command
     /**
      * @param ConnectionData $connectionData
      * @param string $targetPath
+     * @throws ReflectionException
      */
     private function generateConfiguration(ConnectionData $connectionData, $targetPath)
     {

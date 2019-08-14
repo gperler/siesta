@@ -2,13 +2,14 @@
 declare(strict_types=1);
 namespace Siesta\Exception;
 
+use RuntimeException;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\ObjectUtil;
 
 /**
  * @author Gregor Müller
  */
-class XMLNotValidException extends \RuntimeException implements SiestaException
+class XMLNotValidException extends RuntimeException implements SiestaException
 {
 
     const ERROR_MESSAGE = "%s Code : %s Level : %s Column: %s";
@@ -18,10 +19,12 @@ class XMLNotValidException extends \RuntimeException implements SiestaException
     protected $errorList;
 
     /**
-     * @param $errorList
+     * XMLNotValidException constructor.
+     * @param array $errorList
      */
     public function __construct(array $errorList)
     {
+        parent::__construct();
         $this->errorList = $errorList;
     }
 

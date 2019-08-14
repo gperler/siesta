@@ -6,6 +6,7 @@ namespace Siesta\GeneratorPlugin\ServiceClass;
 
 use Nitria\ClassGenerator;
 use Nitria\Method;
+use ReflectionException;
 use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
@@ -39,6 +40,7 @@ class GetEntityByIdPlugin extends BasePlugin
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
+     * @throws ReflectionException
      */
     public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
@@ -51,7 +53,7 @@ class GetEntityByIdPlugin extends BasePlugin
     }
 
     /**
-     *
+     * @throws ReflectionException
      */
     protected function generateEntityByPK()
     {

@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Siesta\Model;
 
+use ReflectionException;
 use Siesta\XML\XMLEntity;
 
 /**
@@ -75,6 +76,9 @@ class DataModel
         return null;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function update()
     {
         foreach ($this->entityList as $entity) {

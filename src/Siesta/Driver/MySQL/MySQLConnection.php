@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Siesta\Driver\MySQL;
 
+use mysqli;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionData;
 use Siesta\Database\CreateStatementFactory;
@@ -16,7 +17,6 @@ use Siesta\Database\Exception\UniqueConstraintViolationException;
 use Siesta\Database\MetaData\DatabaseMetaData;
 use Siesta\Database\MigrationStatementFactory;
 use Siesta\Database\ResultSet;
-use Siesta\Database\StoredProcedureDefinition;
 use Siesta\Database\StoredProcedureFactory;
 use Siesta\Driver\MySQL\MetaData\MySQLDatabase;
 
@@ -28,7 +28,7 @@ class MySQLConnection implements Connection
     const NAME = "mysql";
 
     /**
-     * @var \mysqli
+     * @var mysqli
      */
     private $connection;
 
@@ -65,11 +65,11 @@ class MySQLConnection implements Connection
 
         $this->database = $connectionData->database;
         // connect
-        $this->connection = @new \mysqli ($connectionData->host, $connectionData->user, $connectionData->password, $connectionData->database, $connectionData->port);
+        $this->connection = @new mysqli ($connectionData->host, $connectionData->user, $connectionData->password, $connectionData->database, $connectionData->port);
 
         // database does not exist . create it
         if ($this->connection->connect_errno === 1049) {
-            $this->connection = @new \mysqli ($connectionData->host, $connectionData->user, $connectionData->password, "", $connectionData->port);
+            $this->connection = @new mysqli ($connectionData->host, $connectionData->user, $connectionData->password, "", $connectionData->port);
         }
 
         // check for errors
@@ -99,13 +99,13 @@ class MySQLConnection implements Connection
     /**
      * @param string $query
      *
-     * @throws CannotBeNullException
+     * @return ResultSet
      * @throws ForeignKeyConstraintFailedException
      * @throws SQLException
      * @throws TableAlreadyExistsException
      * @throws TableDoesNotExistException
      * @throws UniqueConstraintViolationException
-     * @return ResultSet
+     * @throws CannotBeNullException
      */
     public function query(string $query): ResultSet
     {
@@ -161,20 +161,20 @@ class MySQLConnection implements Connection
         }
         while ($this->connection->more_results()) {
             $this->connection->next_result();
-            $resultSet = $this->connection->use_result();
+            $this->connection->use_result();
         }
     }
 
     /**
      * @param $query
      *
-     * @throws CannotBeNullException
+     * @return ResultSet
      * @throws ForeignKeyConstraintFailedException
      * @throws SQLException
      * @throws TableAlreadyExistsException
      * @throws TableDoesNotExistException
      * @throws UniqueConstraintViolationException
-     * @return ResultSet
+     * @throws CannotBeNullException
      */
     public function executeStoredProcedure(string $query): ResultSet
     {

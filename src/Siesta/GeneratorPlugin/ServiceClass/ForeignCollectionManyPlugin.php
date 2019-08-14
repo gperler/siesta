@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
 use Nitria\ClassGenerator;
+use ReflectionException;
 use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
@@ -48,6 +49,7 @@ class ForeignCollectionManyPlugin extends BasePlugin
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
+     * @throws ReflectionException
      */
     public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
@@ -61,6 +63,7 @@ class ForeignCollectionManyPlugin extends BasePlugin
 
     /**
      * @param CollectionMany $collectionMany
+     * @throws ReflectionException
      */
     protected function generateAccessMethod(CollectionMany $collectionMany)
     {
@@ -85,6 +88,7 @@ class ForeignCollectionManyPlugin extends BasePlugin
 
     /**
      * @param CollectionMany $collectionMany
+     * @throws ReflectionException
      */
     protected function generateDeleteMethod(CollectionMany $collectionMany)
     {

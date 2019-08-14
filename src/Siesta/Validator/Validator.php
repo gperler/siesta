@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Siesta\Validator;
 
+use ReflectionClass;
+use ReflectionException;
 use Siesta\Config\GenericGeneratorConfig;
 use Siesta\Contract\AttributeValidator;
 use Siesta\Contract\CollectionManyValidator;
@@ -121,6 +123,7 @@ class Validator
 
     /**
      * @param GenericGeneratorConfig[] $genericGeneratorConfigList
+     * @throws ReflectionException
      */
     public function setup(array $genericGeneratorConfigList)
     {
@@ -293,6 +296,7 @@ class Validator
 
     /**
      * @param GenericGeneratorConfig $config
+     * @throws ReflectionException
      */
     protected function addGenericGeneratorConfig(GenericGeneratorConfig $config)
     {
@@ -303,10 +307,11 @@ class Validator
 
     /**
      * @param string $validatorClassName
+     * @throws ReflectionException
      */
     protected function addValidator(string $validatorClassName)
     {
-        $reflect = new \ReflectionClass($validatorClassName);
+        $reflect = new ReflectionClass($validatorClassName);
 
         $validator = new $validatorClassName;
 

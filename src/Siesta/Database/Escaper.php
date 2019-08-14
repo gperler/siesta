@@ -111,7 +111,7 @@ class Escaper
     /**
      * @param Connection $connection
      * @param $value
-     *
+     * @param int|null $maxLength
      * @return string
      */
     public static function quoteString(Connection $connection, $value, int $maxLength = null): string

@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Siesta\Util;
 
+use DomDocument;
 use Siesta\Exception\XMLNotValidException;
 
 /**
@@ -217,12 +218,12 @@ class File
 
     /**
      * loads the file as XML DOMDocument
-     * @return \DomDocument
+     * @return DomDocument
      * @throws XMLNotValidException
      */
     public function loadAsXML()
     {
-        $xml = new \DomDocument ();
+        $xml = new DomDocument ();
         libxml_use_internal_errors(true);
         $result = $xml->load($this->absoluteFileName);
         if ($result) {

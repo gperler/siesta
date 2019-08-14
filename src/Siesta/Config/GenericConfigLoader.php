@@ -2,6 +2,7 @@
 
 namespace Siesta\Config;
 
+use ReflectionException;
 use Siesta\Model\ValidationLogger;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\File;
@@ -67,6 +68,7 @@ class GenericConfigLoader
      * @param ValidationLogger $logger
      *
      * @return GenericGeneratorConfig[]
+     * @throws ReflectionException
      */
     public function loadAndValidate(ValidationLogger $logger)
     {
@@ -124,6 +126,7 @@ class GenericConfigLoader
      * @param array $genericGeneratorConfigList
      *
      * @return GenericGeneratorConfig[]
+     * @throws ReflectionException
      */
     protected function initializeGenericGeneratorConfig(ValidationLogger $logger, array $genericGeneratorConfigList) : array
     {

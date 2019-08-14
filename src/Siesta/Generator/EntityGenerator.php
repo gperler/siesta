@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Generator;
 
@@ -42,6 +42,9 @@ class EntityGenerator extends AbstractGenerator
         $this->saveEntity();
     }
 
+    /**
+     *
+     */
     protected function generateEntity()
     {
 
@@ -49,7 +52,7 @@ class EntityGenerator extends AbstractGenerator
             $this->classGenerator->addUsedClassName($useClass);
         }
 
-        foreach($this->getImplementedInterfaceList() as $interfaceName) {
+        foreach ($this->getImplementedInterfaceList() as $interfaceName) {
             $this->classGenerator->addImplements($interfaceName);
         }
 
