@@ -2,12 +2,13 @@
 declare(strict_types = 1);
 namespace Siesta\Database\Exception;
 
+use RuntimeException;
 use Siesta\Exception\SiestaException;
 
 /**
  * @author Gregor Müller
  */
-class SQLException extends \RuntimeException implements SiestaException
+class SQLException extends RuntimeException implements SiestaException
 {
 
     /**

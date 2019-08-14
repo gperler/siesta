@@ -2,6 +2,8 @@
 declare(strict_types = 1);
 namespace Siesta\Driver\MySQL;
 
+use mysqli;
+use mysqli_result;
 use Siesta\Database\ResultSet;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\SiestaDateTime;
@@ -13,12 +15,12 @@ class MySQLMultiQueryResultSet implements ResultSet
 {
 
     /**
-     * @var \mysqli
+     * @var mysqli
      */
     private $connection;
 
     /**
-     * @var \mysqli_result
+     * @var mysqli_result
      */
     private $mysqliResult;
 
@@ -28,9 +30,9 @@ class MySQLMultiQueryResultSet implements ResultSet
     protected $next;
 
     /**
-     * @param \mysqli $connection
+     * @param mysqli $connection
      */
-    public function __construct(\mysqli $connection)
+    public function __construct(mysqli $connection)
     {
         $this->connection = $connection;
         $this->mysqliResult = $this->connection->store_result();

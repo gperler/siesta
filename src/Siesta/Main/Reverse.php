@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Siesta\Main;
 
+use DOMDocument;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Database\MetaData\DatabaseMetaData;
@@ -117,7 +118,7 @@ class Reverse
      */
     protected function getXMLWrite()
     {
-        $document = new \DOMDocument("1.0");
+        $document = new DOMDocument("1.0");
         return new XMLWrite($document, null, "entityList");
     }
 

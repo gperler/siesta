@@ -2,6 +2,7 @@
 
 namespace Siesta\Config;
 
+use ReflectionException;
 use Siesta\Database\ConnectionData;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Database\Exception\ConnectException;
@@ -48,8 +49,8 @@ class Config
 
     /**
      * @param ConnectionData $connectionData
-     *
      * @return array
+     * @throws ReflectionException
      */
     public static function buildConfiguration(ConnectionData $connectionData) : array
     {
@@ -190,6 +191,7 @@ class Config
 
     /**
      * @return MainGeneratorConfig
+     * @throws ReflectionException
      */
     public function getMainGeneratorConfig()
     {
@@ -201,6 +203,7 @@ class Config
 
     /**
      * @return ReverseConfig
+     * @throws ReflectionException
      */
     public function getReverseConfig()
     {

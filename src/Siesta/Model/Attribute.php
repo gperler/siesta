@@ -1,8 +1,10 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
+use ReflectionClass;
+use ReflectionException;
 use Siesta\NamingStrategy\NamingStrategyRegistry;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\StringUtil;
@@ -204,7 +206,7 @@ class Attribute
     /**
      * @return string
      */
-    public function getStoredProcedureParameterName() : string
+    public function getStoredProcedureParameterName(): string
     {
         return "P_" . strtoupper($this->getDBName());
     }
@@ -331,13 +333,14 @@ class Attribute
 
     /**
      * @return bool
+     * @throws ReflectionException
      */
-    public function implementsArraySerializable() : bool
+    public function implementsArraySerializable(): bool
     {
         if (!$this->getIsObject()) {
             return false;
         }
-        $reflect = new \ReflectionClass($this->getClassName());
+        $reflect = new ReflectionClass($this->getClassName());
         return $reflect->implementsInterface(self::INTERFACE_ARRAY_SERIALIZABLE);
     }
 
@@ -384,7 +387,7 @@ class Attribute
     }
 
     /**
-     * @return \string[]
+     * @return string[]
      */
     public function getCustomAttributeList(): array
     {
@@ -392,7 +395,7 @@ class Attribute
     }
 
     /**
-     * @param \string[] $customAttributeList
+     * @param string[] $customAttributeList
      */
     public function setCustomAttributeList(array $customAttributeList)
     {

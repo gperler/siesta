@@ -7,6 +7,8 @@ namespace Siesta\Model;
 /**
  * @author Gregor Müller
  */
+
+use ReflectionException;
 use Siesta\GeneratorPlugin\ServiceClass\SingletonPlugin;
 use Siesta\NamingStrategy\NamingStrategyRegistry;
 use Siesta\Util\ArrayUtil;
@@ -246,7 +248,7 @@ class Entity
     }
 
     /**
-     *
+     * @throws ReflectionException
      */
     public function update()
     {
@@ -497,7 +499,7 @@ class Entity
     }
 
     /**
-     * @return \string[]
+     * @return string[]
      */
     public function getCustomAttributeList(): array
     {
@@ -505,7 +507,7 @@ class Entity
     }
 
     /**
-     * @param \string[] $customAttributeList
+     * @param string[] $customAttributeList
      */
     public function setCustomAttributeList(array $customAttributeList)
     {

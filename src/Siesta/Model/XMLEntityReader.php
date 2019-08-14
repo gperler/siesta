@@ -37,6 +37,7 @@ class XMLEntityReader
     }
 
     /**
+     * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
     protected function readEntityDataFromXML(Entity $entity, XMLEntity $xmlEntity)
@@ -68,6 +69,7 @@ class XMLEntityReader
     }
 
     /**
+     * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
     protected function readServiceClassFromXML(Entity $entity, XMLEntity $xmlEntity)
@@ -262,6 +264,7 @@ class XMLEntityReader
     }
 
     /**
+     * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
     protected function readStoredProcedureListFromXML(Entity $entity, XMLEntity $xmlEntity)

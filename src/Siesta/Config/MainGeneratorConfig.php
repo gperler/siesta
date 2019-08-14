@@ -2,6 +2,7 @@
 
 namespace Siesta\Config;
 
+use ReflectionException;
 use Siesta\Exception\InvalidConfigurationException;
 use Siesta\NamingStrategy\NamingStrategy;
 use Siesta\Util\ArrayUtil;
@@ -116,6 +117,7 @@ class MainGeneratorConfig
 
     /**
      * @param array $values
+     * @throws ReflectionException
      */
     public function __construct(array $values = null)
     {
@@ -229,6 +231,7 @@ class MainGeneratorConfig
 
     /**
      * @param string $tableNamingStrategy
+     * @throws ReflectionException
      */
     public function setTableNamingStrategy(string $tableNamingStrategy = null)
     {
@@ -259,6 +262,7 @@ class MainGeneratorConfig
      * @param string $columnNamingStrategy
      *
      * @throws InvalidConfigurationException
+     * @throws ReflectionException
      */
     public function setColumnNamingStrategy(string $columnNamingStrategy = null)
     {
@@ -358,8 +362,7 @@ class MainGeneratorConfig
     /**
      * @param string $className
      * @param string $parameterName
-     *
-     * @throws InvalidConfigurationException
+     * @throws ReflectionException
      */
     protected function checkNamingStrategy(string $className, string $parameterName)
     {

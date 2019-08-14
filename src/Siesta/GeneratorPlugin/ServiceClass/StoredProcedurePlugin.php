@@ -172,7 +172,7 @@ class StoredProcedurePlugin extends BasePlugin
     }
 
     /**
-     *
+     * @param Method $method
      */
     private function generateEntityResultType(Method $method)
     {
@@ -181,7 +181,7 @@ class StoredProcedurePlugin extends BasePlugin
     }
 
     /**
-     *
+     * @param Method $method
      */
     private function generateListResultType(Method $method)
     {
@@ -189,7 +189,7 @@ class StoredProcedurePlugin extends BasePlugin
     }
 
     /**
-     *
+     * @param Method $method
      */
     private function generateResultSetResultType(Method $method)
     {
@@ -197,7 +197,7 @@ class StoredProcedurePlugin extends BasePlugin
     }
 
     /**
-     *
+     * @param Method $method
      */
     private function generateNoneResultType(Method $method)
     {

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Siesta\XML;
 
+use DomDocument;
+use DOMElement;
 use Siesta\Util\File;
 
 /**
@@ -11,7 +13,7 @@ use Siesta\Util\File;
 class XMLReader
 {
     /**
-     * @var \DomDocument
+     * @var DomDocument
      */
     protected $xmlDocument;
 
@@ -37,7 +39,7 @@ class XMLReader
     {
         $this->fileName = $file->getAbsoluteFileName();
         $this->xmlDocument = $file->loadAsXML();
-        $this->enityList = [];
+        $this->xmlEntityList = [];
         $this->xmlEntityExtensionList = [];
     }
 
@@ -59,9 +61,9 @@ class XMLReader
     }
 
     /**
-     * @param \DOMElement $entityElement
+     * @param DOMElement $entityElement
      */
-    protected function handleEntityElement(\DOMElement $entityElement)
+    protected function handleEntityElement(DOMElement $entityElement)
     {
         $entityReader = new XMLEntity();
         $entityReader->fromXML(new XMLAccess($entityElement));
@@ -85,9 +87,9 @@ class XMLReader
     }
 
     /**
-     * @param \DOMElement $entityExtensionElement
+     * @param DOMElement $entityExtensionElement
      */
-    protected function handleEntityExtension(\DOMElement $entityExtensionElement)
+    protected function handleEntityExtension(DOMElement $entityExtensionElement)
     {
         $entityExtension = new XMLEntityExtension();
         $entityExtension->fromXML(new XMLAccess($entityExtensionElement));

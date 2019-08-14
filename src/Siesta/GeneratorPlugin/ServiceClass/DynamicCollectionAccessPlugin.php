@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
 use Nitria\ClassGenerator;
+use ReflectionException;
 use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
@@ -19,6 +20,11 @@ class DynamicCollectionAccessPlugin extends BasePlugin
 
     const NAME_DELETE = "deleteDynamicCollection";
 
+    /**
+     * @param Entity $entity
+     * @param ClassGenerator $classGenerator
+     * @throws ReflectionException
+     */
     public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
         $this->setup($entity, $classGenerator);
@@ -31,6 +37,9 @@ class DynamicCollectionAccessPlugin extends BasePlugin
         $this->generateDynamicCollectionDelete();
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function generateDynamicCollectionManyAccess()
     {
         $dynamicAttributeList = DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this->entity);
@@ -51,6 +60,9 @@ class DynamicCollectionAccessPlugin extends BasePlugin
         $method->addCodeLine('return $this->executeStoredProcedure("CALL ' . $spName . '(' . $signature . ')", $connectionName);');
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function generateDynamicCollectionDelete()
     {
         $dynamicAttributeList = DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this->entity);

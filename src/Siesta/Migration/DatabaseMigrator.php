@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Siesta\Migration;
 
-use Codeception\Util\Debug;
 use Siesta\Database\Connection;
 use Siesta\Database\CreateStatementFactory;
 use Siesta\Database\MetaData\DatabaseMetaData;

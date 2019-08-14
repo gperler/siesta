@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Siesta\GeneratorPlugin\Entity;
 
 use Nitria\ClassGenerator;
+use ReflectionException;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Attribute;
 use Siesta\Model\Entity;
@@ -45,6 +46,7 @@ class FromResultSetPlugin extends BasePlugin
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
+     * @throws ReflectionException
      */
     public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
@@ -63,7 +65,7 @@ class FromResultSetPlugin extends BasePlugin
     }
 
     /**
-     *
+     * @throws ReflectionException
      */
     protected function generateFromResultSetMethod()
     {
@@ -98,8 +100,8 @@ class FromResultSetPlugin extends BasePlugin
 
     /**
      * @param Attribute $attribute
-     *
      * @return string
+     * @throws ReflectionException
      */
     protected function getAssignment(Attribute $attribute) : string
     {

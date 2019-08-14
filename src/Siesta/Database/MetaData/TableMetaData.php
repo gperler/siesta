@@ -31,6 +31,7 @@ interface TableMetaData
     public function getConstraintList() : array;
 
     /**
+     * @param string $name
      * @return ConstraintMetaData|null
      */
     public function getConstraintByName(string $name);

@@ -209,7 +209,7 @@ class MySQLTable implements TableMetaData
             $constraint = $this->getConstraintByName($constraintName);
 
             if ($constraint === null) {
-                $constraint = new MySQLConstraint($resultSet);
+                $constraint = new MySQLConstraint();
                 $constraint->fromResultSet($resultSet);
                 $this->constraintList[] = $constraint;
             } else {

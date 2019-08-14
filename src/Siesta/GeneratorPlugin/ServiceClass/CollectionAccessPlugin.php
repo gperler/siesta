@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
 use Nitria\ClassGenerator;
+use ReflectionException;
 use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
@@ -25,7 +26,7 @@ class CollectionAccessPlugin extends BasePlugin
      *
      * @return string
      */
-    public static function getSelectByReferenceName(Reference $reference) : string
+    public static function getSelectByReferenceName(Reference $reference): string
     {
         return sprintf(self::METHOD_NAME_SELECT_BY_REFERENCE, $reference->getMethodName());
     }
@@ -35,7 +36,7 @@ class CollectionAccessPlugin extends BasePlugin
      *
      * @return string
      */
-    public static function getDeleteByReferenceName(Reference $reference) : string
+    public static function getDeleteByReferenceName(Reference $reference): string
     {
         return sprintf(self::METHOD_NAME_DELETE_BY_REFERENCE, $reference->getMethodName());
 
@@ -46,7 +47,7 @@ class CollectionAccessPlugin extends BasePlugin
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         $useList = [];
         foreach ($entity->getReferenceList() as $reference) {
@@ -62,6 +63,7 @@ class CollectionAccessPlugin extends BasePlugin
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
+     * @throws ReflectionException
      */
     public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
@@ -78,6 +80,7 @@ class CollectionAccessPlugin extends BasePlugin
 
     /**
      * @param Reference $reference
+     * @throws ReflectionException
      */
     protected function generateSelectByReference(Reference $reference)
     {
@@ -104,6 +107,7 @@ class CollectionAccessPlugin extends BasePlugin
 
     /**
      * @param Reference $reference
+     * @throws ReflectionException
      */
     protected function generateDeleteByReference(Reference $reference)
     {
@@ -133,7 +137,7 @@ class CollectionAccessPlugin extends BasePlugin
      *
      * @return array
      */
-    protected function getSignatureAttributeList(Reference $reference) : array
+    protected function getSignatureAttributeList(Reference $reference): array
     {
         $attributeList = [];
         foreach ($reference->getReferenceMappingList() as $mapping) {

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Siesta\Migration;
 
-use Codeception\Util\Debug;
 use Siesta\Database\StoredProcedureDefinition;
 use Siesta\Database\StoredProcedureFactory;
 use Siesta\Model\DataModel;

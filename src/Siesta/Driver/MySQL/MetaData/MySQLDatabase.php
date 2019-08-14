@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Siesta\Driver\MySQL\MetaData;
 
 use Siesta\Database\Connection;
-use Siesta\Database\CreateStatementFactory;
 use Siesta\Database\MetaData\DatabaseMetaData;
 use Siesta\Database\MetaData\TableMetaData;
 use Siesta\Model\StoredProcedure;

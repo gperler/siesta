@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Siesta\Driver\MySQL;
 
+use mysqli_result;
 use Siesta\Database\ResultSet;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\SiestaDateTime;
@@ -17,7 +18,7 @@ class MySQLSimpleResultSet implements ResultSet
     protected $next;
 
     /**
-     * @var \mysqli_result
+     * @var mysqli_result
      */
     protected $resultSet;
 
@@ -26,7 +27,7 @@ class MySQLSimpleResultSet implements ResultSet
      *
      * @param $resultSet
      */
-    public function __construct(\mysqli_result $resultSet)
+    public function __construct(mysqli_result $resultSet)
     {
         $this->resultSet = $resultSet;
     }

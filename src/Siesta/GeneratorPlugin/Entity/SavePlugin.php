@@ -6,6 +6,7 @@ namespace Siesta\GeneratorPlugin\Entity;
 
 use Nitria\ClassGenerator;
 use Nitria\Method;
+use ReflectionException;
 use Siesta\CodeGenerator\GeneratorHelper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
@@ -39,6 +40,7 @@ class SavePlugin extends BasePlugin
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
+     * @throws ReflectionException
      */
     public function generate(Entity $entity, ClassGenerator $classGenerator)
     {
@@ -166,7 +168,7 @@ class SavePlugin extends BasePlugin
     }
 
     /**
-     *
+     * @throws ReflectionException
      */
     protected function generateCreateSPCall()
     {
@@ -202,7 +204,9 @@ class SavePlugin extends BasePlugin
     }
 
     /**
-     * @return string[]
+     * @param GeneratorHelper $helper
+     * @return array
+     * @throws ReflectionException
      */
     protected function getQuoteCallList(GeneratorHelper $helper): array
     {

@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Siesta\Sequencer;
 
+use RuntimeException;
 use Siesta\Util\ArrayUtil;
 
 class SequencerFactory
@@ -81,7 +82,7 @@ class SequencerFactory
     {
         $sequencer = ArrayUtil::getFromArray($this->sequencerList, $sequencerName);
         if ($sequencer === null) {
-            throw new \RuntimeException(sprintf(self::ERROR_SEQUENCER_NOT_REGISTERED, $sequencerName));
+            throw new RuntimeException(sprintf(self::ERROR_SEQUENCER_NOT_REGISTERED, $sequencerName));
 
         }
         return $sequencer;

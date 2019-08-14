@@ -2,6 +2,7 @@
 
 namespace Siesta\Config;
 
+use ReflectionException;
 use Siesta\Exception\InvalidConfigurationException;
 use Siesta\NamingStrategy\NamingStrategy;
 use Siesta\Util\ArrayUtil;
@@ -93,6 +94,7 @@ class ReverseConfig
 
     /**
      * @param array $values
+     * @throws ReflectionException
      */
     public function __construct(array $values = null)
     {
@@ -207,6 +209,7 @@ class ReverseConfig
 
     /**
      * @param string $classNamingStrategy
+     * @throws ReflectionException
      */
     public function setClassNamingStrategy(string $classNamingStrategy = null)
     {
@@ -235,6 +238,7 @@ class ReverseConfig
      * @param string $attributeNamingStrategy
      *
      * @throws InvalidConfigurationException
+     * @throws ReflectionException
      */
     public function setAttributeNamingStrategy(string $attributeNamingStrategy = null)
     {
@@ -277,8 +281,7 @@ class ReverseConfig
     /**
      * @param string $className
      * @param string $parameterName
-     *
-     * @throws InvalidConfigurationException
+     * @throws ReflectionException
      */
     protected function checkNamingStrategy(string $className, string $parameterName)
     {

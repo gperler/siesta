@@ -211,9 +211,10 @@ class CollectorGetterSetter extends BasePlugin
     }
 
     /**
+     * @param Collection|null $collection
      * @return string
      */
-    protected function getServiceClassInvocationSignature(Collection $collection = null)
+    protected function getServiceClassInvocationSignature(Collection $collection = null) : string
     {
         $pkList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {

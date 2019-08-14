@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -16,7 +16,7 @@ class ArePKIdenticalPlugin extends BasePlugin
     /**
      * @return string[]
      */
-    public function getInterfaceList() : array
+    public function getInterfaceList(): array
     {
         return ['Siesta\Contract\Comparable'];
     }
@@ -40,7 +40,6 @@ class ArePKIdenticalPlugin extends BasePlugin
 
         $method = $this->classGenerator->addPublicMethod(self::METHOD_ARE_PK_IDENTICAL);
 
-        $className = $this->entity->getClassName();
         $method->addParameter('Siesta\Contract\Comparable', 'entity', 'null');
         $method->setReturnType('bool', false);
 
@@ -58,7 +57,7 @@ class ArePKIdenticalPlugin extends BasePlugin
     /**
      * @return string
      */
-    protected function getCompareExpression() : string
+    protected function getCompareExpression(): string
     {
         if (!$this->entity->hasPrimaryKey()) {
             return 'false';

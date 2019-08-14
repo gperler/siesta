@@ -6,6 +6,7 @@ namespace Siesta\Main;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use ReflectionException;
 use Siesta\Config\GenericConfigLoader;
 use Siesta\Contract\DataModelUpdater;
 use Siesta\Database\Connection;
@@ -148,6 +149,7 @@ class Siesta implements LoggerAwareInterface
 
     /**
      * @throws InvalidConfigurationException
+     * @throws ReflectionException
      */
     protected function setup()
     {
@@ -159,6 +161,7 @@ class Siesta implements LoggerAwareInterface
 
     /**
      * @throws InvalidConfigurationException
+     * @throws ReflectionException
      */
     protected function prepareModel()
     {
@@ -177,6 +180,7 @@ class Siesta implements LoggerAwareInterface
      * @param string $baseDir
      *
      * @throws InvalidConfigurationException
+     * @throws ReflectionException
      */
     protected function generateClasses(string $baseDir)
     {
@@ -190,6 +194,7 @@ class Siesta implements LoggerAwareInterface
      * @param bool $dropUnusedTables
      *
      * @throws InvalidConfigurationException
+     * @throws ReflectionException
      */
     public function migrateDirect(string $baseDir, bool $dropUnusedTables = true)
     {
@@ -204,6 +209,7 @@ class Siesta implements LoggerAwareInterface
      * @param bool $dropUnusedTables
      *
      * @throws InvalidConfigurationException
+     * @throws ReflectionException
      */
     public function migrateToFile(string $baseDir, File $targetFile, bool $dropUnusedTables = true)
     {

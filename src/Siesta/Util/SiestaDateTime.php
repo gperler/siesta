@@ -1,17 +1,38 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Util;
+
+use DateTime;
+use DateTimeZone;
+use Exception;
+use RuntimeException;
 
 /**
  * @author Gregor Müller
  */
-class SiestaDateTime extends \DateTime
+class SiestaDateTime extends DateTime
 {
+
+    /**
+     * SiestaDateTime constructor.
+     * @param string $time
+     * @param DateTimeZone|null $timezone
+     */
+    public function __construct($time = 'now', DateTimeZone $timezone = null)
+    {
+        try {
+            parent::__construct($time, $timezone);
+        } catch (Exception $e) {
+            throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
+        }
+
+    }
+
     /**
      * @return string
      */
-    function getJSONDateTime() : string
+    function getJSONDateTime(): string
     {
 
         return $this->format("Y-m-d\\TH:i:s");
@@ -20,7 +41,7 @@ class SiestaDateTime extends \DateTime
     /**
      * @return string
      */
-    public function getSQLDateTime() : string
+    public function getSQLDateTime(): string
     {
         return $this->format("Y-m-d H:i:s");
     }
@@ -28,7 +49,7 @@ class SiestaDateTime extends \DateTime
     /**
      * @return string
      */
-    public function getSQLDate() : string
+    public function getSQLDate(): string
     {
         return $this->format("Y-m-d");
     }
@@ -36,7 +57,7 @@ class SiestaDateTime extends \DateTime
     /**
      * @return string
      */
-    public function getSQLTime() : string
+    public function getSQLTime(): string
     {
         return $this->format("H:i:s");
     }

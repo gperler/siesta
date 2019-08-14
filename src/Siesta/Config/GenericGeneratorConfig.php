@@ -2,6 +2,8 @@
 
 namespace Siesta\Config;
 
+use ReflectionClass;
+use ReflectionException;
 use Siesta\Model\ValidationLogger;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\ClassUtil;
@@ -92,6 +94,7 @@ class GenericGeneratorConfig
 
     /**
      * @param ValidationLogger $logger
+     * @throws ReflectionException
      */
     public function validate(ValidationLogger $logger)
     {
@@ -119,6 +122,7 @@ class GenericGeneratorConfig
 
     /**
      * @param ValidationLogger $logger
+     * @throws ReflectionException
      */
     protected function validateGenerator(ValidationLogger $logger)
     {
@@ -127,7 +131,7 @@ class GenericGeneratorConfig
             $logger->error($error, self::ERROR_GENERATOR_CLASS_DOES_NOT_EXIST_CODE);
             return;
         }
-        $reflect = new \ReflectionClass($this->className);
+        $reflect = new ReflectionClass($this->className);
 
         if (!$reflect->implementsInterface(self::GENERATOR_INTERFACE)) {
             $error = sprintf(self::ERROR_GENERATOR_CLASS_DOES_NOT_IMPLEMENT, $this->className);
@@ -137,6 +141,7 @@ class GenericGeneratorConfig
 
     /**
      * @param ValidationLogger $logger
+     * @throws ReflectionException
      */
     protected function validatePluginList(ValidationLogger $logger)
     {
@@ -148,6 +153,7 @@ class GenericGeneratorConfig
     /**
      * @param ValidationLogger $logger
      * @param string $plugin
+     * @throws ReflectionException
      */
     protected function validatePlugin(ValidationLogger $logger, string $plugin)
     {
@@ -166,6 +172,7 @@ class GenericGeneratorConfig
 
     /**
      * @param ValidationLogger $logger
+     * @throws ReflectionException
      */
     protected function validateValdidatorList(ValidationLogger $logger)
     {
@@ -174,6 +181,11 @@ class GenericGeneratorConfig
         }
     }
 
+    /**
+     * @param ValidationLogger $logger
+     * @param $validator
+     * @throws ReflectionException
+     */
     public function validateValidator(ValidationLogger $logger, $validator)
     {
         if (!ClassUtil::exists($validator)) {
@@ -182,7 +194,7 @@ class GenericGeneratorConfig
             return;
         }
 
-        $reflect = new \ReflectionClass($validator);
+        $reflect = new ReflectionClass($validator);
 
         if ($reflect->implementsInterface(Validator::DATAMODEL_VALIDATOR_INTERFACE)) {
             return;

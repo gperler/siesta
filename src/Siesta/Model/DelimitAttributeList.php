@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -18,6 +18,7 @@ class DelimitAttributeList
     const COLUMN_VALID_UNTIL = "_validUntil";
 
     /**
+     * @param Entity $entity
      * @return Attribute[]
      */
     public static function getDelimitAttributes(Entity $entity)
@@ -29,7 +30,11 @@ class DelimitAttributeList
         ];
     }
 
-    protected static function getDelimitIDAttribute(Entity $entity) : Attribute
+    /**
+     * @param Entity $entity
+     * @return Attribute
+     */
+    protected static function getDelimitIDAttribute(Entity $entity): Attribute
     {
         $attribute = new Attribute($entity);
         $attribute->setPhpName(self::COLUMN_DELIMIT_ID);
@@ -41,7 +46,11 @@ class DelimitAttributeList
         return $attribute;
     }
 
-    protected static function getValidFromAttribute(Entity $entity) : Attribute
+    /**
+     * @param Entity $entity
+     * @return Attribute
+     */
+    protected static function getValidFromAttribute(Entity $entity): Attribute
     {
         $attribute = new Attribute($entity);
         $attribute->setPhpName(self::COLUMN_VALID_FROM);
@@ -50,7 +59,11 @@ class DelimitAttributeList
         return $attribute;
     }
 
-    protected static function getValidUntilAttribute(Entity $entity) : Attribute
+    /**
+     * @param Entity $entity
+     * @return Attribute
+     */
+    protected static function getValidUntilAttribute(Entity $entity): Attribute
     {
         $attribute = new Attribute($entity);
         $attribute->setPhpName(self::COLUMN_VALID_UNTIL);

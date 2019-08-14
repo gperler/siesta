@@ -3,7 +3,6 @@
 namespace SiestaTest\Functional\Model;
 
 use Siesta\Model\DataModel;
-use Siesta\NamingStrategy\ColumnNamingIdenticalStrategy;
 use Siesta\NamingStrategy\NoTransformStrategy;
 use Siesta\NamingStrategy\ToUnderScoreStrategy;
 use Siesta\NamingStrategy\NamingStrategyRegistry;

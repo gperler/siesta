@@ -234,6 +234,17 @@ class XMLEntity
         $this->xmlDynamicCollectionList = array_merge($this->xmlDynamicCollectionList, $xmlEntityExtension->getXMLDynamicCollectionList());
         $this->xmlStoredProcedureList = array_merge($this->xmlStoredProcedureList, $xmlEntityExtension->getXMLStoredProcedureList());
         $this->xmlValueObjectList = array_merge($this->xmlValueObjectList, $xmlEntityExtension->getXMLValueObjectList());
+
+        $extensionConstructor = $xmlEntityExtension->getXmlConstructor();
+        if ($extensionConstructor !== null) {
+            $this->xmlConstructor = $extensionConstructor;
+        }
+
+        $extensionService = $xmlEntityExtension->getXmlServiceClass();
+        if ($extensionService !== null) {
+            $this->xmlServiceClass = $extensionService;
+        }
+
     }
 
     /**
