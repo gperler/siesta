@@ -64,7 +64,7 @@ class MySQLColumn implements ColumnMetaData
     /**
      * @var string
      */
-    protected $autovalue;
+    protected $autoValue;
 
     /**
      * @var string
@@ -112,7 +112,7 @@ class MySQLColumn implements ColumnMetaData
         $this->isPrimaryKey = $resultSet->getStringValue(self::COLUMN_KEY) === self::COLUMN_KEY_PRIMARY_KEY;
         $this->default = $resultSet->getStringValue(self::COLUMN_DEFAULT);
         $this->isNullAble = $resultSet->getStringValue(self::COLUMN_IS_NULLABLE) === self::COLUMN_IS_NULLABLE_YES;
-        $this->autovalue = ($this->isPrimaryKey && $tableHasAutoincrement) ? 'autoincrement' : null;
+        $this->autoValue = ($this->isPrimaryKey && $tableHasAutoincrement) ? 'autoincrement' : null;
     }
 
     /**
@@ -177,7 +177,7 @@ class MySQLColumn implements ColumnMetaData
      */
     public function getAutoValue()
     {
-        return $this->autovalue;
+        return $this->autoValue;
     }
 
 }

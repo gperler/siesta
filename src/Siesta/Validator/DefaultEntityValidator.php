@@ -42,7 +42,7 @@ class DefaultEntityValidator implements EntityValidator
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -61,7 +61,7 @@ class DefaultEntityValidator implements EntityValidator
      */
     public function validate(DataModel $dataModel, Entity $entity, ValidationLogger $logger)
     {
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
         $this->logger = $logger;
 

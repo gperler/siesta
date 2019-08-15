@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
+use RuntimeException;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\Model\Attribute;
 use Siesta\Model\CollectionMany;
@@ -137,6 +138,7 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
                 return $referenceMapping->getLocalColumnName();
             }
         }
+        throw new RuntimeException();
     }
 
     /**

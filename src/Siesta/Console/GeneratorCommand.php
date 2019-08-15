@@ -76,7 +76,7 @@ class GeneratorCommand extends Command
         try {
 
             $this->getConfiguration();
-            $output->writeln("I'm using configfile " . $this->config->getConfigFileName());
+            $output->writeln("I'm using config file " . $this->config->getConfigFileName());
 
             $this->setupSiesta();
 

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
+use Civis\Common\ArrayUtil;
 use Nitria\ClassGenerator;
 use ReflectionException;
 use Siesta\CodeGenerator\GeneratorHelper;
@@ -25,7 +26,7 @@ class DeleteEntityByIdPlugin extends BasePlugin
      */
     public function getUseClassNameList(Entity $entity) : array
     {
-        return ['Civis\Common\ArrayUtil'];
+        return [ArrayUtil::class];
     }
 
     /**

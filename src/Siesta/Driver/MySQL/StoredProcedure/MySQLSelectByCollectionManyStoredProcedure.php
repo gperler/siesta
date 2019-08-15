@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
+use RuntimeException;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\Model\Attribute;
 use Siesta\Model\CollectionMany;
@@ -37,7 +38,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      * @var Reference
      */
-    protected $mappinReference;
+    protected $mappingReference;
 
     /**
      *
@@ -51,7 +52,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
         $this->foreignEntity = $collectionMany->getForeignEntity();
         $this->foreignReference = $collectionMany->getForeignReference();
         $this->mappingEntity = $collectionMany->getMappingEntity();
-        $this->mappinReference = $collectionMany->getMappingReference();
+        $this->mappingReference = $collectionMany->getMappingReference();
         $this->buildElements();
     }
 
@@ -122,7 +123,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
         $mappingTable = $this->mappingEntity->getTableName();
         $whereList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
-            $mappingAttribute = $this->getCorrespondingColumnForPKAttribute($this->mappinReference, $pkAttribute);
+            $mappingAttribute = $this->getCorrespondingColumnForPKAttribute($this->mappingReference, $pkAttribute);
             $whereList[] = $this->buildTableColumn($mappingTable, $mappingAttribute) . ' = ' . $pkAttribute->getStoredProcedureParameterName();
         }
         return implode(" AND ", $whereList);
@@ -141,6 +142,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
                 return $referenceMapping->getLocalColumnName();
             }
         }
+        throw new RuntimeException();
     }
 
 

@@ -120,8 +120,8 @@ class Migrator implements LoggerAwareInterface
         $this->setup($dataModel, $connection);
 
         $dropping = $dropUnusedTables ? " dropping unused tables " : " not dropping unused tables";
-        $datbase = $this->connection->getDatabase();
-        $this->logger->info("Storing alter statements for database " . $datbase . $dropping);
+        $database = $this->connection->getDatabase();
+        $this->logger->info("Storing alter statements for database " . $database . $dropping);
         $this->logger->info("Used file " . $targetFile->getAbsoluteFileName());
 
         $this->databaseMigrator->createAlterStatementList($dropUnusedTables);

@@ -50,7 +50,7 @@ class UpdateStatement
         $this->setList = [];
         $this->whereList = [];
         $this->parameterList = [];
-        $this->extractColumAndValueList();
+        $this->extractColumnAndValueList();
     }
 
     /**
@@ -87,7 +87,7 @@ class UpdateStatement
     /**
      * @return void
      */
-    private function extractColumAndValueList()
+    private function extractColumnAndValueList()
     {
 
         // iterate attributes

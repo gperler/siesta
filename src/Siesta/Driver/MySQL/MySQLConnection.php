@@ -142,7 +142,7 @@ class MySQLConnection implements Connection
     }
 
     /**
-     * execute an sql command and free resulSet.
+     * execute an sql command and free resultSet.
      *
      * @param string $query
      *

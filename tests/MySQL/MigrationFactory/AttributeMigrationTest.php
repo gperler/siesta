@@ -50,7 +50,7 @@ class AttributeMigrationTest extends \PHPUnit_Framework_TestCase
         $attribute->setDbName("modifyAttribute");
         $attribute->setDbType("INT");
         $attribute->setIsRequired(true);
-        $statementList = $factory->createModifiyColumnStatement($attribute);
+        $statementList = $factory->createModifyColumnStatement($attribute);
         $statement = $this->postProcessStatement($statementList, "Attribute");
         $this->assertSame("ALTER TABLE `Attribute` MODIFY `modifyAttribute` INT NOT NULL", $statement);
         $connection->execute($statement);

@@ -29,9 +29,9 @@ class ReverseConfig
     const OPTION_TARGET_FILE_DEFAULT = "Reverse.xml";
 
     /* entityFileSuffix */
-    const OPTION_ENTITY_FILE_SUFFX = "entityFileSuffix";
+    const OPTION_ENTITY_FILE_SUFFIX = "entityFileSuffix";
 
-    const OPTION_ENTITY_FILE_SUFFX_DEFAULT = MainGeneratorConfig::OPTION_ENTITY_FILE_SUFFX_DEFAULT;
+    const OPTION_ENTITY_FILE_SUFFIX_DEFAULT = MainGeneratorConfig::OPTION_ENTITY_FILE_SUFFIX_DEFAULT;
 
     /* singleFile */
     const OPTION_SINGLE_FILE = "singleFile";
@@ -100,7 +100,7 @@ class ReverseConfig
     {
         $this->setTargetPath(ArrayUtil::getFromArray($values, self::OPTION_TARGET_PATH));
         $this->setTargetFile(ArrayUtil::getFromArray($values, self::OPTION_TARGET_FILE));
-        $this->setEntityXMLFileSuffix(ArrayUtil::getFromArray($values, self::OPTION_ENTITY_FILE_SUFFX));
+        $this->setEntityXMLFileSuffix(ArrayUtil::getFromArray($values, self::OPTION_ENTITY_FILE_SUFFIX));
         $this->setSingleFile(ArrayUtil::getFromArray($values, self::OPTION_SINGLE_FILE));
 
         $this->setClassNamingStrategy(ArrayUtil::getFromArray($values, self::OPTION_CLASS_NAMING));
@@ -117,7 +117,7 @@ class ReverseConfig
         return [
             self::OPTION_TARGET_PATH => $this->getTargetPath(),
             self::OPTION_TARGET_FILE => $this->getTargetFile(),
-            self::OPTION_ENTITY_FILE_SUFFX => $this->getEntityXMLFileSuffix(),
+            self::OPTION_ENTITY_FILE_SUFFIX => $this->getEntityXMLFileSuffix(),
             self::OPTION_SINGLE_FILE => $this->isSingleFile(),
             self::OPTION_CLASS_NAMING => $this->getClassNamingStrategy(),
             self::OPTION_ATTRIBUTE_NAMING => $this->getAttributeNamingStrategy(),
@@ -171,7 +171,7 @@ class ReverseConfig
      */
     public function setEntityXMLFileSuffix(string $entityXMLFileSuffix = null)
     {
-        $this->entityXMLFileSuffix = ($entityXMLFileSuffix !== null) ? $entityXMLFileSuffix : self::OPTION_ENTITY_FILE_SUFFX_DEFAULT;
+        $this->entityXMLFileSuffix = ($entityXMLFileSuffix !== null) ? $entityXMLFileSuffix : self::OPTION_ENTITY_FILE_SUFFIX_DEFAULT;
     }
 
     /**

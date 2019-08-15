@@ -24,7 +24,7 @@ class DefaultReferenceValidator implements ReferenceValidator
 
     const ERROR_INVALID_ON_X_VALUE = "Entity '%s' Reference '%s' %s has invalid value '%s'";
 
-    const ERROR_INVALID_ON_X_VALUD_CODE = 1301;
+    const ERROR_INVALID_ON_X_VALID_CODE = 1301;
 
     const ERROR_INVALID_LOCAL_REFERENCE = "Entity '%s' Reference '%s' localColumn '%s' can not be resolved";
 
@@ -34,11 +34,11 @@ class DefaultReferenceValidator implements ReferenceValidator
 
     const ERROR_INVALID_FOREIGN_REFERENCE_CODE = 1303;
 
-    const ERROR_MAPPING_HAS_NOT_SAME_DB_DATA_TYPE = "Entity '%s' Reference '%s' localColumn and foreignColumn have different datatypes '%s' and '%s'";
+    const ERROR_MAPPING_HAS_NOT_SAME_DB_DATA_TYPE = "Entity '%s' Reference '%s' localColumn and foreignColumn have different data types '%s' and '%s'";
 
     const ERROR_MAPPING_HAS_NOT_SAME_DB_DATA_TYPE_CODE = 1304;
 
-    const ERROR_MAPPING_HAS_NOT_SAME_PHP_DATA_TYPE = "Entity '%s' Reference '%s' localColumn and foreignColumn have different phptypes '%s' and '%s'";
+    const ERROR_MAPPING_HAS_NOT_SAME_PHP_DATA_TYPE = "Entity '%s' Reference '%s' localColumn and foreignColumn have different php types '%s' and '%s'";
 
     const ERROR_MAPPING_HAS_NOT_SAME_PHP_DATA_TYPE_CODE = 1305;
 
@@ -56,7 +56,7 @@ class DefaultReferenceValidator implements ReferenceValidator
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -81,7 +81,7 @@ class DefaultReferenceValidator implements ReferenceValidator
      */
     public function validate(DataModel $dataModel, Entity $entity, Reference $reference, ValidationLogger $logger)
     {
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
         $this->reference = $reference;
         $this->logger = $logger;
@@ -142,7 +142,7 @@ class DefaultReferenceValidator implements ReferenceValidator
         }
 
         $error = sprintf(self::ERROR_INVALID_ON_X_VALUE, $this->getEntityName(), $this->getReferenceName(), $onX, $onXValue);
-        $this->error($error, self::ERROR_INVALID_ON_X_VALUD_CODE);
+        $this->error($error, self::ERROR_INVALID_ON_X_VALID_CODE);
     }
 
     /**
