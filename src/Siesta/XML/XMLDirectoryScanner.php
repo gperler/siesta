@@ -37,24 +37,28 @@ class XMLDirectoryScanner
         $this->xmlEntityExtensionList = [];
     }
 
+
     /**
      * @param File $file
+     * @param int|null $lastGenerationTime
      */
-    public function addFile(File $file)
+    public function addFile(File $file, int $lastGenerationTime = null)
     {
         if (!$file->exists()) {
             $warn = sprintf(self::ERROR_FILE_DOES_NOT_EXIST, $file->getAbsoluteFileName());
             $this->validationLogger->warn($warn, 0);
             return;
         }
-        $this->processFile($file);
+        $this->processFile($file, $lastGenerationTime);
     }
+
 
     /**
      * @param string $fileExtension
-     * @param string $baseDir
+     * @param string|null $baseDir
+     * @param int|null $lastGenerationTime
      */
-    public function addFileExtension(string $fileExtension, string $baseDir = null)
+    public function addFileExtension(string $fileExtension, string $baseDir = null, int $lastGenerationTime = null)
     {
         $baseDir = $baseDir ? $baseDir : getcwd();
 
@@ -67,16 +71,18 @@ class XMLDirectoryScanner
 
         $fileList = $base->findFileList($fileExtension);
         foreach ($fileList as $file) {
-            $this->processFile($file);
+            $this->processFile($file, $lastGenerationTime);
         }
     }
 
+
     /**
      * @param File $file
+     * @param int|null $lastGenerationTime
      */
-    protected function processFile(File $file)
+    protected function processFile(File $file, int $lastGenerationTime = null)
     {
-        $xmlReader = new XMLReader($file);
+        $xmlReader = new XMLReader($file, $lastGenerationTime);
         $this->xmlEntityList = array_merge($this->xmlEntityList, $xmlReader->getEntityList());
         $this->xmlEntityExtensionList = array_merge($this->xmlEntityExtensionList, $xmlReader->getEntityExtensionList());
     }

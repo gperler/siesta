@@ -27,6 +27,14 @@ use Siesta\XML\XMLDirectoryScanner;
  */
 class Siesta implements LoggerAwareInterface
 {
+
+    /**
+     * time when the last time was generated
+     *
+     * @var int
+     */
+    protected $lastGenerationTime;
+
     /**
      * @var ValidationLogger
      */
@@ -72,6 +80,7 @@ class Siesta implements LoggerAwareInterface
      */
     protected $dataModelUpdater;
 
+
     /**
      * Siesta constructor.
      */
@@ -94,6 +103,7 @@ class Siesta implements LoggerAwareInterface
         $this->dataModelUpdater = new NoUpdate();
     }
 
+
     /**
      * @param LoggerInterface $logger
      */
@@ -103,6 +113,7 @@ class Siesta implements LoggerAwareInterface
         $this->migrator->setLogger($logger);
     }
 
+
     /**
      * @param File $file
      */
@@ -111,14 +122,16 @@ class Siesta implements LoggerAwareInterface
         $this->directoryScanner->addFile($file);
     }
 
+
     /**
      * @param string $extension
      * @param string|null $baseDir
      */
     public function addFileType(string $extension, string $baseDir = null)
     {
-        $this->directoryScanner->addFileExtension($extension, $baseDir);
+        $this->directoryScanner->addFileExtension($extension, $baseDir, $this->lastGenerationTime);
     }
+
 
     /**
      * @param File $file
@@ -127,6 +140,7 @@ class Siesta implements LoggerAwareInterface
     {
         $this->genericConfigLoader->setConfigFile($file);
     }
+
 
     /**
      * @return Connection
@@ -139,6 +153,7 @@ class Siesta implements LoggerAwareInterface
         return ConnectionFactory::getConnection();
     }
 
+
     /**
      * @param Connection $connection
      */
@@ -146,6 +161,7 @@ class Siesta implements LoggerAwareInterface
     {
         $this->connection = $connection;
     }
+
 
     /**
      * @throws InvalidConfigurationException
@@ -158,6 +174,7 @@ class Siesta implements LoggerAwareInterface
         $this->validator->setup($genericConfig);
         $this->mainGenerator->setup($genericConfig);
     }
+
 
     /**
      * @throws InvalidConfigurationException
@@ -176,6 +193,7 @@ class Siesta implements LoggerAwareInterface
         $this->checkValidationError();
     }
 
+
     /**
      * @param string $baseDir
      *
@@ -189,6 +207,7 @@ class Siesta implements LoggerAwareInterface
         $this->mainGenerator->generate($this->dataModel, $baseDir);
     }
 
+
     /**
      * @param string $baseDir
      * @param bool $dropUnusedTables
@@ -200,8 +219,8 @@ class Siesta implements LoggerAwareInterface
     {
         $this->generateClasses($baseDir);
         $this->migrator->migrateDirect($this->dataModel, $this->getConnection(), $dropUnusedTables);
-
     }
+
 
     /**
      * @param string $baseDir
@@ -217,6 +236,7 @@ class Siesta implements LoggerAwareInterface
         $this->migrator->migrateToSQLFile($this->dataModel, $this->getConnection(), $targetFile, $dropUnusedTables);
     }
 
+
     /**
      * @throws InvalidConfigurationException
      */
@@ -228,6 +248,7 @@ class Siesta implements LoggerAwareInterface
         throw new InvalidConfigurationException();
     }
 
+
     /**
      * @param NamingStrategy $strategy
      */
@@ -235,6 +256,7 @@ class Siesta implements LoggerAwareInterface
     {
         NamingStrategyRegistry::setTableNamingStrategy($strategy);
     }
+
 
     /**
      * @param NamingStrategy $strategy
@@ -244,6 +266,7 @@ class Siesta implements LoggerAwareInterface
         NamingStrategyRegistry::setColumnNamingStrategy($strategy);
     }
 
+
     /**
      * @param string|null $fileName
      */
@@ -252,6 +275,7 @@ class Siesta implements LoggerAwareInterface
         $this->genericConfigLoader->setConfigFileName($fileName);
     }
 
+
     /**
      * @param DataModelUpdater $dataModelUpdater
      */
@@ -259,4 +283,15 @@ class Siesta implements LoggerAwareInterface
     {
         $this->dataModelUpdater = $dataModelUpdater;
     }
+
+
+    /**
+     * @param int $lastGenerationTime
+     */
+    public function setLastGenerationTime(?int $lastGenerationTime): void
+    {
+        $this->lastGenerationTime = $lastGenerationTime;
+    }
+
+
 }

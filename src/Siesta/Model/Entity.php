@@ -129,6 +129,13 @@ class Entity
      */
     protected $customAttributeList;
 
+
+    /**
+     * @var bool
+     */
+    protected $hasChangedSinceLastGeneration;
+
+
     /**
      * Entity constructor.
      *
@@ -147,7 +154,27 @@ class Entity
         $this->foreignCollectionManyList = [];
         $this->storedProcedureList = [];
         $this->valueObjectList = [];
+        $this->hasChangedSinceLastGeneration = true;
     }
+
+
+    /**
+     * @return bool
+     */
+    public function isHasChangedSinceLastGeneration(): bool
+    {
+        return $this->hasChangedSinceLastGeneration;
+    }
+
+
+    /**
+     * @param bool $hasChangedSinceLastGeneration
+     */
+    public function setHasChangedSinceLastGeneration(bool $hasChangedSinceLastGeneration): void
+    {
+        $this->hasChangedSinceLastGeneration = $hasChangedSinceLastGeneration;
+    }
+
 
     /**
      * @return Constructor
@@ -158,6 +185,7 @@ class Entity
         return $this->constructor;
     }
 
+
     /**
      * @return ServiceClass
      */
@@ -166,6 +194,7 @@ class Entity
         $this->serviceClass = new ServiceClass();
         return $this->serviceClass;
     }
+
 
     /**
      * @return Attribute
@@ -177,6 +206,7 @@ class Entity
         return $attribute;
     }
 
+
     /**
      * @return Reference
      */
@@ -186,6 +216,7 @@ class Entity
         $this->referenceList[] = $reference;
         return $reference;
     }
+
 
     /**
      * @return Index
@@ -197,6 +228,7 @@ class Entity
         return $index;
     }
 
+
     /**
      * @return Collection
      */
@@ -206,6 +238,7 @@ class Entity
         $this->collectionList[] = $collection;
         return $collection;
     }
+
 
     /**
      * @return CollectionMany
@@ -217,6 +250,7 @@ class Entity
         return $collectionMany;
     }
 
+
     /**
      * @return DynamicCollection
      */
@@ -226,6 +260,7 @@ class Entity
         $this->dynamicCollectionList[] = $dynamicCollection;
         return $dynamicCollection;
     }
+
 
     /**
      * @return StoredProcedure
@@ -237,6 +272,7 @@ class Entity
         return $storedProcedure;
     }
 
+
     /**
      * @return ValueObject
      */
@@ -246,6 +282,7 @@ class Entity
         $this->valueObjectList[] = $valueObject;
         return $valueObject;
     }
+
 
     /**
      * @throws ReflectionException
@@ -273,8 +310,8 @@ class Entity
         foreach ($this->valueObjectList as $valueObject) {
             $valueObject->update();
         }
-
     }
+
 
     public function setIsDynamicCollectionTarget()
     {
@@ -286,6 +323,7 @@ class Entity
         $this->attributeList = array_merge($this->attributeList, DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this));
     }
 
+
     /**
      * @return bool
      */
@@ -293,6 +331,7 @@ class Entity
     {
         return $this->isDynamicCollectionTarget;
     }
+
 
     /**
      * @return Attribute[]
@@ -308,6 +347,7 @@ class Entity
         return $primaryKeyAttributeList;
     }
 
+
     /**
      * @return bool
      */
@@ -320,6 +360,7 @@ class Entity
         }
         return false;
     }
+
 
     /**
      * @param string $name
@@ -336,6 +377,7 @@ class Entity
         return null;
     }
 
+
     /**
      * @param string $name
      *
@@ -350,6 +392,7 @@ class Entity
         }
         return null;
     }
+
 
     /**
      * @param string $name
@@ -366,6 +409,7 @@ class Entity
         return null;
     }
 
+
     /**
      * @param string $name
      *
@@ -380,6 +424,7 @@ class Entity
         }
         return null;
     }
+
 
     /**
      * @param string $name
@@ -396,6 +441,7 @@ class Entity
         return null;
     }
 
+
     /**
      * @return Attribute[]
      */
@@ -403,6 +449,7 @@ class Entity
     {
         return $this->attributeList;
     }
+
 
     /**
      * @return Reference[]
@@ -412,6 +459,7 @@ class Entity
         return $this->referenceList;
     }
 
+
     /**
      * @return Index[]
      */
@@ -419,6 +467,7 @@ class Entity
     {
         return $this->indexList;
     }
+
 
     /**
      * @return Collection[]
@@ -428,6 +477,7 @@ class Entity
         return $this->collectionList;
     }
 
+
     /**
      * @return CollectionMany[]
      */
@@ -435,6 +485,7 @@ class Entity
     {
         return $this->collectionManyList;
     }
+
 
     /**
      * @return DynamicCollection[]
@@ -444,6 +495,7 @@ class Entity
         return $this->dynamicCollectionList;
     }
 
+
     /**
      * @return StoredProcedure[]
      */
@@ -452,6 +504,7 @@ class Entity
         return $this->storedProcedureList;
     }
 
+
     /**
      * @return ValueObject[]
      */
@@ -459,6 +512,7 @@ class Entity
     {
         return $this->valueObjectList;
     }
+
 
     /**
      * @param string $name
@@ -475,6 +529,7 @@ class Entity
         return null;
     }
 
+
     /**
      * @param string $databaseName
      *
@@ -488,6 +543,7 @@ class Entity
         return $this->xmlEntity->getDatabaseSpecificAttributeList($databaseName);
     }
 
+
     /**
      * @param string $name
      *
@@ -498,6 +554,7 @@ class Entity
         return ArrayUtil::getFromArray($this->customAttributeList, $name);
     }
 
+
     /**
      * @return string[]
      */
@@ -505,6 +562,7 @@ class Entity
     {
         return $this->customAttributeList;
     }
+
 
     /**
      * @param string[] $customAttributeList
@@ -514,6 +572,7 @@ class Entity
         $this->customAttributeList = $customAttributeList;
     }
 
+
     /**
      * @return string
      */
@@ -521,6 +580,7 @@ class Entity
     {
         return $this->getNamespaceName() . "\\" . $this->getClassShortName();
     }
+
 
     /**
      * @return string
@@ -530,6 +590,7 @@ class Entity
         return $this->classShortName;
     }
 
+
     /**
      * @param string $classShortName
      */
@@ -538,6 +599,7 @@ class Entity
         $this->classShortName = $classShortName;
     }
 
+
     /**
      * @return string
      */
@@ -545,6 +607,7 @@ class Entity
     {
         return $this->getClassShortName() . self::SERVICE_CLASS_SUFFIX;
     }
+
 
     /**
      * @return string
@@ -557,6 +620,7 @@ class Entity
         return $this->serviceClass->getClassName();
     }
 
+
     /**
      * @return string
      */
@@ -565,6 +629,7 @@ class Entity
         return $this->getClassName() . self::SERVICE_CLASS_SUFFIX;
     }
 
+
     /**
      * @return string
      */
@@ -572,6 +637,7 @@ class Entity
     {
         return $this->getClassShortName() . self::SERVICE_CLASS_SUFFIX;
     }
+
 
     /**
      * @return string
@@ -584,6 +650,7 @@ class Entity
         return str_replace("\\", DIRECTORY_SEPARATOR, $this->getNamespaceName());
     }
 
+
     /**
      * @param string $targetPath
      */
@@ -594,6 +661,7 @@ class Entity
         }
     }
 
+
     /**
      * @return string
      */
@@ -601,6 +669,7 @@ class Entity
     {
         return $this->namespaceName;
     }
+
 
     /**
      * @param string $namespaceName
@@ -611,6 +680,7 @@ class Entity
             $this->namespaceName = trim($namespaceName, "\\");
         }
     }
+
 
     /**
      * @return string
@@ -624,6 +694,7 @@ class Entity
         return $strategy->transform($this->getClassShortName());
     }
 
+
     /**
      * @return string
      */
@@ -631,6 +702,7 @@ class Entity
     {
         return $this->getTableName() . self::DELIMIT_SUFFIX;
     }
+
 
     /**
      * @param string $tableName
@@ -640,6 +712,7 @@ class Entity
         $this->tableName = $tableName;
     }
 
+
     /**
      * @return bool
      */
@@ -647,6 +720,7 @@ class Entity
     {
         return $this->isDelimit;
     }
+
 
     /**
      * @param bool $isDelimit
@@ -656,6 +730,7 @@ class Entity
         $this->isDelimit = $isDelimit;
     }
 
+
     /**
      * @return bool
      */
@@ -663,6 +738,7 @@ class Entity
     {
         return $this->isReplication;
     }
+
 
     /**
      * @param bool $isReplication
@@ -672,6 +748,7 @@ class Entity
         $this->isReplication = $isReplication;
     }
 
+
     /**
      * @return string
      */
@@ -679,6 +756,7 @@ class Entity
     {
         return $this->getTableName() . self::REPLICATION_TABLE_SUFFIX;
     }
+
 
     /**
      * @return Constructor
@@ -688,6 +766,7 @@ class Entity
         return $this->constructor;
     }
 
+
     /**
      * @param Constructor $constructor
      */
@@ -695,6 +774,7 @@ class Entity
     {
         $this->constructor = $constructor;
     }
+
 
     /**
      * @return ServiceClass
@@ -704,6 +784,7 @@ class Entity
         return $this->serviceClass;
     }
 
+
     /**
      * @param ServiceClass $serviceClass
      */
@@ -711,6 +792,7 @@ class Entity
     {
         $this->serviceClass = $serviceClass;
     }
+
 
     /**
      * @return string
@@ -728,6 +810,7 @@ class Entity
         return $this->getClassShortName();
     }
 
+
     /**
      * @return string|null
      */
@@ -742,6 +825,7 @@ class Entity
         return $this->getClassName();
     }
 
+
     /**
      * @return string
      */
@@ -752,6 +836,7 @@ class Entity
         }
         return $this->serviceClass->getClassName();
     }
+
 
     /**
      * @return null|string
@@ -764,6 +849,7 @@ class Entity
         return $this->serviceClass->getClassShortName();
     }
 
+
     /**
      * @return string
      */
@@ -774,6 +860,7 @@ class Entity
         }
         return $this->getServiceClassShortName() . '::' . SingletonPlugin::METHOD_SINGLETON . '()';
     }
+
 
     /**
      * @return null|string
@@ -786,6 +873,7 @@ class Entity
         return null;
     }
 
+
     /**
      * @return CollectionMany[]
      */
@@ -793,6 +881,7 @@ class Entity
     {
         return $this->foreignCollectionManyList;
     }
+
 
     /**
      * @param CollectionMany $collectionMany
@@ -802,6 +891,7 @@ class Entity
         $this->foreignCollectionManyList[] = $collectionMany;
     }
 
+
     /**
      * @param XMLEntity $xmlEntity
      */
@@ -809,6 +899,7 @@ class Entity
     {
         $this->xmlEntity = $xmlEntity;
     }
+
 
     /**
      * @param string $childName

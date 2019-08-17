@@ -17,12 +17,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class GreetCommand
+ *
  * @package AppBundle\Command
  */
 class GeneratorCommand extends Command
 {
 
     const OPTION_CONFIG_FILE = "configFile";
+
+    const OPTION_LAST_GENERATION_TIME = "lastGenerationTime";
 
     const NO_CONFIG_FILE = "<error>No config file found. Run 'vendor/bin/siesta init' to generate one. </error>";
 
@@ -51,6 +54,7 @@ class GeneratorCommand extends Command
      */
     protected $output;
 
+
     /**
      * @return void
      */
@@ -59,7 +63,9 @@ class GeneratorCommand extends Command
         $this->setName('gen');
         $this->setDescription('Scans directories for entity files and generates classes and database tables');
         $this->addOption(self::OPTION_CONFIG_FILE, null, InputOption::VALUE_OPTIONAL, "Path to config file to use.");
+        $this->addOption(self::OPTION_LAST_GENERATION_TIME, null, InputOption::VALUE_OPTIONAL, "timestamp of the last generation");
     }
+
 
     /**
      * @param InputInterface $input
@@ -74,7 +80,6 @@ class GeneratorCommand extends Command
         $this->input = $input;
         $this->siesta = new Siesta();
         try {
-
             $this->getConfiguration();
             $output->writeln("I'm using configfile " . $this->config->getConfigFileName());
 
@@ -91,7 +96,6 @@ class GeneratorCommand extends Command
                 $targetFile = $this->generatorConfig->getMigrationFile();
                 $this->siesta->migrateToFile($baseDir, $targetFile, $dropUnusedTables);
             }
-
         } catch (ConnectException $ce) {
             $this->output->writeln($ce->getMessage());
             $this->output->writeln("Config file used " . Config::getInstance()->getConfigFileName());
@@ -102,6 +106,7 @@ class GeneratorCommand extends Command
             $this->output->writeln("Please run 'vendor/bin/siesta init' to generate a config file");
         }
     }
+
 
     /**
      * @return void
@@ -118,6 +123,7 @@ class GeneratorCommand extends Command
         $this->generatorConfig = $this->config->getMainGeneratorConfig();
     }
 
+
     /**
      *
      */
@@ -125,8 +131,12 @@ class GeneratorCommand extends Command
     {
         $logger = new SymphonyConsoleLogger($this->output);
         $this->siesta->setLogger($logger);
+
+        $this->siesta->setLastGenerationTime($this->input->getOption(self::OPTION_LAST_GENERATION_TIME));
+
         $this->siesta->addFileType($this->generatorConfig->getEntityFileSuffix());
         $this->siesta->setColumnNamingStrategy($this->generatorConfig->getColumnNamingStrategyInstance());
+
         $connection = ConnectionFactory::getConnection($this->generatorConfig->getConnectionName());
         $this->siesta->setConnection($connection);
 
