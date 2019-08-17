@@ -10,10 +10,11 @@ class ToCamelCaseStrategy implements NamingStrategy
      *
      * @return string
      */
-    public function transform(string $value) : string
+    public function transform(string $value): string
     {
-        $func = create_function('$c', 'return strtoupper($c[1]);');
-        return preg_replace_callback('/_([a-z])/', $func, $value);
+        return preg_replace_callback('/_([a-z])/', function ($c) {
+            return strtoupper($c[1]);
+        }, $value);
     }
 
 }

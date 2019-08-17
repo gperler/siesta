@@ -12,7 +12,7 @@ class CollectionMany
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -62,7 +62,7 @@ class CollectionMany
      */
     public function __construct(DataModel $dataModel, Entity $entity)
     {
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
     }
 
@@ -83,7 +83,7 @@ class CollectionMany
      */
     protected function updateForeignEntity()
     {
-        $this->foreignEntity = $this->datamodel->getEntityByTableName($this->getForeignTable());
+        $this->foreignEntity = $this->dataModel->getEntityByTableName($this->getForeignTable());
         if ($this->foreignEntity === null) {
             return;
         }
@@ -95,7 +95,7 @@ class CollectionMany
      */
     protected function updateMappingEntity()
     {
-        $this->mappingEntity = $this->datamodel->getEntityByTableName($this->getMappingTable());
+        $this->mappingEntity = $this->dataModel->getEntityByTableName($this->getMappingTable());
     }
 
     /**

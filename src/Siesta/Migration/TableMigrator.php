@@ -80,7 +80,7 @@ class TableMigrator
     /**
      * brings the alter table statements into the right order. First indexes and foreign keys are dropped, then columns
      * are added, existing ones are modified. Then the primary key is changed (if needed). Afterwards not needed
-     * columns are droped and finaly indexes and foreign key constraints are addedd.
+     * columns are dropped and finally indexes and foreign key constraints are added.
      * @return void
      */
     private function assembleStatementList()

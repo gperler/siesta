@@ -13,7 +13,7 @@ class MainGeneratorConfigTest extends \PHPUnit_Framework_TestCase
     {
         $mainConfig = new MainGeneratorConfig();
         $this->assertSame(MainGeneratorConfig::OPTION_DROP_UNUSED_TABLES_DEFAULT, $mainConfig->isDropUnusedTables());
-        $this->assertSame(MainGeneratorConfig::OPTION_ENTITY_FILE_SUFFX_DEFAULT, $mainConfig->getEntityFileSuffix());
+        $this->assertSame(MainGeneratorConfig::OPTION_ENTITY_FILE_SUFFIX_DEFAULT, $mainConfig->getEntityFileSuffix());
         $this->assertSame(MainGeneratorConfig::OPTION_MIGRATION_TARGET_PATH_DEFAULT, $mainConfig->getMigrationTargetPath());
         $this->assertSame(MainGeneratorConfig::OPTION_TABLE_NAMING_STRATEGY_DEFAULT, $mainConfig->getTableNamingStrategy());
         $this->assertSame(MainGeneratorConfig::OPTION_COLUMN_NAMING_STRATEGY_DEFAULT, $mainConfig->getColumnNamingStrategy());
@@ -31,7 +31,7 @@ class MainGeneratorConfigTest extends \PHPUnit_Framework_TestCase
 
         $arrayValues = $mainConfig->toArray();
         $this->assertSame(MainGeneratorConfig::OPTION_DROP_UNUSED_TABLES_DEFAULT, ArrayUtil::getFromArray($arrayValues, MainGeneratorConfig::OPTION_DROP_UNUSED_TABLES));
-        $this->assertSame(MainGeneratorConfig::OPTION_ENTITY_FILE_SUFFX_DEFAULT, ArrayUtil::getFromArray($arrayValues, MainGeneratorConfig::OPTION_ENTITY_FILE_SUFFX));
+        $this->assertSame(MainGeneratorConfig::OPTION_ENTITY_FILE_SUFFIX_DEFAULT, ArrayUtil::getFromArray($arrayValues, MainGeneratorConfig::OPTION_ENTITY_FILE_SUFFIX));
         $this->assertSame(MainGeneratorConfig::OPTION_MIGRATION_TARGET_PATH_DEFAULT, ArrayUtil::getFromArray($arrayValues, MainGeneratorConfig::OPTION_MIGRATION_TARGET_PATH));
         $this->assertSame(MainGeneratorConfig::OPTION_TABLE_NAMING_STRATEGY_DEFAULT, ArrayUtil::getFromArray($arrayValues, MainGeneratorConfig::OPTION_TABLE_NAMING_STRATEGY));
         $this->assertSame(MainGeneratorConfig::OPTION_COLUMN_NAMING_STRATEGY_DEFAULT, ArrayUtil::getFromArray($arrayValues, MainGeneratorConfig::OPTION_COLUMN_NAMING_STRATEGY));

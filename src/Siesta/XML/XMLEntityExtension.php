@@ -247,13 +247,13 @@ class XMLEntityExtension
     }
 
     /**
-     * @param string $childname
+     * @param string $childName
      *
      * @return XMLAccess[]
      */
-    public function getXMLChildElementListByName(string $childname)
+    public function getXMLChildElementListByName(string $childName)
     {
-        return $this->xmlAccess->getXMLChildElementListByName($childname);
+        return $this->xmlAccess->getXMLChildElementListByName($childName);
     }
 
     /**

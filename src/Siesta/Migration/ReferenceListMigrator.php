@@ -59,7 +59,7 @@ class ReferenceListMigrator
     }
 
     /**
-     * compares the refernces (foreign key) found in the database with the definition in the model and creates alter
+     * compares the references (foreign key) found in the database with the definition in the model and creates alter
      * statements for columns and foreign key constraints
      * @return void
      */

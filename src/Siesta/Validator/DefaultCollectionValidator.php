@@ -19,18 +19,18 @@ class DefaultCollectionValidator implements CollectionValidator
 
     const ERROR_INVALID_NAME_CODE = 1500;
 
-    const ERROR_FOREIGN_TABLE = "Entiy '%s' collection '%s' referes to unknonw table '%s";
+    const ERROR_FOREIGN_TABLE = "Entity '%s' collection '%s' refers to unknown table '%s";
 
     const ERROR_FOREIGN_TABLE_CODE = 1501;
 
-    const ERROR_FOREIGN_REFERENCE = "Entiy '%s' collection '%s' referes to unknonw reference '%s";
+    const ERROR_FOREIGN_REFERENCE = "Entity '%s' collection '%s' refers to unknown reference '%s";
 
     const ERROR_FOREIGN_REFERENCE_CODE = 1502;
 
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -50,7 +50,7 @@ class DefaultCollectionValidator implements CollectionValidator
     public function validate(DataModel $dataModel, Entity $entity, Collection $collection, ValidationLogger $logger)
     {
         $this->logger = $logger;
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
         $this->collection = $collection;
 

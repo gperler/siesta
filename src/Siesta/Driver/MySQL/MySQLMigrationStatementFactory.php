@@ -121,7 +121,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
      *
      * @return string[]
      */
-    public function createModifiyColumnStatement(Attribute $attribute): array
+    public function createModifyColumnStatement(Attribute $attribute): array
     {
         $nullHandling = ($attribute->getIsRequired()) ? "NOT NULL" : "NULL";
         $statement = sprintf(self::MODIFY_COLUMN, $this->tableName, $this->quote($attribute->getDBName()), $attribute->getDbType(), $nullHandling);

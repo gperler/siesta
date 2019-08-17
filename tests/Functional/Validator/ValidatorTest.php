@@ -113,13 +113,13 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(in_array(DefaultAttributeValidator::ERROR_INVALID_NAME_CODE, $errorCodeList));
         $this->assertTrue(in_array(DefaultAttributeValidator::ERROR_NO_TYPE_CODE, $errorCodeList));
         $this->assertTrue(in_array(DefaultAttributeValidator::ERROR_INVALID_TYPE_CODE, $errorCodeList));
-        $this->assertTrue(in_array(DefaultAttributeValidator::ERROR_INVALID_AUTOVALUE_CODE, $errorCodeList));
+        $this->assertTrue(in_array(DefaultAttributeValidator::ERROR_INVALID_AUTO_VALUE_CODE, $errorCodeList));
         $this->assertTrue(in_array(DefaultAttributeValidator::ERROR_NO_DB_TYPE_CODE, $errorCodeList));
 
         $warningCodeList = $validationLogger->getWarningCodeList();
         $this->assertTrue($validationLogger->hasWarning());
         $this->assertSame(1, $validationLogger->getWarningCount());
-        $this->assertTrue($validationLogger->hasWarningCode(DefaultAttributeValidator::WARN_NO_AUTOVALUE_CODE));
+        $this->assertTrue($validationLogger->hasWarningCode(DefaultAttributeValidator::WARN_NO_AUTO_VALUE_CODE));
 
     }
 
@@ -138,7 +138,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(8, sizeof($errorCodeList));
 
         $this->assertTrue(in_array(DefaultReferenceValidator::ERROR_INVALID_FOREIGN_TABLE_CODE, $errorCodeList));
-        $this->assertTrue(in_array(DefaultReferenceValidator::ERROR_INVALID_ON_X_VALUD_CODE, $errorCodeList));
+        $this->assertTrue(in_array(DefaultReferenceValidator::ERROR_INVALID_ON_X_VALID_CODE, $errorCodeList));
         $this->assertTrue(in_array(DefaultReferenceValidator::ERROR_INVALID_LOCAL_REFERENCE_CODE, $errorCodeList));
         $this->assertTrue(in_array(DefaultReferenceValidator::ERROR_INVALID_FOREIGN_REFERENCE_CODE, $errorCodeList));
         $this->assertTrue(in_array(DefaultReferenceValidator::ERROR_MAPPING_HAS_NOT_SAME_DB_DATA_TYPE_CODE, $errorCodeList));

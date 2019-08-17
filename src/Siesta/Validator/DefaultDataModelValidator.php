@@ -24,7 +24,7 @@ class DefaultDataModelValidator implements DataModelValidator
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var ValidationLogger
@@ -37,7 +37,7 @@ class DefaultDataModelValidator implements DataModelValidator
      */
     public function validate(DataModel $dataModel, ValidationLogger $logger)
     {
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->logger = $logger;
         $this->validateTableNamesUnique();
         $this->validateClassNamesUnique();
@@ -59,7 +59,7 @@ class DefaultDataModelValidator implements DataModelValidator
     {
         $nameList = [];
         $duplicateNameList = [];
-        foreach ($this->datamodel->getEntityList() as $entity) {
+        foreach ($this->dataModel->getEntityList() as $entity) {
             $this->checkDuplicate($nameList, $duplicateNameList, $entity->getTableName());
         }
 
@@ -76,7 +76,7 @@ class DefaultDataModelValidator implements DataModelValidator
     {
         $nameList = [];
         $duplicateNameList = [];
-        foreach ($this->datamodel->getEntityList() as $entity) {
+        foreach ($this->dataModel->getEntityList() as $entity) {
             $this->checkDuplicate($nameList, $duplicateNameList, $entity->getClassName());
         }
 

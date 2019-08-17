@@ -83,7 +83,7 @@ class ReverseCommand extends Command
                 $this->reverse->createXMLFileForEveryTable($this->reverseConfig->getTargetPath());
             }
 
-            $output->writeln("I'm using configfile " . $this->config->getConfigFileName());
+            $output->writeln("I'm using config file " . $this->config->getConfigFileName());
             $output->writeln("Reverse engineering database " . $this->reverseConfig->getConnectionName());
 
         } catch (ConnectException $ce) {

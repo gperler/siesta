@@ -28,17 +28,17 @@ class DefaultAttributeValidator implements AttributeValidator
 
     const ERROR_INVALID_TYPE_CODE = 1202;
 
-    const ERROR_INVALID_AUTOVALUE = "Entity '%s' Attribute '%s' has invalid autovalue '%s'. Available values %s";
+    const ERROR_INVALID_AUTO_VALUE = "Entity '%s' Attribute '%s' has invalid auto value '%s'. Available values %s";
 
-    const ERROR_INVALID_AUTOVALUE_CODE = 1203;
+    const ERROR_INVALID_AUTO_VALUE_CODE = 1203;
 
     const ERROR_NO_DB_TYPE = "Entity '%s' Attribute '%s' is not transient and has no dbType.";
 
     const ERROR_NO_DB_TYPE_CODE = 1204;
 
-    const WARN_NO_AUTOVALUE = "Entity '%s' Attribute '%s' is primary key but does not have an autovalue.";
+    const WARN_NO_AUTO_VALUE = "Entity '%s' Attribute '%s' is primary key but does not have an auto value.";
 
-    const WARN_NO_AUTOVALUE_CODE = 1205;
+    const WARN_NO_AUTO_VALUE_CODE = 1205;
 
     const AUTO_VALUE_UUID = "uuid";
 
@@ -62,7 +62,7 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -88,16 +88,16 @@ class DefaultAttributeValidator implements AttributeValidator
     public function validate(DataModel $dataModel, Entity $entity, Attribute $attribute, ValidationLogger $logger)
     {
         $this->logger = $logger;
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
         $this->attribute = $attribute;
 
         $this->validateName();
         $this->validateType();
-        $this->validateAutovalue();
+        $this->validateAutoValue();
         $this->validateObjectType();
         $this->validateNonTransient();
-        $this->validateWarnAutovalue();
+        $this->validateWarnAutoValue();
     }
 
     /**
@@ -154,15 +154,15 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      *
      */
-    protected function validateAutovalue()
+    protected function validateAutoValue()
     {
         if (in_array($this->attribute->getAutoValue(), self::ALLOWED_AUTO_VALUE)) {
             return;
         }
         $allowed = implode(",", self::ALLOWED_AUTO_VALUE);
 
-        $error = sprintf(self::ERROR_INVALID_AUTOVALUE, $this->getEntityName(), $this->getAttributeName(), $this->attribute->getAutoValue(), $allowed);
-        $this->error($error, self::ERROR_INVALID_AUTOVALUE_CODE);
+        $error = sprintf(self::ERROR_INVALID_AUTO_VALUE, $this->getEntityName(), $this->getAttributeName(), $this->attribute->getAutoValue(), $allowed);
+        $this->error($error, self::ERROR_INVALID_AUTO_VALUE_CODE);
     }
 
     /**
@@ -196,15 +196,15 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      *
      */
-    protected function validateWarnAutovalue()
+    protected function validateWarnAutoValue()
     {
 
         if (!$this->attribute->getIsPrimaryKey() || $this->attribute->getAutoValue() !== null || $this->attribute->getIsForeignKey()) {
             return;
         }
 
-        $warn = sprintf(self::WARN_NO_AUTOVALUE, $this->getEntityName(), $this->getAttributeName());
-        $this->logger->warn($warn, self::WARN_NO_AUTOVALUE_CODE);
+        $warn = sprintf(self::WARN_NO_AUTO_VALUE, $this->getEntityName(), $this->getAttributeName());
+        $this->logger->warn($warn, self::WARN_NO_AUTO_VALUE_CODE);
     }
 
 }

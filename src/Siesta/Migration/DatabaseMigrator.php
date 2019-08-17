@@ -53,7 +53,7 @@ class DatabaseMigrator
     protected $dataModel;
 
     /**
-     * list of table names that are also defined in the current datamodel
+     * list of table names that are also defined in the current dataModel
      * @var string[]
      */
     protected $neededTableList;

@@ -18,7 +18,7 @@ class DefaultStoredProcedureValidator implements StoredProcedureValidator
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -44,7 +44,7 @@ class DefaultStoredProcedureValidator implements StoredProcedureValidator
     public function validate(DataModel $dataModel, Entity $entity, StoredProcedure $storedProcedure, ValidationLogger $logger)
     {
         $this->logger = $logger;
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
         $this->storedProcedure = $storedProcedure;
 
