@@ -27,14 +27,6 @@ use Siesta\XML\XMLDirectoryScanner;
  */
 class Siesta implements LoggerAwareInterface
 {
-
-    /**
-     * time when the last time was generated
-     *
-     * @var int
-     */
-    protected $lastGenerationTime;
-
     /**
      * @var ValidationLogger
      */
@@ -79,6 +71,13 @@ class Siesta implements LoggerAwareInterface
      * @var DataModelUpdater
      */
     protected $dataModelUpdater;
+
+    /**
+     * time when the last time was generated
+     *
+     * @var int
+     */
+    protected $lastGenerationTime;
 
 
     /**

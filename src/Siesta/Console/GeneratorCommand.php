@@ -27,6 +27,8 @@ class GeneratorCommand extends Command
 
     const OPTION_LAST_GENERATION_TIME = "lastGenerationTime";
 
+    const OPTION_DATA_MODEL_UPDATER = "dataModelUpdater";
+
     const NO_CONFIG_FILE = "<error>No config file found. Run 'vendor/bin/siesta init' to generate one. </error>";
 
     /**
@@ -64,6 +66,7 @@ class GeneratorCommand extends Command
         $this->setDescription('Scans directories for entity files and generates classes and database tables');
         $this->addOption(self::OPTION_CONFIG_FILE, null, InputOption::VALUE_OPTIONAL, "Path to config file to use.");
         $this->addOption(self::OPTION_LAST_GENERATION_TIME, null, InputOption::VALUE_OPTIONAL, "timestamp of the last generation");
+        $this->addOption(self::OPTION_DATA_MODEL_UPDATER, null, InputOption::VALUE_OPTIONAL, "data model updater");
     }
 
 
@@ -132,7 +135,13 @@ class GeneratorCommand extends Command
         $logger = new SymphonyConsoleLogger($this->output);
         $this->siesta->setLogger($logger);
 
-        $this->siesta->setLastGenerationTime($this->input->getOption(self::OPTION_LAST_GENERATION_TIME));
+        $lastGenerationTime = $this->input->getOption(self::OPTION_LAST_GENERATION_TIME);
+        $this->siesta->setLastGenerationTime($lastGenerationTime);
+
+        $dataModelUpdater = $this->input->getOption(self::OPTION_DATA_MODEL_UPDATER);
+        if ($dataModelUpdater !== null) {
+            $this->siesta->setDataModelUpdater(new $dataModelUpdater);
+        }
 
         $this->siesta->addFileType($this->generatorConfig->getEntityFileSuffix());
         $this->siesta->setColumnNamingStrategy($this->generatorConfig->getColumnNamingStrategyInstance());
