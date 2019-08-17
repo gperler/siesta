@@ -161,7 +161,7 @@ class Entity
     /**
      * @return bool
      */
-    public function isHasChangedSinceLastGeneration(): bool
+    public function hasChangedSinceLastGeneration(): bool
     {
         return $this->hasChangedSinceLastGeneration;
     }
@@ -170,7 +170,7 @@ class Entity
     /**
      * @param bool $hasChangedSinceLastGeneration
      */
-    public function setHasChangedSinceLastGeneration(bool $hasChangedSinceLastGeneration): void
+    public function setHasChangedSinceLastGeneration(?bool $hasChangedSinceLastGeneration): void
     {
         $this->hasChangedSinceLastGeneration = $hasChangedSinceLastGeneration;
     }

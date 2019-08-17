@@ -707,7 +707,7 @@ class XMLEntity
     /**
      * @return bool
      */
-    public function isHasChangedSinceLastGeneration(): ?bool
+    public function hasChangedSinceLastGeneration(): ?bool
     {
         return $this->hasChangedSinceLastGeneration;
     }

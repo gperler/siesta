@@ -34,6 +34,9 @@ class XMLEntityReader
         $this->readDynamicCollectionListFromXML($entity, $xmlEntity);
         $this->readStoredProcedureListFromXML($entity, $xmlEntity);
         $this->readValueObjectFromXML($entity, $xmlEntity);
+
+        $entity->setHasChangedSinceLastGeneration($xmlEntity->hasChangedSinceLastGeneration());
+
     }
 
     /**
