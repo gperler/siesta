@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Siesta\Generator;
@@ -23,6 +24,7 @@ class MainGenerator
      */
     protected $genericGeneratorConfigList;
 
+
     /**
      * @param array $genericGeneratorConfigList
      */
@@ -35,6 +37,7 @@ class MainGenerator
         }
     }
 
+
     /**
      * @param DataModel $dataModel
      * @param string $baseDir
@@ -42,9 +45,13 @@ class MainGenerator
     public function generate(DataModel $dataModel, string $baseDir)
     {
         foreach ($dataModel->getEntityList() as $entity) {
+            if (!$entity->hasChangedSinceLastGeneration()) {
+                continue;
+            }
             $this->generateEntity($entity, $baseDir);
         }
     }
+
 
     /**
      * @param Entity $entity

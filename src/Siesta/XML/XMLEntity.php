@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Siesta\XML;
@@ -25,6 +26,12 @@ class XMLEntity
     const TARGET_PATH = "targetPath";
 
     const REPLICATION = "replication";
+
+
+    /**
+     * @var bool
+     */
+    protected $hasChangedSinceLastGeneration;
 
     /**
      * @var string
@@ -116,6 +123,7 @@ class XMLEntity
      */
     protected $databaseSpecific;
 
+
     /**
      * XMLEntity constructor.
      */
@@ -131,6 +139,7 @@ class XMLEntity
         $this->xmlValueObjectList = [];
         $this->databaseSpecific = [];
     }
+
 
     /**
      * @param XMLWrite $parent
@@ -154,6 +163,7 @@ class XMLEntity
         }
     }
 
+
     /**
      * @param XMLWrite $parent
      */
@@ -169,6 +179,7 @@ class XMLEntity
             }
         }
     }
+
 
     /**
      * @param TableMetaData $table
@@ -199,8 +210,8 @@ class XMLEntity
             $xmlIndex->fromIndexMetaData($indexMetaData);
             $this->xmlIndexList[] = $xmlIndex;
         }
-
     }
+
 
     /**
      * @param XMLAccess $xmlAccess
@@ -220,6 +231,7 @@ class XMLEntity
         $this->readStoredProcedureDataFromXML($xmlAccess);
         $this->readValueObjectFromXML($xmlAccess);
     }
+
 
     /**
      * @param XMLEntityExtension $xmlEntityExtension
@@ -245,7 +257,9 @@ class XMLEntity
             $this->xmlServiceClass = $extensionService;
         }
 
+        $this->hasChangedSinceLastGeneration = $this->hasChangedSinceLastGeneration || $xmlEntityExtension->hasChangedSinceLastGeneration();
     }
+
 
     /**
      * @param XMLAccess $xmlAccess
@@ -260,6 +274,7 @@ class XMLEntity
         $this->setTargetPath($xmlAccess->getAttribute(self::TARGET_PATH));
     }
 
+
     /**
      * @param XMLAccess $xmlAccess
      */
@@ -273,6 +288,7 @@ class XMLEntity
         $this->xmlConstructor->fromXML($xmlConstructorAccess);
     }
 
+
     /**
      * @param XMLAccess $xmlAccess
      */
@@ -284,8 +300,8 @@ class XMLEntity
         }
         $this->xmlServiceClass = new XMLServiceClass();
         $this->xmlServiceClass->fromXMLAccess($xmlServiceClass);
-
     }
+
 
     /**
      * @param XMLAccess $xmlAccess
@@ -299,6 +315,7 @@ class XMLEntity
         }
     }
 
+
     /**
      * @param XMLAccess $xmlAccess
      */
@@ -310,6 +327,7 @@ class XMLEntity
             $this->xmlReferenceList[] = $xmlReference;
         }
     }
+
 
     /**
      * @param XMLAccess $xmlAccess
@@ -323,6 +341,7 @@ class XMLEntity
         }
     }
 
+
     /**
      * @param XMLAccess $xmlAccess
      */
@@ -334,6 +353,7 @@ class XMLEntity
             $this->xmlCollectionList[] = $xmlCollection;
         }
     }
+
 
     /**
      * @param XMLAccess $xmlAccess
@@ -347,6 +367,7 @@ class XMLEntity
         }
     }
 
+
     /**
      * @param XMLAccess $xmlAccess
      */
@@ -358,6 +379,7 @@ class XMLEntity
             $this->xmlCollectionManyList[] = $xmlCollectionMany;
         }
     }
+
 
     /**
      * @param XMLAccess $xmlAccess
@@ -371,6 +393,7 @@ class XMLEntity
         }
     }
 
+
     /**
      * @param XMLAccess $xmlAccess
      */
@@ -383,6 +406,7 @@ class XMLEntity
         }
     }
 
+
     /**
      * @return XMLAttribute[]
      */
@@ -390,6 +414,7 @@ class XMLEntity
     {
         return $this->xmlAttributeList;
     }
+
 
     /**
      * @param string $childName
@@ -401,6 +426,7 @@ class XMLEntity
         return $this->xmlAccess->getXMLChildElementListByName($childName);
     }
 
+
     /**
      * @return XMLReference[]
      */
@@ -408,6 +434,7 @@ class XMLEntity
     {
         return $this->xmlReferenceList;
     }
+
 
     /**
      * @return XMLIndex[]
@@ -417,6 +444,7 @@ class XMLEntity
         return $this->xmlIndexList;
     }
 
+
     /**
      * @return XMLCollection[]
      */
@@ -424,6 +452,7 @@ class XMLEntity
     {
         return $this->xmlCollectionList;
     }
+
 
     /**
      * @return XMLCollectionMany[]
@@ -433,6 +462,7 @@ class XMLEntity
         return $this->xmlCollectionManyList;
     }
 
+
     /**
      * @return XMLDynamicCollection[]
      */
@@ -440,6 +470,7 @@ class XMLEntity
     {
         return $this->xmlDynamicCollectionList;
     }
+
 
     /**
      * @return XMLStoredProcedure[]
@@ -449,6 +480,7 @@ class XMLEntity
         return $this->xmlStoredProcedureList;
     }
 
+
     /**
      * @return XMLValueObject[]
      */
@@ -456,6 +488,7 @@ class XMLEntity
     {
         return $this->xmlValueObjectList;
     }
+
 
     /**
      * @param $databaseName
@@ -472,6 +505,7 @@ class XMLEntity
         return $this->xmlAccess->getDatabaseSpecificAttributeList($tagName);
     }
 
+
     /**
      * @param string $name
      *
@@ -485,6 +519,7 @@ class XMLEntity
         return $this->xmlAccess->getAttribute($name);
     }
 
+
     /**
      * @return string[]
      */
@@ -492,6 +527,7 @@ class XMLEntity
     {
         return $this->xmlAccess->getAttributeList();
     }
+
 
     /**
      * @return string
@@ -501,6 +537,7 @@ class XMLEntity
         return $this->classShortName;
     }
 
+
     /**
      * @param string $classShortName
      */
@@ -509,6 +546,7 @@ class XMLEntity
         $this->classShortName = $classShortName;
     }
 
+
     /**
      * @return string
      */
@@ -516,6 +554,7 @@ class XMLEntity
     {
         return $this->namespaceName;
     }
+
 
     /**
      * @param string $namespaceName
@@ -527,6 +566,7 @@ class XMLEntity
         }
     }
 
+
     /**
      * @return string
      */
@@ -534,6 +574,7 @@ class XMLEntity
     {
         return $this->tableName;
     }
+
 
     /**
      * @param string $tableName
@@ -543,6 +584,7 @@ class XMLEntity
         $this->tableName = $tableName;
     }
 
+
     /**
      * @return bool
      */
@@ -550,6 +592,7 @@ class XMLEntity
     {
         return $this->isDelimit;
     }
+
 
     /**
      * @param bool $isDelimit
@@ -559,6 +602,7 @@ class XMLEntity
         $this->isDelimit = $isDelimit;
     }
 
+
     /**
      * @return string
      */
@@ -566,6 +610,7 @@ class XMLEntity
     {
         return $this->targetPath;
     }
+
 
     /**
      * @param string $targetPath
@@ -577,6 +622,7 @@ class XMLEntity
         }
     }
 
+
     /**
      * @return bool
      */
@@ -584,6 +630,7 @@ class XMLEntity
     {
         return $this->isReplication;
     }
+
 
     /**
      * @param bool $isReplication
@@ -593,6 +640,7 @@ class XMLEntity
         $this->isReplication = $isReplication;
     }
 
+
     /**
      * @return XMLConstructor
      */
@@ -600,6 +648,7 @@ class XMLEntity
     {
         return $this->xmlConstructor;
     }
+
 
     /**
      * @param XMLConstructor $xmlConstructor
@@ -609,6 +658,7 @@ class XMLEntity
         $this->xmlConstructor = $xmlConstructor;
     }
 
+
     /**
      * @return XMLServiceClass
      */
@@ -616,6 +666,7 @@ class XMLEntity
     {
         return $this->xmlServiceClass;
     }
+
 
     /**
      * @param XMLServiceClass $xmlServiceClass
@@ -625,6 +676,7 @@ class XMLEntity
         $this->xmlServiceClass = $xmlServiceClass;
     }
 
+
     /**
      * @return XMLAccess
      */
@@ -633,6 +685,7 @@ class XMLEntity
         return $this->xmlAccess;
     }
 
+
     /**
      * @param XMLAccess $xmlAccess
      */
@@ -640,5 +693,24 @@ class XMLEntity
     {
         $this->xmlAccess = $xmlAccess;
     }
+
+
+    /**
+     * @param bool $hasChanged
+     */
+    public function setHasChangedSinceLastGeneration(bool $hasChanged): void
+    {
+        $this->hasChangedSinceLastGeneration = $hasChanged;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function hasChangedSinceLastGeneration(): ?bool
+    {
+        return $this->hasChangedSinceLastGeneration;
+    }
+
 
 }

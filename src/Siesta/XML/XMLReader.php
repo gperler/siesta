@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Siesta\XML;
@@ -12,6 +13,12 @@ use Siesta\Util\File;
  */
 class XMLReader
 {
+
+    /**
+     * @var bool
+     */
+    protected $hasChangedSinceLastGeneration;
+
     /**
      * @var DomDocument
      */
@@ -32,23 +39,44 @@ class XMLReader
      */
     protected $xmlEntityExtensionList;
 
+
     /**
+     * XMLReader constructor.
+     *
      * @param File $file
+     * @param int|null $lastGenerationTime
      */
-    public function __construct(File $file)
+    public function __construct(File $file, int $lastGenerationTime = null)
     {
+        $this->hasChangedSinceLastGeneration = $this->hasChanged($file, $lastGenerationTime);
+
         $this->fileName = $file->getAbsoluteFileName();
         $this->xmlDocument = $file->loadAsXML();
         $this->xmlEntityList = [];
         $this->xmlEntityExtensionList = [];
     }
 
+
+    /**
+     * @param File $file
+     * @param int|null $lastGenerationTime
+     *
+     * @return bool
+     */
+    protected function hasChanged(File $file, int $lastGenerationTime = null): bool
+    {
+        if ($lastGenerationTime === null) {
+            return true;
+        }
+        return (filemtime($file->getAbsoluteFileName()) > $lastGenerationTime);
+    }
+
+
     /**
      * @return XMLEntity[]
      */
     public function getEntityList(): array
     {
-
         $domNodeList = $this->xmlDocument->getElementsByTagName(XMLEntity::ELEMENT_ENTITY_NAME);
 
         foreach ($domNodeList as $node) {
@@ -60,15 +88,18 @@ class XMLReader
         return $this->xmlEntityList;
     }
 
+
     /**
      * @param DOMElement $entityElement
      */
     protected function handleEntityElement(DOMElement $entityElement)
     {
         $entityReader = new XMLEntity();
+        $entityReader->setHasChangedSinceLastGeneration($this->hasChangedSinceLastGeneration);
         $entityReader->fromXML(new XMLAccess($entityElement));
         $this->xmlEntityList[] = $entityReader;
     }
+
 
     /**
      * @return XMLEntityExtension[]
@@ -86,12 +117,14 @@ class XMLReader
         return $this->xmlEntityExtensionList;
     }
 
+
     /**
      * @param DOMElement $entityExtensionElement
      */
     protected function handleEntityExtension(DOMElement $entityExtensionElement)
     {
         $entityExtension = new XMLEntityExtension();
+        $entityExtension->setHasChangedSinceLastGeneration($this->hasChangedSinceLastGeneration);
         $entityExtension->fromXML(new XMLAccess($entityExtensionElement));
         $this->xmlEntityExtensionList[] = $entityExtension;
     }

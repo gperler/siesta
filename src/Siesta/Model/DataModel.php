@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -17,6 +18,7 @@ class DataModel
      */
     protected $entityList;
 
+
     /**
      * DataModel constructor.
      */
@@ -24,6 +26,7 @@ class DataModel
     {
         $this->entityList = [];
     }
+
 
     /**
      * @param XMLEntity[] $xmlEntityList
@@ -35,6 +38,10 @@ class DataModel
         }
     }
 
+
+    /**
+     * @param XMLEntity $xmlEntity
+     */
     public function addXMLEntity(XMLEntity $xmlEntity)
     {
         $dataModelBuilder = new XMLEntityReader();
@@ -44,6 +51,7 @@ class DataModel
 
         $this->entityList[] = $entity;
     }
+
 
     /**
      * @param string $tableName
@@ -59,6 +67,7 @@ class DataModel
         }
         return false;
     }
+
 
     /**
      * @param string $tableName
@@ -76,6 +85,7 @@ class DataModel
         return null;
     }
 
+
     /**
      * @throws ReflectionException
      */
@@ -85,6 +95,7 @@ class DataModel
             $entity->update();
         }
     }
+
 
     /**
      * @return Entity[]
