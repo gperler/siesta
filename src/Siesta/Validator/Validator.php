@@ -34,9 +34,9 @@ use Siesta\Model\ValueObject;
 class Validator
 {
 
-    const DATAMODEL_VALIDATOR_INTERFACE = 'Siesta\Contract\DataModelValidator';
+    const DATA_MODEL_VALIDATOR_INTERFACE = 'Siesta\Contract\DataModelValidator';
 
-    const ENTIY_VALIDATOR_INTERFACE = 'Siesta\Contract\EntityValidator';
+    const ENTITY_VALIDATOR_INTERFACE = 'Siesta\Contract\EntityValidator';
 
     const ATTRIBUTE_VALIDATOR_INTERFACE = 'Siesta\Contract\AttributeValidator';
 
@@ -315,11 +315,11 @@ class Validator
 
         $validator = new $validatorClassName;
 
-        if ($reflect->implementsInterface(self::DATAMODEL_VALIDATOR_INTERFACE)) {
+        if ($reflect->implementsInterface(self::DATA_MODEL_VALIDATOR_INTERFACE)) {
             $this->dataModelValidatorList[$validatorClassName] = $validator;
         }
 
-        if ($reflect->implementsInterface(self::ENTIY_VALIDATOR_INTERFACE)) {
+        if ($reflect->implementsInterface(self::ENTITY_VALIDATOR_INTERFACE)) {
             $this->entityValidatorList[$validatorClassName] = $validator;
         }
 

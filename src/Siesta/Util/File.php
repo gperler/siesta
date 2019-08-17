@@ -162,7 +162,7 @@ class File
     }
 
     /**
-     * Finds the first occurence of the given filename
+     * Finds the first occurrence of the given filename
      *
      * @param string $fileName
      *

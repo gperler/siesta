@@ -34,7 +34,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -94,6 +94,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
      */
     public function __construct(DataModel $dataModel, Entity $entity)
     {
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
         $this->deterministic = false;
         $this->isReplication = $entity->getIsReplication();

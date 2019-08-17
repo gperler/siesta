@@ -115,7 +115,7 @@ class GenericGeneratorConfig
             $error = sprintf(self::ERROR_GENERATOR_VALIDATOR_IS_NOT_ARRAY, $this->name);
             $logger->error($error, self::ERROR_GENERATOR_VALIDATOR_IS_NOT_ARRAY_CODE);
         } else {
-            $this->validateValdidatorList($logger);
+            $this->validateValidatorList($logger);
         }
 
     }
@@ -174,7 +174,7 @@ class GenericGeneratorConfig
      * @param ValidationLogger $logger
      * @throws ReflectionException
      */
-    protected function validateValdidatorList(ValidationLogger $logger)
+    protected function validateValidatorList(ValidationLogger $logger)
     {
         foreach ($this->validatorList as $validator) {
             $this->validateValidator($logger, $validator);
@@ -196,11 +196,11 @@ class GenericGeneratorConfig
 
         $reflect = new ReflectionClass($validator);
 
-        if ($reflect->implementsInterface(Validator::DATAMODEL_VALIDATOR_INTERFACE)) {
+        if ($reflect->implementsInterface(Validator::DATA_MODEL_VALIDATOR_INTERFACE)) {
             return;
         }
 
-        if ($reflect->implementsInterface(Validator::ENTIY_VALIDATOR_INTERFACE)) {
+        if ($reflect->implementsInterface(Validator::ENTITY_VALIDATOR_INTERFACE)) {
             return;
         }
 

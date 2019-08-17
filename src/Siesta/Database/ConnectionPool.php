@@ -14,7 +14,7 @@ class ConnectionPool
 
     const EXCEPTION_NOT_CONFIGURED = "Connection with name %s is not configured";
 
-    const EXCEPTION_DRIVER_NOT_IMPLEMENTD = "Driver for %s is not implemented";
+    const EXCEPTION_DRIVER_NOT_IMPLEMENTED = "Driver for %s is not implemented";
 
     /**
      * @var Driver[]
@@ -140,7 +140,7 @@ class ConnectionPool
         $class = $connectionData->driver;
 
         if (!class_exists($class)) {
-            throw new InvalidConfigurationException(sprintf(self::EXCEPTION_DRIVER_NOT_IMPLEMENTD, $connectionData->driver));
+            throw new InvalidConfigurationException(sprintf(self::EXCEPTION_DRIVER_NOT_IMPLEMENTED, $connectionData->driver));
         }
         return new $class;
 

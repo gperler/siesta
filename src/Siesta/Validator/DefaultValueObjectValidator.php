@@ -23,7 +23,7 @@ class DefaultValueObjectValidator implements ValueObjectValidator
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -48,7 +48,7 @@ class DefaultValueObjectValidator implements ValueObjectValidator
      */
     public function validate(DataModel $dataModel, Entity $entity, ValueObject $valueObject, ValidationLogger $logger)
     {
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
         $this->valueObject = $valueObject;
         $this->logger = $logger;

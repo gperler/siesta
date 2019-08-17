@@ -11,14 +11,14 @@ class StoredProcedure
 
     const RESULT_LIST = "list";
 
-    const RESULT_ENITY = "entity";
+    const RESULT_ENTITY = "entity";
 
     const RESULT_RESULT_SET = "resultSet";
 
     const RESULT_NONE = "none";
 
     const ALLOWED_RESULT = [
-        self::RESULT_ENITY,
+        self::RESULT_ENTITY,
         self::RESULT_LIST,
         self::RESULT_RESULT_SET,
         self::RESULT_NONE
@@ -157,7 +157,7 @@ class StoredProcedure
      */
     public function isEntityResult() : bool
     {
-        return $this->resultType === self::RESULT_ENITY;
+        return $this->resultType === self::RESULT_ENTITY;
     }
 
     /**

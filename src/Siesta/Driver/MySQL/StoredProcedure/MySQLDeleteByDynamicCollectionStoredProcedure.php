@@ -66,8 +66,8 @@ class MySQLDeleteByDynamicCollectionStoredProcedure extends MySQLStoredProcedure
     protected function buildStatement()
     {
         $whereList = [];
-        foreach (DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this->entity) as $attribut) {
-            $whereList[] = $this->buildWherePart($attribut);
+        foreach (DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this->entity) as $attribute) {
+            $whereList[] = $this->buildWherePart($attribute);
         }
 
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {

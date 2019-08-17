@@ -83,7 +83,7 @@ class ExecuteStoredProcedurePlugin extends BasePlugin
 
         $helper->addConnectionLookup();
 
-        // initialize result arry and execute stored procedure
+        // initialize result array and execute stored procedure
         $method->addCodeLine('$entityList = [];');
         $method->addCodeLine('$resultSet = $connection->executeStoredProcedure($spCall);');
 

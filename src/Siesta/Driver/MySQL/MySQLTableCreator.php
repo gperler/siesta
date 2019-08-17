@@ -25,7 +25,7 @@ class MySQLTableCreator
 
     const DEFAULT_CHARSET_SNIPPET = " DEFAULT CHARACTER SET %s ";
 
-    const COLALTE_SNIPPET = " COLLATE ";
+    const COLLATE_SNIPPET = " COLLATE ";
 
     const ENGINE_SNIPPET = " ENGINE = ";
 
@@ -317,12 +317,12 @@ class MySQLTableCreator
         $constraintName = $this->quote($reference->getConstraintName());
         $columnNames = implode(",", $columnList);
         $foreignTable = $this->quote($reference->getForeignTable());
-        $foreignColumNames = implode(",", $foreignColumnList);
+        $foreignColumnNames = implode(",", $foreignColumnList);
 
         $onDelete = ConstraintRule::schemaToMySQL($reference->getOnDelete());
         $onUpdate = ConstraintRule::schemaToMySQL($reference->getOnUpdate());
 
-        return sprintf(self::FOREIGN_KEY_SNIPPET, $constraintName, $columnNames, $foreignTable, $foreignColumNames, $onDelete, $onUpdate);
+        return sprintf(self::FOREIGN_KEY_SNIPPET, $constraintName, $columnNames, $foreignTable, $foreignColumnNames, $onDelete, $onUpdate);
 
     }
 
@@ -351,7 +351,7 @@ class MySQLTableCreator
     {
         $collate = $this->getDatabaseSpecific(self::MYSQL_COLLATE_ATTRIBUTE);
         if ($collate !== null) {
-            return self::COLALTE_SNIPPET . $collate;
+            return self::COLLATE_SNIPPET . $collate;
         }
         return "";
     }

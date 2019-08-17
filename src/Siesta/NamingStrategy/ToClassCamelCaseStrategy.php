@@ -9,10 +9,11 @@ class ToClassCamelCaseStrategy implements NamingStrategy
      *
      * @return string
      */
-    public function transform(string $value) : string
+    public function transform(string $value): string
     {
-        $func = create_function('$c', 'return strtoupper($c[1]);');
-        $camelCase = preg_replace_callback('/_([a-z])/', $func, $value);
+        $camelCase = preg_replace_callback('/_([a-z])/', function ($c) {
+            return strtoupper($c[1]);
+        }, $value);
         return ucfirst($camelCase);
     }
 

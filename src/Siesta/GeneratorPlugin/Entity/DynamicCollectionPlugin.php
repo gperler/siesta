@@ -26,9 +26,9 @@ class DynamicCollectionPlugin extends BasePlugin
 
     private function addUseStatement()
     {
-        $contructor = $this->entity->getConstructor();
-        if ($contructor !== null) {
-            $factoryClassName = $contructor->getConstructFactoryClassName();
+        $constructor = $this->entity->getConstructor();
+        if ($constructor !== null) {
+            $factoryClassName = $constructor->getConstructFactoryClassName();
             if ($factoryClassName !== null) {
                 $this->classGenerator->addUsedClassName($factoryClassName);
             }
@@ -81,7 +81,7 @@ class DynamicCollectionPlugin extends BasePlugin
         $method = $this->classGenerator->addMethod("addTo" . $dynamicCollection->getMethodName());
         $method->addParameter($foreignClass, 'entity');
 
-        // check if collection is alread array
+        // check if collection is already array
         $member = '$this->' . $dynamicCollection->getName();
         $method->addIfStart($member . ' === null');
         $method->addCodeLine($member . ' = [];');

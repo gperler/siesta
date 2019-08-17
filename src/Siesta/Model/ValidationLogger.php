@@ -55,7 +55,6 @@ class ValidationLogger implements LoggerAwareInterface
      *
      * @param LoggerInterface $logger
      *
-     * @return null
      */
     public function setLogger(LoggerInterface $logger)
     {

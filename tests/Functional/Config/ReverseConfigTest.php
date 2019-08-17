@@ -17,7 +17,7 @@ class ReverseConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(ReverseConfig::OPTION_CLASS_NAMING_DEFAULT, $reverseConfig->getClassNamingStrategy());
         $this->assertSame(ReverseConfig::OPTION_ATTRIBUTE_NAMING_DEFAULT, $reverseConfig->getAttributeNamingStrategy());
         $this->assertSame(null, $reverseConfig->getDefaultNamespace());
-        $this->assertSame(ReverseConfig::OPTION_ENTITY_FILE_SUFFX_DEFAULT, $reverseConfig->getEntityXMLFileSuffix());
+        $this->assertSame(ReverseConfig::OPTION_ENTITY_FILE_SUFFIX_DEFAULT, $reverseConfig->getEntityXMLFileSuffix());
         $this->assertSame(ReverseConfig::OPTION_TARGET_FILE_DEFAULT, $reverseConfig->getTargetFile());
         $this->assertSame(ReverseConfig::OPTION_TARGET_PATH_DEFAULT, $reverseConfig->getTargetPath());
         $this->assertSame(ReverseConfig::OPTION_SINGLE_FILE_DEFAULT, $reverseConfig->isSingleFile());
@@ -32,7 +32,7 @@ class ReverseConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(ReverseConfig::OPTION_CLASS_NAMING_DEFAULT, ArrayUtil::getFromArray($arrayValues, ReverseConfig::OPTION_CLASS_NAMING));
         $this->assertSame(ReverseConfig::OPTION_ATTRIBUTE_NAMING_DEFAULT, ArrayUtil::getFromArray($arrayValues, ReverseConfig::OPTION_ATTRIBUTE_NAMING));
         $this->assertSame(null, ArrayUtil::getFromArray($arrayValues, ReverseConfig::OPTION_DEFAULT_NAMESPACE));
-        $this->assertSame(ReverseConfig::OPTION_ENTITY_FILE_SUFFX_DEFAULT, ArrayUtil::getFromArray($arrayValues, ReverseConfig::OPTION_ENTITY_FILE_SUFFX));
+        $this->assertSame(ReverseConfig::OPTION_ENTITY_FILE_SUFFIX_DEFAULT, ArrayUtil::getFromArray($arrayValues, ReverseConfig::OPTION_ENTITY_FILE_SUFFIX));
         $this->assertSame(ReverseConfig::OPTION_TARGET_FILE_DEFAULT, ArrayUtil::getFromArray($arrayValues, ReverseConfig::OPTION_TARGET_FILE));
         $this->assertSame(ReverseConfig::OPTION_TARGET_PATH_DEFAULT, ArrayUtil::getFromArray($arrayValues, ReverseConfig::OPTION_TARGET_PATH));
         $this->assertSame(ReverseConfig::OPTION_SINGLE_FILE_DEFAULT, ArrayUtil::getFromArray($arrayValues, ReverseConfig::OPTION_SINGLE_FILE));

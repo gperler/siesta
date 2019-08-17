@@ -200,7 +200,7 @@ class CollectorGetterSetter extends BasePlugin
         $reference = $collection->getForeignReference();
         $method->addCodeLine('$entity->set' . $reference->getMethodName() . '($this);');
 
-        // check if collection is alread array
+        // check if collection is already array
         $member = '$this->' . $collection->getName();
         $method->addIfStart($member . ' === null');
         $method->addCodeLine($member . ' = [];');

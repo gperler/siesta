@@ -11,7 +11,7 @@ class Collection
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -51,7 +51,7 @@ class Collection
      */
     public function __construct(DataModel $dataModel, Entity $entity)
     {
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
     }
 
@@ -60,7 +60,7 @@ class Collection
      */
     public function update()
     {
-        $this->foreignEntity = $this->datamodel->getEntityByTableName($this->getForeignTable());
+        $this->foreignEntity = $this->dataModel->getEntityByTableName($this->getForeignTable());
         if ($this->foreignEntity === null) {
             return;
         }

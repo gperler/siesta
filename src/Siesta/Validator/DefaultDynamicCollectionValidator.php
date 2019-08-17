@@ -18,12 +18,12 @@ class DefaultDynamicCollectionValidator implements DynamicCollectionValidator
 
     const ERROR_INVALID_NAME_VALUE = "Entity '%s' DynamicCollection '%s' has invalid name";
 
-    const ERROR_INVALID_NAME_VALUD_CODE = 1901;
+    const ERROR_INVALID_NAME_VALUE_CODE = 1901;
 
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -73,7 +73,7 @@ class DefaultDynamicCollectionValidator implements DynamicCollectionValidator
      */
     public function validate(DataModel $dataModel, Entity $entity, DynamicCollection $dynamicCollection, ValidationLogger $logger)
     {
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
         $this->dynamicCollection = $dynamicCollection;
         $this->logger = $logger;
@@ -100,7 +100,7 @@ class DefaultDynamicCollectionValidator implements DynamicCollectionValidator
             return;
         }
         $error = sprintf(self::ERROR_INVALID_NAME_VALUE, $this->getEntityName(), $this->getName());
-        $this->error($error, self::ERROR_INVALID_NAME_VALUD_CODE);
+        $this->error($error, self::ERROR_INVALID_NAME_VALUE_CODE);
     }
 
 }

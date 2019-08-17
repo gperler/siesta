@@ -28,9 +28,9 @@ class MainGeneratorConfig
     const OPTION_DROP_UNUSED_TABLES_DEFAULT = true;
 
     /* entityFileSuffix */
-    const OPTION_ENTITY_FILE_SUFFX = "entityFileSuffix";
+    const OPTION_ENTITY_FILE_SUFFIX = "entityFileSuffix";
 
-    const OPTION_ENTITY_FILE_SUFFX_DEFAULT = ".entity.xml";
+    const OPTION_ENTITY_FILE_SUFFIX_DEFAULT = ".entity.xml";
 
     /* migrationTargetPath */
     const OPTION_MIGRATION_TARGET_PATH = "migrationTargetPath";
@@ -122,7 +122,7 @@ class MainGeneratorConfig
     public function __construct(array $values = null)
     {
         $this->setDropUnusedTables(ArrayUtil::getFromArray($values, self::OPTION_DROP_UNUSED_TABLES));
-        $this->setEntityFileSuffix(ArrayUtil::getFromArray($values, self::OPTION_ENTITY_FILE_SUFFX));
+        $this->setEntityFileSuffix(ArrayUtil::getFromArray($values, self::OPTION_ENTITY_FILE_SUFFIX));
         $this->setMigrationTargetPath(ArrayUtil::getFromArray($values, self::OPTION_MIGRATION_TARGET_PATH));
         $this->setTableNamingStrategy(ArrayUtil::getFromArray($values, self::OPTION_TABLE_NAMING_STRATEGY));
         $this->setColumnNamingStrategy(ArrayUtil::getFromArray($values, self::OPTION_COLUMN_NAMING_STRATEGY));
@@ -140,7 +140,7 @@ class MainGeneratorConfig
     {
         return [
             self::OPTION_DROP_UNUSED_TABLES => $this->isDropUnusedTables(),
-            self::OPTION_ENTITY_FILE_SUFFX => $this->getEntityFileSuffix(),
+            self::OPTION_ENTITY_FILE_SUFFIX => $this->getEntityFileSuffix(),
             self::OPTION_MIGRATION_TARGET_PATH => $this->getMigrationTargetPath(),
             self::OPTION_TABLE_NAMING_STRATEGY => $this->getTableNamingStrategy(),
             self::OPTION_COLUMN_NAMING_STRATEGY => $this->getColumnNamingStrategy(),
@@ -181,7 +181,7 @@ class MainGeneratorConfig
     public function setEntityFileSuffix(string $entityFileSuffix = null)
     {
 
-        $this->entityFileSuffix = ($entityFileSuffix !== null) ? $entityFileSuffix : self::OPTION_ENTITY_FILE_SUFFX_DEFAULT;
+        $this->entityFileSuffix = ($entityFileSuffix !== null) ? $entityFileSuffix : self::OPTION_ENTITY_FILE_SUFFIX_DEFAULT;
     }
 
     /**

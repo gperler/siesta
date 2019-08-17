@@ -36,7 +36,7 @@ class AttributeListMigrator
     /**
      * @var string[]
      */
-    protected $modifiyStatementList;
+    protected $modifyStatementList;
 
     /**
      * @var string[]
@@ -56,7 +56,7 @@ class AttributeListMigrator
         $this->columnList = $columnList;
         $this->attributeList = $attributeList;
         $this->addStatementList = [];
-        $this->modifiyStatementList = [];
+        $this->modifyStatementList = [];
         $this->dropStatementList = [];
     }
 
@@ -139,7 +139,7 @@ class AttributeListMigrator
         }
 
         // types not identical
-        $modifyList = $this->migrationStatementFactory->createModifiyColumnStatement($attribute);
+        $modifyList = $this->migrationStatementFactory->createModifyColumnStatement($attribute);
         $this->addModifyStatementList($modifyList);
     }
 
@@ -165,7 +165,7 @@ class AttributeListMigrator
      */
     protected function addModifyStatementList(array $statementList)
     {
-        $this->modifiyStatementList = array_merge($this->modifiyStatementList, $statementList);
+        $this->modifyStatementList = array_merge($this->modifyStatementList, $statementList);
     }
 
     /**
@@ -197,7 +197,7 @@ class AttributeListMigrator
      */
     public function getModifyColumnStatementList()
     {
-        return $this->modifiyStatementList;
+        return $this->modifyStatementList;
     }
 
     /**

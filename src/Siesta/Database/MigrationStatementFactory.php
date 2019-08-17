@@ -53,7 +53,7 @@ interface MigrationStatementFactory
      *
      * @return string[]
      */
-    public function createModifiyColumnStatement(Attribute $attribute): array;
+    public function createModifyColumnStatement(Attribute $attribute): array;
 
     /**
      * @param Reference $reference

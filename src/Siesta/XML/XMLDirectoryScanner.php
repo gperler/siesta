@@ -104,7 +104,7 @@ class XMLDirectoryScanner
         foreach ($this->xmlEntityExtensionList as $xmlEntityExtension) {
             $tableName = $xmlEntityExtension->getTableName();
             if (!$tableName === null) {
-                $this->validationLogger->warn("found extension without tablename", 0);
+                $this->validationLogger->warn("found extension without table name", 0);
                 continue;
             }
 

@@ -44,7 +44,7 @@ class TestMigrationStatementFactory implements MigrationStatementFactory
         return ["table " . $this->table . " add column '" . $attribute->getDBName() . "'"];
     }
 
-    public function createModifiyColumnStatement(Attribute $attribute): array
+    public function createModifyColumnStatement(Attribute $attribute): array
     {
         return ["table " . $this->table . " modifiy column '" . $attribute->getDBName() . "'"];
     }

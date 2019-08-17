@@ -19,26 +19,26 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
 
     const ERROR_INVALID_NAME_CODE = 1600;
 
-    const ERROR_FOREIGN_TABLE = "Entiy '%s' collectionMany '%s' referes to unknonw table '%s";
+    const ERROR_FOREIGN_TABLE = "Entity '%s' collectionMany '%s' refers to unknown table '%s";
 
     const ERROR_FOREIGN_TABLE_CODE = 1601;
 
-    const ERROR_MAPPING_TABLE = "Entiy '%s' collectionMany '%s' referes to unknonw mapping table '%s";
+    const ERROR_MAPPING_TABLE = "Entity '%s' collectionMany '%s' refers to unknown mapping table '%s";
 
     const ERROR_MAPPING_TABLE_CODE = 1602;
 
-    const ERROR_FOREIGN_REFERENCE = "Entiy '%s' collectionMany '%s' mapping table '%s' has no reference to %s";
+    const ERROR_FOREIGN_REFERENCE = "Entity '%s' collectionMany '%s' mapping table '%s' has no reference to %s";
 
     const ERROR_FOREIGN_REFERENCE_CODE = 1603;
 
-    const ERROR_MAPPING_REFERENCE = "Entiy '%s' collectionMany '%s' mapping table '%s' has no reference to %s";
+    const ERROR_MAPPING_REFERENCE = "Entity '%s' collectionMany '%s' mapping table '%s' has no reference to %s";
 
     const ERROR_MAPPING_REFERENCE_CODE = 1604;
 
     /**
      * @var DataModel
      */
-    protected $datamodel;
+    protected $dataModel;
 
     /**
      * @var Entity
@@ -64,7 +64,7 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
     public function validate(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany, ValidationLogger $logger)
     {
         $this->logger = $logger;
-        $this->datamodel = $dataModel;
+        $this->dataModel = $dataModel;
         $this->entity = $entity;
         $this->collectionMany = $collectionMany;
 
