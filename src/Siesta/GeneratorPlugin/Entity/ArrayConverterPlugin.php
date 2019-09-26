@@ -12,6 +12,7 @@ use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\GeneratorPlugin\ServiceClass\NewInstancePlugin;
 use Siesta\Model\Attribute;
 use Siesta\Model\Collection;
+use Siesta\Model\CollectionMany;
 use Siesta\Model\DBType;
 use Siesta\Model\DynamicCollection;
 use Siesta\Model\Entity;
@@ -37,6 +38,7 @@ class ArrayConverterPlugin extends BasePlugin
         PHPType::ARRAY => "getArray"
     ];
 
+
     /**
      * @param Entity $entity
      *
@@ -59,6 +61,7 @@ class ArrayConverterPlugin extends BasePlugin
         return $useClassList;
     }
 
+
     /**
      * @return string[]
      */
@@ -67,9 +70,11 @@ class ArrayConverterPlugin extends BasePlugin
         return ['Siesta\Contract\ArraySerializable'];
     }
 
+
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
+     *
      * @throws ReflectionException
      */
     public function generate(Entity $entity, ClassGenerator $classGenerator)
@@ -80,6 +85,7 @@ class ArrayConverterPlugin extends BasePlugin
         $this->generateToArray();
     }
 
+
     /**
      *
      */
@@ -87,6 +93,7 @@ class ArrayConverterPlugin extends BasePlugin
     {
         $this->classGenerator->addProtectedProperty("_initialArray", "array");
     }
+
 
     /**
      * @throws ReflectionException
@@ -105,11 +112,12 @@ class ArrayConverterPlugin extends BasePlugin
         $this->generateCollectionListFromArray($method);
 
         $this->generateDynamicCollectionListFromArray($method);
-
     }
+
 
     /**
      * @param Method $method
+     *
      * @throws ReflectionException
      */
     protected function generateAttributeListFromArray(Method $method)
@@ -122,6 +130,7 @@ class ArrayConverterPlugin extends BasePlugin
             $this->generateObjectAttributeFromArray($method, $attribute);
         }
     }
+
 
     /**
      * @param Method $method
@@ -139,9 +148,11 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addCodeLine('$this->set' . $attribute->getMethodName() . '($arrayAccessor->' . $accessorMethod . '("' . $name . '"));');
     }
 
+
     /**
      * @param Method $method
      * @param Attribute $attribute
+     *
      * @throws ReflectionException
      */
     protected function generateObjectAttributeFromArray(Method $method, Attribute $attribute)
@@ -168,6 +179,7 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addIfEnd();
     }
 
+
     /**
      * @param Method $method
      */
@@ -177,6 +189,7 @@ class ArrayConverterPlugin extends BasePlugin
             $this->generateReferenceFromArray($method, $reference);
         }
     }
+
 
     /**
      * @param Method $method
@@ -201,6 +214,7 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addIfEnd();
     }
 
+
     /**
      * @param Method $method
      */
@@ -210,6 +224,7 @@ class ArrayConverterPlugin extends BasePlugin
             $this->generateCollectionFromArray($method, $collection);
         }
     }
+
 
     /**
      * @param Method $method
@@ -235,8 +250,8 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addForeachEnd();
 
         $method->addIfEnd();
-
     }
+
 
     /**
      * @param Method $method
@@ -247,6 +262,7 @@ class ArrayConverterPlugin extends BasePlugin
             $this->generateDynamicCollectionFromArray($method, $dynamicCollection);
         }
     }
+
 
     /**
      * @param Method $method
@@ -272,8 +288,8 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addForeachEnd();
 
         $method->addIfEnd();
-
     }
+
 
     /**
      * @param Method $method
@@ -294,6 +310,7 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addCodeLine('$this->_existing = ' . $pkCheck . ';');
     }
 
+
     /**
      * @throws ReflectionException
      */
@@ -313,8 +330,11 @@ class ArrayConverterPlugin extends BasePlugin
 
         $this->generateDynamicCollectionListToArray($method);
 
+        $this->generateCollectionManyListToArray($method);
+
         $method->addCodeLine('return $result;');
     }
+
 
     /**
      * @param Method $method
@@ -333,13 +353,14 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addNewLine();
     }
 
+
     /**
      * @param Method $method
+     *
      * @throws ReflectionException
      */
     protected function generateAttributeListToArray(Method $method)
     {
-
         $method->addCodeLine('$result = [');
         $method->incrementIndent();
         foreach ($this->entity->getAttributeList() as $index => $attribute) {
@@ -353,8 +374,10 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addCodeLine('];');
     }
 
+
     /**
      * @param Attribute $attribute
+     *
      * @return string
      * @throws ReflectionException
      */
@@ -385,6 +408,7 @@ class ArrayConverterPlugin extends BasePlugin
         return '"' . $name . '" => $this->' . $methodName . '()';
     }
 
+
     /**
      * @param Method $method
      */
@@ -394,6 +418,7 @@ class ArrayConverterPlugin extends BasePlugin
             $this->generateReferenceToArray($method, $reference);
         }
     }
+
 
     /**
      * @param Method $method
@@ -407,6 +432,7 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addIfEnd();
     }
 
+
     /**
      * @param Method $method
      */
@@ -416,6 +442,7 @@ class ArrayConverterPlugin extends BasePlugin
             $this->generateCollectionToArray($method, $collection);
         }
     }
+
 
     /**
      * @param Method $method
@@ -433,6 +460,7 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addIfEnd();
     }
 
+
     /**
      * @param Method $method
      */
@@ -442,6 +470,7 @@ class ArrayConverterPlugin extends BasePlugin
             $this->generateDynamicCollectionToArray($method, $dynamicCollection);
         }
     }
+
 
     /**
      * @param Method $method
@@ -458,4 +487,35 @@ class ArrayConverterPlugin extends BasePlugin
         $method->addForeachEnd();
         $method->addIfEnd();
     }
+
+
+    /**
+     * @param Method $method
+     */
+    protected function generateCollectionManyListToArray(Method $method)
+    {
+        foreach ($this->entity->getCollectionManyList() as $collectionMany) {
+            $this->generateCollectionManyToArray($method, $collectionMany);
+        }
+    }
+
+
+    /**
+     * @param Method $method
+     * @param CollectionMany $collectionMany
+     */
+    protected function generateCollectionManyToArray(Method $method, CollectionMany $collectionMany)
+    {
+        $name = $collectionMany->getName();
+        $method->addCodeLine('$result["' . $name . '"] = [];');
+        $method->addIfStart('$this->' . $name . ' !== null');
+
+        $method->addForeachStart('$this->' . $name . ' as $entity');
+        $method->addCodeLine('$result["' . $name . '"][] = $entity->' . self::METHOD_TO_ARRAY . '($cycleDetector);');
+        $method->addForeachEnd();
+
+        $method->addIfEnd();
+    }
+
+
 }
