@@ -2,7 +2,6 @@
 
 namespace SiestaTest\Functional\MySQL\MetaData;
 
-use Siesta\Config\Config;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\File;
@@ -19,10 +18,9 @@ class AttributeMetaDataTest extends \PHPUnit_Framework_TestCase
         $connection->useDatabase($connection->getDatabase());
     }
 
+
     public function testAttributeMetaData()
     {
-
-
         $dmr = new DataModelHelper();
         $dmr->createSchema(__DIR__ . "/schema/attribute.test.xml", false);
 
@@ -49,14 +47,11 @@ class AttributeMetaDataTest extends \PHPUnit_Framework_TestCase
 
             $expectedData = ArrayUtil::getFromArray($expectedList, $columnName);
             $this->assertNotNull($expectedData);
-
             $this->assertSame($expectedData["dbType"], $column->getDBType());
             $this->assertSame($expectedData["phpType"], $column->getPHPType());
             $this->assertSame($expectedData["required"], $column->getIsRequired());
             $this->assertSame($expectedData["primaryKey"], $column->getIsPrimaryKey());
-
         }
-
     }
 
 }

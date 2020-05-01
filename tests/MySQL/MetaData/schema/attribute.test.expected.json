@@ -30,7 +30,7 @@
     "primaryKey": false
   },
   "int2": {
-    "dbType": "INT(5)",
+    "dbType": "INT",
     "required": false,
     "phpType": "int",
     "primaryKey": false
