@@ -143,7 +143,7 @@ class CollectorGetterSetter extends BasePlugin
         foreach ($foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
             $checkList[] = '$' . $pkAttribute->getPhpName() . ' === null';
         }
-        return '($this->' . $collection->getName() . ' === null) OR (' . implode($checkList, ' AND ') . ')';
+        return '($this->' . $collection->getName() . ' === null) OR (' . implode(' AND ', $checkList ) . ')';
     }
 
     /**
