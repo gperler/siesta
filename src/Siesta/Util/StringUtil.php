@@ -57,7 +57,7 @@ class StringUtil
         if ($maxLength === 0 || $maxLength === null) {
             return $value;
         }
-        return substr($value, 0, $maxLength);
+        return mb_substr($value, 0, $maxLength);
     }
 
     /**
