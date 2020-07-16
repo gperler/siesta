@@ -63,7 +63,7 @@ class ReverseCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return int
      * @throws ReflectionException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -85,14 +85,17 @@ class ReverseCommand extends Command
 
             $output->writeln("I'm using config file " . $this->config->getConfigFileName());
             $output->writeln("Reverse engineering database " . $this->reverseConfig->getConnectionName());
-
+            return 0;
         } catch (ConnectException $ce) {
             $this->output->writeln($ce->getMessage());
             $this->output->writeln("Config file used " . Config::getInstance()->getConfigFileName());
             $this->output->writeln("Connection Configuration");
             $this->output->writeln((string)$ce->getConnectionData());
+            return 1;
+
         } catch (InvalidConfigurationException $ic) {
             $this->output->writeln($ic->getMessage());
+            return 1;
         }
     }
 

@@ -51,7 +51,7 @@ class InitCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return int
      * @throws ReflectionException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -68,6 +68,7 @@ class InitCommand extends Command
         $targetPath = $this->askConfigTargetPath();
 
         $this->generateConfiguration($cd, $targetPath);
+        return 0;
     }
 
     /**
