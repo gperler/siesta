@@ -138,7 +138,7 @@ class MySQLDatabase implements DatabaseMetaData
      */
     public function getTableList(): array
     {
-        return array_values($this->tableList);
+        return $this->tableList;
     }
 
 

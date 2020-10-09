@@ -91,6 +91,7 @@ class MySQLColumnReader
         if (!isset($this->columnList[$tableName])) {
             $this->columnList[$tableName] = [];
         }
-        $this->columnList[$tableName][] = $column;
+        $columnName = $column->getDBName();
+        $this->columnList[$tableName][$columnName] = $column;
     }
 }

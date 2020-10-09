@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Siesta\Migration;
 
@@ -40,6 +41,7 @@ class ReferenceListMigrator
      */
     protected $addForeignKeyStatementList;
 
+
     /**
      * ReferenceListMigrator constructor.
      *
@@ -58,9 +60,11 @@ class ReferenceListMigrator
         $this->dropForeignKeyStatementList = [];
     }
 
+
     /**
      * compares the references (foreign key) found in the database with the definition in the model and creates alter
      * statements for columns and foreign key constraints
+     *
      * @return void
      */
     public function createAlterStatementList()
@@ -69,7 +73,6 @@ class ReferenceListMigrator
 
         // iterate references from model and retrieve alter statements
         foreach ($this->referenceList as $reference) {
-
             if ($reference->getNoConstraint()) {
                 continue;
             }
@@ -88,7 +91,6 @@ class ReferenceListMigrator
 
         // iterate references from database and retrieve alter statements
         foreach ($this->constraintMetaDataList as $constraintMetaData) {
-
             // check if reference has already been processed
             if (in_array($constraintMetaData->getConstraintName(), $processedDatabaseList)) {
                 continue;
@@ -99,6 +101,7 @@ class ReferenceListMigrator
         }
     }
 
+
     /**
      * @param Reference $reference
      *
@@ -106,21 +109,23 @@ class ReferenceListMigrator
      */
     private function getConstraintByReference(Reference $reference)
     {
-        foreach ($this->constraintMetaDataList as $constraintMetaData) {
-            if ($constraintMetaData->getConstraintName() === $reference->getConstraintName()) {
+        $constraintName = $reference->getConstraintName();
+
+        foreach($this->constraintMetaDataList as $constraintMetaData) {
+            if ($constraintMetaData->getConstraintName() === $constraintName) {
                 return $constraintMetaData;
             }
         }
         return null;
     }
 
+
     /**
-     * @param ConstraintMetaData $constraintMetaData
-     * @param Reference $reference
+     * @param ConstraintMetaData|null $constraintMetaData
+     * @param Reference|null $reference
      */
     private function createAlterStatement(ConstraintMetaData $constraintMetaData = null, Reference $reference = null)
     {
-
         if ($constraintMetaData === null) {
             $this->addCreateReference($reference);
             return;
@@ -132,8 +137,8 @@ class ReferenceListMigrator
         }
 
         $this->compareMapping($constraintMetaData, $reference);
-
     }
+
 
     /**
      * @param ConstraintMetaData $constraintMetaData
@@ -141,7 +146,6 @@ class ReferenceListMigrator
      */
     private function compareMapping(ConstraintMetaData $constraintMetaData, Reference $reference)
     {
-
         // check if they are referencing the same column
         if ($constraintMetaData->getForeignTable() !== $reference->getForeignTable()) {
             $this->addDropConstraintStatement($constraintMetaData);
@@ -171,13 +175,14 @@ class ReferenceListMigrator
         $this->addDropConstraintStatement($constraintMetaData);
     }
 
+
     /**
      * @param ConstraintMetaData $constraintMetaData
      * @param Reference $reference
      *
      * @return bool
      */
-    protected function areMappingIdentical(ConstraintMetaData $constraintMetaData, Reference $reference) : bool
+    protected function areMappingIdentical(ConstraintMetaData $constraintMetaData, Reference $reference): bool
     {
         foreach ($reference->getReferenceMappingList() as $referenceMapping) {
             $constraintMappingMetaDataList = $constraintMetaData->getConstraintMappingList();
@@ -188,6 +193,7 @@ class ReferenceListMigrator
         }
         return true;
     }
+
 
     /**
      * @param ConstraintMappingMetaData[] $constraintMappingList
@@ -205,6 +211,7 @@ class ReferenceListMigrator
         return null;
     }
 
+
     /**
      * @param ConstraintMetaData $constraintMetaData
      */
@@ -213,6 +220,7 @@ class ReferenceListMigrator
         $dropList = $this->migrationStatementFactory->createDropConstraintStatement($constraintMetaData);
         $this->dropForeignKeyStatementList = array_merge($this->dropForeignKeyStatementList, $dropList);
     }
+
 
     /**
      * @param Reference $reference
@@ -223,6 +231,7 @@ class ReferenceListMigrator
         $this->addForeignKeyStatementList = array_merge($this->addForeignKeyStatementList, $addList);
     }
 
+
     /**
      * @return string[]
      */
@@ -230,6 +239,7 @@ class ReferenceListMigrator
     {
         return $this->addForeignKeyStatementList;
     }
+
 
     /**
      * @return string[]

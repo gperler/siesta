@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Siesta\Migration;
 
@@ -43,6 +44,7 @@ class AttributeListMigrator
      */
     protected $dropStatementList;
 
+
     /**
      * AttributeListMigrator constructor.
      *
@@ -60,8 +62,10 @@ class AttributeListMigrator
         $this->dropStatementList = [];
     }
 
+
     /**
      * compares attribute list and column list and request the needed alter statements
+     *
      * @return void
      */
     public function createAlterStatementList()
@@ -84,7 +88,6 @@ class AttributeListMigrator
 
         // iterate attributes from database and retrieve alter statements
         foreach ($this->columnList as $column) {
-
             // check if attribute has already been processed
             if (in_array($column->getDBName(), $processedDatabaseList)) {
                 continue;
@@ -92,8 +95,8 @@ class AttributeListMigrator
             // no corresponding model attribute will result in drop statements
             $this->createAlterStatement($column, null);
         }
-
     }
+
 
     /**
      * @param Attribute $attribute
@@ -102,13 +105,10 @@ class AttributeListMigrator
      */
     protected function getColumnByAttribute(Attribute $attribute)
     {
-        foreach ($this->columnList as $column) {
-            if ($column->getDBName() === $attribute->getDBName()) {
-                return $column;
-            }
-        }
-        return null;
+        $databaseName = $attribute->getDBName();
+        return isset($this->columnList[$databaseName]) ? $this->columnList[$databaseName] : null;
     }
+
 
     /**
      * @param ColumnMetaData|null $column
@@ -143,13 +143,14 @@ class AttributeListMigrator
         $this->addModifyStatementList($modifyList);
     }
 
+
     /**
      * @param Attribute $attribute
      * @param ColumnMetaData $column
      *
      * @return bool
      */
-    protected function areIdentical(Attribute $attribute, ColumnMetaData $column) : bool
+    protected function areIdentical(Attribute $attribute, ColumnMetaData $column): bool
     {
         if ($column->getIsRequired() !== $attribute->getIsRequired()) {
             return false;
@@ -160,6 +161,7 @@ class AttributeListMigrator
         return $attributeType === $columnType;
     }
 
+
     /**
      * @param array $statementList
      */
@@ -167,6 +169,7 @@ class AttributeListMigrator
     {
         $this->modifyStatementList = array_merge($this->modifyStatementList, $statementList);
     }
+
 
     /**
      * @param array $statementList
@@ -176,6 +179,7 @@ class AttributeListMigrator
         $this->addStatementList = array_merge($this->addStatementList, $statementList);
     }
 
+
     /**
      * @param array $statementList
      */
@@ -183,6 +187,7 @@ class AttributeListMigrator
     {
         $this->dropStatementList = array_merge($this->dropStatementList, $statementList);
     }
+
 
     /**
      * @return string[]
@@ -192,6 +197,7 @@ class AttributeListMigrator
         return $this->addStatementList;
     }
 
+
     /**
      * @return string[]
      */
@@ -199,6 +205,7 @@ class AttributeListMigrator
     {
         return $this->modifyStatementList;
     }
+
 
     /**
      * @return string[]

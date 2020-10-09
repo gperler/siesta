@@ -51,7 +51,7 @@ class MySQLConstraintReader
         if (!isset($this->constraintList[$tableName])) {
             return [];
         }
-        return array_values($this->constraintList[$tableName]);
+        return $this->constraintList[$tableName];
     }
 
 

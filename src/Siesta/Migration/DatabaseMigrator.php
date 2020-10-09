@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Siesta\Migration;
@@ -54,6 +55,7 @@ class DatabaseMigrator
 
     /**
      * list of table names that are also defined in the current dataModel
+     *
      * @var string[]
      */
     protected $neededTableList;
@@ -62,6 +64,7 @@ class DatabaseMigrator
      * @var string[]
      */
     protected $alterStatementList;
+
 
     /**
      * @param DataModel $dataModel
@@ -80,6 +83,7 @@ class DatabaseMigrator
         $this->createStoredProcedureMigrator();
         $this->checkSequencerTable();
     }
+
 
     /**
      *
@@ -101,6 +105,7 @@ class DatabaseMigrator
         $this->addAlterStatementList([$sequencerTableCreateStatement]);
     }
 
+
     /**
      *
      */
@@ -110,7 +115,6 @@ class DatabaseMigrator
         $createStatementFactory = $this->connection->getCreateStatementFactory();
         $sequencerStoredProcedure = $createStatementFactory->buildSequencerStoredProcedure();
         $this->storedProcedureMigrator = new StoredProcedureMigrator($this->storedProcedureFactory, $activeStoredProcedureList, $sequencerStoredProcedure);
-
     }
 
 
@@ -119,7 +123,6 @@ class DatabaseMigrator
      */
     public function createAlterStatementList(bool $dropUnusedTables)
     {
-
         foreach ($this->dataModel->getEntityList() as $entity) {
             $this->migrateEntity($entity);
         }
@@ -157,6 +160,7 @@ class DatabaseMigrator
         $this->storedProcedureMigrator->createProcedureStatementList($this->dataModel, $entity);
     }
 
+
     /**
      * @param Entity $entity
      */
@@ -173,6 +177,7 @@ class DatabaseMigrator
         $factory = $this->connection->getCreateStatementFactory();
         $this->addAlterStatementList($factory->buildCreateDelimitTable($entity));
     }
+
 
     /**
      * @param Entity $entity
@@ -191,6 +196,7 @@ class DatabaseMigrator
         $this->addAlterStatementList($factory->buildCreateTable($entity));
     }
 
+
     /**
      * @param Entity $entity
      *
@@ -208,6 +214,7 @@ class DatabaseMigrator
 
         $this->storedProcedureMigrator->createProcedureStatementList($this->dataModel, $entity);
     }
+
 
     /**
      * @param Entity $entity
@@ -238,20 +245,18 @@ class DatabaseMigrator
 
     /**
      * @param string $tableName
+     *
      * @return null|TableMetaData
      */
     private function getTableMetaDataByName(string $tableName)
     {
-        foreach ($this->databaseTableList as $tableMetaData) {
-            if ($tableMetaData->getName() === $tableName) {
-                return $tableMetaData;
-            }
-        }
-        return null;
+        return isset($this->databaseTableList[$tableName]) ? $this->databaseTableList[$tableName] : null;
     }
+
 
     /**
      * drops unused database tables
+     *
      * @return void
      */
     private function dropUnusedTables()
@@ -269,6 +274,7 @@ class DatabaseMigrator
         }
     }
 
+
     /**
      * @param array $alterStatementList
      */
@@ -277,8 +283,10 @@ class DatabaseMigrator
         $this->alterStatementList = array_merge($this->alterStatementList, $alterStatementList);
     }
 
+
     /**
      * will contain create table and alter table statements
+     *
      * @return String[]
      */
     public function getAlterStatementList()
@@ -286,8 +294,10 @@ class DatabaseMigrator
         return $this->alterStatementList;
     }
 
+
     /**
      * will contain stored procedure create and drop statements as well as sequencer
+     *
      * @return String[]
      */
     public function getAlterStoredProcedureStatementList()

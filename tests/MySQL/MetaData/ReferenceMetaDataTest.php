@@ -2,6 +2,7 @@
 
 namespace SiestaTest\Functional\MySQL\MetaData;
 
+use Codeception\Util\Debug;
 use Siesta\Config\Config;
 use Siesta\Database\ConnectionFactory;
 use SiestaTest\TestUtil\DataModelHelper;
@@ -22,10 +23,10 @@ class ReferenceMetaDataTest extends \PHPUnit_Framework_TestCase
         $dmr = new DataModelHelper();
 
         $validationLogger = $dmr->getValidationLogger(true);
-        $validatior = $dmr->getValidator(true);
+        $validator = $dmr->getValidator(true);
         $model = $dmr->readModel(__DIR__ . "/schema/reference.test.xml");
 
-        $validatior->validateDataModel($model, $validationLogger);
+        $validator->validateDataModel($model, $validationLogger);
         $this->assertFalse($validationLogger->hasError());
 
         $connection = ConnectionFactory::getConnection();
@@ -43,7 +44,7 @@ class ReferenceMetaDataTest extends \PHPUnit_Framework_TestCase
         $constraintMetaDataList = $addressMetaData->getConstraintList();
         $this->assertSame(1, sizeof($constraintMetaDataList));
 
-        $constraint = $constraintMetaDataList[0];
+        $constraint = $constraintMetaDataList["Address_person"];
 
         $this->assertSame("person", $constraint->getName());
         $this->assertSame("Person", $constraint->getForeignTable());

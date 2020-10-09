@@ -47,7 +47,8 @@ class TestTableMetaData implements TableMetaData
 
         $this->columnList = [];
         foreach (ArrayUtil::getFromArray($valueList, self::COLUMN_LIST) as $column) {
-            $this->columnList[] = new TestColumnMetaData($column);
+            $testColumn = new TestColumnMetaData($column);
+            $this->columnList[$testColumn->getDBName()] = new TestColumnMetaData($column);
         }
 
         $this->indexList = [];
@@ -57,7 +58,8 @@ class TestTableMetaData implements TableMetaData
 
         $this->constraintList = [];
         foreach (ArrayUtil::getFromArray($valueList, self::CONSTRAINT_LIST) as $constraint) {
-            $this->constraintList[] = new TestConstraintMetaData($constraint);
+            $testConstraint = new TestConstraintMetaData($constraint);
+            $this->constraintList[$testConstraint->getName()] = $testConstraint;
         }
     }
 
