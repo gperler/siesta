@@ -19,7 +19,6 @@ use Siesta\Model\ValidationLogger;
 use Siesta\NamingStrategy\NamingStrategy;
 use Siesta\NamingStrategy\NamingStrategyRegistry;
 use Siesta\Util\File;
-use Siesta\Util\StopWatch;
 use Siesta\Validator\Validator;
 use Siesta\XML\XMLDirectoryScanner;
 
@@ -217,11 +216,8 @@ class Siesta implements LoggerAwareInterface
      */
     public function migrateDirect(string $baseDir, bool $dropUnusedTables = true)
     {
-        StopWatch::start();
         $this->generateClasses($baseDir);
-        StopWatch::echoTime('class generation');
         $this->migrator->migrateDirect($this->dataModel, $this->getConnection(), $dropUnusedTables);
-        StopWatch::echoTime('migration');
     }
 
 
@@ -289,7 +285,7 @@ class Siesta implements LoggerAwareInterface
 
 
     /**
-     * @param int $lastGenerationTime
+     * @param int|null $lastGenerationTime
      */
     public function setLastGenerationTime(?int $lastGenerationTime): void
     {
