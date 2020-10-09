@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Siesta\Driver\MySQL\MetaData;
@@ -31,6 +32,27 @@ class MySQLDatabase implements DatabaseMetaData
     protected $tableList;
 
     /**
+     * @var MySQLColumn[][]
+     */
+    protected $columnList;
+
+    /**
+     * @var MySQLColumnReader
+     */
+    protected $columnReader;
+
+    /**
+     * @var MySQLConstraintReader;
+     */
+    protected $referenceReader;
+
+    /**
+     * @var MySQLIndexReader;
+     */
+    protected $indexReader;
+
+
+    /**
      * MySQLDatabase constructor.
      *
      * @param Connection $connection
@@ -43,8 +65,9 @@ class MySQLDatabase implements DatabaseMetaData
         if ($databaseName !== null) {
             $this->connection->useDatabase($databaseName);
         }
-        $this->readMySQLTable();
+        $this->refresh();
     }
+
 
     /**
      *
@@ -53,15 +76,71 @@ class MySQLDatabase implements DatabaseMetaData
     {
         $this->tableList = [];
         $this->readMySQLTable();
+        $this->readColumnList();
+        $this->readConstraintList();
+        $this->readIndexList();
     }
+
+
+    /**
+     *
+     */
+    private function readColumnList()
+    {
+        $this->columnReader = new MySQLColumnReader($this->connection, $this);
+        foreach ($this->tableList as $tableName => $table) {
+            $columnList = $this->columnReader->getColumnListByTableName($tableName);
+            $table->setColumnList($columnList);
+        }
+    }
+
+
+    /**
+     *
+     */
+    private function readConstraintList()
+    {
+        $this->referenceReader = new MySQLConstraintReader($this->connection);
+        foreach ($this->tableList as $tableName => $table) {
+            $constraintList = $this->referenceReader->getConstraintListByTableName($tableName);
+            $table->setConstraintList($constraintList);
+        }
+    }
+
+
+    /**
+     * @param string $tableName
+     * @param string $constraintName
+     *
+     * @return MySQLConstraint|null
+     */
+    public function getConstraintByTableNameAndName(string $tableName, string $constraintName)
+    {
+        return $this->referenceReader->getConstraintByName($tableName, $constraintName);
+    }
+
+
+    /**
+     *
+     */
+    private function readIndexList()
+    {
+        $this->indexReader = new MySQLIndexReader($this->connection, $this);
+        foreach ($this->tableList as $tableName => $table) {
+            $indexList = $this->indexReader->getIndexListByTableName($tableName);
+            $table->setIndexList($indexList);
+        }
+    }
+
 
     /**
      * @return array
      */
     public function getTableList(): array
     {
-        return $this->tableList;
+        return array_values($this->tableList);
     }
+
 
     /**
      * @param string $tableName
@@ -70,13 +149,9 @@ class MySQLDatabase implements DatabaseMetaData
      */
     public function getTableByName(string $tableName)
     {
-        foreach ($this->tableList as $table) {
-            if ($table->getName() === $tableName) {
-                return $table;
-            }
-        }
-        return null;
+        return isset($this->tableList[$tableName]) ? $this->tableList[$tableName] : null;
     }
+
 
     /**
      *
@@ -86,9 +161,11 @@ class MySQLDatabase implements DatabaseMetaData
         $tableDTOList = $this->getTableDTO();
 
         foreach ($tableDTOList as $tableDTO) {
-            $this->tableList[] = new MySQLTable($this->connection, $tableDTO);
+            $mysqlTable = new MySQLTable($this->connection, $tableDTO);
+            $this->tableList[$mysqlTable->getName()] = $mysqlTable;
         }
     }
+
 
     /**
      * @return TableDTO[]
@@ -106,6 +183,7 @@ class MySQLDatabase implements DatabaseMetaData
 
         return $tableDTOList;
     }
+
 
     /**
      * @return StoredProcedure[]
@@ -125,5 +203,6 @@ class MySQLDatabase implements DatabaseMetaData
 
         return $spList;
     }
+
 
 }

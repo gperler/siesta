@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\MetaData;
 
 use Siesta\Database\Connection;
@@ -49,6 +51,7 @@ class MySQLTable implements TableMetaData
      */
     protected $indexList;
 
+
     /**
      * MySQLTable constructor.
      *
@@ -62,26 +65,65 @@ class MySQLTable implements TableMetaData
         $this->columnList = [];
         $this->constraintList = [];
         $this->indexList = [];
-        $this->extractColumnData();
-        $this->extractReferenceData();
-        $this->extractIndexData();
+        //$this->extractColumnData();
+        //$this->extractReferenceData();
+        //$this->extractIndexData();
     }
+
 
     /**
      * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->tableDTO->name;
     }
 
+
+    /**
+     * @param MySQLColumn[] $columnList
+     */
+    public function setColumnList(array $columnList): void
+    {
+        $this->columnList = $columnList;
+    }
+
+
+    /**
+     * @param MySQLConstraint[] $constraintList
+     */
+    public function setConstraintList(array $constraintList): void
+    {
+        $this->constraintList = $constraintList;
+    }
+
+
+    /**
+     * @param MySQLIndex[] $indexList
+     */
+    public function setIndexList(array $indexList): void
+    {
+        $this->indexList = $indexList;
+    }
+
+
+    /**
+     * @return bool|null
+     */
+    public function getAutoincrement(): ?bool
+    {
+        return $this->tableDTO->autoincrement;
+    }
+
+
     /**
      * @return ColumnMetaData[]
      */
-    public function getColumnList() : array
+    public function getColumnList(): array
     {
         return $this->columnList;
     }
+
 
     /**
      * @param string $name
@@ -98,26 +140,29 @@ class MySQLTable implements TableMetaData
         return null;
     }
 
+
     /**
      * @return ConstraintMetaData[]
      */
-    public function getConstraintList() : array
+    public function getConstraintList(): array
     {
         return $this->constraintList;
     }
 
+
     /**
      * @return IndexMetaData[]
      */
-    public function getIndexList() : array
+    public function getIndexList(): array
     {
         return $this->indexList;
     }
 
+
     /**
      * @return ColumnMetaData[]
      */
-    public function getPrimaryKeyAttributeList() : array
+    public function getPrimaryKeyAttributeList(): array
     {
         $primaryKeyColumnList = [];
         foreach ($this->getColumnList() as $column) {
@@ -127,6 +172,7 @@ class MySQLTable implements TableMetaData
         }
         return $primaryKeyColumnList;
     }
+
 
     /**
      * @param string $name
@@ -143,6 +189,7 @@ class MySQLTable implements TableMetaData
         return null;
     }
 
+
     /**
      * @param string $indexName
      *
@@ -158,10 +205,11 @@ class MySQLTable implements TableMetaData
         return null;
     }
 
+
     /**
      * @return array
      */
-    public function getDataBaseSpecific() : array
+    public function getDataBaseSpecific(): array
     {
         return [
             MySQLDriver::MYSQL_DRIVER_NAME => [
@@ -171,23 +219,24 @@ class MySQLTable implements TableMetaData
         ];
     }
 
-    /**
-     *
-     */
-    protected function extractColumnData()
-    {
 
-        $sql = sprintf(self::SQL_GET_COLUMN_DETAILS, $this->connection->getDatabase(), $this->getName());
+//    /**
+//     *
+//     */
+//    protected function extractColumnData()
+//    {
+//        $sql = sprintf(self::SQL_GET_COLUMN_DETAILS, $this->connection->getDatabase(), $this->getName());
+//
+//        $resultSet = $this->connection->query($sql);
+//        while ($resultSet->hasNext()) {
+//            $column = new MySQLColumn();
+//            $column->fromResultSet($resultSet, $this->tableDTO->autoincrement);
+//            $this->columnList[] = $column;
+//        }
+//
+//        $resultSet->close();
+//    }
 
-        $resultSet = $this->connection->query($sql);
-        while ($resultSet->hasNext()) {
-            $column = new MySQLColumn();
-            $column->fromResultSet($resultSet, $this->tableDTO->autoincrement);
-            $this->columnList[] = $column;
-        }
-
-        $resultSet->close();
-    }
 
     /**
      *
@@ -199,7 +248,6 @@ class MySQLTable implements TableMetaData
         $resultSet = $this->connection->query($sql);
 
         while ($resultSet->hasNext()) {
-
             // skip primary key index
             if ($resultSet->getStringValue(MySQLConstraint::REFERENCED_TABLE_NAME) === null) {
                 continue;
@@ -215,7 +263,6 @@ class MySQLTable implements TableMetaData
             } else {
                 $constraint->addConstraint($resultSet);
             }
-
         }
         $resultSet->close();
 
@@ -229,11 +276,10 @@ class MySQLTable implements TableMetaData
             if ($constraint !== null) {
                 $constraint->addUpdateAndDeleteRule($resultSet);
             }
-
         }
         $resultSet->close();
-
     }
+
 
     /**
      * extracts index data
@@ -244,7 +290,6 @@ class MySQLTable implements TableMetaData
 
         $resultSet = $this->connection->query($sql);
         while ($resultSet->hasNext()) {
-
             $indexName = $resultSet->getStringValue(MySQLIndex::INDEX_NAME);
             if ($indexName === MySQLIndex::PRIMARY_KEY_INDEX_NAME) {
                 continue;
