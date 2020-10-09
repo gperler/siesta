@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\MetaData;
 
 use Siesta\Database\MetaData\ConstraintMappingMetaData;
@@ -50,14 +52,15 @@ class MySQLConstraint implements ConstraintMetaData
      */
     protected $constraintMappingList;
 
+
     /**
      * MySQLConstraint constructor.
      */
     public function __construct()
     {
         $this->constraintMappingList = [];
-
     }
+
 
     /**
      * @param ResultSet $resultSet
@@ -70,6 +73,7 @@ class MySQLConstraint implements ConstraintMetaData
         $this->addConstraint($resultSet);
     }
 
+
     /**
      * @param ResultSet $resultSet
      */
@@ -80,16 +84,21 @@ class MySQLConstraint implements ConstraintMetaData
         $this->constraintMappingList[] = $constraintMapping;
     }
 
+
+    /**
+     * @param ResultSet $resultSet
+     */
     public function addUpdateAndDeleteRule(ResultSet $resultSet)
     {
         $this->onUpdate = $resultSet->getStringValue(self::UPDATE_RULE);
         $this->onDelete = $resultSet->getStringValue(self::DELETE_RULE);
     }
 
+
     /**
      * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         $constraintName = $this->getConstraintName();
         if (strpos($constraintName, "_") !== false) {
@@ -98,39 +107,44 @@ class MySQLConstraint implements ConstraintMetaData
         return $constraintName;
     }
 
-    public function getConstraintName() : string
+
+    public function getConstraintName(): string
     {
         return $this->constraintName;
     }
 
+
     /**
      * @return string
      */
-    public function getForeignTable() : string
+    public function getForeignTable(): string
     {
         return $this->foreignTable;
     }
 
+
     /**
      * @return string
      */
-    public function getOnUpdate() : string
+    public function getOnUpdate(): string
     {
         return ConstraintRule::mySQLToSchema($this->onUpdate);
     }
 
+
     /**
      * @return string
      */
-    public function getOnDelete() : string
+    public function getOnDelete(): string
     {
         return ConstraintRule::mySQLToSchema($this->onDelete);
     }
 
+
     /**
      * @return ConstraintMappingMetaData[]
      */
-    public function getConstraintMappingList() : array
+    public function getConstraintMappingList(): array
     {
         return $this->constraintMappingList;
     }

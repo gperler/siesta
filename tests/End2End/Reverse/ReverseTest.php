@@ -2,6 +2,7 @@
 
 namespace SiestaTest\End2End\Reverse;
 
+use Codeception\Util\Debug;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Main\Reverse;
 use Siesta\Main\Siesta;
@@ -50,6 +51,7 @@ class ReverseTest extends End2EndTest
         $dbMigrator = new DatabaseMigrator($datamodel, $connection);
 
         $this->assertSame(1, sizeof($dbMigrator->getAlterStatementList()));
+
 
     }
 

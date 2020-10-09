@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\MetaData;
 
 use Siesta\Database\ResultSet;
@@ -18,13 +20,26 @@ class TableDTO
 
     const AUTO_INCREMENT = "AUTO_INCREMENT";
 
+    /**
+     * @var string|null
+     */
     public $name;
 
+    /**
+     * @var string|null
+     */
     public $engine;
 
+    /**
+     * @var string|null
+     */
     public $collation;
 
+    /**
+     * @var bool|null
+     */
     public $autoincrement;
+
 
     /**
      * @param ResultSet $resultSet
