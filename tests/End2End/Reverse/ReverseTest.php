@@ -25,6 +25,8 @@ class ReverseTest extends End2EndTest
         $this->resetSchema();
     }
 
+
+
     public function testReverse()
     {
         //$this->markTestSkipped();
@@ -55,6 +57,10 @@ class ReverseTest extends End2EndTest
 
     }
 
+
+    /**
+     * @throws \ReflectionException
+     */
     public function testCreateModel()
     {
 
@@ -62,6 +68,9 @@ class ReverseTest extends End2EndTest
         $siesta->setLogger(new CodeceptionLogger(true));
         $siesta->addFile(new File(__DIR__ . "/reverse/reverse.xml"));
         $siesta->migrateDirect(__DIR__);
+
+        $reverseXML = new File(__DIR__ . "/reverse/reverse.xml");
+        $reverseXML->delete();
     }
 
 }
