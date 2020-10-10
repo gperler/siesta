@@ -2,14 +2,14 @@
 <entityList>
   <entity name="ExtLogEntries" namespace="SiestaTest\End2End\Reverse\Generated" table="ext_log_entries" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="action" type="string" dbName="action" dbType="VARCHAR(8)" required="true"/>
-    <attribute name="data" type="string" dbName="data" dbType="LONGTEXT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="action" type="string" dbName="action" dbType="VARCHAR(8)" required="true"/>
     <attribute name="loggedAt" type="SiestaDateTime" dbName="logged_at" dbType="DATETIME" required="true"/>
-    <attribute name="objectClass" type="string" dbName="object_class" dbType="VARCHAR(255)" required="true"/>
     <attribute name="objectId" type="string" dbName="object_id" dbType="VARCHAR(64)"/>
-    <attribute name="username" type="string" dbName="username" dbType="VARCHAR(255)"/>
+    <attribute name="objectClass" type="string" dbName="object_class" dbType="VARCHAR(255)" required="true"/>
     <attribute name="version" type="int" dbName="version" dbType="INT" required="true"/>
+    <attribute name="data" type="string" dbName="data" dbType="LONGTEXT"/>
+    <attribute name="username" type="string" dbName="username" dbType="VARCHAR(255)"/>
     <index name="log_class_lookup_idx" type="btree" unique="false">
       <indexPart attributeName="objectClass" length="" sortOrder="ASC"/>
     </index>
@@ -27,12 +27,12 @@
   </entity>
   <entity name="PhpcrBinarydata" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_binarydata" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="data" type="string" dbName="data" dbType="LONGBLOB" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="idx" type="int" dbName="idx" dbType="INT" required="true"/>
     <attribute name="nodeId" type="int" dbName="node_id" dbType="INT" required="true"/>
     <attribute name="propertyName" type="string" dbName="property_name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="workspaceName" type="string" dbName="workspace_name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="idx" type="int" dbName="idx" dbType="INT" required="true"/>
+    <attribute name="data" type="string" dbName="data" dbType="LONGBLOB" required="true"/>
     <index name="UNIQ_37E65615460D9FD7413BC13C1AC10DC4E7087E10" type="btree" unique="true">
       <indexPart attributeName="nodeId" length="" sortOrder="ASC"/>
       <indexPart attributeName="propertyName" length="" sortOrder="ASC"/>
@@ -42,8 +42,8 @@
   </entity>
   <entity name="PhpcrInternalIndexTypes" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_internal_index_types" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="nodeId" type="int" dbName="node_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" primaryKey="true" required="true"/>
+    <attribute name="nodeId" type="int" dbName="node_id" dbType="INT" primaryKey="true" required="true"/>
   </entity>
   <entity name="PhpcrNamespaces" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_namespaces" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
@@ -52,18 +52,18 @@
   </entity>
   <entity name="PhpcrNodes" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_nodes" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="depth" type="int" dbName="depth" dbType="INT" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
-    <attribute name="identifier" type="string" dbName="identifier" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="path" type="string" dbName="path" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="parent" type="string" dbName="parent" dbType="VARCHAR(255)" required="true"/>
     <attribute name="localName" type="string" dbName="local_name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="namespace" type="string" dbName="namespace" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="numericalProps" type="string" dbName="numerical_props" dbType="LONGTEXT"/>
-    <attribute name="parent" type="string" dbName="parent" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="path" type="string" dbName="path" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="props" type="string" dbName="props" dbType="LONGTEXT" required="true"/>
-    <attribute name="sortOrder" type="int" dbName="sort_order" dbType="INT"/>
-    <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
     <attribute name="workspaceName" type="string" dbName="workspace_name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="identifier" type="string" dbName="identifier" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="props" type="string" dbName="props" dbType="LONGTEXT" required="true"/>
+    <attribute name="numericalProps" type="string" dbName="numerical_props" dbType="LONGTEXT"/>
+    <attribute name="depth" type="int" dbName="depth" dbType="INT" required="true"/>
+    <attribute name="sortOrder" type="int" dbName="sort_order" dbType="INT"/>
     <index name="IDX_A4624AD73D8E604F" type="btree" unique="false">
       <indexPart attributeName="parent" length="" sortOrder="ASC"/>
     </index>
@@ -103,43 +103,43 @@
   </entity>
   <entity name="PhpcrTypeChilds" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_type_childs" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="autoCreated" type="string" dbName="auto_created" dbType="TINYINT(1)" required="true"/>
-    <attribute name="defaultType" type="string" dbName="default_type" dbType="VARCHAR(255)"/>
-    <attribute name="mandatory" type="string" dbName="mandatory" dbType="TINYINT(1)" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="nodeTypeId" type="int" dbName="node_type_id" dbType="INT" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="protected" type="string" dbName="protected" dbType="TINYINT(1)" required="true"/>
+    <attribute name="autoCreated" type="string" dbName="auto_created" dbType="TINYINT(1)" required="true"/>
+    <attribute name="mandatory" type="string" dbName="mandatory" dbType="TINYINT(1)" required="true"/>
     <attribute name="onParentVersion" type="int" dbName="on_parent_version" dbType="INT" required="true"/>
     <attribute name="primaryTypes" type="string" dbName="primary_types" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="protected" type="string" dbName="protected" dbType="TINYINT(1)" required="true"/>
+    <attribute name="defaultType" type="string" dbName="default_type" dbType="VARCHAR(255)"/>
   </entity>
   <entity name="PhpcrTypeNodes" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_type_nodes" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
+    <attribute name="nodeTypeId" type="int" dbName="node_type_id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="supertypes" type="string" dbName="supertypes" dbType="VARCHAR(255)" required="true"/>
     <attribute name="isAbstract" type="string" dbName="is_abstract" dbType="TINYINT(1)" required="true"/>
     <attribute name="isMixin" type="string" dbName="is_mixin" dbType="TINYINT(1)" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="nodeTypeId" type="int" dbName="node_type_id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="queryable" type="string" dbName="queryable" dbType="TINYINT(1)" required="true"/>
     <attribute name="orderableChildNodes" type="string" dbName="orderable_child_nodes" dbType="TINYINT(1)" required="true"/>
     <attribute name="primaryItem" type="string" dbName="primary_item" dbType="VARCHAR(255)"/>
-    <attribute name="queryable" type="string" dbName="queryable" dbType="TINYINT(1)" required="true"/>
-    <attribute name="supertypes" type="string" dbName="supertypes" dbType="VARCHAR(255)" required="true"/>
     <index name="UNIQ_34B0A8095E237E06" type="btree" unique="true">
       <indexPart attributeName="name" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity name="PhpcrTypeProps" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_type_props" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="autoCreated" type="string" dbName="auto_created" dbType="TINYINT(1)" required="true"/>
-    <attribute name="defaultValue" type="string" dbName="default_value" dbType="VARCHAR(255)"/>
-    <attribute name="fulltextSearchable" type="string" dbName="fulltext_searchable" dbType="TINYINT(1)" required="true"/>
-    <attribute name="mandatory" type="string" dbName="mandatory" dbType="TINYINT(1)" required="true"/>
-    <attribute name="multiple" type="string" dbName="multiple" dbType="TINYINT(1)" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" primaryKey="true" required="true"/>
     <attribute name="nodeTypeId" type="int" dbName="node_type_id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="onParentVersion" type="int" dbName="on_parent_version" dbType="INT" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" primaryKey="true" required="true"/>
     <attribute name="protected" type="string" dbName="protected" dbType="TINYINT(1)" required="true"/>
-    <attribute name="queryOperators" type="int" dbName="query_operators" dbType="INT" required="true"/>
+    <attribute name="autoCreated" type="string" dbName="auto_created" dbType="TINYINT(1)" required="true"/>
+    <attribute name="mandatory" type="string" dbName="mandatory" dbType="TINYINT(1)" required="true"/>
+    <attribute name="onParentVersion" type="int" dbName="on_parent_version" dbType="INT" required="true"/>
+    <attribute name="multiple" type="string" dbName="multiple" dbType="TINYINT(1)" required="true"/>
+    <attribute name="fulltextSearchable" type="string" dbName="fulltext_searchable" dbType="TINYINT(1)" required="true"/>
     <attribute name="queryOrderable" type="string" dbName="query_orderable" dbType="TINYINT(1)" required="true"/>
     <attribute name="requiredType" type="int" dbName="required_type" dbType="INT" required="true"/>
+    <attribute name="queryOperators" type="int" dbName="query_operators" dbType="INT" required="true"/>
+    <attribute name="defaultValue" type="string" dbName="default_value" dbType="VARCHAR(255)"/>
   </entity>
   <entity name="PhpcrWorkspaces" namespace="SiestaTest\End2End\Reverse\Generated" table="phpcr_workspaces" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
@@ -147,18 +147,18 @@
   </entity>
   <entity name="SyliusAddress" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_address" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="city" type="string" dbName="city" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="company" type="string" dbName="company" dbType="VARCHAR(255)"/>
+    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="countryId" type="int" dbName="country_id" dbType="INT"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="provinceId" type="int" dbName="province_id" dbType="INT"/>
     <attribute name="customerId" type="int" dbName="customer_id" dbType="INT"/>
     <attribute name="firstName" type="string" dbName="first_name" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="lastName" type="string" dbName="last_name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="phoneNumber" type="string" dbName="phone_number" dbType="VARCHAR(255)"/>
-    <attribute name="postcode" type="string" dbName="postcode" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="provinceId" type="int" dbName="province_id" dbType="INT"/>
     <attribute name="street" type="string" dbName="street" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="company" type="string" dbName="company" dbType="VARCHAR(255)"/>
+    <attribute name="city" type="string" dbName="city" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="postcode" type="string" dbName="postcode" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_customer" name="B97FF0589395C3F3" constraintName="FK_B97FF0589395C3F3" onUpdate="no action" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="customerId" foreignAttribute="id"/>
@@ -181,17 +181,17 @@
   </entity>
   <entity name="SyliusAdjustment" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_adjustment" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="amount" type="int" dbName="amount" dbType="INT" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="description" type="string" dbName="description" dbType="VARCHAR(255)"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="isLocked" type="string" dbName="is_locked" dbType="TINYINT(1)" required="true"/>
-    <attribute name="isNeutral" type="string" dbName="is_neutral" dbType="TINYINT(1)" required="true"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT"/>
     <attribute name="orderItemId" type="int" dbName="order_item_id" dbType="INT"/>
+    <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="description" type="string" dbName="description" dbType="VARCHAR(255)"/>
+    <attribute name="amount" type="int" dbName="amount" dbType="INT" required="true"/>
+    <attribute name="isNeutral" type="string" dbName="is_neutral" dbType="TINYINT(1)" required="true"/>
+    <attribute name="isLocked" type="string" dbName="is_locked" dbType="TINYINT(1)" required="true"/>
     <attribute name="originId" type="int" dbName="origin_id" dbType="INT"/>
     <attribute name="originType" type="string" dbName="origin_type" dbType="VARCHAR(255)"/>
-    <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_order" name="ACA6E0F28D9F6D38" constraintName="FK_ACA6E0F28D9F6D38" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
@@ -208,12 +208,12 @@
   </entity>
   <entity name="SyliusApiAccessToken" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_api_access_token" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="clientId" type="int" dbName="client_id" dbType="INT"/>
-    <attribute name="expiresAt" type="int" dbName="expires_at" dbType="INT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
-    <attribute name="token" type="string" dbName="token" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="clientId" type="int" dbName="client_id" dbType="INT"/>
     <attribute name="userId" type="int" dbName="user_id" dbType="INT"/>
+    <attribute name="token" type="string" dbName="token" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="expiresAt" type="int" dbName="expires_at" dbType="INT"/>
+    <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
     <reference foreignTable="sylius_api_client" name="7D83AA7F19EB6921" constraintName="FK_7D83AA7F19EB6921" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="clientId" foreignAttribute="id"/>
     </reference>
@@ -232,13 +232,13 @@
   </entity>
   <entity name="SyliusApiAuthCode" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_api_auth_code" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="clientId" type="int" dbName="client_id" dbType="INT"/>
-    <attribute name="expiresAt" type="int" dbName="expires_at" dbType="INT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="redirectUri" type="string" dbName="redirect_uri" dbType="LONGTEXT" required="true"/>
-    <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
-    <attribute name="token" type="string" dbName="token" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="clientId" type="int" dbName="client_id" dbType="INT"/>
     <attribute name="userId" type="int" dbName="user_id" dbType="INT"/>
+    <attribute name="token" type="string" dbName="token" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="redirectUri" type="string" dbName="redirect_uri" dbType="LONGTEXT" required="true"/>
+    <attribute name="expiresAt" type="int" dbName="expires_at" dbType="INT"/>
+    <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
     <reference foreignTable="sylius_api_client" name="C840417919EB6921" constraintName="FK_C840417919EB6921" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="clientId" foreignAttribute="id"/>
     </reference>
@@ -257,20 +257,20 @@
   </entity>
   <entity name="SyliusApiClient" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_api_client" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="allowedGrantTypes" type="string" dbName="allowed_grant_types" dbType="LONGTEXT" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="randomId" type="string" dbName="random_id" dbType="VARCHAR(255)" required="true"/>
     <attribute name="redirectUris" type="string" dbName="redirect_uris" dbType="LONGTEXT" required="true"/>
     <attribute name="secret" type="string" dbName="secret" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="allowedGrantTypes" type="string" dbName="allowed_grant_types" dbType="LONGTEXT" required="true"/>
   </entity>
   <entity name="SyliusApiRefreshToken" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_api_refresh_token" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="clientId" type="int" dbName="client_id" dbType="INT"/>
-    <attribute name="expiresAt" type="int" dbName="expires_at" dbType="INT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
-    <attribute name="token" type="string" dbName="token" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="clientId" type="int" dbName="client_id" dbType="INT"/>
     <attribute name="userId" type="int" dbName="user_id" dbType="INT"/>
+    <attribute name="token" type="string" dbName="token" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="expiresAt" type="int" dbName="expires_at" dbType="INT"/>
+    <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
     <reference foreignTable="sylius_api_client" name="4457852519EB6921" constraintName="FK_4457852519EB6921" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="clientId" foreignAttribute="id"/>
     </reference>
@@ -289,15 +289,15 @@
   </entity>
   <entity name="SyliusChannel" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_channel" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
+    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="color" type="string" dbName="color" dbType="VARCHAR(255)"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
     <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
-    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <attribute name="url" type="string" dbName="url" dbType="VARCHAR(255)"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <index name="UNIQ_16C8119E77153098" type="btree" unique="true">
       <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
@@ -389,13 +389,13 @@
   </entity>
   <entity name="SyliusContactRequest" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_contact_request" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="email" type="string" dbName="email" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="firstName" type="string" dbName="first_name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="lastName" type="string" dbName="last_name" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="message" type="string" dbName="message" dbType="LONGTEXT" required="true"/>
     <attribute name="topicId" type="int" dbName="topic_id" dbType="INT"/>
+    <attribute name="firstName" type="string" dbName="first_name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="lastName" type="string" dbName="last_name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="email" type="string" dbName="email" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="message" type="string" dbName="message" dbType="LONGTEXT" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_contact_topic" name="8B0BBF201F55203D" constraintName="FK_8B0BBF201F55203D" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="topicId" foreignAttribute="id"/>
@@ -411,9 +411,9 @@
   <entity name="SyliusContactTopicTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_contact_topic_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="title" type="string" dbName="title" dbType="VARCHAR(255)" required="true"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
+    <attribute name="title" type="string" dbName="title" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_contact_topic" name="6681216F2C2AC5D3" constraintName="FK_6681216F2C2AC5D3" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
@@ -427,9 +427,9 @@
   </entity>
   <entity name="SyliusCountry" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_country" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="isoName" type="string" dbName="iso_name" dbType="VARCHAR(3)" required="true"/>
+    <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
     <index name="IDX_E74256BF4B80EAC0" type="btree" unique="false">
       <indexPart attributeName="isoName" length="" sortOrder="ASC"/>
     </index>
@@ -439,24 +439,24 @@
   </entity>
   <entity name="SyliusCreditCard" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_credit_card" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="cardholderName" type="string" dbName="cardholder_name" dbType="VARCHAR(255)"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="expiryMonth" type="int" dbName="expiry_month" dbType="INT"/>
-    <attribute name="expiryYear" type="int" dbName="expiry_year" dbType="INT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="number" type="string" dbName="number" dbType="VARCHAR(255)"/>
-    <attribute name="securityCode" type="string" dbName="security_code" dbType="VARCHAR(255)"/>
     <attribute name="token" type="string" dbName="token" dbType="VARCHAR(255)"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)"/>
+    <attribute name="cardholderName" type="string" dbName="cardholder_name" dbType="VARCHAR(255)"/>
+    <attribute name="number" type="string" dbName="number" dbType="VARCHAR(255)"/>
+    <attribute name="securityCode" type="string" dbName="security_code" dbType="VARCHAR(255)"/>
+    <attribute name="expiryMonth" type="int" dbName="expiry_month" dbType="INT"/>
+    <attribute name="expiryYear" type="int" dbName="expiry_year" dbType="INT"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
   <entity name="SyliusCurrency" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_currency" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(3)" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
-    <attribute name="exchangeRate" type="float" dbName="exchange_rate" dbType="DECIMAL(10,5)" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(3)" required="true"/>
+    <attribute name="exchangeRate" type="float" dbName="exchange_rate" dbType="DECIMAL(10,5)" required="true"/>
+    <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <index name="UNIQ_96EDD3D077153098" type="btree" unique="true">
       <indexPart attributeName="code" length="" sortOrder="ASC"/>
@@ -464,19 +464,19 @@
   </entity>
   <entity name="SyliusCustomer" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_customer" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
+    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="billingAddressId" type="int" dbName="billing_address_id" dbType="INT"/>
-    <attribute name="birthday" type="SiestaDateTime" dbName="birthday" dbType="DATETIME"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="currency" type="string" dbName="currency" dbType="VARCHAR(3)"/>
-    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
+    <attribute name="shippingAddressId" type="int" dbName="shipping_address_id" dbType="INT"/>
     <attribute name="email" type="string" dbName="email" dbType="VARCHAR(255)" required="true"/>
     <attribute name="emailCanonical" type="string" dbName="email_canonical" dbType="VARCHAR(255)" required="true"/>
     <attribute name="firstName" type="string" dbName="first_name" dbType="VARCHAR(255)"/>
-    <attribute name="gender" type="string" dbName="gender" dbType="VARCHAR(1)" required="true"/>
-    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="lastName" type="string" dbName="last_name" dbType="VARCHAR(255)"/>
-    <attribute name="shippingAddressId" type="int" dbName="shipping_address_id" dbType="INT"/>
+    <attribute name="birthday" type="SiestaDateTime" dbName="birthday" dbType="DATETIME"/>
+    <attribute name="gender" type="string" dbName="gender" dbType="VARCHAR(1)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
+    <attribute name="currency" type="string" dbName="currency" dbType="VARCHAR(3)"/>
     <reference foreignTable="sylius_address" name="7E82D5E64D4CFF2B" constraintName="FK_7E82D5E64D4CFF2B" onUpdate="no action" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="shippingAddressId" foreignAttribute="id"/>
     </reference>
@@ -515,15 +515,15 @@
   </entity>
   <entity name="SyliusEmail" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_email" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
+    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="template" type="string" dbName="template" dbType="VARCHAR(255)"/>
+    <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
+    <attribute name="subject" type="string" dbName="subject" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="senderName" type="string" dbName="sender_name" dbType="VARCHAR(255)"/>
+    <attribute name="senderAddress" type="string" dbName="sender_address" dbType="VARCHAR(255)"/>
     <attribute name="content" type="string" dbName="content" dbType="LONGTEXT"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
-    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="senderAddress" type="string" dbName="sender_address" dbType="VARCHAR(255)"/>
-    <attribute name="senderName" type="string" dbName="sender_name" dbType="VARCHAR(255)"/>
-    <attribute name="subject" type="string" dbName="subject" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="template" type="string" dbName="template" dbType="VARCHAR(255)"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <index name="UNIQ_732D4E1577153098" type="btree" unique="true">
       <indexPart attributeName="code" length="" sortOrder="ASC"/>
@@ -531,10 +531,10 @@
   </entity>
   <entity name="SyliusGatewayConfig" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_gateway_config" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="config" type="string" dbName="config" dbType="LONGTEXT" required="true"/>
-    <attribute name="factoryName" type="string" dbName="factory_name" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="gatewayName" type="string" dbName="gateway_name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="config" type="string" dbName="config" dbType="LONGTEXT" required="true"/>
+    <attribute name="gatewayName" type="string" dbName="gateway_name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="factoryName" type="string" dbName="factory_name" dbType="VARCHAR(255)" required="true"/>
   </entity>
   <entity name="SyliusGroup" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_group" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
@@ -543,14 +543,14 @@
   </entity>
   <entity name="SyliusInventoryUnit" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_inventory_unit" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="inventoryState" type="string" dbName="inventory_state" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="stockableId" type="int" dbName="stockable_id" dbType="INT" required="true"/>
     <attribute name="orderItemId" type="int" dbName="order_item_id" dbType="INT" required="true"/>
     <attribute name="shipmentId" type="int" dbName="shipment_id" dbType="INT"/>
-    <attribute name="shippingState" type="string" dbName="shipping_state" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="stockableId" type="int" dbName="stockable_id" dbType="INT" required="true"/>
+    <attribute name="inventoryState" type="string" dbName="inventory_state" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="shippingState" type="string" dbName="shipping_state" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_shipment" name="4A2769867BE036FC" constraintName="FK_4A2769867BE036FC" onUpdate="no action" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="shipmentId" foreignAttribute="id"/>
     </reference>
@@ -572,10 +572,10 @@
   </entity>
   <entity name="SyliusLocale" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_locale" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(12)" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(12)" required="true"/>
+    <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <index name="UNIQ_7BA1286477153098" type="btree" unique="true">
       <indexPart attributeName="code" length="" sortOrder="ASC"/>
@@ -583,25 +583,25 @@
   </entity>
   <entity name="SyliusOrder" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_order" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="adjustmentsTotal" type="int" dbName="adjustments_total" dbType="INT" required="true"/>
-    <attribute name="billingAddressId" type="int" dbName="billing_address_id" dbType="INT"/>
+    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="channelId" type="int" dbName="channel_id" dbType="INT"/>
-    <attribute name="checkoutState" type="string" dbName="checkout_state" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="completedAt" type="SiestaDateTime" dbName="completed_at" dbType="DATETIME"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="currency" type="string" dbName="currency" dbType="VARCHAR(3)" required="true"/>
+    <attribute name="shippingAddressId" type="int" dbName="shipping_address_id" dbType="INT"/>
+    <attribute name="billingAddressId" type="int" dbName="billing_address_id" dbType="INT"/>
     <attribute name="customerId" type="int" dbName="customer_id" dbType="INT"/>
+    <attribute name="number" type="string" dbName="number" dbType="VARCHAR(255)"/>
+    <attribute name="state" type="string" dbName="state" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="completedAt" type="SiestaDateTime" dbName="completed_at" dbType="DATETIME"/>
+    <attribute name="itemsTotal" type="int" dbName="items_total" dbType="INT" required="true"/>
+    <attribute name="adjustmentsTotal" type="int" dbName="adjustments_total" dbType="INT" required="true"/>
+    <attribute name="total" type="int" dbName="total" dbType="INT" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
     <attribute name="expiresAt" type="SiestaDateTime" dbName="expires_at" dbType="DATETIME" required="true"/>
-    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="itemsTotal" type="int" dbName="items_total" dbType="INT" required="true"/>
-    <attribute name="number" type="string" dbName="number" dbType="VARCHAR(255)"/>
+    <attribute name="currency" type="string" dbName="currency" dbType="VARCHAR(3)" required="true"/>
+    <attribute name="checkoutState" type="string" dbName="checkout_state" dbType="VARCHAR(255)" required="true"/>
     <attribute name="paymentState" type="string" dbName="payment_state" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="shippingAddressId" type="int" dbName="shipping_address_id" dbType="INT"/>
     <attribute name="shippingState" type="string" dbName="shipping_state" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="state" type="string" dbName="state" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="total" type="int" dbName="total" dbType="INT" required="true"/>
-    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_address" name="6196A1F94D4CFF2B" constraintName="FK_6196A1F94D4CFF2B" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="shippingAddressId" foreignAttribute="id"/>
     </reference>
@@ -632,13 +632,13 @@
   </entity>
   <entity name="SyliusOrderComment" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_order_comment" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="author" type="string" dbName="author" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="comment" type="string" dbName="comment" dbType="LONGTEXT"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="notifyCustomer" type="string" dbName="notify_customer" dbType="TINYINT(1)" required="true"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" required="true"/>
     <attribute name="state" type="string" dbName="state" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="comment" type="string" dbName="comment" dbType="LONGTEXT"/>
+    <attribute name="notifyCustomer" type="string" dbName="notify_customer" dbType="TINYINT(1)" required="true"/>
+    <attribute name="author" type="string" dbName="author" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_order" name="8EA9CF098D9F6D38" constraintName="FK_8EA9CF098D9F6D38" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
@@ -650,8 +650,8 @@
   <entity name="SyliusOrderIdentity" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_order_identity" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="value" type="string" dbName="value" dbType="VARCHAR(255)"/>
     <reference foreignTable="sylius_order" name="5757A18E8D9F6D38" constraintName="FK_5757A18E8D9F6D38" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="orderId" foreignAttribute="id"/>
@@ -662,14 +662,14 @@
   </entity>
   <entity name="SyliusOrderItem" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_order_item" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="adjustmentsTotal" type="int" dbName="adjustments_total" dbType="INT" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="isImmutable" type="string" dbName="is_immutable" dbType="TINYINT(1)" required="true"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" required="true"/>
-    <attribute name="quantity" type="int" dbName="quantity" dbType="INT" required="true"/>
-    <attribute name="total" type="int" dbName="total" dbType="INT" required="true"/>
-    <attribute name="unitPrice" type="int" dbName="unit_price" dbType="INT" required="true"/>
     <attribute name="variantId" type="int" dbName="variant_id" dbType="INT" required="true"/>
+    <attribute name="quantity" type="int" dbName="quantity" dbType="INT" required="true"/>
+    <attribute name="unitPrice" type="int" dbName="unit_price" dbType="INT" required="true"/>
+    <attribute name="adjustmentsTotal" type="int" dbName="adjustments_total" dbType="INT" required="true"/>
+    <attribute name="total" type="int" dbName="total" dbType="INT" required="true"/>
+    <attribute name="isImmutable" type="string" dbName="is_immutable" dbType="TINYINT(1)" required="true"/>
     <reference foreignTable="sylius_product_variant" name="77B587ED3B69A9AF" constraintName="FK_77B587ED3B69A9AF" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="variantId" foreignAttribute="id"/>
     </reference>
@@ -685,17 +685,17 @@
   </entity>
   <entity name="SyliusPayment" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_payment" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="amount" type="int" dbName="amount" dbType="INT" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="creditCardId" type="int" dbName="credit_card_id" dbType="INT"/>
-    <attribute name="currency" type="string" dbName="currency" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
-    <attribute name="details" type="string" dbName="details" dbType="LONGTEXT" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="methodId" type="int" dbName="method_id" dbType="INT"/>
+    <attribute name="creditCardId" type="int" dbName="credit_card_id" dbType="INT"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" required="true"/>
+    <attribute name="currency" type="string" dbName="currency" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="amount" type="int" dbName="amount" dbType="INT" required="true"/>
     <attribute name="state" type="string" dbName="state" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="details" type="string" dbName="details" dbType="LONGTEXT" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_payment_method" name="D9191BD419883967" constraintName="FK_D9191BD419883967" onUpdate="no action" onDelete="set null" noConstraint="false">
       <referenceMapping localAttribute="methodId" foreignAttribute="id"/>
     </reference>
@@ -717,22 +717,22 @@
   </entity>
   <entity name="SyliusPaymentMethod" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_payment_method" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="gateway" type="string" dbName="gateway" dbType="VARCHAR(255)" required="true"/>
     <attribute name="environment" type="string" dbName="environment" dbType="VARCHAR(255)"/>
+    <attribute name="isEnabled" type="string" dbName="is_enabled" dbType="TINYINT(1)" required="true"/>
     <attribute name="feeCalculator" type="string" dbName="fee_calculator" dbType="VARCHAR(255)"/>
     <attribute name="feeCalculatorConfiguration" type="string" dbName="fee_calculator_configuration" dbType="LONGTEXT"/>
-    <attribute name="gateway" type="string" dbName="gateway" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="isEnabled" type="string" dbName="is_enabled" dbType="TINYINT(1)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
   <entity name="SyliusPaymentMethodTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_payment_method_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="description" type="string" dbName="description" dbType="VARCHAR(255)"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="description" type="string" dbName="description" dbType="VARCHAR(255)"/>
+    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_payment_method" name="966BE3A12C2AC5D3" constraintName="FK_966BE3A12C2AC5D3" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
@@ -746,22 +746,22 @@
   </entity>
   <entity name="SyliusPaymentSecurityToken" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_payment_security_token" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="afterUrl" type="string" dbName="after_url" dbType="LONGTEXT"/>
-    <attribute name="details" type="string" dbName="details" dbType="LONGTEXT"/>
-    <attribute name="gatewayName" type="string" dbName="gateway_name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="hash" type="string" dbName="hash" dbType="VARCHAR(255)" primaryKey="true" required="true"/>
+    <attribute name="details" type="string" dbName="details" dbType="LONGTEXT"/>
+    <attribute name="afterUrl" type="string" dbName="after_url" dbType="LONGTEXT"/>
     <attribute name="targetUrl" type="string" dbName="target_url" dbType="LONGTEXT" required="true"/>
+    <attribute name="gatewayName" type="string" dbName="gateway_name" dbType="VARCHAR(255)" required="true"/>
   </entity>
   <entity name="SyliusPermission" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_permission" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="parentId" type="int" dbName="parent_id" dbType="INT"/>
+    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
     <attribute name="treeLeft" type="int" dbName="tree_left" dbType="INT" required="true"/>
-    <attribute name="treeLevel" type="int" dbName="tree_level" dbType="INT" required="true"/>
     <attribute name="treeRight" type="int" dbName="tree_right" dbType="INT" required="true"/>
+    <attribute name="treeLevel" type="int" dbName="tree_level" dbType="INT" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_permission" name="C5160A4E727ACA70" constraintName="FK_C5160A4E727ACA70" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
@@ -772,15 +772,15 @@
   </entity>
   <entity name="SyliusProduct" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
+    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="archetypeId" type="int" dbName="archetype_id" dbType="INT"/>
+    <attribute name="taxCategoryId" type="int" dbName="tax_category_id" dbType="INT"/>
+    <attribute name="shippingCategoryId" type="int" dbName="shipping_category_id" dbType="INT"/>
+    <attribute name="restrictedZone" type="int" dbName="restricted_zone" dbType="INT"/>
     <attribute name="availableOn" type="SiestaDateTime" dbName="available_on" dbType="DATETIME"/>
     <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
-    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="restrictedZone" type="int" dbName="restricted_zone" dbType="INT"/>
-    <attribute name="shippingCategoryId" type="int" dbName="shipping_category_id" dbType="INT"/>
-    <attribute name="taxCategoryId" type="int" dbName="tax_category_id" dbType="INT"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
     <attribute name="variantSelectionMethod" type="string" dbName="variant_selection_method" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_product_archetype" name="677B9B74732C6CC7" constraintName="FK_677B9B74732C6CC7" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="archetypeId" foreignAttribute="id"/>
@@ -809,10 +809,10 @@
   </entity>
   <entity name="SyliusProductArchetype" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_archetype" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="parentId" type="int" dbName="parent_id" dbType="INT"/>
+    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_product_archetype" name="A4001B52727ACA70" constraintName="FK_A4001B52727ACA70" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
@@ -843,8 +843,8 @@
   </entity>
   <entity name="SyliusProductArchetypeOption" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_archetype_option" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="optionId" type="int" dbName="option_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="productArchetypeId" type="int" dbName="product_archetype_id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="optionId" type="int" dbName="option_id" dbType="INT" primaryKey="true" required="true"/>
     <reference foreignTable="sylius_product_option" name="BCE763A7A7C41D6F" constraintName="FK_BCE763A7A7C41D6F" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="optionId" foreignAttribute="id"/>
     </reference>
@@ -861,9 +861,9 @@
   <entity name="SyliusProductArchetypeTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_archetype_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_product_archetype" name="E0BA36D2C2AC5D3" constraintName="FK_E0BA36D2C2AC5D3" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
@@ -877,19 +877,19 @@
   </entity>
   <entity name="SyliusProductAttribute" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_attribute" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
   <entity name="SyliusProductAttributeTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_attribute_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="presentation" type="string" dbName="presentation" dbType="VARCHAR(255)" required="true"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
+    <attribute name="presentation" type="string" dbName="presentation" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_product_attribute" name="93850EBA2C2AC5D3" constraintName="FK_93850EBA2C2AC5D3" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
@@ -903,9 +903,9 @@
   </entity>
   <entity name="SyliusProductAttributeValue" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_attribute_value" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="attributeId" type="int" dbName="attribute_id" dbType="INT" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" required="true"/>
+    <attribute name="attributeId" type="int" dbName="attribute_id" dbType="INT" required="true"/>
     <attribute name="value" type="string" dbName="value" dbType="LONGTEXT"/>
     <reference foreignTable="sylius_product" name="8A053E544584665A" constraintName="FK_8A053E544584665A" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="productId" foreignAttribute="id"/>
@@ -922,8 +922,8 @@
   </entity>
   <entity name="SyliusProductChannels" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_channels" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <reference foreignTable="sylius_product" name="F9EF269B4584665A" constraintName="FK_F9EF269B4584665A" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="productId" foreignAttribute="id"/>
     </reference>
@@ -939,17 +939,17 @@
   </entity>
   <entity name="SyliusProductOption" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_option" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
   <entity name="SyliusProductOptionTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_option_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="presentation" type="string" dbName="presentation" dbType="VARCHAR(255)" required="true"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
+    <attribute name="presentation" type="string" dbName="presentation" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_product_option" name="CBA491AD2C2AC5D3" constraintName="FK_CBA491AD2C2AC5D3" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
@@ -975,8 +975,8 @@
   </entity>
   <entity name="SyliusProductOptions" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_options" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="optionId" type="int" dbName="option_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="productId" type="int" dbName="product_id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="optionId" type="int" dbName="option_id" dbType="INT" primaryKey="true" required="true"/>
     <reference foreignTable="sylius_product" name="2B5FF0094584665A" constraintName="FK_2B5FF0094584665A" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="productId" foreignAttribute="id"/>
     </reference>
@@ -1009,15 +1009,15 @@
   </entity>
   <entity name="SyliusProductTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="metaDescription" type="string" dbName="meta_description" dbType="VARCHAR(255)"/>
-    <attribute name="metaKeywords" type="string" dbName="meta_keywords" dbType="VARCHAR(255)"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="shortDescription" type="string" dbName="short_description" dbType="LONGTEXT"/>
-    <attribute name="slug" type="string" dbName="slug" dbType="VARCHAR(255)" required="true"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="slug" type="string" dbName="slug" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT" required="true"/>
+    <attribute name="metaKeywords" type="string" dbName="meta_keywords" dbType="VARCHAR(255)"/>
+    <attribute name="metaDescription" type="string" dbName="meta_description" dbType="VARCHAR(255)"/>
+    <attribute name="shortDescription" type="string" dbName="short_description" dbType="LONGTEXT"/>
+    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_product" name="105A9082C2AC5D3" constraintName="FK_105A9082C2AC5D3" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
@@ -1034,26 +1034,26 @@
   </entity>
   <entity name="SyliusProductVariant" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_variant" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="availableOn" type="SiestaDateTime" dbName="available_on" dbType="DATETIME"/>
-    <attribute name="availableOnDemand" type="string" dbName="available_on_demand" dbType="TINYINT(1)" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
-    <attribute name="depth" type="float" dbName="depth" dbType="DOUBLE"/>
-    <attribute name="height" type="float" dbName="height" dbType="DOUBLE"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="productId" type="int" dbName="product_id" dbType="INT" required="true"/>
     <attribute name="isMaster" type="string" dbName="is_master" dbType="TINYINT(1)" required="true"/>
-    <attribute name="onHand" type="int" dbName="on_hand" dbType="INT" required="true"/>
-    <attribute name="onHold" type="int" dbName="on_hold" dbType="INT" required="true"/>
     <attribute name="presentation" type="string" dbName="presentation" dbType="VARCHAR(255)"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
+    <attribute name="availableOn" type="SiestaDateTime" dbName="available_on" dbType="DATETIME"/>
+    <attribute name="sku" type="string" dbName="sku" dbType="VARCHAR(255)"/>
+    <attribute name="onHold" type="int" dbName="on_hold" dbType="INT" required="true"/>
+    <attribute name="onHand" type="int" dbName="on_hand" dbType="INT" required="true"/>
+    <attribute name="sold" type="int" dbName="sold" dbType="INT" required="true"/>
+    <attribute name="availableOnDemand" type="string" dbName="available_on_demand" dbType="TINYINT(1)" required="true"/>
     <attribute name="price" type="int" dbName="price" dbType="INT" required="true"/>
     <attribute name="pricingCalculator" type="string" dbName="pricing_calculator" dbType="VARCHAR(255)" required="true"/>
     <attribute name="pricingConfiguration" type="string" dbName="pricing_configuration" dbType="LONGTEXT" required="true"/>
-    <attribute name="productId" type="int" dbName="product_id" dbType="INT" required="true"/>
-    <attribute name="sku" type="string" dbName="sku" dbType="VARCHAR(255)"/>
-    <attribute name="sold" type="int" dbName="sold" dbType="INT" required="true"/>
-    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
-    <attribute name="weight" type="float" dbName="weight" dbType="DOUBLE"/>
     <attribute name="width" type="float" dbName="width" dbType="DOUBLE"/>
+    <attribute name="height" type="float" dbName="height" dbType="DOUBLE"/>
+    <attribute name="depth" type="float" dbName="depth" dbType="DOUBLE"/>
+    <attribute name="weight" type="float" dbName="weight" dbType="DOUBLE"/>
     <reference foreignTable="sylius_product" name="A29B5234584665A" constraintName="FK_A29B5234584665A" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="productId" foreignAttribute="id"/>
     </reference>
@@ -1069,11 +1069,11 @@
   </entity>
   <entity name="SyliusProductVariantImage" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_variant_image" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="path" type="string" dbName="path" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <attribute name="variantId" type="int" dbName="variant_id" dbType="INT"/>
+    <attribute name="path" type="string" dbName="path" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_product_variant" name="C6B77D5D3B69A9AF" constraintName="FK_C6B77D5D3B69A9AF" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="variantId" foreignAttribute="id"/>
     </reference>
@@ -1083,8 +1083,8 @@
   </entity>
   <entity name="SyliusProductVariantOptionValue" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_product_variant_option_value" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="optionValueId" type="int" dbName="option_value_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="variantId" type="int" dbName="variant_id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="optionValueId" type="int" dbName="option_value_id" dbType="INT" primaryKey="true" required="true"/>
     <reference foreignTable="sylius_product_variant" name="76CDAFA13B69A9AF" constraintName="FK_76CDAFA13B69A9AF" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="variantId" foreignAttribute="id"/>
     </reference>
@@ -1100,26 +1100,26 @@
   </entity>
   <entity name="SyliusPromotion" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="couponBased" type="string" dbName="coupon_based" dbType="TINYINT(1)" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
-    <attribute name="description" type="string" dbName="description" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="endsAt" type="SiestaDateTime" dbName="ends_at" dbType="DATETIME"/>
-    <attribute name="exclusive" type="string" dbName="exclusive" dbType="TINYINT(1)" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="description" type="string" dbName="description" dbType="VARCHAR(255)" required="true"/>
     <attribute name="priority" type="int" dbName="priority" dbType="INT" required="true"/>
-    <attribute name="startsAt" type="SiestaDateTime" dbName="starts_at" dbType="DATETIME"/>
-    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="exclusive" type="string" dbName="exclusive" dbType="TINYINT(1)" required="true"/>
     <attribute name="usageLimit" type="int" dbName="usage_limit" dbType="INT"/>
     <attribute name="used" type="int" dbName="used" dbType="INT" required="true"/>
+    <attribute name="couponBased" type="string" dbName="coupon_based" dbType="TINYINT(1)" required="true"/>
+    <attribute name="startsAt" type="SiestaDateTime" dbName="starts_at" dbType="DATETIME"/>
+    <attribute name="endsAt" type="SiestaDateTime" dbName="ends_at" dbType="DATETIME"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
   </entity>
   <entity name="SyliusPromotionAction" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_action" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
     <reference foreignTable="sylius_promotion" name="933D0915139DF194" constraintName="FK_933D0915139DF194" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
@@ -1129,8 +1129,8 @@
   </entity>
   <entity name="SyliusPromotionChannels" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_channels" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="channelId" type="int" dbName="channel_id" dbType="INT" primaryKey="true" required="true"/>
     <reference foreignTable="sylius_promotion" name="1A044F64139DF194" constraintName="FK_1A044F64139DF194" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
@@ -1146,16 +1146,16 @@
   </entity>
   <entity name="SyliusPromotionCoupon" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_coupon" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
-    <attribute name="expiresAt" type="SiestaDateTime" dbName="expires_at" dbType="DATETIME"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="perCustomerUsageLimit" type="int" dbName="per_customer_usage_limit" dbType="INT"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT"/>
-    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
     <attribute name="usageLimit" type="int" dbName="usage_limit" dbType="INT"/>
     <attribute name="used" type="int" dbName="used" dbType="INT" required="true"/>
+    <attribute name="expiresAt" type="SiestaDateTime" dbName="expires_at" dbType="DATETIME"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
+    <attribute name="perCustomerUsageLimit" type="int" dbName="per_customer_usage_limit" dbType="INT"/>
     <reference foreignTable="sylius_promotion" name="B04EBA85139DF194" constraintName="FK_B04EBA85139DF194" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
@@ -1216,10 +1216,10 @@
   </entity>
   <entity name="SyliusPromotionRule" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_promotion_rule" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="promotionId" type="int" dbName="promotion_id" dbType="INT"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
     <reference foreignTable="sylius_promotion" name="2C188EA8139DF194" constraintName="FK_2C188EA8139DF194" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="promotionId" foreignAttribute="id"/>
     </reference>
@@ -1229,10 +1229,10 @@
   </entity>
   <entity name="SyliusProvince" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_province" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="countryId" type="int" dbName="country_id" dbType="INT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="isoName" type="string" dbName="iso_name" dbType="VARCHAR(255)"/>
+    <attribute name="countryId" type="int" dbName="country_id" dbType="INT"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="isoName" type="string" dbName="iso_name" dbType="VARCHAR(255)"/>
     <reference foreignTable="sylius_country" name="B5618FE4F92F3E70" constraintName="FK_B5618FE4F92F3E70" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="countryId" foreignAttribute="id"/>
     </reference>
@@ -1242,30 +1242,30 @@
   </entity>
   <entity name="SyliusReport" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_report" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="dataFetcher" type="string" dbName="data_fetcher" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="dataFetcherConfiguration" type="string" dbName="data_fetcher_configuration" dbType="LONGTEXT" required="true"/>
-    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT" required="true"/>
+    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
     <attribute name="renderer" type="string" dbName="renderer" dbType="VARCHAR(255)" required="true"/>
     <attribute name="rendererConfiguration" type="string" dbName="renderer_configuration" dbType="LONGTEXT" required="true"/>
+    <attribute name="dataFetcher" type="string" dbName="data_fetcher" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="dataFetcherConfiguration" type="string" dbName="data_fetcher_configuration" dbType="LONGTEXT" required="true"/>
     <index name="UNIQ_FE0E997877153098" type="btree" unique="true">
       <indexPart attributeName="code" length="" sortOrder="ASC"/>
     </index>
   </entity>
   <entity name="SyliusRole" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_role" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="parentId" type="int" dbName="parent_id" dbType="INT"/>
+    <attribute name="code" type="string" dbName="code" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
     <attribute name="securityRoles" type="string" dbName="security_roles" dbType="LONGTEXT" required="true"/>
     <attribute name="treeLeft" type="int" dbName="tree_left" dbType="INT" required="true"/>
-    <attribute name="treeLevel" type="int" dbName="tree_level" dbType="INT" required="true"/>
     <attribute name="treeRight" type="int" dbName="tree_right" dbType="INT" required="true"/>
+    <attribute name="treeLevel" type="int" dbName="tree_level" dbType="INT" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_role" name="8C606FE3727ACA70" constraintName="FK_8C606FE3727ACA70" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
@@ -1276,8 +1276,8 @@
   </entity>
   <entity name="SyliusRolePermission" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_role_permission" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="permissionId" type="int" dbName="permission_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="roleId" type="int" dbName="role_id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="permissionId" type="int" dbName="permission_id" dbType="INT" primaryKey="true" required="true"/>
     <reference foreignTable="sylius_role" name="45CEE9B8D60322AC" constraintName="FK_45CEE9B8D60322AC" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="roleId" foreignAttribute="id"/>
     </reference>
@@ -1293,12 +1293,12 @@
   </entity>
   <entity name="SyliusSearchIndex" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_search_index" targetPath="Generated">
     <entity-mysql engine="MyISAM" collate="utf8_unicode_ci"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="entity" type="string" dbName="entity" dbType="VARCHAR(255)" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true" autoValue="autoincrement"/>
     <attribute name="itemId" type="int" dbName="item_id" dbType="INT" required="true"/>
-    <attribute name="tags" type="string" dbName="tags" dbType="LONGTEXT"/>
+    <attribute name="entity" type="string" dbName="entity" dbType="VARCHAR(255)" required="true"/>
     <attribute name="value" type="string" dbName="value" dbType="LONGTEXT" required="true"/>
+    <attribute name="tags" type="string" dbName="tags" dbType="LONGTEXT"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <index name="fulltext_search_idx" type="btree" unique="false">
       <indexPart attributeName="itemId" length="" sortOrder="ASC"/>
     </index>
@@ -1312,10 +1312,10 @@
   </entity>
   <entity name="SyliusSearchLog" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_search_log" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="remoteAddress" type="string" dbName="remote_address" dbType="VARCHAR(20)" required="true"/>
     <attribute name="searchString" type="string" dbName="search_string" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="remoteAddress" type="string" dbName="remote_address" dbType="VARCHAR(20)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
   </entity>
   <entity name="SyliusSequence" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_sequence" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
@@ -1329,8 +1329,8 @@
   <entity name="SyliusSettingsParameter" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_settings_parameter" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="namespace" type="string" dbName="namespace" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="value" type="string" dbName="value" dbType="LONGTEXT"/>
     <index name="name_idx" type="btree" unique="true">
       <indexPart attributeName="namespace" length="" sortOrder="ASC"/>
@@ -1339,12 +1339,12 @@
   </entity>
   <entity name="SyliusShipment" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_shipment" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="methodId" type="int" dbName="method_id" dbType="INT" required="true"/>
     <attribute name="orderId" type="int" dbName="order_id" dbType="INT" required="true"/>
     <attribute name="state" type="string" dbName="state" dbType="VARCHAR(255)" required="true"/>
     <attribute name="tracking" type="string" dbName="tracking" dbType="VARCHAR(255)"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_shipping_method" name="FD707B3319883967" constraintName="FK_FD707B3319883967" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="methodId" foreignAttribute="id"/>
@@ -1361,23 +1361,23 @@
   </entity>
   <entity name="SyliusShippingCategory" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_shipping_category" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
   <entity name="SyliusShippingMethod" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_shipping_method" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="calculator" type="string" dbName="calculator" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="categoryId" type="int" dbName="category_id" dbType="INT"/>
-    <attribute name="categoryRequirement" type="int" dbName="category_requirement" dbType="INT" required="true"/>
-    <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="isEnabled" type="string" dbName="is_enabled" dbType="TINYINT(1)" required="true"/>
-    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="categoryId" type="int" dbName="category_id" dbType="INT"/>
     <attribute name="zoneId" type="int" dbName="zone_id" dbType="INT" required="true"/>
+    <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
+    <attribute name="categoryRequirement" type="int" dbName="category_requirement" dbType="INT" required="true"/>
+    <attribute name="calculator" type="string" dbName="calculator" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="isEnabled" type="string" dbName="is_enabled" dbType="TINYINT(1)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_shipping_category" name="5FB0EE1112469DE2" constraintName="FK_5FB0EE1112469DE2" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="categoryId" foreignAttribute="id"/>
     </reference>
@@ -1394,9 +1394,9 @@
   <entity name="SyliusShippingMethodTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_shipping_method_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_shipping_method" name="2B37DB3D2C2AC5D3" constraintName="FK_2B37DB3D2C2AC5D3" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
@@ -1410,10 +1410,10 @@
   </entity>
   <entity name="SyliusShippingRule" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_shipping_rule" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="methodId" type="int" dbName="method_id" dbType="INT" required="true"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="configuration" type="string" dbName="configuration" dbType="LONGTEXT" required="true"/>
     <reference foreignTable="sylius_shipping_method" name="3BC30EE019883967" constraintName="FK_3BC30EE019883967" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="methodId" foreignAttribute="id"/>
     </reference>
@@ -1423,23 +1423,23 @@
   </entity>
   <entity name="SyliusTaxCategory" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_tax_category" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
   </entity>
   <entity name="SyliusTaxRate" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_tax_rate" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="amount" type="float" dbName="amount" dbType="DECIMAL(10,5)" required="true"/>
-    <attribute name="calculator" type="string" dbName="calculator" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="categoryId" type="int" dbName="category_id" dbType="INT" required="true"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="includedInPrice" type="string" dbName="included_in_price" dbType="TINYINT(1)" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="categoryId" type="int" dbName="category_id" dbType="INT" required="true"/>
     <attribute name="zoneId" type="int" dbName="zone_id" dbType="INT" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="amount" type="float" dbName="amount" dbType="DECIMAL(10,5)" required="true"/>
+    <attribute name="includedInPrice" type="string" dbName="included_in_price" dbType="TINYINT(1)" required="true"/>
+    <attribute name="calculator" type="string" dbName="calculator" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_tax_category" name="3CD86B2E12469DE2" constraintName="FK_3CD86B2E12469DE2" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="categoryId" foreignAttribute="id"/>
     </reference>
@@ -1455,14 +1455,14 @@
   </entity>
   <entity name="SyliusTaxon" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_taxon" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="parentId" type="int" dbName="parent_id" dbType="INT"/>
-    <attribute name="path" type="string" dbName="path" dbType="VARCHAR(255)"/>
     <attribute name="taxonomyId" type="int" dbName="taxonomy_id" dbType="INT"/>
+    <attribute name="parentId" type="int" dbName="parent_id" dbType="INT"/>
     <attribute name="treeLeft" type="int" dbName="tree_left" dbType="INT" required="true"/>
-    <attribute name="treeLevel" type="int" dbName="tree_level" dbType="INT" required="true"/>
     <attribute name="treeRight" type="int" dbName="tree_right" dbType="INT" required="true"/>
+    <attribute name="treeLevel" type="int" dbName="tree_level" dbType="INT" required="true"/>
+    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
+    <attribute name="path" type="string" dbName="path" dbType="VARCHAR(255)"/>
     <reference foreignTable="sylius_taxon" name="CFD811CA727ACA70" constraintName="FK_CFD811CA727ACA70" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="parentId" foreignAttribute="id"/>
     </reference>
@@ -1478,13 +1478,13 @@
   </entity>
   <entity name="SyliusTaxonTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_taxon_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="permalink" type="string" dbName="permalink" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="slug" type="string" dbName="slug" dbType="VARCHAR(255)" required="true"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="slug" type="string" dbName="slug" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="permalink" type="string" dbName="permalink" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="description" type="string" dbName="description" dbType="LONGTEXT"/>
+    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_taxon" name="1487DFCF2C2AC5D3" constraintName="FK_1487DFCF2C2AC5D3" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
@@ -1514,9 +1514,9 @@
   <entity name="SyliusTaxonomyTranslation" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_taxonomy_translation" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
     <attribute name="translatableId" type="int" dbName="translatable_id" dbType="INT" required="true"/>
+    <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="locale" type="string" dbName="locale" dbType="VARCHAR(255)" required="true"/>
     <reference foreignTable="sylius_taxonomy" name="9F3F90D92C2AC5D3" constraintName="FK_9F3F90D92C2AC5D3" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="translatableId" foreignAttribute="id"/>
     </reference>
@@ -1530,23 +1530,23 @@
   </entity>
   <entity name="SyliusUser" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_user" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="confirmationToken" type="string" dbName="confirmation_token" dbType="VARCHAR(255)"/>
-    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
-    <attribute name="credentialsExpireAt" type="SiestaDateTime" dbName="credentials_expire_at" dbType="DATETIME"/>
-    <attribute name="customerId" type="int" dbName="customer_id" dbType="INT" required="true"/>
-    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
-    <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
-    <attribute name="expiresAt" type="SiestaDateTime" dbName="expires_at" dbType="DATETIME"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="lastLogin" type="SiestaDateTime" dbName="last_login" dbType="DATETIME"/>
-    <attribute name="locked" type="string" dbName="locked" dbType="TINYINT(1)" required="true"/>
-    <attribute name="password" type="string" dbName="password" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="passwordRequestedAt" type="SiestaDateTime" dbName="password_requested_at" dbType="DATETIME"/>
-    <attribute name="roles" type="string" dbName="roles" dbType="LONGTEXT" required="true"/>
-    <attribute name="salt" type="string" dbName="salt" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="customerId" type="int" dbName="customer_id" dbType="INT" required="true"/>
     <attribute name="username" type="string" dbName="username" dbType="VARCHAR(255)"/>
     <attribute name="usernameCanonical" type="string" dbName="username_canonical" dbType="VARCHAR(255)"/>
+    <attribute name="enabled" type="string" dbName="enabled" dbType="TINYINT(1)" required="true"/>
+    <attribute name="salt" type="string" dbName="salt" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="password" type="string" dbName="password" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="lastLogin" type="SiestaDateTime" dbName="last_login" dbType="DATETIME"/>
+    <attribute name="confirmationToken" type="string" dbName="confirmation_token" dbType="VARCHAR(255)"/>
+    <attribute name="passwordRequestedAt" type="SiestaDateTime" dbName="password_requested_at" dbType="DATETIME"/>
+    <attribute name="locked" type="string" dbName="locked" dbType="TINYINT(1)" required="true"/>
+    <attribute name="expiresAt" type="SiestaDateTime" dbName="expires_at" dbType="DATETIME"/>
+    <attribute name="credentialsExpireAt" type="SiestaDateTime" dbName="credentials_expire_at" dbType="DATETIME"/>
+    <attribute name="roles" type="string" dbName="roles" dbType="LONGTEXT" required="true"/>
+    <attribute name="createdAt" type="SiestaDateTime" dbName="created_at" dbType="DATETIME" required="true"/>
+    <attribute name="updatedAt" type="SiestaDateTime" dbName="updated_at" dbType="DATETIME"/>
+    <attribute name="deletedAt" type="SiestaDateTime" dbName="deleted_at" dbType="DATETIME"/>
     <reference foreignTable="sylius_customer" name="569A33C09395C3F3" constraintName="FK_569A33C09395C3F3" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="customerId" foreignAttribute="id"/>
     </reference>
@@ -1556,11 +1556,11 @@
   </entity>
   <entity name="SyliusUserOauth" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_user_oauth" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="accessToken" type="string" dbName="access_token" dbType="VARCHAR(255)"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
-    <attribute name="identifier" type="string" dbName="identifier" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="provider" type="string" dbName="provider" dbType="VARCHAR(255)" required="true"/>
     <attribute name="userId" type="int" dbName="user_id" dbType="INT"/>
+    <attribute name="provider" type="string" dbName="provider" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="identifier" type="string" dbName="identifier" dbType="VARCHAR(255)" required="true"/>
+    <attribute name="accessToken" type="string" dbName="access_token" dbType="VARCHAR(255)"/>
     <reference foreignTable="sylius_user" name="C3471B78A76ED395" constraintName="FK_C3471B78A76ED395" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
@@ -1574,8 +1574,8 @@
   </entity>
   <entity name="SyliusUserRole" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_user_role" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
-    <attribute name="roleId" type="int" dbName="role_id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="userId" type="int" dbName="user_id" dbType="INT" primaryKey="true" required="true"/>
+    <attribute name="roleId" type="int" dbName="role_id" dbType="INT" primaryKey="true" required="true"/>
     <reference foreignTable="sylius_user" name="1DA28211A76ED395" constraintName="FK_1DA28211A76ED395" onUpdate="no action" onDelete="cascade" noConstraint="false">
       <referenceMapping localAttribute="userId" foreignAttribute="id"/>
     </reference>
@@ -1593,17 +1593,17 @@
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
     <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="name" type="string" dbName="name" dbType="VARCHAR(255)" required="true"/>
-    <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
     <attribute name="type" type="string" dbName="type" dbType="VARCHAR(8)" required="true"/>
+    <attribute name="scope" type="string" dbName="scope" dbType="VARCHAR(255)"/>
   </entity>
   <entity name="SyliusZoneMember" namespace="SiestaTest\End2End\Reverse\Generated" table="sylius_zone_member" targetPath="Generated">
     <entity-mysql engine="InnoDB" collate="utf8_unicode_ci"/>
+    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="belongsTo" type="int" dbName="belongs_to" dbType="INT"/>
     <attribute name="countryId" type="int" dbName="country_id" dbType="INT"/>
-    <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" required="true"/>
     <attribute name="provinceId" type="int" dbName="province_id" dbType="INT"/>
-    <attribute name="type" type="string" dbName="type" dbType="VARCHAR(8)" required="true"/>
     <attribute name="zoneId" type="int" dbName="zone_id" dbType="INT"/>
+    <attribute name="type" type="string" dbName="type" dbType="VARCHAR(8)" required="true"/>
     <reference foreignTable="sylius_zone" name="E8B5ABF34B0E929B" constraintName="FK_E8B5ABF34B0E929B" onUpdate="no action" onDelete="no action" noConstraint="false">
       <referenceMapping localAttribute="belongsTo" foreignAttribute="id"/>
     </reference>

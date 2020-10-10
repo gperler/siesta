@@ -55,7 +55,7 @@ class MySQLIndexReader
         if (!isset($this->indexList[$tableName])) {
             return [];
         }
-        return array_values($this->indexList[$tableName]);
+        return $this->indexList[$tableName];
     }
 
 
