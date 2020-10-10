@@ -21,7 +21,7 @@ class TestDatabaseTest extends \PHPUnit_Framework_TestCase
         $tableList = $testDatabase->getTableList();
         $this->assertSame(1, sizeof($tableList));
 
-        $table = $tableList[0];
+        $table = $tableList["TestTable"];
         $this->assertSame("TestTable", $table->getName());
         $table = $testDatabase->getTableByName("TestTable");
         $this->assertNotNull($table);

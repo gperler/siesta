@@ -57,7 +57,8 @@ class TestDatabaseMetaData implements DatabaseMetaData
             throw new TestException("model file empty or does not contain " . self::TABLE_LIST);
         }
         foreach ($tableList as $table) {
-            $this->tableList[] = new TestTableMetaData($table);
+            $testTable = new TestTableMetaData($table);
+            $this->tableList[$testTable->getName()] = new TestTableMetaData($table);
         }
     }
 

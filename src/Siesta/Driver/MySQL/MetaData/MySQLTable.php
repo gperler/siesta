@@ -18,13 +18,6 @@ use Siesta\Driver\MySQL\MySQLTableCreator;
 class MySQLTable implements TableMetaData
 {
 
-    const SQL_GET_COLUMN_DETAILS = "SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME = '%s';";
-
-    const SQL_GET_KEY_COLUMN_USAGE = "SELECT * FROM information_schema.key_column_usage as KC WHERE KC.CONSTRAINT_SCHEMA = '%s' AND KC.TABLE_NAME = '%s'";
-
-    const SQL_GET_REFERENTIAL_CONSTRAINTS = "SELECT * FROM information_schema.REFERENTIAL_CONSTRAINTS AS RC WHERE RC.CONSTRAINT_SCHEMA = '%s' AND RC.TABLE_NAME = '%s'";
-
-    const SQL_GET_INDEX_LIST = "SELECT S.* FROM INFORMATION_SCHEMA.STATISTICS AS S WHERE S.TABLE_SCHEMA = '%s' AND S.TABLE_NAME = '%s';";
 
     /**
      * @var Connection
@@ -65,9 +58,15 @@ class MySQLTable implements TableMetaData
         $this->columnList = [];
         $this->constraintList = [];
         $this->indexList = [];
-        //$this->extractColumnData();
-        //$this->extractReferenceData();
-        //$this->extractIndexData();
+    }
+
+
+    /**
+     * @return bool|null
+     */
+    public function getAutoincrement(): ?bool
+    {
+        return $this->tableDTO->autoincrement;
     }
 
 
@@ -90,33 +89,6 @@ class MySQLTable implements TableMetaData
 
 
     /**
-     * @param MySQLConstraint[] $constraintList
-     */
-    public function setConstraintList(array $constraintList): void
-    {
-        $this->constraintList = $constraintList;
-    }
-
-
-    /**
-     * @param MySQLIndex[] $indexList
-     */
-    public function setIndexList(array $indexList): void
-    {
-        $this->indexList = $indexList;
-    }
-
-
-    /**
-     * @return bool|null
-     */
-    public function getAutoincrement(): ?bool
-    {
-        return $this->tableDTO->autoincrement;
-    }
-
-
-    /**
      * @return ColumnMetaData[]
      */
     public function getColumnList(): array
@@ -132,12 +104,16 @@ class MySQLTable implements TableMetaData
      */
     public function getColumnByName(string $name)
     {
-        foreach ($this->columnList as $column) {
-            if ($column->getDBName() === $name) {
-                return $column;
-            }
-        }
-        return null;
+        return isset($this->columnList[$name]) ? $this->columnList[$name] : null;
+    }
+
+
+    /**
+     * @param MySQLConstraint[] $constraintList
+     */
+    public function setConstraintList(array $constraintList): void
+    {
+        $this->constraintList = $constraintList;
     }
 
 
@@ -151,42 +127,31 @@ class MySQLTable implements TableMetaData
 
 
     /**
-     * @return IndexMetaData[]
-     */
-    public function getIndexList(): array
-    {
-        return $this->indexList;
-    }
-
-
-    /**
-     * @return ColumnMetaData[]
-     */
-    public function getPrimaryKeyAttributeList(): array
-    {
-        $primaryKeyColumnList = [];
-        foreach ($this->getColumnList() as $column) {
-            if ($column->getIsPrimaryKey()) {
-                $primaryKeyColumnList[] = $column;
-            }
-        }
-        return $primaryKeyColumnList;
-    }
-
-
-    /**
      * @param string $name
      *
      * @return null|MySQLConstraint
      */
     public function getConstraintByName(string $name)
     {
-        foreach ($this->constraintList as $constraint) {
-            if ($constraint->getConstraintName() === $name) {
-                return $constraint;
-            }
-        }
-        return null;
+        return isset($this->constraintList[$name]) ? $this->constraintList[$name] : null;
+    }
+
+
+    /**
+     * @param MySQLIndex[] $indexList
+     */
+    public function setIndexList(array $indexList): void
+    {
+        $this->indexList = $indexList;
+    }
+
+
+    /**
+     * @return IndexMetaData[]
+     */
+    public function getIndexList(): array
+    {
+        return $this->indexList;
     }
 
 
@@ -207,6 +172,21 @@ class MySQLTable implements TableMetaData
 
 
     /**
+     * @return ColumnMetaData[]
+     */
+    public function getPrimaryKeyAttributeList(): array
+    {
+        $primaryKeyColumnList = [];
+        foreach ($this->getColumnList() as $column) {
+            if ($column->getIsPrimaryKey()) {
+                $primaryKeyColumnList[] = $column;
+            }
+        }
+        return $primaryKeyColumnList;
+    }
+
+
+    /**
      * @return array
      */
     public function getDataBaseSpecific(): array
@@ -219,96 +199,5 @@ class MySQLTable implements TableMetaData
         ];
     }
 
-
-//    /**
-//     *
-//     */
-//    protected function extractColumnData()
-//    {
-//        $sql = sprintf(self::SQL_GET_COLUMN_DETAILS, $this->connection->getDatabase(), $this->getName());
-//
-//        $resultSet = $this->connection->query($sql);
-//        while ($resultSet->hasNext()) {
-//            $column = new MySQLColumn();
-//            $column->fromResultSet($resultSet, $this->tableDTO->autoincrement);
-//            $this->columnList[] = $column;
-//        }
-//
-//        $resultSet->close();
-//    }
-
-
-    /**
-     *
-     */
-    protected function extractReferenceData()
-    {
-        $sql = sprintf(self::SQL_GET_KEY_COLUMN_USAGE, $this->connection->getDatabase(), $this->getName());
-
-        $resultSet = $this->connection->query($sql);
-
-        while ($resultSet->hasNext()) {
-            // skip primary key index
-            if ($resultSet->getStringValue(MySQLConstraint::REFERENCED_TABLE_NAME) === null) {
-                continue;
-            }
-
-            $constraintName = $resultSet->getStringValue(MySQLConstraint::CONSTRAINT_NAME);
-            $constraint = $this->getConstraintByName($constraintName);
-
-            if ($constraint === null) {
-                $constraint = new MySQLConstraint();
-                $constraint->fromResultSet($resultSet);
-                $this->constraintList[] = $constraint;
-            } else {
-                $constraint->addConstraint($resultSet);
-            }
-        }
-        $resultSet->close();
-
-        $sql = sprintf(self::SQL_GET_REFERENTIAL_CONSTRAINTS, $this->connection->getDatabase(), $this->getName());
-        $resultSet = $this->connection->query($sql);
-
-        while ($resultSet->hasNext()) {
-            $constraintName = $resultSet->getStringValue(MySQLConstraint::CONSTRAINT_NAME);
-            $constraint = $this->getConstraintByName($constraintName);
-
-            if ($constraint !== null) {
-                $constraint->addUpdateAndDeleteRule($resultSet);
-            }
-        }
-        $resultSet->close();
-    }
-
-
-    /**
-     * extracts index data
-     */
-    protected function extractIndexData()
-    {
-        $sql = sprintf(self::SQL_GET_INDEX_LIST, $this->connection->getDatabase(), $this->getName());
-
-        $resultSet = $this->connection->query($sql);
-        while ($resultSet->hasNext()) {
-            $indexName = $resultSet->getStringValue(MySQLIndex::INDEX_NAME);
-            if ($indexName === MySQLIndex::PRIMARY_KEY_INDEX_NAME) {
-                continue;
-            }
-
-            $constraint = $this->getConstraintByName($indexName);
-            if ($constraint !== null) {
-                continue;
-            }
-
-            $index = $this->getIndexByName($indexName);
-            if ($index === null) {
-                $index = new MySQLIndex();
-                $index->fromResultSet($resultSet);
-                $this->indexList[] = $index;
-            } else {
-                $index->addIndexPart($resultSet);
-            }
-        }
-    }
 
 }

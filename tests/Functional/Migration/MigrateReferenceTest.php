@@ -2,6 +2,7 @@
 
 namespace SiestaTest\Functional\Migration;
 
+use Codeception\Util\Debug;
 use Siesta\Migration\DatabaseMigrator;
 use Siesta\Util\File;
 use SiestaTest\TestDatabase\TestConnection;
@@ -26,6 +27,7 @@ class MigrateReferenceTest extends \PHPUnit_Framework_TestCase
 
         $alterStatementList = $migrator->getAlterStatementList();
 
+        Debug::debug($alterStatementList);
 
 
         $this->assertSame(11, sizeof($alterStatementList));

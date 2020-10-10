@@ -285,7 +285,7 @@ class Siesta implements LoggerAwareInterface
 
 
     /**
-     * @param int $lastGenerationTime
+     * @param int|null $lastGenerationTime
      */
     public function setLastGenerationTime(?int $lastGenerationTime): void
     {

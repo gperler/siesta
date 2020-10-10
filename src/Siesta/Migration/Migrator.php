@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Siesta\Migration;
 
@@ -43,6 +44,7 @@ class Migrator implements LoggerAwareInterface
      */
     protected $logger;
 
+
     /**
      * Migrator constructor.
      */
@@ -51,6 +53,7 @@ class Migrator implements LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
+
     /**
      * @param LoggerInterface $logger
      */
@@ -58,6 +61,7 @@ class Migrator implements LoggerAwareInterface
     {
         $this->logger = $logger;
     }
+
 
     /**
      * @param DataModel $dataModel
@@ -73,6 +77,7 @@ class Migrator implements LoggerAwareInterface
         $this->databaseMigrator = new DatabaseMigrator($dataModel, $this->connection);
     }
 
+
     /**
      * @param DataModel $dataModel
      * @param Connection $connection
@@ -86,7 +91,6 @@ class Migrator implements LoggerAwareInterface
         $this->logger->info("Direct migration of database " . $database . $dropping);
 
         $this->databaseMigrator->createAlterStatementList($dropUnusedTables);
-
         $this->connection->disableForeignKeyChecks();
 
         try {
@@ -99,14 +103,13 @@ class Migrator implements LoggerAwareInterface
                 $this->logger->warning($statement);
                 $this->connection->query($statement);
             }
-
         } catch (SQLException $e) {
             $this->logger->error("SQL Exception : " . $e->getMessage() . " (" . $e->getCode() . ")");
             $this->logger->error("Query : " . $e->getSQL());
         }
         $this->connection->enableForeignKeyChecks();
-
     }
+
 
     /**
      * @param DataModel $dataModel
