@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Siesta\Migration;
 
@@ -48,6 +49,7 @@ class TableMigrator
      */
     protected $alterStatementList;
 
+
     /**
      * TableMigrator constructor.
      *
@@ -63,29 +65,32 @@ class TableMigrator
         $this->alterStatementList = [];
     }
 
+
     /**
      * returns the list of ALTER statement for the migration of the given database entity to the target model entity
+     *
      * @return string[]
      */
-    public function createAlterStatementList()
+    public function createAlterStatementList(): array
     {
         $this->migrateAttributeList();
         $this->migrateReferenceList();
         $this->migrateIndexList();
         $this->assembleStatementList();
 
-        return $this->alterStatementList;
+        return $this->addTableLockIfNeeded();
     }
+
 
     /**
      * brings the alter table statements into the right order. First indexes and foreign keys are dropped, then columns
      * are added, existing ones are modified. Then the primary key is changed (if needed). Afterwards not needed
      * columns are dropped and finally indexes and foreign key constraints are added.
+     *
      * @return void
      */
     private function assembleStatementList()
     {
-
         // drop foreign key and index
         $this->addStatementList($this->referenceListMigrator->getDropForeignKeyStatementList());
         $this->addStatementList($this->indexListMigrator->getDropIndexStatementList());
@@ -103,11 +108,32 @@ class TableMigrator
         // add foreign key and index
         $this->addStatementList($this->referenceListMigrator->getAddForeignKeyStatementList());
         $this->addStatementList($this->indexListMigrator->getAddIndexStatementList());
-
     }
+
+
+    /**
+     * @return string[]
+     */
+    private function addTableLockIfNeeded(): array
+    {
+        if (count($this->alterStatementList) === 0) {
+            return $this->alterStatementList;
+        }
+        return array_merge(
+            [
+                $this->migrationStatementFactory->createLockTable($this->entity->getTableName())
+            ],
+            $this->alterStatementList,
+            [
+                $this->migrationStatementFactory->createUnlockTable($this->entity->getTableName())
+            ]
+        );
+    }
+
 
     /**
      * compares the primary key column and generates migrate primary key statements if needed
+     *
      * @return array
      */
     private function getMigratePrimaryKeyStatementList()
@@ -125,6 +151,7 @@ class TableMigrator
         return $this->migrationStatementFactory->getModifyPrimaryKeyStatement($this->tableMetaData, $this->entity);
     }
 
+
     /**
      * @param Entity $entity
      *
@@ -140,6 +167,7 @@ class TableMigrator
         return $pkList;
     }
 
+
     /**
      * @param TableMetaData $tableMetaData
      *
@@ -154,37 +182,55 @@ class TableMigrator
         return $pkList;
     }
 
+
     /**
      * migrates the attributes of the entity and gathers add modify and drop statements
+     *
      * @return void
      */
     private function migrateAttributeList()
     {
-        $this->attributeListMigrator = new AttributeListMigrator($this->migrationStatementFactory, $this->tableMetaData->getColumnList(), $this->entity->getAttributeList());
+        $this->attributeListMigrator = new AttributeListMigrator(
+            $this->migrationStatementFactory,
+            $this->tableMetaData->getColumnList(),
+            $this->entity->getAttributeList()
+        );
         $this->attributeListMigrator->createAlterStatementList();
-
     }
+
 
     /**
      * migrates the references of the entity and gathers add modify and drop statements for the used columns and add
      * drop constraints statements
+     *
      * @return void
      */
     private function migrateReferenceList()
     {
-        $this->referenceListMigrator = new ReferenceListMigrator($this->migrationStatementFactory, $this->tableMetaData->getConstraintList(), $this->entity->getReferenceList());
+        $this->referenceListMigrator = new ReferenceListMigrator(
+            $this->migrationStatementFactory,
+            $this->tableMetaData->getConstraintList(),
+            $this->entity->getReferenceList()
+        );
         $this->referenceListMigrator->createAlterStatementList();
     }
 
+
     /**
      * migrates the indexes of the entity and gathers drop and add statements
+     *
      * @return void
      */
     private function migrateIndexList()
     {
-        $this->indexListMigrator = new IndexListMigrator($this->migrationStatementFactory, $this->tableMetaData->getIndexList(), $this->entity->getIndexList());
+        $this->indexListMigrator = new IndexListMigrator(
+            $this->migrationStatementFactory,
+            $this->tableMetaData->getIndexList(),
+            $this->entity->getIndexList()
+        );
         $this->indexListMigrator->createAlterStatementList();
     }
+
 
     /**
      * adds a statement and replaces the table place holder against the real table. Considers delimited tables.

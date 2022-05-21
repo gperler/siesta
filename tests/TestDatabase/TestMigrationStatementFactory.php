@@ -69,4 +69,17 @@ class TestMigrationStatementFactory implements MigrationStatementFactory
         return ["table " . $this->table . " drop index '" . $index->getName() . "'"];
     }
 
+
+    public function createLockTable(string $tableName): string
+    {
+       return 'LOCK';
+    }
+
+
+    public function createUnlockTable(string $tableName): string
+    {
+        return 'UNLOCK';
+    }
+
+
 }

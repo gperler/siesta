@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL;
 
 use Siesta\Database\MetaData\ColumnMetaData;
@@ -36,7 +38,12 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
 
     const DROP_FOREIGN_KEY = "ALTER TABLE %s DROP FOREIGN KEY %s";
 
+    const LOCK_TABLE = "LOCK TABLES %s WRITE";
+
+    const UNLOCK_TABLE = "UNLOCK TABLES";
+
     protected $tableName;
+
 
     /**
      *
@@ -45,6 +52,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
     {
         $this->tableName = $this->quote(MigrationStatementFactory::TABLE_PLACE_HOLDER);
     }
+
 
     /**
      * @param string $name
@@ -56,13 +64,14 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
         return MySQLDriver::quote($name);
     }
 
+
     /**
      * @param TableMetaData $table
      * @param Entity $entity
      *
      * @return string[]
      */
-    public function getModifyPrimaryKeyStatement(TableMetaData $table, Entity $entity) : array
+    public function getModifyPrimaryKeyStatement(TableMetaData $table, Entity $entity): array
     {
         $pkList = [];
 
@@ -79,19 +88,20 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
 
         $statement = sprintf(self::MODIFY_PRIMARY_KEY, $this->tableName, $pkColumns);
         return [$statement];
-
     }
+
 
     /**
      * @param TableMetaData $table
      *
      * @return string[]
      */
-    public function getDropTableStatement(TableMetaData $table) : array
+    public function getDropTableStatement(TableMetaData $table): array
     {
         $statement = sprintf(self::DROP_TABLE, $this->tableName);
         return [$statement];
     }
+
 
     /**
      * @param ColumnMetaData $column
@@ -103,6 +113,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
         $statement = sprintf(self::DROP_COLUMN, $this->tableName, $this->quote($column->getDBName()));
         return [$statement];
     }
+
 
     /**
      * @param Attribute $attribute
@@ -116,6 +127,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
         return [$statement];
     }
 
+
     /**
      * @param Attribute $attribute
      *
@@ -127,6 +139,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
         $statement = sprintf(self::MODIFY_COLUMN, $this->tableName, $this->quote($attribute->getDBName()), $attribute->getDbType(), $nullHandling);
         return [$statement];
     }
+
 
     /**
      * @param Reference $reference
@@ -154,6 +167,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
         return [$statement];
     }
 
+
     /**
      * @param ConstraintMetaData $constraint
      *
@@ -165,7 +179,9 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
         return [$statement];
     }
 
+
     const ADD_INDEX = "ALTER TABLE %s ADD %s INDEX %s %s (%s)";
+
 
     /**
      * @param Index $index
@@ -174,7 +190,6 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
      */
     public function createAddIndexStatement(Index $index): array
     {
-
         $unique = $index->getIsUnique() ? "UNIQUE" : "";
         $using = $index->getIndexType() ? "USING " . $index->getIndexType() : "";
         $indexName = $this->quote($index->getName());
@@ -190,14 +205,14 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
         return [$statement];
     }
 
+
     /**
      * @param IndexPart $indexPart
      *
      * @return string
      */
-    private function buildIndexPart(IndexPart $indexPart) : string
+    private function buildIndexPart(IndexPart $indexPart): string
     {
-
         $sql = $this->quote($indexPart->getColumnName());
         if ($indexPart->getLength()) {
             $sql .= " (" . $indexPart->getLength() . ")";
@@ -207,6 +222,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
 
         return $sql;
     }
+
 
     /**
      * @param IndexMetaData $index
@@ -219,5 +235,31 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
         $statement = sprintf(self::DROP_INDEX, $this->tableName, $indexNameQuoted);
         return [$statement];
     }
+
+
+    /**
+     * @param string $tableName
+     *
+     * @return string
+     */
+    public function createLockTable(string $tableName): string
+    {
+        return sprintf(
+            self::LOCK_TABLE,
+            $tableName
+        );
+    }
+
+
+    /**
+     * @param string $tableName
+     *
+     * @return string
+     */
+    public function createUnlockTable(string $tableName): string
+    {
+        return self::UNLOCK_TABLE;
+    }
+
 
 }

@@ -83,4 +83,19 @@ interface MigrationStatementFactory
      */
     public function createDropIndexStatement(IndexMetaData $index): array;
 
+
+    /**
+     * @param string $tableName
+     *
+     * @return string
+     */
+    public function createLockTable(string $tableName) : string;
+
+
+    /**
+     * @param string $tableName
+     *
+     * @return string
+     */
+    public function createUnlockTable(string $tableName) : string;
 }
