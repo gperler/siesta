@@ -1,8 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Siesta\Driver\MySQL;
 
+use Codeception\Util\Debug;
+use Exception;
 use mysqli;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionData;
@@ -37,6 +40,7 @@ class MySQLConnection implements Connection
      */
     private $database;
 
+
     /**
      * @param ConnectionData $connectionData
      *
@@ -47,6 +51,7 @@ class MySQLConnection implements Connection
         $this->connect($connectionData);
     }
 
+
     /**
      *
      */
@@ -55,6 +60,7 @@ class MySQLConnection implements Connection
         return $this->database;
     }
 
+
     /**
      * @param ConnectionData $connectionData
      *
@@ -62,7 +68,6 @@ class MySQLConnection implements Connection
      */
     public function connect(ConnectionData $connectionData)
     {
-
         $this->database = $connectionData->database;
         // connect
         $this->connection = @new mysqli ($connectionData->host, $connectionData->user, $connectionData->password, $connectionData->database, $connectionData->port);
@@ -87,6 +92,7 @@ class MySQLConnection implements Connection
         }
     }
 
+
     /**
      * @param string $name
      */
@@ -95,6 +101,7 @@ class MySQLConnection implements Connection
         $this->database = $name;
         $this->connection->query("USE " . $name);
     }
+
 
     /**
      * @param string $query
@@ -109,7 +116,13 @@ class MySQLConnection implements Connection
      */
     public function query(string $query): ResultSet
     {
-        $result = $this->connection->query($query);
+        try {
+            $result = $this->connection->query($query);
+
+        } catch (Exception $e) {
+            Debug::debug($query);
+        }
+
 
         if ($result === false) {
             $this->handleQueryError($this->connection->errno, $this->connection->error, $query);
@@ -120,6 +133,7 @@ class MySQLConnection implements Connection
 
         return new MySQLSimpleResultSet($result);
     }
+
 
     /**
      * @param string $query
@@ -140,6 +154,7 @@ class MySQLConnection implements Connection
         }
         return new MySQLMultiQueryResultSet($this->connection);
     }
+
 
     /**
      * execute an sql command and free resultSet.
@@ -165,6 +180,7 @@ class MySQLConnection implements Connection
         }
     }
 
+
     /**
      * @param $query
      *
@@ -186,6 +202,7 @@ class MySQLConnection implements Connection
 
         return new MySQLMultiQueryResultSet($this->connection);
     }
+
 
     /**
      * @param int $errorNumber
@@ -213,9 +230,11 @@ class MySQLConnection implements Connection
             case 1451:
                 throw new ForeignKeyConstraintFailedException($error, $errorNumber, $sql);
             default:
+                Debug::debug($sql);
                 throw new SQLException($error, $errorNumber, $sql);
         }
     }
+
 
     /**
      * @param string $value
@@ -226,6 +245,7 @@ class MySQLConnection implements Connection
     {
         return $this->connection->real_escape_string($value);
     }
+
 
     /**
      * @param string $technicalName
@@ -245,11 +265,12 @@ class MySQLConnection implements Connection
         return ($sequence) ? $sequence : 1;
     }
 
+
     public function startTransaction()
     {
         $this->connection->autocommit(false);
-
     }
+
 
     public function commit()
     {
@@ -257,21 +278,25 @@ class MySQLConnection implements Connection
         $this->connection->autocommit(true);
     }
 
+
     public function rollback()
     {
         $this->connection->rollback();
         $this->connection->autocommit(true);
     }
 
+
     public function enableForeignKeyChecks()
     {
         $this->query("set foreign_key_checks=1");
     }
 
+
     public function disableForeignKeyChecks()
     {
         $this->query("set foreign_key_checks=0");
     }
+
 
     /**
      *
@@ -284,6 +309,7 @@ class MySQLConnection implements Connection
         }
     }
 
+
     /**
      * @param string|null $databaseName
      *
@@ -294,6 +320,7 @@ class MySQLConnection implements Connection
         return new MySQLDatabase($this, $databaseName);
     }
 
+
     /**
      * @return MigrationStatementFactory
      */
@@ -302,6 +329,7 @@ class MySQLConnection implements Connection
         return new MySQLMigrationStatementFactory();
     }
 
+
     /**
      * @return CreateStatementFactory
      */
@@ -309,6 +337,7 @@ class MySQLConnection implements Connection
     {
         return new MySQLCreateStatementFactory();
     }
+
 
     /**
      * @return StoredProcedureFactory

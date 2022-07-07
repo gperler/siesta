@@ -21,7 +21,7 @@ use SiestaTest\End2End\Util\End2EndTest;
 class CollectionManySelfReferenceTest extends End2EndTest
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         $silent = true;
         $this->deleteGenDir(__DIR__ . "/Generated");

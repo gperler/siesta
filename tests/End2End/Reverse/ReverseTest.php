@@ -20,7 +20,7 @@ use SiestaTest\TestUtil\CodeceptionLogger;
 class ReverseTest extends End2EndTest
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->resetSchema();
     }

@@ -85,7 +85,7 @@ class ArrayConverterPlugin extends BasePlugin
      */
     protected function generateProperties()
     {
-        $this->classGenerator->addProtectedProperty("_initialArray", "array");
+        $this->classGenerator->addProtectedProperty("_initialArray", "array", 'null');
     }
 
     /**

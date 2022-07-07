@@ -61,7 +61,7 @@ class SingletonPlugin extends BasePlugin
 
         $className = $this->entity->getServiceClassInstantiationClassName();
         $classShortName = $this->entity->getServiceClassInstantiationClassNameShort();
-        $this->classGenerator->addProtectedStaticProperty("instance", $className);
+        $this->classGenerator->addProtectedStaticProperty("instance", $className, 'null');
 
         $method = $this->classGenerator->addPublicStaticMethod(self::METHOD_SINGLETON);
         $method->setReturnType($className, false);

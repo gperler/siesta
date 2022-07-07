@@ -10,7 +10,7 @@ use SiestaTest\End2End\Util\End2EndTest;
 class ServiceClassTest extends End2EndTest
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         //$this->deleteGenDir(__DIR__ . "/Generated");
         $this->resetSchema();

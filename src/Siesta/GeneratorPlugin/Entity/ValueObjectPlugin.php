@@ -58,7 +58,7 @@ class ValueObjectPlugin extends BasePlugin
      */
     protected function generateMember(ValueObject $valueObject)
     {
-        $this->classGenerator->addProtectedProperty($valueObject->getPhpName(), $valueObject->getClassName());
+        $this->classGenerator->addProtectedProperty($valueObject->getPhpName(), $valueObject->getClassName(), 'null');
     }
 
     protected function generateValueObjectGetter(ValueObject $valueObject)

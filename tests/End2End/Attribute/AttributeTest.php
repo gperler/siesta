@@ -10,7 +10,7 @@ use SiestaTest\End2End\Util\End2EndTest;
 class AttributeTest extends End2EndTest
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         $silent = false;
         $this->resetSchema();
@@ -18,10 +18,11 @@ class AttributeTest extends End2EndTest
         $this->generateSchema($schemaFile, __DIR__, $silent);
     }
 
+
     public function testX()
     {
-
     }
+
 
     public function testDefaultValues()
     {
@@ -43,8 +44,8 @@ class AttributeTest extends End2EndTest
         $this->assertNotNull($attribute->getObject());
 
         $this->assertSame("y", $attribute->getFromArray("x"));
-
     }
+
 
     public function testAutoincrement()
     {
@@ -57,6 +58,7 @@ class AttributeTest extends End2EndTest
         $attribute = new E2EAttribute();
         $this->assertSame(3, $attribute->getId(true));
     }
+
 
     public function testSave()
     {
@@ -98,8 +100,8 @@ class AttributeTest extends End2EndTest
         $this->assertNotNull($array);
         $arrayValue = ArrayUtil::getFromArray($array, "test");
         $this->assertSame(123, $arrayValue);
-
     }
+
 
     public function testNull()
     {
@@ -128,6 +130,7 @@ class AttributeTest extends End2EndTest
         $this->assertNull($resultSet->getDateTime("D_TIME"));
     }
 
+
     public function testDelete()
     {
         $attribute = new E2EAttribute();
@@ -144,8 +147,8 @@ class AttributeTest extends End2EndTest
         $resultSet = $connection->query("SELECT * FROM E2EAttribute");
         $this->assertFalse($resultSet->hasNext());
         $resultSet->close();
-
     }
+
 
     public function testFromResultSet()
     {
@@ -189,8 +192,8 @@ class AttributeTest extends End2EndTest
 
         $this->assertSame("0x2A, BF", $attributeReloaded->getFromArray("LDX"));
         $this->assertSame("y", $attributeReloaded->getFromArray("x"));
-
     }
+
 
     public function testJSONAndArray()
     {

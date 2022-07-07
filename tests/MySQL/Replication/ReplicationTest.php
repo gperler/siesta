@@ -11,7 +11,7 @@ use SiestaTest\MySQL\Util\MySQLTest;
 class ReplicationTest extends MySQLTest
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         //$this->deleteGenDir(__DIR__ . "/Generated");
         $this->resetSchema();
