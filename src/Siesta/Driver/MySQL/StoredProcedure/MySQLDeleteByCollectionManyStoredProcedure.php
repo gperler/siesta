@@ -118,7 +118,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
             $foreignAttribute = $pkAttribute->getDBName();
             $conditionList[] = $this->buildComparision($foreignTable, $foreignAttribute, $mappingTable, $mappingAttribute);
         }
-        return implode(",", $conditionList);
+        return implode(" AND ", $conditionList);
     }
 
     /**

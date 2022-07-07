@@ -20,7 +20,7 @@ class UUIDSequencer implements Sequencer
      */
     public function getNextSequence(string $tableName, string $connectionName = null)
     {
-        $microTime = dechex(microtime(true) * 10000);
+        $microTime = dechex(intval(microtime(true) * 10000));
         if (strlen($microTime) === 11) {
             $microTime = "0" . $microTime;
         }

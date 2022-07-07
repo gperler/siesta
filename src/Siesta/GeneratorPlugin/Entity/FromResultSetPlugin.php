@@ -61,7 +61,7 @@ class FromResultSetPlugin extends BasePlugin
      */
     protected function addProperty()
     {
-        $this->classGenerator->addProtectedProperty("_rawSQLResult", "array");
+        $this->classGenerator->addProtectedProperty("_rawSQLResult", "array", 'null');
     }
 
     /**

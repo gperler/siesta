@@ -33,7 +33,7 @@ class MemberPlugin extends BasePlugin
      */
     protected function generateStandardMember()
     {
-        $this->classGenerator->addProtectedProperty("_existing", "bool");
+        $this->classGenerator->addProtectedProperty("_existing", "bool", 'null');
     }
 
     /**
@@ -42,7 +42,7 @@ class MemberPlugin extends BasePlugin
     protected function generateAttributeMember()
     {
         foreach ($this->entity->getAttributeList() as $attribute) {
-            $this->classGenerator->addProtectedProperty($attribute->getPhpName(), $attribute->getFullyQualifiedTypeName());
+            $this->classGenerator->addProtectedProperty($attribute->getPhpName(), $attribute->getFullyQualifiedTypeName(), 'null');
         }
     }
 
@@ -53,7 +53,7 @@ class MemberPlugin extends BasePlugin
     {
         foreach ($this->entity->getReferenceList() as $reference) {
             $foreignEntity = $reference->getForeignEntity();
-            $this->classGenerator->addProtectedProperty($reference->getName(), $foreignEntity->getInstantiationClassName());
+            $this->classGenerator->addProtectedProperty($reference->getName(), $foreignEntity->getInstantiationClassName(), 'null');
         }
     }
 
@@ -64,7 +64,7 @@ class MemberPlugin extends BasePlugin
     {
         foreach ($this->entity->getCollectionList() as $collection) {
             $foreignEntity = $collection->getForeignEntity();
-            $this->classGenerator->addProtectedProperty($collection->getName(), $foreignEntity->getInstantiationClassName() . '[]');
+            $this->classGenerator->addProtectedProperty($collection->getName(), $foreignEntity->getInstantiationClassName() . '[]', 'null');
         }
     }
 
@@ -76,10 +76,10 @@ class MemberPlugin extends BasePlugin
         foreach ($this->entity->getCollectionManyList() as $collectionMany) {
             $foreignEntity = $collectionMany->getForeignEntity();
 
-            $this->classGenerator->addProtectedProperty($collectionMany->getName(), $foreignEntity->getInstantiationClassName() . '[]');
+            $this->classGenerator->addProtectedProperty($collectionMany->getName(), $foreignEntity->getInstantiationClassName() . '[]', 'null');
 
             $mappingEntity = $collectionMany->getMappingEntity();
-            $this->classGenerator->addProtectedProperty($collectionMany->getName() . 'Mapping', $mappingEntity->getInstantiationClassName() . '[]');
+            $this->classGenerator->addProtectedProperty($collectionMany->getName() . 'Mapping', $mappingEntity->getInstantiationClassName() . '[]', 'null');
         }
     }
 }

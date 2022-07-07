@@ -63,7 +63,7 @@ class DynamicCollectionPlugin extends BasePlugin
     {
         $foreignEntity = $dynamicCollection->getForeignEntity();
         $type = $foreignEntity->getInstantiationClassName() . '[]';
-        $this->classGenerator->addProtectedProperty($dynamicCollection->getName(), $type);
+        $this->classGenerator->addProtectedProperty($dynamicCollection->getName(), $type, 'null');
     }
 
     protected function handleMany(DynamicCollection $dynamicCollection)
@@ -176,7 +176,7 @@ class DynamicCollectionPlugin extends BasePlugin
         foreach ($foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
             $checkList[] = '$' . $pkAttribute->getPhpName() . ' === null';
         }
-        return '($this->' . $dynamicCollection->getName() . ' === null) OR (' . implode($checkList, ' AND ') . ')';
+        return '($this->' . $dynamicCollection->getName() . ' === null) OR (' . implode(' AND ', $checkList, ) . ')';
     }
 
     /**

@@ -2,8 +2,6 @@
 
 namespace SiestaTest\Functional\MySQL\CreateTable;
 
-use Codeception\Util\Debug;
-use Siesta\Config\Config;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Model\DataModel;
 use Siesta\Model\Entity;
@@ -14,13 +12,14 @@ use SiestaTest\TestUtil\DataModelHelper;
 class CreateTableTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $connection = ConnectionFactory::getConnection();
         $connection->query("DROP DATABASE IF EXISTS " . $connection->getDatabase());
         $connection->query("CREATE DATABASE " . $connection->getDatabase());
         $connection->useDatabase($connection->getDatabase());
     }
+
 
     protected function readSchema(string $fileName)
     {
@@ -32,6 +31,7 @@ class CreateTableTest extends \PHPUnit_Framework_TestCase
         $entity->fromXMLEntity($xmlEntity);
         return $entity;
     }
+
 
     public function testAttributeCreate()
     {
@@ -54,9 +54,10 @@ class CreateTableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $queryActualList[0]);
         $connection->execute($queryActualList[0]);
     }
-    
-    
-    public function testReferenceCreate() {
+
+
+    public function testReferenceCreate()
+    {
         $dmr = new DataModelHelper();
 
         $validationLogger = $dmr->getValidationLogger(true);
@@ -90,9 +91,10 @@ class CreateTableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $queryActualList[0]);
         $connection->execute($queryActualList[0]);
     }
-    
-    
-    public function testCreateIndex() {
+
+
+    public function testCreateIndex()
+    {
         $dmr = new DataModelHelper();
 
         $validationLogger = $dmr->getValidationLogger(true);
@@ -110,7 +112,6 @@ class CreateTableTest extends \PHPUnit_Framework_TestCase
         $expected = "CREATE TABLE IF NOT EXISTS `IndexTest` (`id` INT NOT NULL, `smallint` SMALLINT NULL, `int` INT NOT NULL, `string` VARCHAR(100) NOT NULL, `datetime` DATETIME NULL, `date` DATE NULL, `time` TIME NULL, PRIMARY KEY (`id`,`string`), UNIQUE INDEX `index1` USING btree (`string` (10) ASC), INDEX `index2` USING btree (`datetime` ASC, `date` ASC))";
         $this->assertSame($expected, $queryActualList[0]);
         $connection->execute($queryActualList[0]);
-
     }
 
 }

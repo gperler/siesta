@@ -12,7 +12,7 @@ use SiestaTest\End2End\Util\End2EndTest;
 class DynamicCollectionTest extends End2EndTest
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         $silent = true;
         $this->deleteGenDir(__DIR__ . "/Generated");
@@ -21,7 +21,7 @@ class DynamicCollectionTest extends End2EndTest
         $this->generateSchema($schemaFile, __DIR__, $silent);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
     }
 

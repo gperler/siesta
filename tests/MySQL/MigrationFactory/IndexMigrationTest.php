@@ -10,7 +10,7 @@ use SiestaTest\TestUtil\DataModelHelper;
 class IndexMigrationTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $connection = ConnectionFactory::getConnection();
         $connection->query("DROP DATABASE IF EXISTS " . $connection->getDatabase());
