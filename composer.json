@@ -5,7 +5,7 @@
     "php": ">=8.1.0",
     "symfony/console": "*",
     "psr/log": "*",
-    "gm314/nitria": "0.2.1",
+    "gm314/nitria": "*",
     "gm314/common": "*",
     "ext-dom" : "*",
     "ext-libxml" : "*",

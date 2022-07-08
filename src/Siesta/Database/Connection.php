@@ -48,7 +48,7 @@ interface Connection
      *
      * @return void
      */
-    public function execute(string $query);
+    public function execute(string $query): void;
 
     /**
      * @param string $query
@@ -62,7 +62,7 @@ interface Connection
      *
      * @return string
      */
-    public function escape(string $value);
+    public function escape(string $value): string;
 
     /**
      * returns next sequence for given technical name
@@ -71,40 +71,41 @@ interface Connection
      *
      * @return int
      */
-    public function getSequence(string $technicalName);
+    public function getSequence(string $technicalName): int;
 
     /**
      * @return void
      */
-    public function startTransaction();
+    public function startTransaction(): void;
 
     /**
      * @return void
      */
-    public function commit();
+    public function commit(): void;
 
     /**
      * @return void
      */
-    public function rollback();
+    public function rollback(): void;
 
     /**
      * @return void
      */
-    public function close();
+    public function close(): void;
 
     /**
      * @return void
      */
-    public function enableForeignKeyChecks();
+    public function enableForeignKeyChecks(): void;
 
     /**
      * @return void
      */
-    public function disableForeignKeyChecks();
+    public function disableForeignKeyChecks(): void;
+
 
     /**
-     * @param string $databaseName
+     * @param string|null $databaseName
      *
      * @return DatabaseMetaData
      */

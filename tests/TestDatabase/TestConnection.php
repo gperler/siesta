@@ -50,7 +50,7 @@ class TestConnection implements Connection
         // TODO: Implement multiQuery() method.
     }
 
-    public function execute(string $query)
+    public function execute(string $query):void
     {
 
     }
@@ -60,42 +60,42 @@ class TestConnection implements Connection
         // TODO: Implement executeStoredProcedure() method.
     }
 
-    public function escape(string $value)
+    public function escape(string $value):string
     {
-        // TODO: Implement escape() method.
+        return '';
     }
 
-    public function getSequence(string $technicalName)
+    public function getSequence(string $technicalName):int
     {
         // TODO: Implement getSequence() method.
     }
 
-    public function startTransaction()
+    public function startTransaction():void
     {
         // TODO: Implement startTransaction() method.
     }
 
-    public function commit()
+    public function commit():void
     {
         // TODO: Implement commit() method.
     }
 
-    public function rollback()
+    public function rollback():void
     {
         // TODO: Implement rollback() method.
     }
 
-    public function enableForeignKeyChecks()
+    public function enableForeignKeyChecks():void
     {
         // TODO: Implement enableForeignKeyChecks() method.
     }
 
-    public function disableForeignKeyChecks()
+    public function disableForeignKeyChecks():void
     {
         // TODO: Implement disableForeignKeyChecks() method.
     }
 
-    public function close()
+    public function close():void
     {
 
     }

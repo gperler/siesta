@@ -118,7 +118,6 @@ class MySQLConnection implements Connection
     {
         try {
             $result = $this->connection->query($query);
-
         } catch (Exception $e) {
             Debug::debug($query);
         }
@@ -168,7 +167,7 @@ class MySQLConnection implements Connection
      * @throws TableDoesNotExistException
      * @throws UniqueConstraintViolationException
      */
-    public function execute(string $query)
+    public function execute(string $query): void
     {
         $result = $this->connection->multi_query($query);
         if (!$result) {
@@ -241,7 +240,7 @@ class MySQLConnection implements Connection
      *
      * @return string
      */
-    public function escape(string $value)
+    public function escape(string $value): string
     {
         return $this->connection->real_escape_string($value);
     }
@@ -252,7 +251,7 @@ class MySQLConnection implements Connection
      *
      * @return int
      */
-    public function getSequence(string $technicalName)
+    public function getSequence(string $technicalName): int
     {
         $result = $this->executeStoredProcedure("CALL `SEQUENCER_GETSEQUENCE`('$technicalName')");
 
@@ -266,33 +265,48 @@ class MySQLConnection implements Connection
     }
 
 
-    public function startTransaction()
+    /**
+     * @return void
+     */
+    public function startTransaction(): void
     {
         $this->connection->autocommit(false);
     }
 
 
-    public function commit()
+    /**
+     * @return void
+     */
+    public function commit(): void
     {
         $this->connection->commit();
         $this->connection->autocommit(true);
     }
 
 
-    public function rollback()
+    /**
+     * @return void
+     */
+    public function rollback() : void
     {
         $this->connection->rollback();
         $this->connection->autocommit(true);
     }
 
 
-    public function enableForeignKeyChecks()
+    /**
+     * @return void
+     */
+    public function enableForeignKeyChecks(): void
     {
         $this->query("set foreign_key_checks=1");
     }
 
 
-    public function disableForeignKeyChecks()
+    /**
+     * @return void
+     */
+    public function disableForeignKeyChecks(): void
     {
         $this->query("set foreign_key_checks=0");
     }
@@ -301,7 +315,7 @@ class MySQLConnection implements Connection
     /**
      *
      */
-    public function close()
+    public function close(): void
     {
         if ($this->connection) {
             $this->connection->close();

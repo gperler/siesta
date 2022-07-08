@@ -13,12 +13,12 @@ interface DataModelUpdater
      *
      * @return void
      */
-    public function preUpdateModel(DataModel $dataModel);
+    public function preUpdateModel(DataModel $dataModel): void;
 
     /**
      * @param DataModel $dateModel
      *
      * @return void
      */
-    public function postUpdateModel(DataModel $dateModel);
+    public function postUpdateModel(DataModel $dateModel): void;
 }

@@ -9,7 +9,7 @@
       "port": 3306,
       "database": "siesta_test",
       "user": "root",
-      "password": "root",
+      "password": "abcd1234",
       "charset": "utf8",
       "postConnectStatementList": [
         "SET NAMES UTF8"

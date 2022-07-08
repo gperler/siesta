@@ -9,11 +9,12 @@ use Siesta\Model\DataModel;
 
 class NoUpdate implements DataModelUpdater
 {
-    public function preUpdateModel(DataModel $dataModel)
+    public function preUpdateModel(DataModel $dataModel): void
     {
     }
 
-    public function postUpdateModel(DataModel $dateModel)
+
+    public function postUpdateModel(DataModel $dateModel): void
     {
     }
 
