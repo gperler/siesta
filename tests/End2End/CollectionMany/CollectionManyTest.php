@@ -2,6 +2,7 @@
 
 namespace SiestaTest\End2End\Collection;
 
+use Codeception\Util\Debug;
 use Siesta\Util\File;
 use SiestaTest\End2End\CollectionMany\Generated\Exam;
 use SiestaTest\End2End\CollectionMany\Generated\ExamService;
@@ -22,7 +23,6 @@ class CollectionManyTest extends End2EndTest
         $this->resetSchema();
         $schemaFile = new File(__DIR__ . "/schema/collection.many.test.xml");
         $this->generateSchema($schemaFile, __DIR__, $silent);
-
     }
 
     public function testCollectionMany()

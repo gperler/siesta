@@ -55,7 +55,7 @@ class StoredProcedureMigrationTest extends \PHPUnit_Framework_TestCase
 
         // artist table has a attribute change : insert und update need to be recreated
         $this->assertSame("DROP PROCEDURE IF EXISTS `Artist_insert`", $alterList[0]);
-        $this->assertSame("CREATE PROCEDURE `Artist_insert`(IN P_ID INT, IN P_COLUMN1 VARCHAR(101), IN P_COLUMN2 DATETIME) MODIFIES SQL DATA SQL SECURITY INVOKER BEGIN INSERT INTO `Artist` ( `id`, `column1`, `column2` ) VALUES ( P_ID, P_COLUMN1, P_COLUMN2 ); END;", $alterList[1]);
+        $this->assertSame("CREATE PROCEDURE `Artist_insert`(IN P_ID INT, IN P_COLUMN1 VARCHAR(101), IN P_COLUMN2 DATETIME) MODIFIES SQL DATA SQL SECURITY INVOKER BEGIN INSERT INTO `Artist` ( `id`, `column1`, `column2` ) VALUES ( P_ID, P_COLUMN1, P_COLUMN2 ) ON DUPLICATE KEY UPDATE `column1` = P_COLUMN1, `column2` = P_COLUMN2; END;", $alterList[1]);
 
         $this->assertSame("DROP PROCEDURE IF EXISTS `Artist_update`", $alterList[2]);
         $this->assertSame("CREATE PROCEDURE `Artist_update`(IN P_ID INT,IN P_COLUMN1 VARCHAR(101),IN P_COLUMN2 DATETIME) MODIFIES SQL DATA SQL SECURITY INVOKER BEGIN UPDATE `Artist` SET `id` = P_ID,`column1` = P_COLUMN1,`column2` = P_COLUMN2 WHERE `id` = P_ID; END;", $alterList[3]);

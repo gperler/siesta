@@ -214,7 +214,7 @@ class Siesta implements LoggerAwareInterface
      * @throws InvalidConfigurationException
      * @throws ReflectionException
      */
-    public function migrateDirect(string $baseDir, bool $dropUnusedTables = true)
+    public function migrateDirect(string $baseDir, bool $dropUnusedTables = true): void
     {
         $this->generateClasses($baseDir);
         $this->migrator->migrateDirect($this->dataModel, $this->getConnection(), $dropUnusedTables);

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Siesta\Driver\MySQL;
 
-use Codeception\Util\Debug;
-use Exception;
 use mysqli;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionData;
@@ -66,8 +64,10 @@ class MySQLConnection implements Connection
      *
      * @throws ConnectException
      */
-    public function connect(ConnectionData $connectionData)
+    public function connect(ConnectionData $connectionData): void
     {
+        mysqli_report(MYSQLI_REPORT_OFF);
+
         $this->database = $connectionData->database;
         // connect
         $this->connection = @new mysqli ($connectionData->host, $connectionData->user, $connectionData->password, $connectionData->database, $connectionData->port);
@@ -96,7 +96,7 @@ class MySQLConnection implements Connection
     /**
      * @param string $name
      */
-    public function useDatabase(string $name)
+    public function useDatabase(string $name): void
     {
         $this->database = $name;
         $this->connection->query("USE " . $name);
@@ -116,12 +116,7 @@ class MySQLConnection implements Connection
      */
     public function query(string $query): ResultSet
     {
-        try {
-            $result = $this->connection->query($query);
-        } catch (Exception $e) {
-            Debug::debug($query);
-        }
-
+        $result = $this->connection->query($query);
 
         if ($result === false) {
             $this->handleQueryError($this->connection->errno, $this->connection->error, $query);
@@ -229,7 +224,6 @@ class MySQLConnection implements Connection
             case 1451:
                 throw new ForeignKeyConstraintFailedException($error, $errorNumber, $sql);
             default:
-                Debug::debug($sql);
                 throw new SQLException($error, $errorNumber, $sql);
         }
     }
@@ -287,7 +281,7 @@ class MySQLConnection implements Connection
     /**
      * @return void
      */
-    public function rollback() : void
+    public function rollback(): void
     {
         $this->connection->rollback();
         $this->connection->autocommit(true);

@@ -87,7 +87,7 @@ class UpdateStatement
     /**
      * @return void
      */
-    private function extractColumnAndValueList()
+    private function extractColumnAndValueList(): void
     {
 
         // iterate attributes

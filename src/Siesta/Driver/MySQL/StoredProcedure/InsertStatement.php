@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use Siesta\Driver\MySQL\MySQLDriver;
@@ -12,29 +13,38 @@ use Siesta\Model\Entity;
 class InsertStatement
 {
 
-    const INSERT_STATEMENT = "INSERT INTO %s ( %s ) VALUES ( %s );";
+    const INSERT_STATEMENT_WITH_UPDATE = "INSERT INTO %s ( %s ) VALUES ( %s ) ON DUPLICATE KEY UPDATE %s;";
+    const INSERT_STATEMENT_WITHOUT_UPDATE = "INSERT INTO %s ( %s ) VALUES ( %s );";
 
     const SP_PARAMETER = "IN %s %s";
+
+    const SET = "%s = %s";
+
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var string[]
      */
-    protected $columnList;
+    protected array $columnList;
 
     /**
      * @var string[]
      */
-    protected $valueList;
+    protected array $valueList;
 
     /**
      * @var string[]
      */
-    protected $parameterList;
+    protected array $parameterList;
+
+    /**
+     * @var array
+     */
+    protected array $updateList;
 
     /**
      * @param Entity $entity
@@ -45,6 +55,7 @@ class InsertStatement
         $this->columnList = [];
         $this->valueList = [];
         $this->parameterList = [];
+        $this->updateList = [];
         $this->extractColumnAndValueList();
     }
 
@@ -53,15 +64,20 @@ class InsertStatement
      *
      * @return string
      */
-    public function buildInsert($tableName)
+    public function buildInsert(string $tableName): string
     {
-        return $this->buildStatement($tableName, $this->columnList, $this->valueList);
+        return $this->buildStatement(
+            $tableName,
+            $this->columnList,
+            $this->valueList,
+            $this->updateList,
+        );
     }
 
     /**
      * @return string
      */
-    public function buildSignature()
+    public function buildSignature(): string
     {
         return "(" . implode(", ", $this->parameterList) . ")";
     }
@@ -69,57 +85,107 @@ class InsertStatement
     /**
      * @return string
      */
-    public function buildDelimitInsert()
+    public function buildDelimitInsert(): string
     {
         $columnList = array_merge($this->columnList);
         $valueList = array_merge($this->valueList);
+        $updateList = array_merge($this->updateList);
 
         foreach (DelimitAttributeList::getDelimitAttributes($this->entity) as $delimitAttribute) {
             $attributeName = $delimitAttribute->getDBName();
 
-            $columnList[] = MySQLDriver::quote($attributeName);
+            $columnName = MySQLDriver::quote($attributeName);
+
+            $columnList[] = $columnName;
 
             if ($attributeName === DelimitAttributeList::COLUMN_DELIMIT_ID) {
                 $valueList[] = 'UUID()';
+                $updateList[] = sprintf(
+                    self::SET,
+                    $columnName,
+                    'UUID()'
+                );
+
             }
             if ($attributeName === DelimitAttributeList::COLUMN_VALID_FROM) {
                 $valueList[] = 'NOW()';
+                $updateList[] = sprintf(
+                    self::SET,
+                    $columnName,
+                    'NOW()'
+                );
             }
             if ($attributeName === DelimitAttributeList::COLUMN_VALID_UNTIL) {
                 $valueList[] = 'NULL';
+                $updateList[] = sprintf(
+                    self::SET,
+                    $columnName,
+                    'NULL'
+                );
             }
 
         }
 
-        return $this->buildStatement($this->entity->getDelimitTableName(), $columnList, $valueList);
+        return $this->buildStatement(
+            $this->entity->getDelimitTableName(),
+            $columnList,
+            $valueList,
+            $updateList
+        );
     }
 
     /**
      * @param string $tableName
      * @param string[] $columnList
      * @param string[] $valueList
-     *
+     * @param $updateList
      * @return string
      */
-    protected function buildStatement($tableName, array $columnList, array $valueList)
+    protected function buildStatement(string $tableName, array $columnList, array $valueList, $updateList): string
     {
-        $columnSQL = implode(", ", $columnList);
-        $valueSQL = implode(", ", $valueList);
-        return sprintf(self::INSERT_STATEMENT, $tableName, $columnSQL, $valueSQL);
+        return sprintf(
+            $this->getStatement(),
+            $tableName,
+            implode(", ", $columnList),
+            implode(", ", $valueList),
+            implode(", ", $updateList)
+        );
+    }
+
+    /**
+     * @return string
+     */
+    private function getStatement(): string
+    {
+        if (count($this->updateList) === 0) {
+            return self::INSERT_STATEMENT_WITHOUT_UPDATE;
+        }
+        return self::INSERT_STATEMENT_WITH_UPDATE;
     }
 
     /**
      * @return void
      */
-    private function extractColumnAndValueList()
+    private function extractColumnAndValueList(): void
     {
 
         foreach ($this->entity->getAttributeList() as $attribute) {
             if ($attribute->getIsTransient()) {
                 continue;
             }
-            $this->columnList[] = MySQLDriver::quote($attribute->getDBName());
+            $columnName = MySQLDriver::quote($attribute->getDBName());
+
+            $this->columnList[] = $columnName;
             $this->valueList[] = $attribute->getStoredProcedureParameterName();
+
+            if (!$attribute->getIsPrimaryKey()) {
+                $this->updateList[] = sprintf(
+                    self::SET,
+                    $columnName,
+                    $attribute->getStoredProcedureParameterName()
+                );
+            }
+
             $this->parameterList[] = sprintf(self::SP_PARAMETER, $attribute->getStoredProcedureParameterName(), $attribute->getDbType());
         }
     }

@@ -37,8 +37,9 @@ class End2EndTest extends \PHPUnit_Framework_TestCase
      * @param File $file
      * @param string $targetPath
      * @param bool $silent
+     * @throws \ReflectionException
      */
-    protected function generateSchema(File $file, string $targetPath, bool $silent = true)
+    protected function generateSchema(File $file, string $targetPath, bool $silent = true): void
     {
         $siesta = new Siesta();
 
@@ -52,7 +53,7 @@ class End2EndTest extends \PHPUnit_Framework_TestCase
     /**
      * @return Connection
      */
-    protected function getConnection() : Connection
+    protected function getConnection(): Connection
     {
         return ConnectionFactory::getConnection();
     }
@@ -62,7 +63,7 @@ class End2EndTest extends \PHPUnit_Framework_TestCase
      *
      * @return DataModel
      */
-    public function readModel(string $fileName) : DataModel
+    public function readModel(string $fileName): DataModel
     {
 
         $xmlReader = new XMLReader(new File($fileName));

@@ -57,7 +57,7 @@ class Migrator implements LoggerAwareInterface
     /**
      * @param LoggerInterface $logger
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
@@ -83,7 +83,7 @@ class Migrator implements LoggerAwareInterface
      * @param Connection $connection
      * @param bool $dropUnusedTables
      */
-    public function migrateDirect(DataModel $dataModel, Connection $connection, bool $dropUnusedTables = true)
+    public function migrateDirect(DataModel $dataModel, Connection $connection, bool $dropUnusedTables = true): void
     {
         $this->setup($dataModel, $connection);
         $dropping = $dropUnusedTables ? " dropping unused tables " : " not dropping unused tables";
