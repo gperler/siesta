@@ -25,54 +25,54 @@ interface ResultSet
     /**
      * closes the database connection
      */
-    public function close();
+    public function close(): void;
 
     /**
      * @param string $key
      *
      * @return bool|null
      */
-    public function getBooleanValue(string $key);
+    public function getBooleanValue(string $key): ?bool;
 
     /**
      * @param string $key
      *
      * @return integer|null
      */
-    public function getIntegerValue(string $key);
+    public function getIntegerValue(string $key): ?int;
 
     /**
      * @param string $key
      *
      * @return float|null
      */
-    public function getFloatValue(string $key);
+    public function getFloatValue(string $key): ?float;
 
     /**
      * @param string $key
      *
      * @return string|null
      */
-    public function getStringValue(string $key);
+    public function getStringValue(string $key): ?string;
 
     /**
      * @param string $key
      *
-     * @return SiestaDateTime
+     * @return SiestaDateTime|null
      */
-    public function getDateTime(string $key);
+    public function getDateTime(string $key): ?SiestaDateTime;
 
     /**
      * @param string $key
      *
      * @return mixed
      */
-    public function getObject(string $key);
+    public function getObject(string $key): mixed;
 
     /**
      * @param string $key
      *
-     * @return array
+     * @return array|null
      */
-    public function getArray(string $key);
+    public function getArray(string $key): ?array;
 }

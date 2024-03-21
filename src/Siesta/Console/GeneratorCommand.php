@@ -60,7 +60,7 @@ class GeneratorCommand extends Command
     /**
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('gen');
         $this->setDescription('Scans directories for entity files and generates classes and database tables');
@@ -77,7 +77,7 @@ class GeneratorCommand extends Command
      * @return int
      * @throws ReflectionException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = $output;
         $this->input = $input;
@@ -119,7 +119,7 @@ class GeneratorCommand extends Command
      * @return void
      * @throws ReflectionException
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): void
     {
         $configFileName = $this->input->getOption(GeneratorCommand::OPTION_CONFIG_FILE);
         $this->config = Config::getInstance($configFileName);
@@ -134,7 +134,7 @@ class GeneratorCommand extends Command
     /**
      *
      */
-    protected function setupSiesta()
+    protected function setupSiesta(): void
     {
         $logger = new SymphonyConsoleLogger($this->output);
         $this->siesta->setLogger($logger);

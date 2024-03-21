@@ -62,22 +62,22 @@ class GenericGeneratorConfig
     /**
      * @var string
      */
-    protected $name;
+    protected ?string $name;
 
     /**
      * @var string
      */
-    protected $className;
+    protected ?string $className;
 
     /**
      * @var string[]
      */
-    protected $pluginList;
+    protected ?array $pluginList;
 
     /**
      * @var string[]
      */
-    protected $validatorList;
+    protected ?array $validatorList;
 
     /**
      * GeneratorConfig constructor.
@@ -96,7 +96,7 @@ class GenericGeneratorConfig
      * @param ValidationLogger $logger
      * @throws ReflectionException
      */
-    public function validate(ValidationLogger $logger)
+    public function validate(ValidationLogger $logger): void
     {
         if (empty($this->name)) {
             $logger->error(self::ERROR_GENERATOR_HAS_NO_NAME, self::ERROR_GENERATOR_HAS_NO_NAME_CODE);
@@ -122,9 +122,8 @@ class GenericGeneratorConfig
 
     /**
      * @param ValidationLogger $logger
-     * @throws ReflectionException
      */
-    protected function validateGenerator(ValidationLogger $logger)
+    protected function validateGenerator(ValidationLogger $logger): void
     {
         if (empty($this->className) || !class_exists($this->className)) {
             $error = sprintf(self::ERROR_GENERATOR_CLASS_DOES_NOT_EXIST, $this->className);
@@ -143,7 +142,7 @@ class GenericGeneratorConfig
      * @param ValidationLogger $logger
      * @throws ReflectionException
      */
-    protected function validatePluginList(ValidationLogger $logger)
+    protected function validatePluginList(ValidationLogger $logger): void
     {
         foreach ($this->pluginList as $plugin) {
             $this->validatePlugin($logger, $plugin);
@@ -155,7 +154,7 @@ class GenericGeneratorConfig
      * @param string $plugin
      * @throws ReflectionException
      */
-    protected function validatePlugin(ValidationLogger $logger, string $plugin)
+    protected function validatePlugin(ValidationLogger $logger, string $plugin): void
     {
 
         if (!ClassUtil::exists($plugin)) {
@@ -174,7 +173,7 @@ class GenericGeneratorConfig
      * @param ValidationLogger $logger
      * @throws ReflectionException
      */
-    protected function validateValidatorList(ValidationLogger $logger)
+    protected function validateValidatorList(ValidationLogger $logger): void
     {
         foreach ($this->validatorList as $validator) {
             $this->validateValidator($logger, $validator);
@@ -186,7 +185,7 @@ class GenericGeneratorConfig
      * @param $validator
      * @throws ReflectionException
      */
-    public function validateValidator(ValidationLogger $logger, $validator)
+    public function validateValidator(ValidationLogger $logger, $validator): void
     {
         if (!ClassUtil::exists($validator)) {
             $error = sprintf(self::ERROR_GENERATOR_VALIDATOR_DOES_NOT_EXIST, $validator, $this->getName());

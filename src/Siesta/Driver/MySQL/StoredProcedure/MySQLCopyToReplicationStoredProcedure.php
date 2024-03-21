@@ -43,9 +43,9 @@ class MySQLCopyToReplicationStoredProcedure extends MySQLStoredProcedureBase
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreateProcedureStatement()
+    public function getCreateProcedureStatement(): ?string
     {
         if (!$this->isReplication) {
             return null;
@@ -57,7 +57,7 @@ class MySQLCopyToReplicationStoredProcedure extends MySQLStoredProcedureBase
     /**
      *
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $this->statement = sprintf(self::DELETE_FROM_MEMORY_TABLE, $this->replicationTableName);
         $this->statement .= sprintf(self::INSERT_INTO_MEMORY_TABLE, $this->replicationTableName, $this->tableName);

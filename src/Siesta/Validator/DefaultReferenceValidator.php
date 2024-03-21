@@ -56,22 +56,22 @@ class DefaultReferenceValidator implements ReferenceValidator
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var Reference
      */
-    protected $reference;
+    protected Reference $reference;
 
     /**
      * @var ValidationLogger
      */
-    protected $logger;
+    protected ValidationLogger $logger;
 
     /**
      * @param DataModel $dataModel
@@ -79,7 +79,7 @@ class DefaultReferenceValidator implements ReferenceValidator
      * @param Reference $reference
      * @param ValidationLogger $logger
      */
-    public function validate(DataModel $dataModel, Entity $entity, Reference $reference, ValidationLogger $logger)
+    public function validate(DataModel $dataModel, Entity $entity, Reference $reference, ValidationLogger $logger): void
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
@@ -94,9 +94,9 @@ class DefaultReferenceValidator implements ReferenceValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getEntityName()
+    protected function getEntityName(): ?string
     {
         return $this->entity->getClassShortName();
     }
@@ -104,7 +104,7 @@ class DefaultReferenceValidator implements ReferenceValidator
     /**
      * @return string
      */
-    protected function getReferenceName()
+    protected function getReferenceName(): ?string
     {
         return $this->reference->getName();
     }
@@ -113,7 +113,7 @@ class DefaultReferenceValidator implements ReferenceValidator
      * @param string $text
      * @param int $code
      */
-    protected function error(string $text, int $code)
+    protected function error(string $text, int $code): void
     {
         $this->logger->error($text, $code);
     }
@@ -121,7 +121,7 @@ class DefaultReferenceValidator implements ReferenceValidator
     /**
      *
      */
-    protected function validateForeignEntity()
+    protected function validateForeignEntity(): void
     {
         if ($this->reference->getForeignEntity() !== null) {
             return;
@@ -135,7 +135,7 @@ class DefaultReferenceValidator implements ReferenceValidator
      * @param string $onXValue
      * @param string $onX
      */
-    protected function validateOnX(string $onXValue, string $onX)
+    protected function validateOnX(string $onXValue, string $onX): void
     {
         if (in_array($onXValue, self::ALLOWED_ON_X)) {
             return;
@@ -148,7 +148,7 @@ class DefaultReferenceValidator implements ReferenceValidator
     /**
      *
      */
-    protected function validateReferenceMappingList()
+    protected function validateReferenceMappingList(): void
     {
         $referenceMappingList = $this->reference->getReferenceMappingList();
 
@@ -165,7 +165,7 @@ class DefaultReferenceValidator implements ReferenceValidator
     /**
      * @param ReferenceMapping $referenceMapping
      */
-    protected function validateReferenceMapping(ReferenceMapping $referenceMapping)
+    protected function validateReferenceMapping(ReferenceMapping $referenceMapping): void
     {
         if ($this->reference->getForeignEntity() === null) {
             return;
@@ -194,7 +194,7 @@ class DefaultReferenceValidator implements ReferenceValidator
      * @param Attribute $localAttribute
      * @param Attribute $foreignAttribute
      */
-    protected function validateMappingDBDataTypes(Attribute $localAttribute, Attribute $foreignAttribute)
+    protected function validateMappingDBDataTypes(Attribute $localAttribute, Attribute $foreignAttribute): void
     {
         $localType = $localAttribute->getDbType();
         $foreignType = $foreignAttribute->getDbType();
@@ -210,7 +210,7 @@ class DefaultReferenceValidator implements ReferenceValidator
      * @param Attribute $localAttribute
      * @param Attribute $foreignAttribute
      */
-    protected function validateMappingPHPDataTypes(Attribute $localAttribute, Attribute $foreignAttribute)
+    protected function validateMappingPHPDataTypes(Attribute $localAttribute, Attribute $foreignAttribute): void
     {
         $localType = $localAttribute->getPhpType();
         $foreignType = $foreignAttribute->getPhpType();

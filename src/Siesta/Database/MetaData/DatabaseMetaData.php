@@ -11,7 +11,7 @@ interface DatabaseMetaData
     /**
      * @return void
      */
-    public function refresh();
+    public function refresh(): void;
 
     /**
      * @return TableMetaData[]
@@ -21,9 +21,9 @@ interface DatabaseMetaData
     /**
      * @param string $tableName
      *
-     * @return TableMetaData
+     * @return TableMetaData|null
      */
-    public function getTableByName(string $tableName);
+    public function getTableByName(string $tableName): ?TableMetaData;
 
     /**
      * @return string[]

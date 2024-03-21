@@ -26,13 +26,13 @@ class EntityGenerator extends AbstractGenerator
     /**
      * @var string
      */
-    protected $basePath;
+    protected string $basePath;
 
     /**
      * @param Entity $entity
      * @param string $baseDir
      */
-    public function generate(Entity $entity, string $baseDir)
+    public function generate(Entity $entity, string $baseDir): void
     {
         $this->classGenerator = new ClassGenerator($entity->getClassName());
         $this->entity = $entity;

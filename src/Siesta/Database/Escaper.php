@@ -20,7 +20,7 @@ class Escaper
      *
      * @return string
      */
-    public static function quoteDateTime(SiestaDateTime $dateTime = null)
+    public static function quoteDateTime(SiestaDateTime $dateTime = null): string
     {
         if ($dateTime === null) {
             return self::NULL;
@@ -29,7 +29,7 @@ class Escaper
     }
 
     /**
-     * @param SiestaDateTime $date
+     * @param SiestaDateTime|null $date
      *
      * @return string
      */
@@ -42,7 +42,7 @@ class Escaper
     }
 
     /**
-     * @param SiestaDateTime $time
+     * @param SiestaDateTime|null $time
      *
      * @return string
      */
@@ -147,7 +147,7 @@ class Escaper
      *
      * @return null|string
      */
-    public static function quoteArray(Connection $connection, array $array = null)
+    public static function quoteArray(Connection $connection, array $array = null): string
     {
         if ($array === null) {
             return self::NULL;
@@ -159,9 +159,9 @@ class Escaper
      * @param Connection $connection
      * @param ArraySerializable|null $arraySerializable
      *
-     * @return null|string
+     * @return string
      */
-    public static function quoteArraySerializable(Connection $connection, ArraySerializable $arraySerializable = null)
+    public static function quoteArraySerializable(Connection $connection, ArraySerializable $arraySerializable = null): string
     {
         if ($arraySerializable === null) {
             return self::NULL;

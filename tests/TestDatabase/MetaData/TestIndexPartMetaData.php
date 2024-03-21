@@ -43,9 +43,9 @@ class TestIndexPartMetaData implements IndexPartMetaData
     }
 
     /**
-     * @return null|string
+     * @return int|null
      */
-    public function getLength()
+    public function getLength(): ?int
     {
         return ArrayUtil::getFromArray($this->valueList, self::LENGTH);
     }

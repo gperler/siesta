@@ -19,22 +19,22 @@ class ConnectionPool
     /**
      * @var Driver[]
      */
-    protected $driverList;
+    protected array $driverList;
 
     /**
      * @var Connection[]
      */
-    protected $connectionList;
+    protected array $connectionList;
 
     /**
-     * @var Connection
+     * @var Connection|null
      */
-    protected $defaultConnection;
+    protected ?Connection $defaultConnection;
 
     /**
      * @var ConnectionData[]
      */
-    protected $connectionDataList;
+    protected array $connectionDataList;
 
     /**
      * ConnectionPool constructor.
@@ -50,7 +50,7 @@ class ConnectionPool
     /**
      * @param ConnectionData $connectionData
      */
-    public function addConnection(ConnectionData $connectionData)
+    public function addConnection(ConnectionData $connectionData): void
     {
         $connection = ArrayUtil::getFromArray($this->connectionList, $connectionData->name);
         if ($connection !== null) {
@@ -101,7 +101,7 @@ class ConnectionPool
     /**
      *
      */
-    public function closeAll()
+    public function closeAll(): void
     {
         if ($this->defaultConnection !== null) {
             $this->defaultConnection->close();

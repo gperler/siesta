@@ -20,5 +20,5 @@ interface IndexValidator
      *
      * @return void
      */
-    public function validate(DataModel $dataModel, Entity $entity, Index $index, ValidationLogger $logger);
+    public function validate(DataModel $dataModel, Entity $entity, Index $index, ValidationLogger $logger): void;
 }

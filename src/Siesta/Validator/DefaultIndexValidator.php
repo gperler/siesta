@@ -30,22 +30,22 @@ class DefaultIndexValidator implements IndexValidator
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var Index
      */
-    protected $index;
+    protected Index $index;
 
     /**
      * @var ValidationLogger
      */
-    protected $logger;
+    protected ValidationLogger $logger;
 
     /**
      * @param DataModel $dataModel
@@ -53,7 +53,7 @@ class DefaultIndexValidator implements IndexValidator
      * @param Index $index
      * @param ValidationLogger $logger
      */
-    public function validate(DataModel $dataModel, Entity $entity, Index $index, ValidationLogger $logger)
+    public function validate(DataModel $dataModel, Entity $entity, Index $index, ValidationLogger $logger): void
     {
         $this->logger = $logger;
         $this->dataModel = $dataModel;

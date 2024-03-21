@@ -31,7 +31,7 @@ class GeneratorHelper
     /**
      * @var Method
      */
-    protected $method;
+    protected Method $method;
 
     /**
      * GeneratorHelper constructor.
@@ -43,16 +43,16 @@ class GeneratorHelper
         $this->method = $method;
     }
 
-    public function addConnectionNameParameter()
+    public function addConnectionNameParameter(): void
     {
         $this->method->addParameter(PHPType::STRING, "connectionName", "null");
     }
 
     /**
      * @param ReferenceMapping[] $mappingList
-     * @param string $defaultValue
+     * @param string|null $defaultValue
      */
-    public function addReferenceMappingListParameter(array $mappingList, string $defaultValue = null)
+    public function addReferenceMappingListParameter(array $mappingList, string $defaultValue = null): void
     {
         foreach ($mappingList as $mapping) {
             $this->addReferenceMappingParameter($mapping, $defaultValue);
@@ -61,9 +61,9 @@ class GeneratorHelper
 
     /**
      * @param ReferenceMapping $mapping
-     * @param string $defaultValue
+     * @param string|null $defaultValue
      */
-    public function addReferenceMappingParameter(ReferenceMapping $mapping, string $defaultValue = null)
+    public function addReferenceMappingParameter(ReferenceMapping $mapping, string $defaultValue = null): void
     {
         $this->addAttributeParameter($mapping->getLocalAttribute(), $defaultValue);
     }
@@ -73,7 +73,7 @@ class GeneratorHelper
      * @param array $attributeList
      * @param string|null $defaultValue
      */
-    public function addAttributeParameterList(array $attributeList, string $defaultValue = null)
+    public function addAttributeParameterList(array $attributeList, string $defaultValue = null): void
     {
         foreach ($attributeList as $attribute) {
             $this->addAttributeParameter($attribute, $defaultValue);
@@ -84,7 +84,7 @@ class GeneratorHelper
      * @param Attribute $attribute
      * @param string|null $defaultValue
      */
-    public function addAttributeParameter(Attribute $attribute, string $defaultValue = null)
+    public function addAttributeParameter(Attribute $attribute, string $defaultValue = null): void
     {
         $this->method->addParameter($attribute->getPhpType(), $attribute->getPhpName(), $defaultValue);
     }
@@ -92,7 +92,7 @@ class GeneratorHelper
     /**
      *
      */
-    public function addConnectionLookup()
+    public function addConnectionLookup(): void
     {
         $this->method->addCodeLine('$connection = ConnectionFactory::getConnection($connectionName);');
     }
@@ -104,7 +104,7 @@ class GeneratorHelper
      * @param bool $fromMember
      * @throws ReflectionException
      */
-    public function addQuoteReferenceMappingList(array $referenceMappingList, bool $forceConnectionLookup = false, bool $fromMember = false)
+    public function addQuoteReferenceMappingList(array $referenceMappingList, bool $forceConnectionLookup = false, bool $fromMember = false): void
     {
         $attributeList = [];
         foreach ($referenceMappingList as $referenceMapping) {
@@ -120,7 +120,7 @@ class GeneratorHelper
      * @param bool $isObject
      * @param int|null $maxLength
      */
-    public function addQuoteCall(string $phpType, ?string $dbType, string $variableName, $isObject = false, int $maxLength = null)
+    public function addQuoteCall(string $phpType, ?string $dbType, string $variableName, bool $isObject = false, int $maxLength = null): void
     {
         $assignment = $variableName . ' = ';
         $quoteCall = $this->generateQuoteCall($phpType, $dbType, $variableName, $isObject, $maxLength);
@@ -133,7 +133,7 @@ class GeneratorHelper
      * @param bool $fromMember
      * @throws ReflectionException
      */
-    public function addQuoteAttributeList(array $attributeList, bool $forceConnectionLookup = false, bool $fromMember = false)
+    public function addQuoteAttributeList(array $attributeList, bool $forceConnectionLookup = false, bool $fromMember = false): void
     {
         $hasString = false;
         foreach ($attributeList as $attribute) {
@@ -164,7 +164,7 @@ class GeneratorHelper
      * @param bool $arraySerializable
      * @return string
      */
-    public function generateQuoteCall(string $phpType, ?string $dbType, string $variableName, $isObject = false, int $maxLength = null, bool $arraySerializable = false) : string
+    public function generateQuoteCall(string $phpType, ?string $dbType, string $variableName, bool $isObject = false, int $maxLength = null, bool $arraySerializable = false) : string
     {
         if ($isObject && $arraySerializable) {
             return 'Escaper::quoteArraySerializable($connection, ' . $variableName . ')';
@@ -218,7 +218,7 @@ class GeneratorHelper
      * @param Attribute[] $attributeList
      * @param bool $result
      */
-    public function addExecuteStoredProcedureWithAttributeList(string $name, array $attributeList, bool $result = true)
+    public function addExecuteStoredProcedureWithAttributeList(string $name, array $attributeList, bool $result = true): void
     {
         $signature = $this->getSPInvocationSignature($attributeList);
         $this->addExecuteStoredProcedure($name, $signature, $result);
@@ -243,7 +243,7 @@ class GeneratorHelper
      * @param string $invocationSignature
      * @param bool $result
      */
-    public function addExecuteStoredProcedure(string $name, string $invocationSignature, bool $result = true)
+    public function addExecuteStoredProcedure(string $name, string $invocationSignature, bool $result = true): void
     {
         if (!$result) {
             $this->method->addCodeLine('$connection->execute("CALL ' . $name . '(' . $invocationSignature . ')");');

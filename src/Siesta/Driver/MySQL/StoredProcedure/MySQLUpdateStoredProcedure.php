@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use Siesta\Database\StoredProcedureNaming;
@@ -64,9 +65,9 @@ class MySQLUpdateStoredProcedure extends MySQLStoredProcedureBase
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreateProcedureStatement()
+    public function getCreateProcedureStatement(): ?string
     {
 
         if (!$this->entity->hasPrimaryKey()) {

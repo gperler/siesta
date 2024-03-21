@@ -346,7 +346,7 @@ class MainGeneratorConfig
     /**
      * @return string
      */
-    public function getGenericGeneratorConfiguration()
+    public function getGenericGeneratorConfiguration(): ?string
     {
         return $this->genericGeneratorConfiguration;
     }
@@ -354,7 +354,7 @@ class MainGeneratorConfig
     /**
      * @param string $genericGeneratorConfiguration
      */
-    public function setGenericGeneratorConfiguration(string $genericGeneratorConfiguration = null)
+    public function setGenericGeneratorConfiguration(string $genericGeneratorConfiguration = null): void
     {
         $this->genericGeneratorConfiguration = $genericGeneratorConfiguration;
     }

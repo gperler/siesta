@@ -62,22 +62,22 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var Attribute
      */
-    protected $attribute;
+    protected Attribute $attribute;
 
     /**
      * @var ValidationLogger
      */
-    protected $logger;
+    protected ValidationLogger $logger;
 
     /**
      * @param DataModel $dataModel
@@ -85,7 +85,7 @@ class DefaultAttributeValidator implements AttributeValidator
      * @param Attribute $attribute
      * @param ValidationLogger $logger
      */
-    public function validate(DataModel $dataModel, Entity $entity, Attribute $attribute, ValidationLogger $logger)
+    public function validate(DataModel $dataModel, Entity $entity, Attribute $attribute, ValidationLogger $logger): void
     {
         $this->logger = $logger;
         $this->dataModel = $dataModel;
@@ -103,7 +103,7 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      * @return string
      */
-    protected function getEntityName()
+    protected function getEntityName(): string
     {
         return $this->entity->getClassShortName();
     }
@@ -111,7 +111,7 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      * @return string
      */
-    protected function getAttributeName()
+    protected function getAttributeName(): string
     {
         return $this->attribute->getPhpName();
     }
@@ -120,7 +120,7 @@ class DefaultAttributeValidator implements AttributeValidator
      * @param string $text
      * @param int $code
      */
-    protected function error(string $text, int $code)
+    protected function error(string $text, int $code): void
     {
         $this->logger->error($text, $code);
     }
@@ -128,7 +128,7 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      *
      */
-    protected function validateName()
+    protected function validateName(): void
     {
         if ($this->attribute->getPhpName() !== null) {
             return;
@@ -141,7 +141,7 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      *
      */
-    protected function validateType()
+    protected function validateType(): void
     {
         if ($this->attribute->getPhpType() !== null) {
             return;
@@ -154,7 +154,7 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      *
      */
-    protected function validateAutoValue()
+    protected function validateAutoValue(): void
     {
         if (in_array($this->attribute->getAutoValue(), self::ALLOWED_AUTO_VALUE)) {
             return;
@@ -168,7 +168,7 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      *
      */
-    protected function validateObjectType()
+    protected function validateObjectType(): void
     {
 
         if (!$this->attribute->getIsObject() || class_exists($this->attribute->getClassName())) {
@@ -183,7 +183,7 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      *
      */
-    protected function validateNonTransient()
+    protected function validateNonTransient(): void
     {
         if ($this->attribute->getIsTransient() || $this->attribute->getDbType() !== null) {
             return;
@@ -196,7 +196,7 @@ class DefaultAttributeValidator implements AttributeValidator
     /**
      *
      */
-    protected function validateWarnAutoValue()
+    protected function validateWarnAutoValue(): void
     {
 
         if (!$this->attribute->getIsPrimaryKey() || $this->attribute->getAutoValue() !== null || $this->attribute->getIsForeignKey()) {

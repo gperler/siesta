@@ -57,52 +57,52 @@ class Validator
     /**
      * @var DataModelValidator[]
      */
-    protected $dataModelValidatorList;
+    protected array $dataModelValidatorList;
 
     /**
      * @var EntityValidator[]
      */
-    protected $entityValidatorList;
+    protected array $entityValidatorList;
 
     /**
      * @var AttributeValidator[]
      */
-    protected $attributeValidatorList;
+    protected array $attributeValidatorList;
 
     /**
      * @var ReferenceValidator[]
      */
-    protected $referenceValidatorList;
+    protected array $referenceValidatorList;
 
     /**
      * @var IndexValidator[]
      */
-    protected $indexValidatorList;
+    protected array $indexValidatorList;
 
     /***
      * @var CollectionValidator[]
      */
-    protected $collectionValidatorList;
+    protected array $collectionValidatorList;
 
     /**
      * @var CollectionManyValidator[]
      */
-    protected $collectionManyValidatorList;
+    protected array $collectionManyValidatorList;
 
     /**
      * @var DynamicCollectionValidator[]
      */
-    protected $dynamicCollectionValidatorList;
+    protected array $dynamicCollectionValidatorList;
 
     /**
      * @var StoredProcedureValidator[]
      */
-    protected $storedProcedureValidatorList;
+    protected array $storedProcedureValidatorList;
 
     /**
      * @var ValueObjectValidator[]
      */
-    protected $valueObjectValidatorList;
+    protected array $valueObjectValidatorList;
 
     /**
      * Validator constructor.
@@ -125,7 +125,7 @@ class Validator
      * @param GenericGeneratorConfig[] $genericGeneratorConfigList
      * @throws ReflectionException
      */
-    public function setup(array $genericGeneratorConfigList)
+    public function setup(array $genericGeneratorConfigList): void
     {
         foreach ($genericGeneratorConfigList as $genericGeneratorConfig) {
             $this->addGenericGeneratorConfig($genericGeneratorConfig);
@@ -136,7 +136,7 @@ class Validator
      * @param DataModel $dataModel
      * @param ValidationLogger $logger
      */
-    public function validateDataModel(DataModel $dataModel, ValidationLogger $logger)
+    public function validateDataModel(DataModel $dataModel, ValidationLogger $logger): void
     {
         foreach ($this->dataModelValidatorList as $dataModelValidator) {
             $dataModelValidator->validate($dataModel, $logger);
@@ -151,7 +151,7 @@ class Validator
      * @param Entity $entity
      * @param ValidationLogger $logger
      */
-    protected function validateEntity(DataModel $dataModel, Entity $entity, ValidationLogger $logger)
+    protected function validateEntity(DataModel $dataModel, Entity $entity, ValidationLogger $logger): void
     {
         foreach ($this->entityValidatorList as $validator) {
             $validator->validate($dataModel, $entity, $logger);
@@ -196,7 +196,7 @@ class Validator
      * @param Attribute $attribute
      * @param ValidationLogger $logger
      */
-    protected function validateAttribute(DataModel $dataModel, Entity $entity, Attribute $attribute, ValidationLogger $logger)
+    protected function validateAttribute(DataModel $dataModel, Entity $entity, Attribute $attribute, ValidationLogger $logger): void
     {
         foreach ($this->attributeValidatorList as $validator) {
             $validator->validate($dataModel, $entity, $attribute, $logger);
@@ -209,7 +209,7 @@ class Validator
      * @param Reference $reference
      * @param ValidationLogger $logger
      */
-    protected function validateReference(DataModel $dataModel, Entity $entity, Reference $reference, ValidationLogger $logger)
+    protected function validateReference(DataModel $dataModel, Entity $entity, Reference $reference, ValidationLogger $logger): void
     {
         foreach ($this->referenceValidatorList as $validator) {
             $validator->validate($dataModel, $entity, $reference, $logger);
@@ -222,7 +222,7 @@ class Validator
      * @param Index $index
      * @param ValidationLogger $logger
      */
-    protected function validateIndex(DataModel $dataModel, Entity $entity, Index $index, ValidationLogger $logger)
+    protected function validateIndex(DataModel $dataModel, Entity $entity, Index $index, ValidationLogger $logger): void
     {
         foreach ($this->indexValidatorList as $validator) {
             $validator->validate($dataModel, $entity, $index, $logger);
@@ -235,7 +235,7 @@ class Validator
      * @param Collection $collection
      * @param ValidationLogger $logger
      */
-    protected function validateCollection(DataModel $dataModel, Entity $entity, Collection $collection, ValidationLogger $logger)
+    protected function validateCollection(DataModel $dataModel, Entity $entity, Collection $collection, ValidationLogger $logger): void
     {
         foreach ($this->collectionValidatorList as $validator) {
             $validator->validate($dataModel, $entity, $collection, $logger);
@@ -248,7 +248,7 @@ class Validator
      * @param CollectionMany $collectionMany
      * @param ValidationLogger $logger
      */
-    protected function validateCollectionMany(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany, ValidationLogger $logger)
+    protected function validateCollectionMany(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany, ValidationLogger $logger): void
     {
         foreach ($this->collectionManyValidatorList as $validator) {
             $validator->validate($dataModel, $entity, $collectionMany, $logger);
@@ -261,7 +261,7 @@ class Validator
      * @param DynamicCollection $dynamicCollection
      * @param ValidationLogger $logger
      */
-    protected function validateDynamicCollection(DataModel $dataModel, Entity $entity, DynamicCollection $dynamicCollection, ValidationLogger $logger)
+    protected function validateDynamicCollection(DataModel $dataModel, Entity $entity, DynamicCollection $dynamicCollection, ValidationLogger $logger): void
     {
         foreach ($this->dynamicCollectionValidatorList as $validator) {
             $validator->validate($dataModel, $entity, $dynamicCollection, $logger);
@@ -274,7 +274,7 @@ class Validator
      * @param StoredProcedure $storedProcedure
      * @param ValidationLogger $logger
      */
-    protected function validateStoredProcedure(DataModel $dataModel, Entity $entity, StoredProcedure $storedProcedure, ValidationLogger $logger)
+    protected function validateStoredProcedure(DataModel $dataModel, Entity $entity, StoredProcedure $storedProcedure, ValidationLogger $logger): void
     {
         foreach ($this->storedProcedureValidatorList as $validator) {
             $validator->validate($dataModel, $entity, $storedProcedure, $logger);
@@ -287,7 +287,7 @@ class Validator
      * @param ValueObject $valueObject
      * @param ValidationLogger $logger
      */
-    protected function validateValueObject(DataModel $dataModel, Entity $entity, ValueObject $valueObject, ValidationLogger $logger)
+    protected function validateValueObject(DataModel $dataModel, Entity $entity, ValueObject $valueObject, ValidationLogger $logger): void
     {
         foreach ($this->valueObjectValidatorList as $validator) {
             $validator->validate($dataModel, $entity, $valueObject, $logger);
@@ -298,7 +298,7 @@ class Validator
      * @param GenericGeneratorConfig $config
      * @throws ReflectionException
      */
-    protected function addGenericGeneratorConfig(GenericGeneratorConfig $config)
+    protected function addGenericGeneratorConfig(GenericGeneratorConfig $config): void
     {
         foreach ($config->getValidatorList() as $validatorClassName) {
             $this->addValidator($validatorClassName);
@@ -309,7 +309,7 @@ class Validator
      * @param string $validatorClassName
      * @throws ReflectionException
      */
-    protected function addValidator(string $validatorClassName)
+    protected function addValidator(string $validatorClassName): void
     {
         $reflect = new ReflectionClass($validatorClassName);
 

@@ -16,23 +16,23 @@ class ServiceGenerator extends AbstractGenerator
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var ClassGenerator
      */
-    protected $classGenerator;
+    protected ClassGenerator $classGenerator;
 
     /**
      * @var string
      */
-    protected $basePath;
+    protected string $basePath;
 
     /**
      * @param Entity $entity
      * @param string $baseDir
      */
-    public function generate(Entity $entity, string $baseDir)
+    public function generate(Entity $entity, string $baseDir): void
     {
         $this->classGenerator = new ClassGenerator($entity->getServiceGenerationClassName());
         $this->entity = $entity;
@@ -45,7 +45,7 @@ class ServiceGenerator extends AbstractGenerator
     /**
      *
      */
-    protected function saveServiceEntity()
+    protected function saveServiceEntity(): void
     {
         $targetFile = $this->getTargetFile($this->entity, $this->entity->getServiceGenerationClassNameShort());
         $this->classGenerator->writeToFile($targetFile);
@@ -54,7 +54,7 @@ class ServiceGenerator extends AbstractGenerator
     /**
      *
      */
-    protected function generateServiceEntity()
+    protected function generateServiceEntity(): void
     {
 
         foreach ($this->getUseClassNameList($this->entity) as $useClass) {

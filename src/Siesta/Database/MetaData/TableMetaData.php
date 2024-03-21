@@ -23,7 +23,7 @@ interface TableMetaData
      *
      * @return ColumnMetaData|null
      */
-    public function getColumnByName(string $name);
+    public function getColumnByName(string $name): ?ColumnMetaData;
 
     /**
      * @return ConstraintMetaData[]
@@ -34,7 +34,7 @@ interface TableMetaData
      * @param string $name
      * @return ConstraintMetaData|null
      */
-    public function getConstraintByName(string $name);
+    public function getConstraintByName(string $name): ?ConstraintMetaData;
 
     /**
      * @return IndexMetaData[]
@@ -42,11 +42,11 @@ interface TableMetaData
     public function getIndexList() : array;
 
     /**
-     * @param string $name
+     * @param string $indexName
      *
      * @return IndexMetaData|null
      */
-    public function getIndexByName(string $name);
+    public function getIndexByName(string $indexName): ?IndexMetaData;
 
     /**
      * @return ColumnMetaData[]

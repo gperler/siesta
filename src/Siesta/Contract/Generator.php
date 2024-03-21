@@ -10,8 +10,17 @@ use Siesta\Model\Entity;
 interface Generator
 {
 
-    public function addPlugin(Plugin $plugin);
+    /**
+     * @param Plugin $plugin
+     * @return void
+     */
+    public function addPlugin(Plugin $plugin): void;
 
-    public function generate(Entity $entity, string $baseDir);
+    /**
+     * @param Entity $entity
+     * @param string $baseDir
+     * @return void
+     */
+    public function generate(Entity $entity, string $baseDir): void;
 
 }

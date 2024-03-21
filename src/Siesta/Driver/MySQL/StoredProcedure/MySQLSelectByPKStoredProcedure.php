@@ -44,7 +44,7 @@ class MySQLSelectByPKStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return string|null
      */
-    public function getCreateProcedureStatement()
+    public function getCreateProcedureStatement(): ?string
     {
         if (!$this->entity->hasPrimaryKey()) {
             return null;

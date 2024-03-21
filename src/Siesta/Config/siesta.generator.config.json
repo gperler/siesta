@@ -1,7 +1,6 @@
 {
   "generatorList": [
     {
-
       "name": "Entity Generator",
       "className": "Siesta\\Generator\\EntityGenerator",
       "pluginList": [

@@ -103,7 +103,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
     /**
      * @return void
      */
-    protected function determineTableNames()
+    protected function determineTableNames(): void
     {
         $this->tableName = $this->quote($this->entity->getTableName());
         $this->delimitTable = $this->quote($this->entity->getDelimitTableName());
@@ -111,9 +111,9 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreateProcedureStatement()
+    public function getCreateProcedureStatement(): ?string
     {
         $config = ($this->deterministic) ? self::DETERMINISTIC : '';
         $config .= ($this->modifies) ? self::MODIFIES_DATA : self::READS_DATA;
@@ -126,9 +126,9 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDropProcedureStatement()
+    public function getDropProcedureStatement(): ?string
     {
         return "DROP PROCEDURE IF EXISTS " . $this->quote($this->name);
     }

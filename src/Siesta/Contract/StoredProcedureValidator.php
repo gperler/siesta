@@ -21,6 +21,6 @@ interface StoredProcedureValidator
      *
      * @return void
      */
-    public function validate(DataModel $dataModel, Entity $entity, StoredProcedure $storedProcedure, ValidationLogger $logger);
+    public function validate(DataModel $dataModel, Entity $entity, StoredProcedure $storedProcedure, ValidationLogger $logger): void;
 
 }

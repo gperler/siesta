@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Validator;
 
@@ -23,22 +23,22 @@ class DefaultValueObjectValidator implements ValueObjectValidator
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var ValueObject
      */
-    protected $valueObject;
+    protected ValueObject $valueObject;
 
     /**
      * @var ValidationLogger
      */
-    protected $logger;
+    protected ValidationLogger $logger;
 
     /**
      * @param DataModel $dataModel
@@ -46,7 +46,7 @@ class DefaultValueObjectValidator implements ValueObjectValidator
      * @param ValueObject $valueObject
      * @param ValidationLogger $logger
      */
-    public function validate(DataModel $dataModel, Entity $entity, ValueObject $valueObject, ValidationLogger $logger)
+    public function validate(DataModel $dataModel, Entity $entity, ValueObject $valueObject, ValidationLogger $logger): void
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
@@ -58,9 +58,9 @@ class DefaultValueObjectValidator implements ValueObjectValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getEntityName()
+    protected function getEntityName(): ?string
     {
         return $this->entity->getClassShortName();
     }
@@ -69,20 +69,23 @@ class DefaultValueObjectValidator implements ValueObjectValidator
      * @param string $text
      * @param int $code
      */
-    protected function error(string $text, int $code)
+    protected function error(string $text, int $code): void
     {
         $this->logger->error($text, $code);
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getClassName()
+    protected function getClassName(): ?string
     {
         return $this->valueObject->getClassName();
     }
 
-    protected function validateNotNull()
+    /**
+     * @return void
+     */
+    protected function validateNotNull(): void
     {
         $className = $this->getClassName();
         if ($className !== null) {
@@ -93,7 +96,10 @@ class DefaultValueObjectValidator implements ValueObjectValidator
         $this->error($error, self::ERROR_INVALID_NAME_CODE);
     }
 
-    protected function validateClassExists()
+    /**
+     * @return void
+     */
+    protected function validateClassExists(): void
     {
         $className = $this->getClassName();
 

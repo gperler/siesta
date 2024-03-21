@@ -97,6 +97,7 @@ class Attribute
     {
         $this->entity = $entity;
         $this->isForeignKey = false;
+        $this->isObject = false;
     }
 
     /**

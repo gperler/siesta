@@ -44,14 +44,14 @@ class AttributeSerialize implements ArraySerializable
         $this->y = $y;
     }
 
-    public function fromArray(array $data)
+    public function fromArray(array $data): void
     {
         $this->x = ArrayUtil::getFromArray($data, "x");
         $this->y = ArrayUtil::getFromArray($data, "y");
 
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             "x" => $this->x,

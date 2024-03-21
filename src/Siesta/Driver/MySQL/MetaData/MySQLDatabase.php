@@ -24,32 +24,32 @@ class MySQLDatabase implements DatabaseMetaData
     /**
      * @var Connection
      */
-    protected $connection;
+    protected Connection $connection;
 
     /**
      * @var MySQLTable[]
      */
-    protected $tableList;
+    protected array $tableList;
 
     /**
      * @var MySQLColumn[][]
      */
-    protected $columnList;
+    protected array $columnList;
 
     /**
      * @var MySQLColumnReader
      */
-    protected $columnReader;
+    protected MySQLColumnReader $columnReader;
 
     /**
      * @var MySQLConstraintReader;
      */
-    protected $referenceReader;
+    protected MySQLConstraintReader $referenceReader;
 
     /**
      * @var MySQLIndexReader;
      */
-    protected $indexReader;
+    protected MySQLIndexReader $indexReader;
 
 
     /**
@@ -72,7 +72,7 @@ class MySQLDatabase implements DatabaseMetaData
     /**
      *
      */
-    public function refresh()
+    public function refresh(): void
     {
         $this->tableList = [];
         $this->readMySQLTable();
@@ -85,7 +85,7 @@ class MySQLDatabase implements DatabaseMetaData
     /**
      *
      */
-    private function readColumnList()
+    private function readColumnList(): void
     {
         $this->columnReader = new MySQLColumnReader($this->connection, $this);
         foreach ($this->tableList as $tableName => $table) {
@@ -98,7 +98,7 @@ class MySQLDatabase implements DatabaseMetaData
     /**
      *
      */
-    private function readConstraintList()
+    private function readConstraintList(): void
     {
         $this->referenceReader = new MySQLConstraintReader($this->connection);
         foreach ($this->tableList as $tableName => $table) {
@@ -114,7 +114,7 @@ class MySQLDatabase implements DatabaseMetaData
      *
      * @return MySQLConstraint|null
      */
-    public function getConstraintByTableNameAndName(string $tableName, string $constraintName)
+    public function getConstraintByTableNameAndName(string $tableName, string $constraintName): ?MySQLConstraint
     {
         return $this->referenceReader->getConstraintByName($tableName, $constraintName);
     }
@@ -123,7 +123,7 @@ class MySQLDatabase implements DatabaseMetaData
     /**
      *
      */
-    private function readIndexList()
+    private function readIndexList(): void
     {
         $this->indexReader = new MySQLIndexReader($this->connection, $this);
         foreach ($this->tableList as $tableName => $table) {
@@ -147,16 +147,16 @@ class MySQLDatabase implements DatabaseMetaData
      *
      * @return TableMetaData|null
      */
-    public function getTableByName(string $tableName)
+    public function getTableByName(string $tableName): ?TableMetaData
     {
-        return isset($this->tableList[$tableName]) ? $this->tableList[$tableName] : null;
+        return $this->tableList[$tableName] ?? null;
     }
 
 
     /**
      *
      */
-    protected function readMySQLTable()
+    protected function readMySQLTable(): void
     {
         $tableDTOList = $this->getTableDTO();
 

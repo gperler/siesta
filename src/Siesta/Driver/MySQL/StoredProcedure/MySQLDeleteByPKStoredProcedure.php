@@ -45,7 +45,7 @@ class MySQLDeleteByPKStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return null|string
      */
-    public function getCreateProcedureStatement()
+    public function getCreateProcedureStatement(): ?string
     {
         if (!$this->entity->hasPrimaryKey()) {
             return null;

@@ -135,7 +135,7 @@ class StoredProcedurePlugin extends BasePlugin
      * @param Method $method
      * @param StoredProcedure $storedProcedure
      */
-    protected function addQuote(Method $method, StoredProcedure $storedProcedure)
+    protected function addQuote(Method $method, StoredProcedure $storedProcedure): void
     {
         $helper = new GeneratorHelper($method);
         $helper->addConnectionLookup();

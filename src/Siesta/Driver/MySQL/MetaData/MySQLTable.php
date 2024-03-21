@@ -102,9 +102,9 @@ class MySQLTable implements TableMetaData
      *
      * @return ColumnMetaData|null
      */
-    public function getColumnByName(string $name)
+    public function getColumnByName(string $name): ?ColumnMetaData
     {
-        return isset($this->columnList[$name]) ? $this->columnList[$name] : null;
+        return $this->columnList[$name] ?? null;
     }
 
 
@@ -131,9 +131,9 @@ class MySQLTable implements TableMetaData
      *
      * @return null|MySQLConstraint
      */
-    public function getConstraintByName(string $name)
+    public function getConstraintByName(string $name): ?ConstraintMetaData
     {
-        return isset($this->constraintList[$name]) ? $this->constraintList[$name] : null;
+        return $this->constraintList[$name] ?? null;
     }
 
 
@@ -160,7 +160,7 @@ class MySQLTable implements TableMetaData
      *
      * @return null|MySQLIndex
      */
-    public function getIndexByName(string $indexName)
+    public function getIndexByName(string $indexName): ?IndexMetaData
     {
         foreach ($this->indexList as $index) {
             if ($index->getName() === $indexName) {

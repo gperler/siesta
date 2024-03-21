@@ -32,13 +32,13 @@ class Config
     private static $instance;
 
     /**
-     * @param string $configFileName
+     * @param string|null $configFileName
      *
      * @return Config
      * @throws InvalidConfigurationException
      * @throws ConnectException
      */
-    public static function getInstance($configFileName = null)
+    public static function getInstance(string $configFileName = null): Config
     {
         if (self::$instance === null) {
             self::$instance = new Config($configFileName);
@@ -50,9 +50,8 @@ class Config
     /**
      * @param ConnectionData $connectionData
      * @return array
-     * @throws ReflectionException
      */
-    public static function buildConfiguration(ConnectionData $connectionData) : array
+    public static function buildConfiguration(ConnectionData $connectionData): array
     {
         $reverseConfig = new ReverseConfig();
         $generatorConfig = new MainGeneratorConfig();
@@ -68,7 +67,7 @@ class Config
     /**
      *
      */
-    public static function reset()
+    public static function reset(): void
     {
         self::$instance = null;
     }
@@ -76,49 +75,52 @@ class Config
     /**
      * @var array
      */
-    protected $jsonConfig;
+    protected array $jsonConfig;
 
     /**
      * @var string
      */
-    protected $configFilePath;
+    protected string $configFilePath;
 
     /**
-     * @var GenericGeneratorConfig
+     * @var MainGeneratorConfig|null
      */
-    protected $generatorConfig;
+    protected ?MainGeneratorConfig $mainGeneratorConfig;
 
     /**
-     * @var ReverseConfig
+     * @var ReverseConfig|null
      */
-    protected $reverseConfig;
+    protected ?ReverseConfig $reverseConfig;
 
     /**
-     * @param string $configFileName
+     * @param string|null $configFileName
      *
      * @throws InvalidConfigurationException
      * @throws ConnectException
      */
-    public function __construct($configFileName = null)
+    public function __construct(string $configFileName = null)
     {
+        $this->mainGeneratorConfig = null;
+        $this->reverseConfig = null;
         $this->findConfig($configFileName);
+
     }
 
     /**
      * @return string
      */
-    public function getConfigFileName()
+    public function getConfigFileName(): string
     {
         return $this->configFilePath;
     }
 
     /**
-     * @param string $configFileName
+     * @param string|null $configFileName
      *
      * @return void
      * @throws InvalidConfigurationException
      */
-    private function findConfig($configFileName = null)
+    private function findConfig(string $configFileName = null): void
     {
         $configFile = null;
 
@@ -150,7 +152,7 @@ class Config
      *
      * @return File
      */
-    private function findConfigFile($configFileName) : File
+    private function findConfigFile($configFileName): File
     {
         // try as absolute file
         $configFileAbsolute = new File($configFileName);
@@ -172,7 +174,7 @@ class Config
      * @throws InvalidConfigurationException
      * @throws ConnectException
      */
-    protected function configureConnections()
+    protected function configureConnections(): void
     {
         $connectionList = ArrayUtil::getFromArray($this->jsonConfig, self::CONFIG_CONNECTION);
         if ($connectionList === null) {
@@ -193,19 +195,19 @@ class Config
      * @return MainGeneratorConfig
      * @throws ReflectionException
      */
-    public function getMainGeneratorConfig()
+    public function getMainGeneratorConfig(): MainGeneratorConfig
     {
-        if ($this->generatorConfig === null) {
-            $this->generatorConfig = new MainGeneratorConfig(ArrayUtil::getFromArray($this->jsonConfig, self::CONFIG_GENERATOR));
+        if ($this->mainGeneratorConfig === null) {
+            $this->mainGeneratorConfig = new MainGeneratorConfig(ArrayUtil::getFromArray($this->jsonConfig, self::CONFIG_GENERATOR));
         }
-        return $this->generatorConfig;
+        return $this->mainGeneratorConfig;
     }
 
     /**
      * @return ReverseConfig
      * @throws ReflectionException
      */
-    public function getReverseConfig()
+    public function getReverseConfig(): ReverseConfig
     {
         if ($this->reverseConfig === null) {
             $this->reverseConfig = new ReverseConfig(ArrayUtil::getFromArray($this->jsonConfig, self::CONFIG_REVERSE));

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Validator;
 
@@ -38,22 +38,22 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var CollectionMany
      */
-    protected $collectionMany;
+    protected CollectionMany $collectionMany;
 
     /**
      * @var ValidationLogger
      */
-    protected $logger;
+    protected ValidationLogger $logger;
 
     /**
      * @param DataModel $dataModel
@@ -61,7 +61,7 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
      * @param CollectionMany $collectionMany
      * @param ValidationLogger $logger
      */
-    public function validate(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany, ValidationLogger $logger)
+    public function validate(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany, ValidationLogger $logger): void
     {
         $this->logger = $logger;
         $this->dataModel = $dataModel;
@@ -77,15 +77,15 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
     /**
      * @return string
      */
-    protected function getEntityName()
+    protected function getEntityName(): ?string
     {
         return $this->entity->getClassShortName();
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getCollectionManyName()
+    protected function getCollectionManyName(): ?string
     {
         return $this->collectionMany->getName();
     }
@@ -94,7 +94,7 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
      * @param string $text
      * @param int $code
      */
-    protected function error(string $text, int $code)
+    protected function error(string $text, int $code): void
     {
         $this->logger->error($text, $code);
     }
@@ -102,7 +102,7 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
     /**
      *
      */
-    protected function validateCollectionName()
+    protected function validateCollectionName(): void
     {
         $collectionName = $this->getCollectionManyName();
         if ($collectionName !== null) {
@@ -115,7 +115,7 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
     /**
      *
      */
-    protected function validateForeignEntity()
+    protected function validateForeignEntity(): void
     {
         $foreignEntity = $this->collectionMany->getForeignEntity();
         if ($foreignEntity !== null) {
@@ -128,7 +128,7 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
     /**
      *
      */
-    protected function validateMappingEntity()
+    protected function validateMappingEntity(): void
     {
         $mappingEntity = $this->collectionMany->getMappingEntity();
         if ($mappingEntity !== null) {
@@ -142,7 +142,7 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
     /**
      *
      */
-    protected function validateReferences()
+    protected function validateReferences(): void
     {
         $foreignReference = $this->collectionMany->getForeignReference();
         if ($foreignReference === null) {

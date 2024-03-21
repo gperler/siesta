@@ -25,7 +25,7 @@ class TestConnection implements Connection
         $this->fixtureFile = $file;
     }
 
-    public function useDatabase(string $name)
+    public function useDatabase(string $name): void
     {
         // TODO: Implement useDatabase() method.
     }

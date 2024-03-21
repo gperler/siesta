@@ -36,16 +36,16 @@ class StoredProcedureNaming
     const COPY_TO_MEMORY_SUFFIX = "_copy";
 
     /**
-     * @var StoredProcedureNaming
+     * @var StoredProcedureNaming|null
      */
-    private static $instance;
+    private static ?StoredProcedureNaming $instance = null;
 
     /**
      * @return StoredProcedureNaming
      */
     public static function getInstance(): StoredProcedureNaming
     {
-        if (!self::$instance) {
+        if (self::$instance === null) {
             self::$instance = new StoredProcedureNaming();
         }
         return self::$instance;
@@ -127,7 +127,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getSelectByDynamicCollectionName(Entity $entity)
+    public static function getSelectByDynamicCollectionName(Entity $entity): string
     {
         $spName = $entity->getTableName() . self::FIND_BY_DYNAMIC_COLLECTION;
         return self::getInstance()->getUniqueName($spName);
@@ -138,7 +138,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getDeleteByDynamicCollectionName(Entity $entity)
+    public static function getDeleteByDynamicCollectionName(Entity $entity): string
     {
         $spName = $entity->getTableName() . self::DELETE_BY_DYNAMIC_COLLECTION;
         return self::getInstance()->getUniqueName($spName);
@@ -215,7 +215,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public static function getCollectorFilterName($tableName, $referenceName, $filerName)
+    public static function getCollectorFilterName($tableName, $referenceName, $filerName): string
     {
         return self::getInstance()->getUniqueName($tableName . self::FIND_BY_COLLECTOR . $referenceName . $filerName);
     }
@@ -223,7 +223,7 @@ class StoredProcedureNaming
     /**
      * @var NameMapping[]
      */
-    protected $mappingList;
+    protected array $mappingList;
 
     /**
      *
@@ -238,7 +238,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public function getUniqueName($original)
+    public function getUniqueName($original): string
     {
         // check if the name is already available
         $mappedName = $this->getMappedName($original);
@@ -262,7 +262,7 @@ class StoredProcedureNaming
      *
      * @return null|string
      */
-    private function getMappedName($original)
+    private function getMappedName($original): ?string
     {
         foreach ($this->mappingList as $mapping) {
             if ($mapping->originalName === $original) {
@@ -277,7 +277,7 @@ class StoredProcedureNaming
      *
      * @return bool
      */
-    private function isUnique($original)
+    private function isUnique($original): bool
     {
         foreach ($this->mappingList as $mapping) {
             if ($mapping->shortenedName === $original) {
@@ -292,7 +292,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    private function createUniqueShortName($original)
+    private function createUniqueShortName($original): string
     {
         $newName = substr($original, 0, 48);
         if ($this->isUnique($newName)) {
@@ -318,7 +318,7 @@ class StoredProcedureNaming
      *
      * @return bool
      */
-    private function isShortEnough($original)
+    private function isShortEnough($original): bool
     {
         return strlen($original) < 50;
     }
@@ -327,7 +327,7 @@ class StoredProcedureNaming
      * @param $original
      * @param $shortenedName
      */
-    private function addName($original, $shortenedName)
+    private function addName($original, $shortenedName): void
     {
         $this->mappingList[] = new NameMapping($original, $shortenedName);
     }
@@ -340,12 +340,12 @@ class NameMapping
     /**
      * @var string
      */
-    public $originalName;
+    public string $originalName;
 
     /**
      * @var string
      */
-    public $shortenedName;
+    public string $shortenedName;
 
     /**
      * @param string $original

@@ -18,17 +18,17 @@ class MySQLIndexPart implements IndexPartMetaData
     /**
      * @var string
      */
-    protected $columnName;
+    protected string $columnName;
 
     /**
-     * @var int
+     * @var int|null
      */
-    protected $length;
+    protected ?int $length;
 
     /**
      * @param ResultSet $resultSet
      */
-    public function fromResultSet(ResultSet $resultSet)
+    public function fromResultSet(ResultSet $resultSet): void
     {
         $this->columnName = $resultSet->getStringValue(self::COLUMN_NAME);
         $this->length = $resultSet->getIntegerValue(self::SUB_PART);
@@ -53,7 +53,7 @@ class MySQLIndexPart implements IndexPartMetaData
     /**
      * @return int|null
      */
-    public function getLength()
+    public function getLength(): ?int
     {
         return $this->length;
     }

@@ -32,13 +32,18 @@ class GenericConfigLoader
     /**
      * @var null|File
      */
-    protected $configFile;
+    protected ?File $configFile;
 
+    /**
+     *
+     */
     public function __construct()
     {
+        $this->configFile = null;
     }
 
-    public function setConfigFileName(string $filename = null) {
+    public function setConfigFileName(string $filename = null): void
+    {
         if ($filename === null) {
             return;
         }
@@ -46,9 +51,9 @@ class GenericConfigLoader
     }
 
     /**
-     * @param File $file
+     * @param File|null $file
      */
-    public function setConfigFile(File $file = null)
+    public function setConfigFile(File $file = null): void
     {
         $this->configFile = $file;
     }
@@ -56,7 +61,7 @@ class GenericConfigLoader
     /**
      * @return File
      */
-    protected function getConfigFile() : File
+    protected function getConfigFile(): File
     {
         if ($this->configFile === null) {
             $this->configFile = new File(__DIR__ . "/siesta.generator.config.json");
@@ -70,7 +75,7 @@ class GenericConfigLoader
      * @return GenericGeneratorConfig[]
      * @throws ReflectionException
      */
-    public function loadAndValidate(ValidationLogger $logger)
+    public function loadAndValidate(ValidationLogger $logger): array
     {
         $genericGeneratorConfigList = $this->getGenericGeneratorConfigList($logger, $this->getConfigFile());
 
@@ -95,7 +100,7 @@ class GenericConfigLoader
      *
      * @return null|string[]
      */
-    protected function getGenericGeneratorConfigList(ValidationLogger $logger, File $file)
+    protected function getGenericGeneratorConfigList(ValidationLogger $logger, File $file): ?array
     {
         if (!$file->exists()) {
             $error = sprintf(self::ERROR_CONFIG_DOES_NOT_EXIST, $file->getAbsoluteFileName());
@@ -128,7 +133,7 @@ class GenericConfigLoader
      * @return GenericGeneratorConfig[]
      * @throws ReflectionException
      */
-    protected function initializeGenericGeneratorConfig(ValidationLogger $logger, array $genericGeneratorConfigList) : array
+    protected function initializeGenericGeneratorConfig(ValidationLogger $logger, array $genericGeneratorConfigList): array
     {
         $genericGeneratorConfig = [];
         foreach ($genericGeneratorConfigList as $genericGeneratorConfigValues) {

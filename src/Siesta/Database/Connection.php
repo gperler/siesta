@@ -14,7 +14,7 @@ interface Connection
     /**
      * @param string $name
      */
-    public function useDatabase(string $name);
+    public function useDatabase(string $name): void;
 
     /**
      * returns the current database
