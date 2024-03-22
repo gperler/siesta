@@ -17,17 +17,17 @@ class MySQLStoredProcedure implements StoredProcedureDefinition
     /**
      * @var string
      */
-    private $procedureName;
+    private string $procedureName;
 
     /**
      * @var string
      */
-    private $createProcedureStatement;
+    private string $createProcedureStatement;
 
     /**
      * @var string
      */
-    private $dropProcedureStatement;
+    private string $dropProcedureStatement;
 
 
     /**

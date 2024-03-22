@@ -1,13 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
 use Nitria\ClassGenerator;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
-use Siesta\Model\ServiceClass;
 
 /**
  * @author Gregor Müller
@@ -18,16 +17,11 @@ class SingletonPlugin extends BasePlugin
     const METHOD_SINGLETON = "getInstance";
 
     /**
-     * @var ServiceClass
-     */
-    protected $serviceClass;
-
-    /**
      * @param Entity $entity
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         $useList = [];
         $serviceClass = $entity->getServiceClass();
@@ -46,7 +40,7 @@ class SingletonPlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 
@@ -56,7 +50,7 @@ class SingletonPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateSingleton()
+    protected function generateSingleton(): void
     {
 
         $className = $this->entity->getServiceClassInstantiationClassName();

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use Siesta\Database\MigrationStatementFactory;
@@ -16,7 +17,7 @@ class MySQLCustomStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @var StoredProcedure
      */
-    protected $storedProcedure;
+    protected StoredProcedure $storedProcedure;
 
     /**
      * MySQLCustomStoredProcedure constructor.
@@ -38,7 +39,7 @@ class MySQLCustomStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
 
         $this->modifies = $this->storedProcedure->getModifies();
@@ -55,7 +56,7 @@ class MySQLCustomStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildSignature()
+    protected function buildSignature(): void
     {
 
         $parameterList = [];
@@ -68,7 +69,7 @@ class MySQLCustomStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $sql = $this->storedProcedure->getStatement();
 
@@ -84,7 +85,7 @@ class MySQLCustomStoredProcedure extends MySQLStoredProcedureBase
      *
      * @return void
      */
-    protected function buildStatementForReplication($sql)
+    protected function buildStatementForReplication(string $sql): void
     {
         // in case of modifying procedures execute on both tables
         if ($this->modifies) {

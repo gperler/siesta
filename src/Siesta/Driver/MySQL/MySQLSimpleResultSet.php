@@ -58,7 +58,7 @@ class MySQLSimpleResultSet implements ResultSet
     /**
      * @param string $key
      *
-     * @return bool
+     * @return bool|null
      */
     public function getBooleanValue(string $key): ?bool
     {

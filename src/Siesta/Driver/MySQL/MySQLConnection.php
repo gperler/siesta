@@ -29,14 +29,14 @@ class MySQLConnection implements Connection
     const NAME = "mysql";
 
     /**
-     * @var mysqli
+     * @var mysqli|null
      */
-    private $connection;
+    private ?mysqli $connection;
 
     /**
      * @var string
      */
-    private $database;
+    private string $database;
 
 
     /**
@@ -311,7 +311,7 @@ class MySQLConnection implements Connection
      */
     public function close(): void
     {
-        if ($this->connection) {
+        if ($this->connection !== null) {
             $this->connection->close();
             $this->connection = null;
         }

@@ -29,7 +29,7 @@ class MySQLDeleteByPKStoredProcedure extends MySQLStoredProcedureBase
     /**
      *
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
         $this->modifies = true;
 
@@ -56,7 +56,7 @@ class MySQLDeleteByPKStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildSignature()
+    protected function buildSignature(): void
     {
         $parameterList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $attribute) {
@@ -68,7 +68,7 @@ class MySQLDeleteByPKStoredProcedure extends MySQLStoredProcedureBase
     /**
      *
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $this->statement = $this->buildDeleteSQL($this->tableName);
 
@@ -87,7 +87,7 @@ class MySQLDeleteByPKStoredProcedure extends MySQLStoredProcedureBase
      *
      * @return string
      */
-    protected function buildDeleteSQL($tableName)
+    protected function buildDeleteSQL(string $tableName): string
     {
 
         $whereList = [];
@@ -103,7 +103,7 @@ class MySQLDeleteByPKStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return string
      */
-    protected function buildDelimitDeleteSQL()
+    protected function buildDelimitDeleteSQL(): string
     {
         $whereList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $attribute) {

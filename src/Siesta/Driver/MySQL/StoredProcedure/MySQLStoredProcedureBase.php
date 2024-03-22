@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use Siesta\Database\StoredProcedureDefinition;
@@ -34,57 +35,57 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var string
      */
-    protected $signature;
+    protected string $signature;
 
     /**
      * @var bool
      */
-    protected $modifies;
+    protected bool $modifies;
 
     /**
      * @var bool
      */
-    protected $deterministic;
+    protected bool $deterministic;
 
     /**
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @var string
      */
-    protected $statement;
+    protected string $statement;
 
     /**
      * @var string
      */
-    protected $tableName;
+    protected string $tableName;
 
     /**
      * @var string
      */
-    protected $delimitTable;
+    protected string $delimitTable;
 
     /**
      * @var string
      */
-    protected $replicationTableName;
+    protected string $replicationTableName;
 
     /**
      * @var bool
      */
-    protected $isReplication;
+    protected bool $isReplication;
 
     /**
      * MySQLStoredProcedureBase constructor.
@@ -136,7 +137,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
     /**
      * @return string
      */
-    public function getProcedureName() : string
+    public function getProcedureName(): string
     {
         return $this->name;
     }
@@ -146,7 +147,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
      *
      * @return string
      */
-    protected function buildSignatureForAttributeList(array $attributeList) : string
+    protected function buildSignatureForAttributeList(array $attributeList): string
     {
         $parameterPart = [];
         foreach ($attributeList as $attribute) {
@@ -160,7 +161,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
      *
      * @return string
      */
-    protected function buildSignatureParameterForAttribute(Attribute $attribute) : string
+    protected function buildSignatureParameterForAttribute(Attribute $attribute): string
     {
         return $this->buildSignatureParameter($attribute->getStoredProcedureParameterName(), $attribute->getDbType());
     }
@@ -171,7 +172,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
      *
      * @return string
      */
-    protected function buildSignatureParameter(string $spName, string $dbType)
+    protected function buildSignatureParameter(string $spName, string $dbType): string
     {
         return sprintf(self::SP_PARAMETER, $spName, $dbType);
     }
@@ -181,7 +182,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
      *
      * @return string
      */
-    protected function buildSignatureFromList(array $parameterList) : string
+    protected function buildSignatureFromList(array $parameterList): string
     {
         return "(" . implode(", ", $parameterList) . ")";
     }
@@ -191,7 +192,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
      *
      * @return string
      */
-    public function buildWhereAndSnippet(array $whereList) : string
+    public function buildWhereAndSnippet(array $whereList): string
     {
         return implode(" AND ", $whereList);
     }
@@ -201,7 +202,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
      *
      * @return string
      */
-    public function buildWherePart(Attribute $attribute)
+    public function buildWherePart(Attribute $attribute): string
     {
         $name = $this->quote($attribute->getDBName());
         return sprintf(self::WHERE, $name, $attribute->getStoredProcedureParameterName());
@@ -212,7 +213,7 @@ abstract class MySQLStoredProcedureBase implements StoredProcedureDefinition
      *
      * @return string
      */
-    protected function quote($name)
+    protected function quote($name): string
     {
         return MySQLDriver::quote($name);
     }

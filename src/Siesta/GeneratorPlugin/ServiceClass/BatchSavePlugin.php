@@ -39,7 +39,7 @@ class BatchSavePlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
         $this->generateBatchSave();
@@ -48,7 +48,7 @@ class BatchSavePlugin extends BasePlugin
     /**
      *
      */
-    protected function generateBatchSave()
+    protected function generateBatchSave(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_BATCH_SAVE);
         $helper = new GeneratorHelper($method);

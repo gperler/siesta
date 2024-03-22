@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -8,6 +8,8 @@ use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Attribute;
 use Siesta\Model\Entity;
 use Siesta\Model\PHPType;
+use Siesta\Sequencer\SequencerFactory;
+use Siesta\Util\StringUtil;
 
 /**
  * @author Gregor Müller
@@ -19,15 +21,15 @@ class AttributeGetterSetterPlugin extends BasePlugin
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         $useList = [];
         foreach ($entity->getAttributeList() as $attribute) {
             if ($attribute->getPhpType() === PHPType::STRING) {
-                $useList[] = 'Siesta\Util\StringUtil';
+                $useList[] = StringUtil::class;
             }
             if ($attribute->getAutoValue() !== null) {
-                $useList[] = 'Siesta\Sequencer\SequencerFactory';
+                $useList[] = SequencerFactory::class;
             }
         }
         return $useList;
@@ -36,11 +38,11 @@ class AttributeGetterSetterPlugin extends BasePlugin
     /**
      * @return string[]
      */
-    public function getDependantPluginList() : array
+    public function getDependantPluginList(): array
     {
         return [
-            'Siesta\GeneratorPlugin\Entity\MemberPlugin',
-            'Siesta\GeneratorPlugin\Entity\ConstantPlugin'
+            MemberPlugin::class,
+            ConstantPlugin::class,
         ];
     }
 
@@ -48,7 +50,7 @@ class AttributeGetterSetterPlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 

@@ -14,7 +14,7 @@ class StringUtil
      *
      * @return bool
      */
-    public static function startsWith($haystack, $needle)
+    public static function startsWith(string $haystack, string $needle): bool
     {
         return !strncmp($haystack, $needle, strlen($needle));
     }
@@ -25,7 +25,7 @@ class StringUtil
      *
      * @return bool
      */
-    public static function endsWith($haystack, $needle)
+    public static function endsWith($haystack, $needle): bool
     {
         return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
     }

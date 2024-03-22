@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -12,7 +12,12 @@ use Siesta\Model\PHPType;
 class ToXMLPlugin extends BasePlugin
 {
 
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    /**
+     * @param Entity $entity
+     * @param ClassGenerator $classGenerator
+     * @return void
+     */
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 

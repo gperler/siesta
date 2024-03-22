@@ -56,12 +56,12 @@ class MySQLTableCreator
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var bool
+     * @var bool|null
      */
-    protected $replication;
+    protected ?bool $replication;
 
     /**
      * @param Entity $entity
@@ -75,7 +75,7 @@ class MySQLTableCreator
      * @return string[]
      */
 
-    public function buildCreateTable()
+    public function buildCreateTable(): array
     {
         $tableName = $this->entity->getTableName();
         $result = [
@@ -95,7 +95,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    public function buildCreateTableForTable($tableName, $replication)
+    public function buildCreateTableForTable($tableName, $replication): string
     {
 
         $sql = self::CREATE_TABLE_SNIPPET . $this->quote($tableName);
@@ -120,7 +120,7 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    public function buildCreateDelimitTable()
+    public function buildCreateDelimitTable(): string
     {
 
         $delimiterAttributes = DelimitAttributeList::getDelimitAttributes($this->entity);
@@ -205,7 +205,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildPrimaryKeyForDelimiter(array $delimiterAttributes)
+    private function buildPrimaryKeyForDelimiter(array $delimiterAttributes): string
     {
 
         $sqlColumnList = [];
@@ -237,7 +237,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildIndex(Index $index)
+    private function buildIndex(Index $index): string
     {
         // check if unique index or index
         $sql = $index->getIsUnique() ? " UNIQUE INDEX " : " INDEX ";
@@ -268,7 +268,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildIndexPart(IndexPart $indexPart)
+    private function buildIndexPart(IndexPart $indexPart): string
     {
         $sql = $this->quote($indexPart->getColumnName());
 
@@ -331,7 +331,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildEngineDefinition($replication = false)
+    private function buildEngineDefinition($replication = false): string
     {
         if ($replication) {
             return self::ENGINE_SNIPPET . "MEMORY";
@@ -347,7 +347,7 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    private function buildCollateDefinition()
+    private function buildCollateDefinition(): string
     {
         $collate = $this->getDatabaseSpecific(self::MYSQL_COLLATE_ATTRIBUTE);
         if ($collate !== null) {
@@ -371,9 +371,9 @@ class MySQLTableCreator
     /**
      * @param string $key
      *
-     * @return string
+     * @return string|null
      */
-    private function getDatabaseSpecific(string $key)
+    private function getDatabaseSpecific(string $key): ?string
     {
         $dbSpecific = $this->entity->getDatabaseSpecificAttributeList(MySQLDriver::MYSQL_DRIVER_NAME);
         return ArrayUtil::getFromArray($dbSpecific, $key);
@@ -384,7 +384,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function quote($name)
+    private function quote($name): string
     {
         return MySQLDriver::quote($name);
     }

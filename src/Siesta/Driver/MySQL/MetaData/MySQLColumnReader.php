@@ -16,17 +16,17 @@ class MySQLColumnReader
     /**
      * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * @var MySQLDatabase
      */
-    private $mySQLDatabase;
+    private MySQLDatabase $mySQLDatabase;
 
     /**
      * @var MySQLColumn[][]
      */
-    private $columnList;
+    private array $columnList;
 
 
     /**
@@ -61,7 +61,7 @@ class MySQLColumnReader
     /**
      *
      */
-    private function readColumnList()
+    private function readColumnList(): void
     {
         $sql = sprintf(self::SQL_GET_COLUMN_DETAILS, $this->connection->getDatabase());
 
@@ -86,7 +86,7 @@ class MySQLColumnReader
      * @param string $tableName
      * @param MySQLColumn $column
      */
-    private function addColumn(string $tableName, MySQLColumn $column)
+    private function addColumn(string $tableName, MySQLColumn $column): void
     {
         if (!isset($this->columnList[$tableName])) {
             $this->columnList[$tableName] = [];

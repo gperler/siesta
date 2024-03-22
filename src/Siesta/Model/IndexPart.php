@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -12,32 +12,32 @@ class IndexPart
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $columnName;
+    protected ?string $columnName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $sortOrder;
+    protected ?string $sortOrder;
 
     /**
-     * @var int
+     * @var int|null
      */
-    protected $length;
+    protected ?int $length;
 
     /**
-     * @var Attribute
+     * @var Attribute|null
      */
-    protected $attribute;
+    protected ?Attribute $attribute;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $attributeName;
+    protected ?string $attributeName;
 
     /**
      * IndexPart constructor.
@@ -47,9 +47,14 @@ class IndexPart
     public function __construct(Entity $entity)
     {
         $this->entity = $entity;
+        $this->columnName = null;
+        $this->sortOrder = null;
+        $this->length = null;
+        $this->attribute = null;
+        $this->attributeName = null;
     }
 
-    public function update()
+    public function update(): void
     {
         $this->attribute = $this->entity->getAttributeByName($this->getAttributeName());
     }
@@ -62,23 +67,23 @@ class IndexPart
     /**
      * @return Attribute|null
      */
-    public function getAttribute()
+    public function getAttribute(): ?Attribute
     {
         return $this->attribute;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAttributeName()
+    public function getAttributeName(): ?string
     {
         return $this->attributeName;
     }
 
     /**
-     * @param string $attributeName
+     * @param string|null $attributeName
      */
-    public function setAttributeName(string $attributeName = null)
+    public function setAttributeName(string $attributeName = null): void
     {
         $this->attributeName = $attributeName;
     }
@@ -86,47 +91,47 @@ class IndexPart
     /**
      * @return string
      */
-    public function getColumnName()
+    public function getColumnName(): string
     {
         return $this->attribute->getDBName();
     }
 
     /**
-     * @param string $columnName
+     * @param string|null $columnName
      */
-    public function setColumnName($columnName)
+    public function setColumnName(?string $columnName): void
     {
         $this->columnName = $columnName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSortOrder()
+    public function getSortOrder(): ?string
     {
         return $this->sortOrder;
     }
 
     /**
-     * @param string $sortOrder
+     * @param string|null $sortOrder
      */
-    public function setSortOrder(string $sortOrder = null)
+    public function setSortOrder(string $sortOrder = null): void
     {
         $this->sortOrder = $sortOrder;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getLength()
+    public function getLength(): ?int
     {
         return $this->length;
     }
 
     /**
-     * @param int $length
+     * @param int|null $length
      */
-    public function setLength(int $length = null)
+    public function setLength(int $length = null): void
     {
         $this->length = $length;
     }

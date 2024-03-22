@@ -19,7 +19,7 @@ class MySQLDriver implements Driver
     const DRIVER_CLASS = 'Siesta\Driver\MySQL\MySQLDriver';
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return string
      */

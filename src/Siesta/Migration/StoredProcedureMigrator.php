@@ -17,34 +17,34 @@ class StoredProcedureMigrator
     /**
      * @var StoredProcedureFactory
      */
-    private $factory;
+    private StoredProcedureFactory $factory;
 
 
     /**
      * @var StoredProcedureDefinition[]
      */
-    private $activeStoredProcedureList;
+    private array $activeStoredProcedureList;
 
     /**
      * @var StoredProcedureDefinition[]
      */
-    private $neededProcedureList;
+    private array $neededProcedureList;
 
     /**
      * @var string[]
      */
-    private $statementList;
+    private array $statementList;
 
 
     /**
      * @var DataModel
      */
-    private $dataModel;
+    private DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    private $entity;
+    private Entity $entity;
 
     /**
      * StoredProcedureMigrator constructor.
@@ -57,6 +57,8 @@ class StoredProcedureMigrator
         $this->factory = $factory;
         $this->activeStoredProcedureList = $activeStoredProcedureList;
         $this->neededProcedureList = [$sequencerStoredProcedure];
+        $this->statementList = [];
+
     }
 
     /**
@@ -64,7 +66,7 @@ class StoredProcedureMigrator
      * @param Entity $entity
      *
      */
-    public function createProcedureStatementList(DataModel $dataModel, Entity $entity)
+    public function createProcedureStatementList(DataModel $dataModel, Entity $entity): void
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
@@ -79,7 +81,7 @@ class StoredProcedureMigrator
     /**
      *
      */
-    protected function addSimpleStoredProcedureStatementList()
+    protected function addSimpleStoredProcedureStatementList(): void
     {
         $selectDefinition = $this->factory->createSelectByPKStoredProcedure($this->dataModel, $this->entity);
         $this->addNeededProcedure($selectDefinition);
@@ -102,7 +104,7 @@ class StoredProcedureMigrator
     /**
      *
      */
-    protected function addCustomStoredProcedureStatementList()
+    protected function addCustomStoredProcedureStatementList(): void
     {
         foreach ($this->entity->getStoredProcedureList() as $storedProcedure) {
             $procedureDefinition = $this->factory->createCustomStoredProcedure($this->dataModel, $this->entity, $storedProcedure);
@@ -113,7 +115,7 @@ class StoredProcedureMigrator
     /**
      *
      */
-    protected function addCollectionStoredProcedureList()
+    protected function addCollectionStoredProcedureList(): void
     {
         foreach ($this->entity->getReferenceList() as $reference) {
             if (!$reference->doesCollectionRefersTo()) {
@@ -130,7 +132,7 @@ class StoredProcedureMigrator
     /**
      *
      */
-    protected function addCollectionManyStoredProcedureList()
+    protected function addCollectionManyStoredProcedureList(): void
     {
         foreach ($this->entity->getCollectionManyList() as $collectionMany) {
             $procedureDefinition = $this->factory->createSelectByCollectionManyStoredProcedure($this->dataModel, $this->entity, $collectionMany);
@@ -144,7 +146,10 @@ class StoredProcedureMigrator
         }
     }
 
-    protected function addDynamicCollectionStoreProcedureList()
+    /**
+     * @return void
+     */
+    protected function addDynamicCollectionStoreProcedureList(): void
     {
         if (!$this->entity->getIsDynamicCollectionTarget()) {
             return;
@@ -159,7 +164,7 @@ class StoredProcedureMigrator
     /**
      * @param StoredProcedureDefinition $definition
      */
-    protected function addNeededProcedure(StoredProcedureDefinition $definition)
+    protected function addNeededProcedure(StoredProcedureDefinition $definition): void
     {
         $this->neededProcedureList[] = $definition;
     }
@@ -206,7 +211,7 @@ class StoredProcedureMigrator
      * @param StoredProcedureDefinition $needed
      * @return bool
      */
-    private function areStoredProceduresIdentical(StoredProcedureDefinition $active, StoredProcedureDefinition $needed)
+    private function areStoredProceduresIdentical(StoredProcedureDefinition $active, StoredProcedureDefinition $needed): bool
     {
         return $active->getCreateProcedureStatement() === $needed->getCreateProcedureStatement();
     }
@@ -215,7 +220,7 @@ class StoredProcedureMigrator
     /**
      * @param string|null $statement
      */
-    private function addStatement(string $statement = null)
+    private function addStatement(string $statement = null): void
     {
         if ($statement === null) {
             return;
@@ -228,7 +233,7 @@ class StoredProcedureMigrator
      * @param string $procedureName
      * @return StoredProcedureDefinition
      */
-    private function getActiveStoredProcedureByName(string $procedureName)
+    private function getActiveStoredProcedureByName(string $procedureName): ?StoredProcedureDefinition
     {
         foreach ($this->activeStoredProcedureList as $activeStoredProcedure) {
             if ($activeStoredProcedure->getProcedureName() === $procedureName) {

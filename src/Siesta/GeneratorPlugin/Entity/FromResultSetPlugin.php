@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -36,10 +36,10 @@ class FromResultSetPlugin extends BasePlugin
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         return [
-            'Civis\Common\ArrayUtil'
+            ArrayUtil::class,
         ];
     }
 
@@ -48,7 +48,7 @@ class FromResultSetPlugin extends BasePlugin
      * @param ClassGenerator $classGenerator
      * @throws ReflectionException
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
         $this->addProperty();
@@ -59,7 +59,7 @@ class FromResultSetPlugin extends BasePlugin
     /**
      *
      */
-    protected function addProperty()
+    protected function addProperty(): void
     {
         $this->classGenerator->addProtectedProperty("_rawSQLResult", "array", 'null');
     }
@@ -67,7 +67,7 @@ class FromResultSetPlugin extends BasePlugin
     /**
      * @throws ReflectionException
      */
-    protected function generateFromResultSetMethod()
+    protected function generateFromResultSetMethod(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_FROM_RESULT_SET);
         $method->addParameter('Siesta\Database\ResultSet', 'resultSet');
@@ -83,8 +83,8 @@ class FromResultSetPlugin extends BasePlugin
 
                 $type = $attribute->getPhpType();
 
-                $method->addCodeLine('$' .$attribute->getPhpName() . 'Array = $resultSet->getArray("' . $attribute->getDBName() . '");' );
-                $method->addIfStart('$' .$attribute->getPhpName() . "Array !== null");
+                $method->addCodeLine('$' . $attribute->getPhpName() . 'Array = $resultSet->getArray("' . $attribute->getDBName() . '");');
+                $method->addIfStart('$' . $attribute->getPhpName() . "Array !== null");
                 $method->addCodeLine('$this->' . $attribute->getPhpName() . '= new ' . $type . '();');
                 $method->addCodeLine('$this->' . $attribute->getPhpName() . '->fromArray($' . $attribute->getPhpName() . 'Array );');
 
@@ -103,7 +103,7 @@ class FromResultSetPlugin extends BasePlugin
      * @return string
      * @throws ReflectionException
      */
-    protected function getAssignment(Attribute $attribute) : string
+    protected function getAssignment(Attribute $attribute): string
     {
         $method = ArrayUtil::getFromArray(self::RESULT_SET_ACCESS_MAPPING, $attribute->getPhpType());
         if ($method === null && $attribute->implementsArraySerializable()) {
@@ -116,7 +116,7 @@ class FromResultSetPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateGetAdditionalColumn()
+    protected function generateGetAdditionalColumn(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_GET_ADDITIONAL_COLUMN);
         $method->addParameter(PHPType::STRING, 'key');

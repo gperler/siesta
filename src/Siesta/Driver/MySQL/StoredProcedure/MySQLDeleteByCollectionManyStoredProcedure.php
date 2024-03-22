@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use Siesta\Database\StoredProcedureNaming;
@@ -17,32 +18,27 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      * @var CollectionMany
      */
-    protected $collectionMany;
+    protected CollectionMany $collectionMany;
 
     /**
-     * @var Entity
+     * @var Entity|null
      */
-    protected $foreignEntity;
+    protected ?Entity $foreignEntity;
+
+    /**
+     * @var Reference|null
+     */
+    protected ?Reference $foreignReference;
+
+    /**
+     * @var Entity|null
+     */
+    protected ?Entity $mappingEntity;
 
     /**
      * @var Reference
      */
-    protected $foreignReference;
-
-    /**
-     * @var Entity
-     */
-    protected $mappingEntity;
-
-    /**
-     * @var Reference
-     */
-    protected $mappingReference;
-
-    /**
-     *
-     */
-    protected $reference;
+    protected Reference $mappingReference;
 
     public function __construct(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany)
     {
@@ -58,7 +54,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      *
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
 
         $this->modifies = false;
@@ -75,7 +71,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      * @return void
      */
-    protected function buildSignature()
+    protected function buildSignature(): void
     {
         $signaturePart = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
@@ -94,7 +90,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      *
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $foreignTable = $this->quote($this->foreignEntity->getTableName());
         $mappingTable = $this->quote($this->mappingEntity->getTableName());
@@ -107,7 +103,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      *
      */
-    protected function getJoinCondition() : string
+    protected function getJoinCondition(): string
     {
         $foreignTable = $this->foreignEntity->getTableName();
         $mappingTable = $this->mappingEntity->getTableName();
@@ -124,7 +120,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      * @return string
      */
-    protected function getWhereCondition() : string
+    protected function getWhereCondition(): string
     {
         $mappingTable = $this->mappingEntity->getTableName();
 
@@ -149,7 +145,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
      *
      * @return string
      */
-    protected function getCorrespondingColumnForPKAttribute(Reference $reference, Attribute $pkAttribute) : string
+    protected function getCorrespondingColumnForPKAttribute(Reference $reference, Attribute $pkAttribute): string
     {
         foreach ($reference->getReferenceMappingList() as $referenceMapping) {
             if ($referenceMapping->getForeignAttributeName() === $pkAttribute->getDBName()) {
@@ -165,7 +161,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
      *
      * @return string
      */
-    protected function buildTableColumn(string $tableName, string $columnName) : string
+    protected function buildTableColumn(string $tableName, string $columnName): string
     {
         return $this->quote($tableName) . '.' . $this->quote($columnName);
     }
@@ -178,7 +174,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
      *
      * @return string
      */
-    protected function buildComparision(string $table1, string $column1, string $table2, string $column2) : string
+    protected function buildComparision(string $table1, string $column1, string $table2, string $column2): string
     {
         return $this->buildTableColumn($table1, $column1) . ' = ' . $this->buildTableColumn($table2, $column2);
     }
@@ -190,7 +186,7 @@ class MySQLDeleteByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
      *
      * @return string
      */
-    protected function buildParameterName(string $prefix, Entity $entity, Attribute $attribute)
+    protected function buildParameterName(string $prefix, Entity $entity, Attribute $attribute): string
     {
         return 'P_' . $prefix . '_' . $entity->getTableName() . '_' . $attribute->getDBName();
     }

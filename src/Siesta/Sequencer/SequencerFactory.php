@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Sequencer;
 
@@ -14,15 +14,14 @@ class SequencerFactory
     /**
      * @var SequencerFactory
      */
-    private static $instance;
+    private static ?SequencerFactory $instance = null;
 
     /**
      * @return SequencerFactory
      */
-    public static function getInstance()
+    public static function getInstance(): SequencerFactory
     {
         if (self::$instance === null) {
-
             self::$instance = new SequencerFactory();
         }
         return self::$instance;
@@ -35,7 +34,7 @@ class SequencerFactory
      *
      * @return mixed
      */
-    public static function nextSequence(string $sequencerName, string $tableName, string $connectionName = null)
+    public static function nextSequence(string $sequencerName, string $tableName, string $connectionName = null): mixed
     {
         return self::getInstance()->getNextSequence($sequencerName, $tableName, $connectionName);
     }
@@ -44,7 +43,7 @@ class SequencerFactory
      * @param string $name
      * @param Sequencer $sequencer
      */
-    public static function registerSequencer(string $name, Sequencer $sequencer)
+    public static function registerSequencer(string $name, Sequencer $sequencer): void
     {
         self::getInstance()->addSequencer($name, $sequencer);
     }
@@ -68,7 +67,7 @@ class SequencerFactory
      * @param string $name
      * @param Sequencer $sequencer
      */
-    public function addSequencer(string $name, Sequencer $sequencer)
+    public function addSequencer(string $name, Sequencer $sequencer): void
     {
         $this->sequencerList[$name] = $sequencer;
     }
@@ -76,14 +75,13 @@ class SequencerFactory
     /**
      * @param string $sequencerName
      *
-     * @return null|Sequencer
+     * @return Sequencer
      */
-    protected function getSequencer(string $sequencerName) : Sequencer
+    protected function getSequencer(string $sequencerName): Sequencer
     {
         $sequencer = ArrayUtil::getFromArray($this->sequencerList, $sequencerName);
         if ($sequencer === null) {
             throw new RuntimeException(sprintf(self::ERROR_SEQUENCER_NOT_REGISTERED, $sequencerName));
-
         }
         return $sequencer;
     }
@@ -95,7 +93,7 @@ class SequencerFactory
      *
      * @return mixed
      */
-    public function getNextSequence(string $sequencerName, string $tableName, string $connectionName = null)
+    public function getNextSequence(string $sequencerName, string $tableName, string $connectionName = null): mixed
     {
         $sequencer = $this->getSequencer($sequencerName);
         return $sequencer->getNextSequence($tableName, $connectionName);

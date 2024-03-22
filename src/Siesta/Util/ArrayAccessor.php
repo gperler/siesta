@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Util;
 
@@ -12,7 +12,7 @@ class ArrayAccessor
     /**
      * @var array
      */
-    protected $data;
+    protected array $data;
 
     /**
      * @param array $data
@@ -27,12 +27,11 @@ class ArrayAccessor
      *
      * @return null|mixed
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
-        if ($this->data === null or !isset ($this->data [$key])) {
+        if (!isset ($this->data [$key])) {
             return null;
         }
-
         return $this->data[$key];
     }
 
@@ -41,7 +40,7 @@ class ArrayAccessor
      *
      * @return bool|null
      */
-    public function getBooleanValue($key)
+    public function getBooleanValue($key): ?bool
     {
         $value = $this->get($key);
         if ($value === null) {
@@ -55,7 +54,7 @@ class ArrayAccessor
      *
      * @return int|null
      */
-    public function getIntegerValue($key)
+    public function getIntegerValue($key): ?int
     {
         $value = $this->get($key);
         if ($value === null) {
@@ -69,7 +68,7 @@ class ArrayAccessor
      *
      * @return float|null
      */
-    public function getFloatValue($key)
+    public function getFloatValue($key): ?float
     {
         $value = $this->get($key);
         if ($value === null) {
@@ -80,11 +79,11 @@ class ArrayAccessor
 
     /**
      * @param string $key
-     * @param int $maxlength
+     * @param int|null $maxlength
      *
      * @return string|null
      */
-    public function getStringValue($key, $maxlength = null)
+    public function getStringValue($key, int $maxlength = null): ?string
     {
         $value = $this->get($key);
         if ($value === null) {
@@ -98,13 +97,12 @@ class ArrayAccessor
      *
      * @return null|SiestaDateTime
      */
-    public function getDateTime($key)
+    public function getDateTime($key): ?SiestaDateTime
     {
         $value = $this->get($key);
         if ($value === null) {
             return null;
         }
-
         return new SiestaDateTime($value);
     }
 
@@ -113,7 +111,7 @@ class ArrayAccessor
      *
      * @return array|null
      */
-    public function getArray($key)
+    public function getArray($key): ?array
     {
         $value = $this->get($key);
         if ($value === null or !is_array($value)) {

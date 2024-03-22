@@ -28,7 +28,7 @@ class MySQLSelectByPKStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
         $this->modifies = false;
 
@@ -56,7 +56,7 @@ class MySQLSelectByPKStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildSignature()
+    protected function buildSignature(): void
     {
         $parameterList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $attribute) {
@@ -68,7 +68,7 @@ class MySQLSelectByPKStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $whereList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $attribute) {

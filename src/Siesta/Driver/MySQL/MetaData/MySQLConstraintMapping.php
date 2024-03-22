@@ -18,17 +18,17 @@ class MySQLConstraintMapping implements ConstraintMappingMetaData
     /**
      * @var string
      */
-    protected $localColumn;
+    protected string $localColumn;
 
     /**
      * @var string
      */
-    protected $foreignColumn;
+    protected string $foreignColumn;
 
     /**
      * @param ResultSet $resultSet
      */
-    public function fromResultSet(ResultSet $resultSet)
+    public function fromResultSet(ResultSet $resultSet): void
     {
         $this->localColumn = $resultSet->getStringValue(self::COLUMN_NAME);
         $this->foreignColumn = $resultSet->getStringValue(self::REFERENCED_COLUMN_NAME);

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use Siesta\Driver\MySQL\MySQLDriver;
@@ -24,22 +25,22 @@ class UpdateStatement
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var string[]
      */
-    protected $setList;
+    protected array $setList;
 
     /**
      * @var string[]
      */
-    protected $parameterList;
+    protected array $parameterList;
 
     /**
      * @var string[]
      */
-    protected $whereList;
+    protected array $whereList;
 
     /**
      * @param Entity $entity
@@ -56,7 +57,7 @@ class UpdateStatement
     /**
      * @return string
      */
-    public function buildSignature()
+    public function buildSignature(): string
     {
         return "(" . implode(",", $this->parameterList) . ")";
     }
@@ -66,7 +67,7 @@ class UpdateStatement
      *
      * @return string
      */
-    public function buildUpdate($tableName)
+    public function buildUpdate(string $tableName): string
     {
         $setList = implode(",", $this->setList);
         $where = implode(" AND ", $this->whereList);
@@ -76,7 +77,7 @@ class UpdateStatement
     /**
      * @return string
      */
-    public function buildDelimitUpdate()
+    public function buildDelimitUpdate(): string
     {
         $tableName = MySQLDriver::quote($this->entity->getDelimitTableName());
         $where = implode(" AND ", $this->whereList);

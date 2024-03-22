@@ -22,27 +22,27 @@ class MySQLTable implements TableMetaData
     /**
      * @var Connection
      */
-    protected $connection;
+    protected Connection $connection;
 
     /**
      * @var TableDTO
      */
-    protected $tableDTO;
+    protected TableDTO $tableDTO;
 
     /**
      * @var MySQLColumn[]
      */
-    protected $columnList;
+    protected array $columnList;
 
     /**
      * @var MySQLConstraint[]
      */
-    protected $constraintList;
+    protected array $constraintList;
 
     /**
      * @var MySQLIndex[]
      */
-    protected $indexList;
+    protected array $indexList;
 
 
     /**

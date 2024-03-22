@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -27,32 +27,32 @@ class StoredProcedure
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
      * @var bool
      */
-    protected $modifies;
+    protected bool $modifies;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $resultType;
+    protected ?string $resultType;
 
     /**
-     * @var $statement
+     * @var string|null $statement
      */
-    protected $statement;
+    protected ?string $statement;
 
     /**
      * @var StoredProcedureParameter[]
      */
-    protected $parameterList;
+    protected array $parameterList;
 
     /**
      * StoredProcedure constructor.
@@ -62,13 +62,17 @@ class StoredProcedure
     public function __construct(Entity $entity)
     {
         $this->entity = $entity;
+        $this->name = null;
+        $this->modifies = false;
+        $this->resultType = null;
+        $this->statement = null;
         $this->parameterList = [];
     }
 
     /**
      * @return StoredProcedureParameter
      */
-    public function newStoredProcedureParameter() : StoredProcedureParameter
+    public function newStoredProcedureParameter(): StoredProcedureParameter
     {
         $parameter = new StoredProcedureParameter();
         $this->parameterList[] = $parameter;
@@ -76,14 +80,14 @@ class StoredProcedure
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getDBName()
+    public function getDBName(): string
     {
         return $this->entity->getTableName() . "_" . $this->getName();
     }
@@ -91,7 +95,7 @@ class StoredProcedure
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -99,7 +103,7 @@ class StoredProcedure
     /**
      * @return bool
      */
-    public function getModifies()
+    public function getModifies(): bool
     {
         return $this->modifies;
     }
@@ -107,23 +111,23 @@ class StoredProcedure
     /**
      * @param bool $modifies
      */
-    public function setModifies($modifies)
+    public function setModifies(bool $modifies): void
     {
         $this->modifies = $modifies;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getResultType()
+    public function getResultType(): ?string
     {
         return $this->resultType;
     }
 
     /**
-     * @param string $resultType
+     * @param string|null $resultType
      */
-    public function setResultType($resultType)
+    public function setResultType(?string $resultType): void
     {
         $this->resultType = $resultType;
     }
@@ -131,7 +135,7 @@ class StoredProcedure
     /**
      * @return StoredProcedureParameter[]
      */
-    public function getParameterList()
+    public function getParameterList(): array
     {
         return $this->parameterList;
     }
@@ -139,15 +143,15 @@ class StoredProcedure
     /**
      * @return string
      */
-    public function getStatement()
+    public function getStatement(): ?string
     {
         return $this->statement;
     }
 
     /**
-     * @param string $statement
+     * @param string|null $statement
      */
-    public function setStatement($statement)
+    public function setStatement(?string $statement): void
     {
         $this->statement = $statement;
     }
@@ -155,7 +159,7 @@ class StoredProcedure
     /**
      * @return bool
      */
-    public function isEntityResult() : bool
+    public function isEntityResult(): bool
     {
         return $this->resultType === self::RESULT_ENTITY;
     }
@@ -163,7 +167,7 @@ class StoredProcedure
     /**
      * @return bool
      */
-    public function isListResult() : bool
+    public function isListResult(): bool
     {
         return $this->resultType === self::RESULT_LIST;
     }
@@ -171,7 +175,7 @@ class StoredProcedure
     /**
      * @return bool
      */
-    public function isResultSetResult() : bool
+    public function isResultSetResult(): bool
     {
         return $this->resultType === self::RESULT_RESULT_SET;
     }
@@ -179,7 +183,7 @@ class StoredProcedure
     /**
      * @return bool
      */
-    public function isResultTypeNone() : bool
+    public function isResultTypeNone(): bool
     {
         return $this->resultType === self::RESULT_NONE;
     }

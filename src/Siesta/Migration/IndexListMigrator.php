@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Migration;
 
@@ -18,27 +18,27 @@ class IndexListMigrator
     /**
      * @var MigrationStatementFactory
      */
-    protected $migrationStatementFactory;
+    protected MigrationStatementFactory $migrationStatementFactory;
 
     /**
      * @var IndexMetaData[]
      */
-    protected $indexMetaDataList;
+    protected array $indexMetaDataList;
 
     /**
      * @var Index[]
      */
-    protected $indexList;
+    protected array $indexList;
 
     /**
      * @var string[]
      */
-    protected $addIndexStatementList;
+    protected array $addIndexStatementList;
 
     /**
      * @var string[]
      */
-    protected $dropIndexStatementList;
+    protected array $dropIndexStatementList;
 
     /**
      * IndexListMigrator constructor.
@@ -61,7 +61,7 @@ class IndexListMigrator
      * compares both attribute list and request the needed alter statements
      * @return void
      */
-    public function createAlterStatementList()
+    public function createAlterStatementList(): void
     {
         $processedIndexList = [];
 
@@ -91,7 +91,7 @@ class IndexListMigrator
      * @param IndexMetaData|null $indexMetaData
      * @param Index|null $index
      */
-    private function createAlterStatement(IndexMetaData $indexMetaData = null, Index $index = null)
+    private function createAlterStatement(IndexMetaData $indexMetaData = null, Index $index = null): void
     {
 
         // nothing in db create the index
@@ -114,7 +114,7 @@ class IndexListMigrator
      * @param IndexMetaData $indexMetaData
      * @param Index $index
      */
-    private function compareIndex(IndexMetaData $indexMetaData, Index $index)
+    private function compareIndex(IndexMetaData $indexMetaData, Index $index): void
     {
         if (strtoupper($indexMetaData->getType()) !== strtoupper($index->getIndexType())) {
             $this->recreateIndex($indexMetaData, $index);
@@ -146,7 +146,7 @@ class IndexListMigrator
      *
      * @return bool
      */
-    private function needsRecreationOfIndex($databaseIndexPart, $modelIndexPartList)
+    private function needsRecreationOfIndex($databaseIndexPart, $modelIndexPartList): bool
     {
         foreach ($modelIndexPartList as $modelIndexPart) {
             $databaseIndex = $this->getIndexPartByColumnName($databaseIndexPart, $modelIndexPart->getColumnName());
@@ -169,7 +169,7 @@ class IndexListMigrator
      *
      * @return IndexPartMetaData|null
      */
-    private function getIndexPartByColumnName(array $databaseIndexPartList, string $columnName)
+    private function getIndexPartByColumnName(array $databaseIndexPartList, string $columnName): ?IndexPartMetaData
     {
         foreach ($databaseIndexPartList as $databaseIndexPart) {
             if ($databaseIndexPart->getColumnName() === $columnName) {
@@ -183,7 +183,7 @@ class IndexListMigrator
      * @param IndexMetaData $indexMetaData
      * @param Index $index
      */
-    private function recreateIndex(IndexMetaData $indexMetaData, Index $index)
+    private function recreateIndex(IndexMetaData $indexMetaData, Index $index): void
     {
         $this->createDropIndex($indexMetaData);
         $this->createAddIndex($index);
@@ -192,7 +192,7 @@ class IndexListMigrator
     /**
      * @param IndexMetaData $indexMetaData
      */
-    private function createDropIndex(IndexMetaData $indexMetaData)
+    private function createDropIndex(IndexMetaData $indexMetaData): void
     {
         $dropList = $this->migrationStatementFactory->createDropIndexStatement($indexMetaData);
         $this->dropIndexStatementList = array_merge($this->dropIndexStatementList, $dropList);
@@ -201,7 +201,7 @@ class IndexListMigrator
     /**
      * @param Index $index
      */
-    private function createAddIndex(Index $index)
+    private function createAddIndex(Index $index): void
     {
         $addList = $this->migrationStatementFactory->createAddIndexStatement($index);
         $this->addIndexStatementList = array_merge($this->addIndexStatementList, $addList);
@@ -210,7 +210,7 @@ class IndexListMigrator
     /**
      * @return string[]
      */
-    public function getAddIndexStatementList()
+    public function getAddIndexStatementList(): array
     {
         return $this->addIndexStatementList;
     }
@@ -218,7 +218,7 @@ class IndexListMigrator
     /**
      * @return string[]
      */
-    public function getDropIndexStatementList()
+    public function getDropIndexStatementList(): array
     {
         return $this->dropIndexStatementList;
     }
@@ -228,7 +228,7 @@ class IndexListMigrator
      *
      * @return null|IndexMetaData
      */
-    private function getIndexMetaDataByIndex(Index $index)
+    private function getIndexMetaDataByIndex(Index $index): ?IndexMetaData
     {
         foreach ($this->indexMetaDataList as $indexMetaData) {
             if ($indexMetaData->getName() === $index->getName()) {

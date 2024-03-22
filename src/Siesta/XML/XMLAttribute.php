@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -85,7 +85,7 @@ class XMLAttribute
     /**
      * @param XMLAccess $xmlAccess
      */
-    public function fromXML(XMLAccess $xmlAccess)
+    public function fromXML(XMLAccess $xmlAccess): void
     {
         $this->setAutoValue($xmlAccess->getAttribute(self::AUTO_VALUE));
         $this->setPhpName($xmlAccess->getAttribute(self::PHP_NAME));

@@ -16,7 +16,7 @@ class DataModel
     /**
      * @var Entity[]
      */
-    protected $entityList;
+    protected array $entityList;
 
 
     /**
@@ -31,7 +31,7 @@ class DataModel
     /**
      * @param XMLEntity[] $xmlEntityList
      */
-    public function addXMLEntityList(array $xmlEntityList)
+    public function addXMLEntityList(array $xmlEntityList): void
     {
         foreach ($xmlEntityList as $xmlEntity) {
             $this->addXMLEntity($xmlEntity);
@@ -42,7 +42,7 @@ class DataModel
     /**
      * @param XMLEntity $xmlEntity
      */
-    public function addXMLEntity(XMLEntity $xmlEntity)
+    public function addXMLEntity(XMLEntity $xmlEntity): void
     {
         $dataModelBuilder = new XMLEntityReader();
 
@@ -58,7 +58,7 @@ class DataModel
      *
      * @return bool
      */
-    public function hasEntityByTableName(string $tableName)
+    public function hasEntityByTableName(string $tableName): bool
     {
         foreach ($this->entityList as $entity) {
             if ($entity->getTableName() === $tableName) {
@@ -70,11 +70,11 @@ class DataModel
 
 
     /**
-     * @param string $tableName
+     * @param string|null $tableName
      *
-     * @return Entity
+     * @return Entity|null
      */
-    public function getEntityByTableName(string $tableName = null)
+    public function getEntityByTableName(string $tableName = null): ?Entity
     {
         foreach ($this->entityList as $entity) {
             if ($entity->getTableName() === $tableName) {
@@ -89,7 +89,7 @@ class DataModel
     /**
      * @throws ReflectionException
      */
-    public function update()
+    public function update(): void
     {
         foreach ($this->entityList as $entity) {
             $entity->update();
@@ -100,7 +100,7 @@ class DataModel
     /**
      * @return Entity[]
      */
-    public function getEntityList()
+    public function getEntityList(): array
     {
         return $this->entityList;
     }

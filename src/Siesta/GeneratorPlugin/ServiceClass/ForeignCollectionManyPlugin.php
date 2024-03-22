@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
@@ -26,7 +26,7 @@ class ForeignCollectionManyPlugin extends BasePlugin
      *
      * @return string
      */
-    public static function getEntityByReferenceName(CollectionMany $collectionMany) : string
+    public static function getEntityByReferenceName(CollectionMany $collectionMany): string
     {
         $entityName = $collectionMany->getForeignEntity()->getClassShortName();
         $mappingName = $collectionMany->getMappingEntity()->getClassShortName();
@@ -38,7 +38,7 @@ class ForeignCollectionManyPlugin extends BasePlugin
      *
      * @return string
      */
-    public static function deleteEntityByReferenceName(CollectionMany $collectionMany) : string
+    public static function deleteEntityByReferenceName(CollectionMany $collectionMany): string
     {
         $entityName = $collectionMany->getForeignEntity()->getClassShortName();
         $mappingName = $collectionMany->getMappingEntity()->getClassShortName();
@@ -51,7 +51,7 @@ class ForeignCollectionManyPlugin extends BasePlugin
      * @param ClassGenerator $classGenerator
      * @throws ReflectionException
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 
@@ -65,7 +65,7 @@ class ForeignCollectionManyPlugin extends BasePlugin
      * @param CollectionMany $collectionMany
      * @throws ReflectionException
      */
-    protected function generateAccessMethod(CollectionMany $collectionMany)
+    protected function generateAccessMethod(CollectionMany $collectionMany): void
     {
 
         $pkAttributeList = $this->entity->getPrimaryKeyAttributeList();
@@ -90,7 +90,7 @@ class ForeignCollectionManyPlugin extends BasePlugin
      * @param CollectionMany $collectionMany
      * @throws ReflectionException
      */
-    protected function generateDeleteMethod(CollectionMany $collectionMany)
+    protected function generateDeleteMethod(CollectionMany $collectionMany): void
     {
         $pkAttributeList = $this->entity->getPrimaryKeyAttributeList();
         $methodName = self::deleteEntityByReferenceName($collectionMany);

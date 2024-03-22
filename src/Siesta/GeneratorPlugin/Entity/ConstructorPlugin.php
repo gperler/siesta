@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -16,10 +16,10 @@ class ConstructorPlugin extends BasePlugin
     /**
      * @return array
      */
-    public function getDependantPluginList() : array
+    public function getDependantPluginList(): array
     {
         return [
-            'Siesta\EntityPlugin\Entity\MemberPlugin'
+            MemberPlugin::class,
         ];
     }
 
@@ -27,7 +27,7 @@ class ConstructorPlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -19,14 +19,13 @@ class JSONConverterPlugin extends BasePlugin
     const METHOD_TO_JSON = "toJSON";
 
 
-
     /**
      * @return string[]
      */
-    public function getDependantPluginList() : array
+    public function getDependantPluginList(): array
     {
         return [
-            'Siesta\GeneratorPlugin\Entity\ArrayConverterPlugin'
+            ArrayConverterPlugin::class,
         ];
     }
 
@@ -34,7 +33,7 @@ class JSONConverterPlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
         $this->generateFromJson();
@@ -44,7 +43,7 @@ class JSONConverterPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateFromJson()
+    protected function generateFromJson(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_FROM_JSON);
         $method->addParameter(PHPType::STRING, 'jsonString');
@@ -55,7 +54,7 @@ class JSONConverterPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateToJson()
+    protected function generateToJson(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_TO_JSON);
         $method->addParameter('Siesta\Contract\CycleDetector', 'cycleDetector', 'null');

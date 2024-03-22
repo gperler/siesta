@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -10,77 +10,80 @@ class StoredProcedureParameter
 {
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $spName;
+    protected ?string $spName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $phpType;
+    protected ?string $phpType;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $dbType;
+    protected ?string $dbType;
 
     /**
      * StoredProcedureParameter constructor.
      */
     public function __construct()
     {
-
+        $this->name = null;
+        $this->spName = null;
+        $this->phpType = null;
+        $this->dbType = null;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSpName()
+    public function getSpName(): ?string
     {
         return $this->spName;
     }
 
     /**
-     * @param string $spName
+     * @param string|null $spName
      */
-    public function setSpName($spName)
+    public function setSpName(?string $spName): void
     {
         $this->spName = $spName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhpType()
+    public function getPhpType(): ?string
     {
         return $this->phpType;
     }
 
     /**
-     * @param string $phpType
+     * @param string|null $phpType
      */
-    public function setPhpType($phpType)
+    public function setPhpType(?string $phpType): void
     {
         $this->phpType = $phpType;
     }
@@ -88,7 +91,7 @@ class StoredProcedureParameter
     /**
      * @return string
      */
-    public function getDbType()
+    public function getDbType(): ?string
     {
         return $this->dbType;
     }
@@ -96,7 +99,7 @@ class StoredProcedureParameter
     /**
      * @return int|null
      */
-    public function getDbLength()
+    public function getDbLength(): ?int
     {
         if ($this->getDbType() === null) {
             return null;
@@ -108,9 +111,9 @@ class StoredProcedureParameter
     }
 
     /**
-     * @param string $dbType
+     * @param string|null $dbType
      */
-    public function setDbType($dbType)
+    public function setDbType(?string $dbType): void
     {
         $this->dbType = $dbType;
     }

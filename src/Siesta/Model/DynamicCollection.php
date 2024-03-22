@@ -10,27 +10,27 @@ class DynamicCollection
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignTable;
+    protected ?string $foreignTable;
 
     /**
-     * @var Entity
+     * @var Entity|null
      */
-    protected $foreignEntity;
+    protected ?Entity $foreignEntity;
 
     /**
      * DynamicCollection constructor.
@@ -42,12 +42,15 @@ class DynamicCollection
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
+        $this->name = null;
+        $this->foreignTable = null;
+        $this->foreignEntity = null;
     }
 
     /**
      *
      */
-    public function update()
+    public function update(): void
     {
         $this->foreignEntity = $this->dataModel->getEntityByTableName($this->getForeignTable());
         if ($this->foreignEntity) {
@@ -58,47 +61,47 @@ class DynamicCollection
     /**
      * @return string
      */
-    public function getMethodName()
+    public function getMethodName(): string
     {
         return ucfirst($this->getName());
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName(string $name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getForeignTable(): string
+    public function getForeignTable(): ?string
     {
         return $this->foreignTable;
     }
 
     /**
-     * @param string $foreignTable
+     * @param string|null $foreignTable
      */
-    public function setForeignTable(string $foreignTable)
+    public function setForeignTable(?string $foreignTable): void
     {
         $this->foreignTable = $foreignTable;
     }
 
     /**
-     * @return Entity
+     * @return Entity|null
      */
-    public function getForeignEntity()
+    public function getForeignEntity(): ?Entity
     {
         return $this->foreignEntity;
     }

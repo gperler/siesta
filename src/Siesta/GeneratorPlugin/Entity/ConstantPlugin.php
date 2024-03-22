@@ -18,7 +18,7 @@ class ConstantPlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $classGenerator->addConstant("TABLE_NAME", '"' . $entity->getTableName() . '"');
 

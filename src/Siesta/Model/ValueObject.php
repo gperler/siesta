@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -14,22 +14,22 @@ class ValueObject
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $className;
+    protected ?string $className;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $memberName;
+    protected ?string $memberName;
 
     /**
      * @var Attribute[]
      */
-    protected $attributeList;
+    protected array $attributeList;
 
     /**
      * ValueObject constructor.
@@ -39,37 +39,39 @@ class ValueObject
     public function __construct(Entity $entity)
     {
         $this->entity = $entity;
+        $this->className = null;
+        $this->memberName = null;
         $this->attributeList = [];
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClassName()
+    public function getClassName(): ?string
     {
         return $this->className;
     }
 
     /**
-     * @param string $className
+     * @param string|null $className
      */
-    public function setClassName(string $className = null)
+    public function setClassName(string $className = null): void
     {
         $this->className = $className;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMemberName()
+    public function getMemberName(): ?string
     {
         return $this->memberName;
     }
 
     /**
-     * @param string $memberName
+     * @param string|null $memberName
      */
-    public function setMemberName(string $memberName = null)
+    public function setMemberName(string $memberName = null): void
     {
         $this->memberName = $memberName;
     }
@@ -77,7 +79,7 @@ class ValueObject
     /**
      * @throws ReflectionException
      */
-    public function update()
+    public function update(): void
     {
         $reflect = new ReflectionClass($this->className);
 
@@ -94,7 +96,7 @@ class ValueObject
     /**
      * @return null|string
      */
-    public function getClassShortName()
+    public function getClassShortName(): ?string
     {
         if ($this->className === null) {
             return null;
@@ -105,7 +107,7 @@ class ValueObject
     /**
      * @return string
      */
-    public function getMethodName()
+    public function getMethodName(): string
     {
         if ($this->memberName !== null) {
             return ucfirst($this->memberName);
@@ -116,7 +118,7 @@ class ValueObject
     /**
      * @return string
      */
-    public function getPhpName()
+    public function getPhpName(): string
     {
         if ($this->memberName !== null) {
             return lcfirst($this->memberName);

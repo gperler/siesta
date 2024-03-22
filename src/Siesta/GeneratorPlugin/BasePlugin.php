@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin;
 
@@ -14,18 +14,18 @@ abstract class BasePlugin implements Plugin
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var ClassGenerator
      */
-    protected $classGenerator;
+    protected ClassGenerator $classGenerator;
 
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    protected function setup(Entity $entity, ClassGenerator $classGenerator)
+    protected function setup(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->entity = $entity;
         $this->classGenerator = $classGenerator;
@@ -34,7 +34,7 @@ abstract class BasePlugin implements Plugin
     /**
      * @return string[]
      */
-    public function getInterfaceList() : array
+    public function getInterfaceList(): array
     {
         return [];
     }
@@ -44,7 +44,7 @@ abstract class BasePlugin implements Plugin
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         return [];
     }
@@ -52,7 +52,7 @@ abstract class BasePlugin implements Plugin
     /**
      * @return string[]
      */
-    public function getDependantPluginList() : array
+    public function getDependantPluginList(): array
     {
         return [];
     }

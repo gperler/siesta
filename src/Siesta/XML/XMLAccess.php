@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -15,7 +15,7 @@ class XMLAccess
     /**
      * @var DOMElement
      */
-    protected $sourceElement;
+    protected DOMElement $sourceElement;
 
     /**
      * XMLAccess constructor.
@@ -29,9 +29,9 @@ class XMLAccess
     /**
      * @param string $name
      *
-     * @return string
+     * @return string|null
      */
-    public function getAttribute(string $name)
+    public function getAttribute(string $name): ?string
     {
         if ($this->sourceElement->hasAttribute($name)) {
             return StringUtil::trimToNull($this->sourceElement->getAttribute($name));
@@ -44,7 +44,7 @@ class XMLAccess
      *
      * @return bool
      */
-    public function getAttributeAsBool(string $name) : bool
+    public function getAttributeAsBool(string $name): bool
     {
         return $this->getAttribute($name) === 'true';
     }
@@ -54,7 +54,7 @@ class XMLAccess
      *
      * @return int
      */
-    public function getAttributeAsInt(string $name)
+    public function getAttributeAsInt(string $name): int
     {
         return (int)$this->getAttribute($name);
     }
@@ -64,7 +64,7 @@ class XMLAccess
      *
      * @return XMLAccess[]
      */
-    public function getXMLChildElementListByName(string $tagName) : array
+    public function getXMLChildElementListByName(string $tagName): array
     {
         $result = [];
         foreach ($this->sourceElement->getElementsByTagName($tagName) as $child) {
@@ -80,7 +80,7 @@ class XMLAccess
      *
      * @return array
      */
-    public function getDatabaseSpecificAttributeList(string $tagName)
+    public function getDatabaseSpecificAttributeList(string $tagName): array
     {
         $element = $this->getFirstChildByName($tagName);
         if ($element === null) {
@@ -92,7 +92,7 @@ class XMLAccess
     /**
      * @return array
      */
-    public function getAttributeList()
+    public function getAttributeList(): array
     {
         $attributeList = [];
         foreach ($this->sourceElement->attributes as $attribute) {
@@ -106,10 +106,10 @@ class XMLAccess
      *
      * @return XMLAccess|null
      */
-    public function getFirstChildByName(string $tagName)
+    public function getFirstChildByName(string $tagName): ?XMLAccess
     {
         $xmlList = $this->getXMLChildElementListByName($tagName);
-        if (is_null($xmlList) || sizeof($xmlList) === 0) {
+        if (sizeof($xmlList) === 0) {
             return null;
         }
         return $xmlList[0];
@@ -120,7 +120,7 @@ class XMLAccess
      *
      * @return null|string
      */
-    public function getFirstChildByNameContent(string $tagName)
+    public function getFirstChildByNameContent(string $tagName): ?string
     {
         $xmlChild = $this->getFirstChildByName($tagName);
         if ($xmlChild === null) {
@@ -130,9 +130,9 @@ class XMLAccess
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTextContent()
+    public function getTextContent(): ?string
     {
         return StringUtil::trimToNull($this->sourceElement->textContent);
     }

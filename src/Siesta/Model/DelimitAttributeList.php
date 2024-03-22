@@ -21,7 +21,7 @@ class DelimitAttributeList
      * @param Entity $entity
      * @return Attribute[]
      */
-    public static function getDelimitAttributes(Entity $entity)
+    public static function getDelimitAttributes(Entity $entity): array
     {
         return [
             self::getDelimitIDAttribute($entity),

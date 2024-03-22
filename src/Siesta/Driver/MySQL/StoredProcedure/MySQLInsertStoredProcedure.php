@@ -15,7 +15,7 @@ class MySQLInsertStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @var InsertStatement
      */
-    protected $insertStatement;
+    protected InsertStatement $insertStatement;
 
     /**
      * InsertStoredProcedure constructor.
@@ -37,7 +37,7 @@ class MySQLInsertStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
 
         $this->modifies = true;

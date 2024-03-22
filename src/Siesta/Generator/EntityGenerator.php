@@ -16,12 +16,12 @@ class EntityGenerator extends AbstractGenerator
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var ClassGenerator
      */
-    protected $classGenerator;
+    protected ClassGenerator $classGenerator;
 
     /**
      * @var string
@@ -45,7 +45,7 @@ class EntityGenerator extends AbstractGenerator
     /**
      *
      */
-    protected function generateEntity()
+    protected function generateEntity(): void
     {
 
         foreach ($this->getUseClassNameList($this->entity) as $useClass) {
@@ -64,7 +64,7 @@ class EntityGenerator extends AbstractGenerator
     /**
      *
      */
-    protected function saveEntity()
+    protected function saveEntity(): void
     {
         $targetFile = $this->getTargetFile($this->entity, $this->entity->getClassShortName());
         $this->classGenerator->writeToFile($targetFile);

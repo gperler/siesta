@@ -12,7 +12,7 @@ class SaveCycleDetector implements CycleDetector
     /**
      * @var array
      */
-    private $visitedList;
+    private array $visitedList;
 
     /**
      *
@@ -53,7 +53,7 @@ class SaveCycleDetector implements CycleDetector
      * @param $technicalName
      * @param $visitor
      */
-    private function addVisit($technicalName, $visitor)
+    private function addVisit($technicalName, $visitor): void
     {
         $this->visitedList [$technicalName] [] = $visitor;
     }

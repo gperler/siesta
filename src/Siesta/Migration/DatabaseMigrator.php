@@ -21,49 +21,49 @@ class DatabaseMigrator
     /**
      * @var Connection
      */
-    protected $connection;
+    protected Connection $connection;
 
     /**
      * @var DatabaseMetaData
      */
-    protected $databaseMetaData;
+    protected DatabaseMetaData $databaseMetaData;
 
     /**
      * @var TableMetaData[]
      */
-    protected $databaseTableList;
+    protected array $databaseTableList;
 
     /**
      * @var MigrationStatementFactory
      */
-    protected $migrationStatementFactory;
+    protected MigrationStatementFactory $migrationStatementFactory;
 
     /**
      * @var StoredProcedureFactory
      */
-    protected $storedProcedureFactory;
+    protected StoredProcedureFactory $storedProcedureFactory;
 
     /**
      * @var StoredProcedureMigrator
      */
-    protected $storedProcedureMigrator;
+    protected StoredProcedureMigrator $storedProcedureMigrator;
 
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * list of table names that are also defined in the current dataModel
      *
      * @var string[]
      */
-    protected $neededTableList;
+    protected array $neededTableList;
 
     /**
      * @var string[]
      */
-    protected $alterStatementList;
+    protected array $alterStatementList;
 
 
     /**
@@ -88,7 +88,7 @@ class DatabaseMigrator
     /**
      *
      */
-    private function checkSequencerTable()
+    private function checkSequencerTable(): void
     {
         $this->neededTableList = [CreateStatementFactory::SEQUENCER_TABLE_NAME];
         $tableMetaData = $this->getTableMetaDataByName(CreateStatementFactory::SEQUENCER_TABLE_NAME);
@@ -109,7 +109,7 @@ class DatabaseMigrator
     /**
      *
      */
-    private function createStoredProcedureMigrator()
+    private function createStoredProcedureMigrator(): void
     {
         $activeStoredProcedureList = $this->databaseMetaData->getStoredProcedureList();
         $createStatementFactory = $this->connection->getCreateStatementFactory();
@@ -121,7 +121,7 @@ class DatabaseMigrator
     /**
      * @param bool $dropUnusedTables
      */
-    public function createAlterStatementList(bool $dropUnusedTables)
+    public function createAlterStatementList(bool $dropUnusedTables): void
     {
         foreach ($this->dataModel->getEntityList() as $entity) {
             $this->migrateEntity($entity);
@@ -138,7 +138,7 @@ class DatabaseMigrator
      *
      * @return void
      */
-    private function migrateEntity(Entity $entity)
+    private function migrateEntity(Entity $entity): void
     {
         $tableMetaData = $this->getTableMetaDataByEntity($entity);
 
@@ -164,7 +164,7 @@ class DatabaseMigrator
     /**
      * @param Entity $entity
      */
-    protected function checkDelimit(Entity $entity)
+    protected function checkDelimit(Entity $entity): void
     {
         if (!$entity->getIsDelimit()) {
             return;
@@ -182,7 +182,7 @@ class DatabaseMigrator
     /**
      * @param Entity $entity
      */
-    protected function checkReplication(Entity $entity)
+    protected function checkReplication(Entity $entity): void
     {
         if (!$entity->getIsReplication()) {
             return;
@@ -202,7 +202,7 @@ class DatabaseMigrator
      *
      * @return void
      */
-    private function setupEntityInDatabase(Entity $entity)
+    private function setupEntityInDatabase(Entity $entity): void
     {
         $factory = $this->connection->getCreateStatementFactory();
 
@@ -221,7 +221,7 @@ class DatabaseMigrator
      *
      * @return TableMetaData|null
      */
-    private function getTableMetaDataByEntity(Entity $entity)
+    private function getTableMetaDataByEntity(Entity $entity): ?TableMetaData
     {
         $tableName = $entity->getTableName();
         $tableMetaData = $this->getTableMetaDataByName($tableName);
@@ -248,9 +248,9 @@ class DatabaseMigrator
      *
      * @return null|TableMetaData
      */
-    private function getTableMetaDataByName(string $tableName)
+    private function getTableMetaDataByName(string $tableName): ?TableMetaData
     {
-        return isset($this->databaseTableList[$tableName]) ? $this->databaseTableList[$tableName] : null;
+        return $this->databaseTableList[$tableName] ?? null;
     }
 
 
@@ -259,7 +259,7 @@ class DatabaseMigrator
      *
      * @return void
      */
-    private function dropUnusedTables()
+    private function dropUnusedTables(): void
     {
         foreach ($this->databaseTableList as $databaseTable) {
             if (in_array($databaseTable->getName(), $this->neededTableList)) {
@@ -278,7 +278,7 @@ class DatabaseMigrator
     /**
      * @param array $alterStatementList
      */
-    private function addAlterStatementList(array $alterStatementList)
+    private function addAlterStatementList(array $alterStatementList): void
     {
         $this->alterStatementList = array_merge($this->alterStatementList, $alterStatementList);
     }
@@ -289,7 +289,7 @@ class DatabaseMigrator
      *
      * @return String[]
      */
-    public function getAlterStatementList()
+    public function getAlterStatementList(): array
     {
         return $this->alterStatementList;
     }
@@ -300,7 +300,7 @@ class DatabaseMigrator
      *
      * @return String[]
      */
-    public function getAlterStoredProcedureStatementList()
+    public function getAlterStoredProcedureStatementList(): array
     {
         return $this->storedProcedureMigrator->getStoredProcedureMigrationList();
     }

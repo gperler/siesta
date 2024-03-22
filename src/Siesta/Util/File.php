@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Util;
 
@@ -16,7 +16,7 @@ class File
      * absolute path to file
      * @var string
      */
-    protected $absoluteFileName;
+    protected string $absoluteFileName;
 
     /**
      * @param string $absoluteFileName
@@ -29,7 +29,7 @@ class File
     /**
      * @return string
      */
-    public function getAbsoluteFileName() : string
+    public function getAbsoluteFileName(): string
     {
         return $this->absoluteFileName;
     }
@@ -37,7 +37,7 @@ class File
     /**
      * @return string
      */
-    public function getFileName() : string
+    public function getFileName(): string
     {
         return basename($this->absoluteFileName);
     }
@@ -46,7 +46,7 @@ class File
      * tells if the file is a file
      * @return bool
      */
-    public function isFile() : bool
+    public function isFile(): bool
     {
         return is_file($this->absoluteFileName);
     }
@@ -55,7 +55,7 @@ class File
      * tells if the file is a directory
      * @return bool
      */
-    public function isDir() : bool
+    public function isDir(): bool
     {
         return is_dir($this->absoluteFileName);
     }
@@ -64,7 +64,7 @@ class File
      * tries to delete a file
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         if (!$this->exists()) {
             return false;
@@ -75,7 +75,7 @@ class File
     /**
      *
      */
-    public function createDirForFile()
+    public function createDirForFile(): void
     {
         $dir = StringUtil::getStartBeforeLast($this->absoluteFileName, DIRECTORY_SEPARATOR);
         $dirFile = new File($dir);
@@ -85,7 +85,7 @@ class File
     /**
      *
      */
-    public function deleteRecursively()
+    public function deleteRecursively(): bool
     {
         if (!$this->isDir()) {
             return $this->delete();
@@ -107,7 +107,7 @@ class File
      * tells if the file exists
      * @return bool
      */
-    public function exists() : bool
+    public function exists(): bool
     {
         return file_exists($this->absoluteFileName);
     }
@@ -119,7 +119,7 @@ class File
      *
      * @return bool
      */
-    public function createDir($mode = 0777) : bool
+    public function createDir($mode = 0777): bool
     {
         return is_dir($this->absoluteFileName) || mkdir($this->absoluteFileName, $mode, true);
     }
@@ -131,7 +131,7 @@ class File
      *
      * @return bool
      */
-    public function isType($type) : bool
+    public function isType($type): bool
     {
         return StringUtil::endsWith($this->absoluteFileName, $type);
     }
@@ -140,7 +140,7 @@ class File
      * scans a directory and returns a list of Files
      * @return File[]
      */
-    public function scanDir() : array
+    public function scanDir(): array
     {
         // only possible in directories
         if (!$this->isDir()) {
@@ -196,7 +196,7 @@ class File
      *
      * @return File[]
      */
-    public function findFileList(string $fileSuffix) : array
+    public function findFileList(string $fileSuffix): array
     {
         if (!$this->isDir()) {
             return [];

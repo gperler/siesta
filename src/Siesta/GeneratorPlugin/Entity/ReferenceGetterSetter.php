@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -21,7 +21,7 @@ class ReferenceGetterSetter extends BasePlugin
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         $useClassList = [];
         foreach ($entity->getReferenceList() as $reference) {
@@ -44,16 +44,18 @@ class ReferenceGetterSetter extends BasePlugin
     /**
      * @return string[]
      */
-    public function getDependantPluginList() : array
+    public function getDependantPluginList(): array
     {
-        return ['Siesta\GeneratorPlugin\Entity\MemberPlugin'];
+        return [
+            MemberPlugin::class,
+        ];
     }
 
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 
@@ -65,8 +67,9 @@ class ReferenceGetterSetter extends BasePlugin
 
     /**
      * @param Reference $reference
+     * @return void
      */
-    protected function generateReferenceGetter(Reference $reference)
+    protected function generateReferenceGetter(Reference $reference): void
     {
         $foreignEntity = $reference->getForeignEntity();
         $methodName = 'get' . $reference->getMethodName();
@@ -93,7 +96,7 @@ class ReferenceGetterSetter extends BasePlugin
      *
      * @return string
      */
-    protected function getFindByPKParameter(Reference $reference)
+    protected function getFindByPKParameter(Reference $reference): string
     {
         $parameterList = [];
 
@@ -108,7 +111,7 @@ class ReferenceGetterSetter extends BasePlugin
     /**
      * @param Reference $reference
      */
-    protected function generateReferenceSetter(Reference $reference)
+    protected function generateReferenceSetter(Reference $reference): void
     {
         $name = $reference->getName();
         $methodName = 'set' . $reference->getMethodName();

@@ -18,13 +18,13 @@ class MySQLConstraintReader
     /**
      * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
 
     /**
      * @var MySQLConstraint[][]
      */
-    private $constraintList;
+    private array $constraintList;
 
 
     /**
@@ -58,7 +58,7 @@ class MySQLConstraintReader
     /**
      *
      */
-    protected function readReferenceData()
+    protected function readReferenceData(): void
     {
         $sql = sprintf(self::SQL_GET_KEY_COLUMN_USAGE, $this->connection->getDatabase());
 
@@ -90,7 +90,7 @@ class MySQLConstraintReader
     /**
      *
      */
-    private function readReferentialConstraints()
+    private function readReferentialConstraints(): void
     {
         $sql = sprintf(self::SQL_GET_REFERENTIAL_CONSTRAINTS, $this->connection->getDatabase());
         $resultSet = $this->connection->query($sql);
@@ -113,7 +113,7 @@ class MySQLConstraintReader
      * @param string $tableName
      * @param MySQLConstraint $constraint
      */
-    private function addConstraint(string $tableName, MySQLConstraint $constraint)
+    private function addConstraint(string $tableName, MySQLConstraint $constraint): void
     {
         if (!isset($this->constraintList[$tableName])) {
             $this->constraintList[$tableName] = [];
@@ -129,7 +129,7 @@ class MySQLConstraintReader
      *
      * @return MySQLConstraint|null
      */
-    public function getConstraintByName(string $tableName, string $constraintName)
+    public function getConstraintByName(string $tableName, string $constraintName): ?MySQLConstraint
     {
         if (!isset($this->constraintList[$tableName])) {
             return null;

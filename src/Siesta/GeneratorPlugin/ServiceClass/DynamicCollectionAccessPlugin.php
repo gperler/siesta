@@ -25,7 +25,7 @@ class DynamicCollectionAccessPlugin extends BasePlugin
      * @param ClassGenerator $classGenerator
      * @throws ReflectionException
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
         if (!$this->entity->getIsDynamicCollectionTarget()) {
@@ -40,7 +40,7 @@ class DynamicCollectionAccessPlugin extends BasePlugin
     /**
      * @throws ReflectionException
      */
-    protected function generateDynamicCollectionManyAccess()
+    protected function generateDynamicCollectionManyAccess(): void
     {
         $dynamicAttributeList = DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this->entity);
         $className = $this->entity->getInstantiationClassName();
@@ -63,7 +63,7 @@ class DynamicCollectionAccessPlugin extends BasePlugin
     /**
      * @throws ReflectionException
      */
-    protected function generateDynamicCollectionDelete()
+    protected function generateDynamicCollectionDelete(): void
     {
         $dynamicAttributeList = DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this->entity);
         $pkAttributeList = $this->entity->getPrimaryKeyAttributeList();

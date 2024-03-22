@@ -21,7 +21,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    public function getEntity(Entity $entity, XMLEntity $xmlEntity)
+    public function getEntity(Entity $entity, XMLEntity $xmlEntity): void
     {
         $this->readEntityDataFromXML($entity, $xmlEntity);
         $this->readConstructorData($entity, $xmlEntity);
@@ -43,7 +43,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readEntityDataFromXML(Entity $entity, XMLEntity $xmlEntity)
+    protected function readEntityDataFromXML(Entity $entity, XMLEntity $xmlEntity): void
     {
         $entity->setClassShortName($xmlEntity->getClassShortName());
         $entity->setNamespaceName($xmlEntity->getNamespaceName());
@@ -59,7 +59,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readConstructorData(Entity $entity, XMLEntity $xmlEntity)
+    protected function readConstructorData(Entity $entity, XMLEntity $xmlEntity): void
     {
         $xmlConstructor = $xmlEntity->getXmlConstructor();
         if ($xmlConstructor === null) {
@@ -75,7 +75,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readServiceClassFromXML(Entity $entity, XMLEntity $xmlEntity)
+    protected function readServiceClassFromXML(Entity $entity, XMLEntity $xmlEntity): void
     {
         $xmlServiceClass = $xmlEntity->getXmlServiceClass();
         if ($xmlServiceClass === null) {
@@ -91,7 +91,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readAttributeListFromXML(Entity $entity, XMLEntity $xmlEntity)
+    protected function readAttributeListFromXML(Entity $entity, XMLEntity $xmlEntity): void
     {
         foreach ($xmlEntity->getXMLAttributeList() as $xmlAttribute) {
             $attribute = $entity->newAttribute();
@@ -104,7 +104,7 @@ class XMLEntityReader
      * @param Attribute $attribute
      * @param XMLAttribute $xmlAttribute
      */
-    protected function readAttributeFromXML(Attribute $attribute, XMLAttribute $xmlAttribute)
+    protected function readAttributeFromXML(Attribute $attribute, XMLAttribute $xmlAttribute): void
     {
         $attribute->setAutoValue($xmlAttribute->getAutoValue());
         $attribute->setDbType($xmlAttribute->getDbType());
@@ -122,7 +122,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readReferenceListFromXML(Entity $entity, XMLEntity $xmlEntity)
+    protected function readReferenceListFromXML(Entity $entity, XMLEntity $xmlEntity): void
     {
         foreach ($xmlEntity->getXMLReferenceList() as $xmlReference) {
             $reference = $entity->newReference();
@@ -135,7 +135,7 @@ class XMLEntityReader
      * @param Reference $reference
      * @param XMLReference $xmlReference
      */
-    protected function readReferenceFromXML(Reference $reference, XMLReference $xmlReference)
+    protected function readReferenceFromXML(Reference $reference, XMLReference $xmlReference): void
     {
         $reference->setName($xmlReference->getName());
         $reference->setConstraintName($xmlReference->getConstraintName());
@@ -154,7 +154,7 @@ class XMLEntityReader
      * @param ReferenceMapping $referenceMapping
      * @param XMLReferenceMapping $xmlReferenceMapping
      */
-    protected function readReferenceMappingFromXML(ReferenceMapping $referenceMapping, XMLReferenceMapping $xmlReferenceMapping)
+    protected function readReferenceMappingFromXML(ReferenceMapping $referenceMapping, XMLReferenceMapping $xmlReferenceMapping): void
     {
         $referenceMapping->setLocalAttributeName($xmlReferenceMapping->getLocalAttribute());
         $referenceMapping->setForeignAttributeName($xmlReferenceMapping->getForeignAttribute());
@@ -164,7 +164,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readIndexListFromXML(Entity $entity, XMLEntity $xmlEntity)
+    protected function readIndexListFromXML(Entity $entity, XMLEntity $xmlEntity): void
     {
         foreach ($xmlEntity->getXMLIndexList() as $xmlIndex) {
             $index = $entity->newIndex();
@@ -176,7 +176,7 @@ class XMLEntityReader
      * @param Index $index
      * @param XMLIndex $xmlIndex
      */
-    protected function readIndexFromXML(Index $index, XMLIndex $xmlIndex)
+    protected function readIndexFromXML(Index $index, XMLIndex $xmlIndex): void
     {
         $index->setName($xmlIndex->getName());
         $index->setIndexType($xmlIndex->getIndexType());
@@ -191,7 +191,7 @@ class XMLEntityReader
      * @param IndexPart $indexPart
      * @param XMLIndexPart $xmlIndexPart
      */
-    protected function readIndexPartFromXML(IndexPart $indexPart, XMLIndexPart $xmlIndexPart)
+    protected function readIndexPartFromXML(IndexPart $indexPart, XMLIndexPart $xmlIndexPart): void
     {
         $indexPart->setAttributeName($xmlIndexPart->getAttributeName());
         $indexPart->setLength($xmlIndexPart->getLength());
@@ -202,7 +202,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readCollectionListFromXML(Entity $entity, XMLEntity $xmlEntity)
+    protected function readCollectionListFromXML(Entity $entity, XMLEntity $xmlEntity): void
     {
         foreach ($xmlEntity->getXMLCollectionList() as $xmlCollection) {
             $collection = $entity->newCollection();
@@ -214,7 +214,7 @@ class XMLEntityReader
      * @param Collection $collection
      * @param XMLCollection $xmlCollection
      */
-    protected function readCollectionFromXML(Collection $collection, XMLCollection $xmlCollection)
+    protected function readCollectionFromXML(Collection $collection, XMLCollection $xmlCollection): void
     {
         $collection->setName($xmlCollection->getName());
         $collection->setForeignTable($xmlCollection->getForeignTable());
@@ -225,7 +225,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readCollectionManyListFromXML(Entity $entity, XMLEntity $xmlEntity)
+    protected function readCollectionManyListFromXML(Entity $entity, XMLEntity $xmlEntity): void
     {
         foreach ($xmlEntity->getXMLCollectionManyList() as $xmlCollectionMany) {
             $collectionMany = $entity->newCollectionMany();
@@ -237,7 +237,7 @@ class XMLEntityReader
      * @param CollectionMany $collectionMany
      * @param XMLCollectionMany $xmlCollectionMany
      */
-    protected function readCollectionManyFromXML(CollectionMany $collectionMany, XMLCollectionMany $xmlCollectionMany)
+    protected function readCollectionManyFromXML(CollectionMany $collectionMany, XMLCollectionMany $xmlCollectionMany): void
     {
         $collectionMany->setName($xmlCollectionMany->getName());
         $collectionMany->setForeignTable($xmlCollectionMany->getForeignTable());
@@ -248,7 +248,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readDynamicCollectionListFromXML(Entity $entity, XMLEntity $xmlEntity)
+    protected function readDynamicCollectionListFromXML(Entity $entity, XMLEntity $xmlEntity): void
     {
         foreach ($xmlEntity->getXMLDynamicCollectionList() as $xmlDynamicCollection) {
             $dynamicCollection = $entity->newDynamicCollection();
@@ -260,7 +260,7 @@ class XMLEntityReader
      * @param DynamicCollection $dynamicCollection
      * @param XMLDynamicCollection $xmlDynamicCollection
      */
-    protected function readDynamicCollectionFromXML(DynamicCollection $dynamicCollection, XMLDynamicCollection $xmlDynamicCollection)
+    protected function readDynamicCollectionFromXML(DynamicCollection $dynamicCollection, XMLDynamicCollection $xmlDynamicCollection): void
     {
         $dynamicCollection->setName($xmlDynamicCollection->getName());
         $dynamicCollection->setForeignTable($xmlDynamicCollection->getForeignTable());
@@ -270,7 +270,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readStoredProcedureListFromXML(Entity $entity, XMLEntity $xmlEntity)
+    protected function readStoredProcedureListFromXML(Entity $entity, XMLEntity $xmlEntity): void
     {
         foreach ($xmlEntity->getXMLStoredProcedureList() as $xmlStoredProcedure) {
             $storedProcedure = $entity->newStoredProcedure();
@@ -282,7 +282,7 @@ class XMLEntityReader
      * @param StoredProcedure $storedProcedure
      * @param XMLStoredProcedure $xmlStoredProcedure
      */
-    protected function readStoredProcedureFromXML(StoredProcedure $storedProcedure, XMLStoredProcedure $xmlStoredProcedure)
+    protected function readStoredProcedureFromXML(StoredProcedure $storedProcedure, XMLStoredProcedure $xmlStoredProcedure): void
     {
         $storedProcedure->setName($xmlStoredProcedure->getName());
         $storedProcedure->setResultType($xmlStoredProcedure->getResultType());
@@ -298,7 +298,7 @@ class XMLEntityReader
      * @param StoredProcedureParameter $storedProcedureParameter
      * @param XMLStoredProcedureParameter $xmlStoredProcedureParameter
      */
-    protected function readStoredProcedureParamFromXML(StoredProcedureParameter $storedProcedureParameter, XMLStoredProcedureParameter $xmlStoredProcedureParameter)
+    protected function readStoredProcedureParamFromXML(StoredProcedureParameter $storedProcedureParameter, XMLStoredProcedureParameter $xmlStoredProcedureParameter): void
     {
         $storedProcedureParameter->setName($xmlStoredProcedureParameter->getName());
         $storedProcedureParameter->setPhpType($xmlStoredProcedureParameter->getPhpType());
@@ -310,7 +310,7 @@ class XMLEntityReader
      * @param Entity $entity
      * @param XMLEntity $xmlEntity
      */
-    protected function readValueObjectFromXML(Entity $entity, XMLEntity $xmlEntity)
+    protected function readValueObjectFromXML(Entity $entity, XMLEntity $xmlEntity): void
     {
         foreach ($xmlEntity->getXMLValueObjectList() as $xmlValueObject) {
             $valueObject = $entity->newValueObject();

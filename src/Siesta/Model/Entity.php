@@ -27,113 +27,113 @@ class Entity
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $classShortName;
+    protected ?string $classShortName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $namespaceName;
+    protected ?string $namespaceName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $targetPath;
+    protected ?string $targetPath;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $tableName;
-
-    /**
-     * @var bool
-     */
-    protected $isDelimit;
+    protected ?string $tableName;
 
     /**
      * @var bool
      */
-    protected $isReplication;
+    protected bool $isDelimit;
 
     /**
      * @var bool
      */
-    protected $isDynamicCollectionTarget;
+    protected bool $isReplication;
 
     /**
-     * @var Constructor
+     * @var bool
      */
-    protected $constructor;
+    protected bool $isDynamicCollectionTarget;
 
     /**
-     * @var ServiceClass
+     * @var Constructor|null
      */
-    protected $serviceClass;
+    protected ?Constructor $constructor;
+
+    /**
+     * @var ServiceClass|null
+     */
+    protected ?ServiceClass $serviceClass;
 
     /**
      * @var Attribute[]
      */
-    protected $attributeList;
+    protected array $attributeList;
 
     /**
      * @var Reference[]
      */
-    protected $referenceList;
+    protected array $referenceList;
 
     /**
      * @var Index[]
      */
-    protected $indexList;
+    protected array $indexList;
 
     /**
      * @var Collection[]
      */
-    protected $collectionList;
+    protected array $collectionList;
 
     /**
      * @var CollectionMany[]
      */
-    protected $collectionManyList;
+    protected array $collectionManyList;
 
     /**
      * @var DynamicCollection[]
      */
-    protected $dynamicCollectionList;
+    protected array $dynamicCollectionList;
 
     /**
      * @var StoredProcedure[]
      */
-    protected $storedProcedureList;
+    protected array $storedProcedureList;
 
     /**
      * @var ValueObject[]
      */
-    protected $valueObjectList;
+    protected array $valueObjectList;
 
     /**
      * @var CollectionMany[]
      */
-    protected $foreignCollectionManyList;
+    protected array $foreignCollectionManyList;
 
     /**
-     * @var XMLEntity
+     * @var XMLEntity|null
      */
-    protected $xmlEntity;
+    protected ?XMLEntity $xmlEntity;
 
     /**
      * @var string[]
      */
-    protected $customAttributeList;
+    protected array $customAttributeList;
 
 
     /**
      * @var bool
      */
-    protected $hasChangedSinceLastGeneration;
+    protected bool $hasChangedSinceLastGeneration;
 
 
     /**
@@ -144,16 +144,26 @@ class Entity
     public function __construct(DataModel $dataModel)
     {
         $this->dataModel = $dataModel;
+        $this->classShortName = null;
+        $this->namespaceName = null;
+        $this->targetPath = null;
+        $this->tableName = null;
+        $this->isDelimit = false;
+        $this->isReplication = false;
         $this->isDynamicCollectionTarget = false;
+        $this->constructor = null;
+        $this->serviceClass = null;
         $this->attributeList = [];
         $this->referenceList = [];
         $this->indexList = [];
         $this->collectionList = [];
         $this->collectionManyList = [];
         $this->dynamicCollectionList = [];
-        $this->foreignCollectionManyList = [];
         $this->storedProcedureList = [];
         $this->valueObjectList = [];
+        $this->foreignCollectionManyList = [];
+        $this->xmlEntity = null;
+        $this->customAttributeList = [];
         $this->hasChangedSinceLastGeneration = true;
     }
 
@@ -287,7 +297,7 @@ class Entity
     /**
      * @throws ReflectionException
      */
-    public function update()
+    public function update(): void
     {
         foreach ($this->attributeList as $attribute) {
             $attribute->update();
@@ -313,7 +323,7 @@ class Entity
     }
 
 
-    public function setIsDynamicCollectionTarget()
+    public function setIsDynamicCollectionTarget(): void
     {
         if ($this->isDynamicCollectionTarget) {
             return;
@@ -363,11 +373,11 @@ class Entity
 
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
      * @return null|Attribute
      */
-    public function getAttributeByName(string $name = null)
+    public function getAttributeByName(string $name = null): ?Attribute
     {
         foreach ($this->attributeList as $attribute) {
             if ($attribute->getPhpName() === $name) {
@@ -379,11 +389,11 @@ class Entity
 
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
      * @return null|Reference
      */
-    public function getReferenceByName(string $name = null)
+    public function getReferenceByName(string $name = null): ?Reference
     {
         foreach ($this->referenceList as $reference) {
             if ($reference->getName() === $name) {
@@ -395,11 +405,11 @@ class Entity
 
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
      * @return null|Index
      */
-    public function getIndexByName(string $name = null)
+    public function getIndexByName(string $name = null): ?Index
     {
         foreach ($this->indexList as $index) {
             if ($index->getName() === $name) {
@@ -411,11 +421,11 @@ class Entity
 
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
      * @return null|Collection
      */
-    public function getCollectionByName(string $name = null)
+    public function getCollectionByName(string $name = null): ?Collection
     {
         foreach ($this->collectionList as $collection) {
             if ($collection->getName() === $name) {
@@ -427,11 +437,11 @@ class Entity
 
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
      * @return null|CollectionMany
      */
-    public function getCollectionManyByName(string $name = null)
+    public function getCollectionManyByName(string $name = null): ?CollectionMany
     {
         foreach ($this->collectionManyList as $collectionMany) {
             if ($collectionMany->getName() === $name) {
@@ -515,11 +525,11 @@ class Entity
 
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
      * @return null|StoredProcedure
      */
-    public function getStoredProcedureByName(string $name = null)
+    public function getStoredProcedureByName(string $name = null): ?StoredProcedure
     {
         foreach ($this->storedProcedureList as $storedProcedure) {
             if ($storedProcedure->getName() === $name) {
@@ -535,7 +545,7 @@ class Entity
      *
      * @return array
      */
-    public function getDatabaseSpecificAttributeList(string $databaseName)
+    public function getDatabaseSpecificAttributeList(string $databaseName): array
     {
         if ($this->xmlEntity === null) {
             return [];
@@ -549,7 +559,7 @@ class Entity
      *
      * @return null|string
      */
-    public function getCustomAttribute(string $name)
+    public function getCustomAttribute(string $name): ?string
     {
         return ArrayUtil::getFromArray($this->customAttributeList, $name);
     }
@@ -567,7 +577,7 @@ class Entity
     /**
      * @param string[] $customAttributeList
      */
-    public function setCustomAttributeList(array $customAttributeList)
+    public function setCustomAttributeList(array $customAttributeList): void
     {
         $this->customAttributeList = $customAttributeList;
     }
@@ -576,7 +586,7 @@ class Entity
     /**
      * @return string
      */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->getNamespaceName() . "\\" . $this->getClassShortName();
     }
@@ -585,16 +595,16 @@ class Entity
     /**
      * @return string
      */
-    public function getClassShortName()
+    public function getClassShortName(): ?string
     {
         return $this->classShortName;
     }
 
 
     /**
-     * @param string $classShortName
+     * @param string|null $classShortName
      */
-    public function setClassShortName(string $classShortName = null)
+    public function setClassShortName(string $classShortName = null): void
     {
         $this->classShortName = $classShortName;
     }
@@ -603,7 +613,7 @@ class Entity
     /**
      * @return string
      */
-    public function getServiceClassShortName()
+    public function getServiceClassShortName(): string
     {
         return $this->getClassShortName() . self::SERVICE_CLASS_SUFFIX;
     }
@@ -612,7 +622,7 @@ class Entity
     /**
      * @return string
      */
-    public function getServiceClassName()
+    public function getServiceClassName(): string
     {
         if ($this->serviceClass === null) {
             return $this->getClassName() . self::SERVICE_CLASS_SUFFIX;
@@ -624,7 +634,7 @@ class Entity
     /**
      * @return string
      */
-    public function getServiceGenerationClassName()
+    public function getServiceGenerationClassName(): string
     {
         return $this->getClassName() . self::SERVICE_CLASS_SUFFIX;
     }
@@ -633,7 +643,7 @@ class Entity
     /**
      * @return string
      */
-    public function getServiceGenerationClassNameShort()
+    public function getServiceGenerationClassNameShort(): string
     {
         return $this->getClassShortName() . self::SERVICE_CLASS_SUFFIX;
     }
@@ -652,9 +662,9 @@ class Entity
 
 
     /**
-     * @param string $targetPath
+     * @param string|null $targetPath
      */
-    public function setTargetPath(string $targetPath = null)
+    public function setTargetPath(string $targetPath = null): void
     {
         if ($targetPath !== null) {
             $this->targetPath = trim($targetPath, DIRECTORY_SEPARATOR);
@@ -665,16 +675,16 @@ class Entity
     /**
      * @return string
      */
-    public function getNamespaceName()
+    public function getNamespaceName(): ?string
     {
         return $this->namespaceName;
     }
 
 
     /**
-     * @param string $namespaceName
+     * @param string|null $namespaceName
      */
-    public function setNamespaceName(string $namespaceName = null)
+    public function setNamespaceName(string $namespaceName = null): void
     {
         if ($namespaceName !== null) {
             $this->namespaceName = trim($namespaceName, "\\");
@@ -685,7 +695,7 @@ class Entity
     /**
      * @return string
      */
-    public function getTableName()
+    public function getTableName(): ?string
     {
         if ($this->tableName !== null) {
             return $this->tableName;
@@ -698,16 +708,16 @@ class Entity
     /**
      * @return string
      */
-    public function getDelimitTableName()
+    public function getDelimitTableName(): string
     {
         return $this->getTableName() . self::DELIMIT_SUFFIX;
     }
 
 
     /**
-     * @param string $tableName
+     * @param string|null $tableName
      */
-    public function setTableName(string $tableName = null)
+    public function setTableName(string $tableName = null): void
     {
         $this->tableName = $tableName;
     }
@@ -716,7 +726,7 @@ class Entity
     /**
      * @return bool
      */
-    public function getIsDelimit()
+    public function getIsDelimit(): bool
     {
         return $this->isDelimit;
     }
@@ -725,7 +735,7 @@ class Entity
     /**
      * @param bool $isDelimit
      */
-    public function setIsDelimit(bool $isDelimit = false)
+    public function setIsDelimit(bool $isDelimit = false): void
     {
         $this->isDelimit = $isDelimit;
     }
@@ -743,7 +753,7 @@ class Entity
     /**
      * @param bool $isReplication
      */
-    public function setIsReplication(bool $isReplication = false)
+    public function setIsReplication(bool $isReplication = false): void
     {
         $this->isReplication = $isReplication;
     }
@@ -759,36 +769,36 @@ class Entity
 
 
     /**
-     * @return Constructor
+     * @return Constructor|null
      */
-    public function getConstructor()
+    public function getConstructor(): ?Constructor
     {
         return $this->constructor;
     }
 
 
     /**
-     * @param Constructor $constructor
+     * @param Constructor|null $constructor
      */
-    public function setConstructor(Constructor $constructor = null)
+    public function setConstructor(Constructor $constructor = null): void
     {
         $this->constructor = $constructor;
     }
 
 
     /**
-     * @return ServiceClass
+     * @return ServiceClass|null
      */
-    public function getServiceClass()
+    public function getServiceClass(): ?ServiceClass
     {
         return $this->serviceClass;
     }
 
 
     /**
-     * @param ServiceClass $serviceClass
+     * @param ServiceClass|null $serviceClass
      */
-    public function setServiceClass(ServiceClass $serviceClass = null)
+    public function setServiceClass(ServiceClass $serviceClass = null): void
     {
         $this->serviceClass = $serviceClass;
     }
@@ -812,7 +822,7 @@ class Entity
 
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getInstantiationClassName(): string
     {
@@ -829,7 +839,7 @@ class Entity
     /**
      * @return string
      */
-    public function getServiceClassInstantiationClassName()
+    public function getServiceClassInstantiationClassName(): string
     {
         if ($this->serviceClass === null) {
             return $this->getServiceGenerationClassName();
@@ -841,7 +851,7 @@ class Entity
     /**
      * @return null|string
      */
-    public function getServiceClassInstantiationClassNameShort()
+    public function getServiceClassInstantiationClassNameShort(): ?string
     {
         if ($this->serviceClass === null) {
             return $this->getServiceGenerationClassNameShort();
@@ -865,7 +875,7 @@ class Entity
     /**
      * @return null|string
      */
-    public function getServiceFactoryClass()
+    public function getServiceFactoryClass(): ?string
     {
         if ($this->serviceClass !== null) {
             return $this->serviceClass->getConstructFactoryClassName();
@@ -886,7 +896,7 @@ class Entity
     /**
      * @param CollectionMany $collectionMany
      */
-    public function addForeignCollectionManyList(CollectionMany $collectionMany)
+    public function addForeignCollectionManyList(CollectionMany $collectionMany): void
     {
         $this->foreignCollectionManyList[] = $collectionMany;
     }
@@ -895,7 +905,7 @@ class Entity
     /**
      * @param XMLEntity $xmlEntity
      */
-    public function setXmlEntity(XMLEntity $xmlEntity)
+    public function setXmlEntity(XMLEntity $xmlEntity): void
     {
         $this->xmlEntity = $xmlEntity;
     }
@@ -906,7 +916,7 @@ class Entity
      *
      * @return XMLAccess[]
      */
-    public function getXMLChildElementListByName(string $childName)
+    public function getXMLChildElementListByName(string $childName): array
     {
         return $this->xmlEntity->getXMLChildElementListByName($childName);
     }

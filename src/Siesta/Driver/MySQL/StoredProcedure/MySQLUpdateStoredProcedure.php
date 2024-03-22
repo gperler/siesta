@@ -16,12 +16,12 @@ class MySQLUpdateStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @var UpdateStatement
      */
-    protected $updateStatement;
+    protected UpdateStatement $updateStatement;
 
     /**
      * @var InsertStatement
      */
-    protected $insertStatement;
+    protected InsertStatement $insertStatement;
 
     /**
      * MySQLUpdateStoredProcedure constructor.
@@ -42,7 +42,7 @@ class MySQLUpdateStoredProcedure extends MySQLStoredProcedureBase
         $this->buildElements();
     }
 
-    protected function buildElements()
+    protected function buildElements(): void
     {
 
         $this->modifies = true;

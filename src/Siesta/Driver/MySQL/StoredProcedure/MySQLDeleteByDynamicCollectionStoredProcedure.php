@@ -30,7 +30,7 @@ class MySQLDeleteByDynamicCollectionStoredProcedure extends MySQLStoredProcedure
     /**
      * @return void
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
         $this->modifies = true;
 
@@ -46,7 +46,7 @@ class MySQLDeleteByDynamicCollectionStoredProcedure extends MySQLStoredProcedure
     /**
      * @return void
      */
-    protected function buildSignature()
+    protected function buildSignature(): void
     {
         $signatureList = [];
         foreach (DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this->entity) as $attribute) {
@@ -63,7 +63,7 @@ class MySQLDeleteByDynamicCollectionStoredProcedure extends MySQLStoredProcedure
     /**
      * @return void
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $whereList = [];
         foreach (DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this->entity) as $attribute) {

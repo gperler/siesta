@@ -17,17 +17,17 @@ class MySQLIndexReader
     /**
      * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * @var MySQLDatabase
      */
-    private $mySQLDatabase;
+    private MySQLDatabase $mySQLDatabase;
 
     /**
      * @var MySQLIndex[][]
      */
-    private $indexList;
+    private array $indexList;
 
 
     /**
@@ -62,7 +62,7 @@ class MySQLIndexReader
     /**
      * extracts index data
      */
-    protected function readIndexList()
+    protected function readIndexList(): void
     {
         $sql = sprintf(self::SQL_GET_INDEX_LIST, $this->connection->getDatabase());
 
@@ -96,7 +96,7 @@ class MySQLIndexReader
      * @param string $tableName
      * @param MySQLIndex $mySQLIndex
      */
-    private function addIndex(string $tableName, MySQLIndex $mySQLIndex)
+    private function addIndex(string $tableName, MySQLIndex $mySQLIndex): void
     {
         if (!isset($this->indexList[$tableName])) {
             $this->indexList[$tableName] = [];
@@ -110,13 +110,10 @@ class MySQLIndexReader
      * @param string $tableName
      * @param string $indexName
      *
-     * @return MySQLConstraint|null
+     * @return MySQLIndex|null
      */
-    private function getIndexByName(string $tableName, string $indexName)
+    private function getIndexByName(string $tableName, string $indexName): MySQLIndex|null
     {
-        if (!isset($this->indexList[$tableName])) {
-            return null;
-        }
         if (!isset($this->indexList[$tableName][$indexName])) {
             return null;
         }

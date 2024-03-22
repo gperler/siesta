@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -17,7 +17,7 @@ class ValueObjectPlugin extends BasePlugin
      *
      * @return array
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         $useStatementList = [];
 
@@ -32,7 +32,7 @@ class ValueObjectPlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 
@@ -46,7 +46,7 @@ class ValueObjectPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateMemberList()
+    protected function generateMemberList(): void
     {
         foreach ($this->entity->getValueObjectList() as $valueObject) {
             $this->generateMember($valueObject);
@@ -56,12 +56,17 @@ class ValueObjectPlugin extends BasePlugin
     /**
      * @param ValueObject $valueObject
      */
-    protected function generateMember(ValueObject $valueObject)
+    protected function generateMember(ValueObject $valueObject): void
     {
         $this->classGenerator->addProtectedProperty($valueObject->getPhpName(), $valueObject->getClassName(), 'null');
     }
 
-    protected function generateValueObjectGetter(ValueObject $valueObject)
+
+    /**
+     * @param ValueObject $valueObject
+     * @return void
+     */
+    protected function generateValueObjectGetter(ValueObject $valueObject): void
     {
         $memberName = '$this->' . $valueObject->getPhpName();
         $classShortName = $valueObject->getClassShortName();
@@ -83,7 +88,11 @@ class ValueObjectPlugin extends BasePlugin
         $method->addCodeLine('return ' . $memberName . ';');
     }
 
-    protected function generateValueObjectSetter(ValueObject $valueObject)
+    /**
+     * @param ValueObject $valueObject
+     * @return void
+     */
+    protected function generateValueObjectSetter(ValueObject $valueObject): void
     {
         $memberName = '$this->' . $valueObject->getPhpName();
         $classShortName = $valueObject->getClassShortName();

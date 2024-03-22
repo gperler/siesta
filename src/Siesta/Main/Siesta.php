@@ -30,54 +30,54 @@ class Siesta implements LoggerAwareInterface
     /**
      * @var ValidationLogger
      */
-    protected $validationLogger;
+    protected ValidationLogger $validationLogger;
 
     /**
      * @var XMLDirectoryScanner
      */
-    protected $directoryScanner;
+    protected XMLDirectoryScanner $directoryScanner;
 
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var GenericConfigLoader
      */
-    protected $genericConfigLoader;
+    protected GenericConfigLoader $genericConfigLoader;
 
     /**
      * @var Validator
      */
-    protected $validator;
+    protected Validator $validator;
 
     /**
      * @var MainGenerator
      */
-    protected $mainGenerator;
+    protected MainGenerator $mainGenerator;
 
     /**
      * @var Migrator
      */
-    protected $migrator;
+    protected Migrator $migrator;
 
     /**
-     * @var Connection
+     * @var Connection|null
      */
-    protected $connection;
+    protected ?Connection $connection;
 
     /**
      * @var DataModelUpdater
      */
-    protected $dataModelUpdater;
+    protected DataModelUpdater $dataModelUpdater;
 
     /**
      * time when the last time was generated
      *
      * @var int
      */
-    protected $lastGenerationTime;
+    protected int $lastGenerationTime;
 
 
     /**
@@ -85,6 +85,8 @@ class Siesta implements LoggerAwareInterface
      */
     public function __construct()
     {
+        $this->connection = null;
+
         $this->validationLogger = new ValidationLogger();
 
         $this->directoryScanner = new XMLDirectoryScanner($this->validationLogger);

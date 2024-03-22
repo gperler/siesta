@@ -8,10 +8,13 @@ use Nitria\ClassGenerator;
 use Nitria\Method;
 use ReflectionException;
 use Siesta\CodeGenerator\GeneratorHelper;
+use Siesta\Database\ConnectionFactory;
+use Siesta\Database\Escaper;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
 use Siesta\Model\PHPType;
+use Siesta\Util\SaveCycleDetector;
 
 /**
  * @author Gregor Müller
@@ -31,9 +34,9 @@ class SavePlugin extends BasePlugin
     public function getUseClassNameList(Entity $entity): array
     {
         return [
-            'Siesta\Database\Escaper',
-            'Siesta\Database\ConnectionFactory',
-            'Siesta\Util\SaveCycleDetector'
+            Escaper::class,
+            ConnectionFactory::class,
+            SaveCycleDetector::class,
         ];
     }
 
@@ -42,7 +45,7 @@ class SavePlugin extends BasePlugin
      * @param ClassGenerator $classGenerator
      * @throws ReflectionException
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
         $this->generateCreateSPCall();
@@ -52,7 +55,7 @@ class SavePlugin extends BasePlugin
     /**
      *
      */
-    protected function generateSaveMethod()
+    protected function generateSaveMethod(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_SAVE);
         $helper = new GeneratorHelper($method);
@@ -81,7 +84,7 @@ class SavePlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateCycleDetection(Method $method)
+    protected function generateCycleDetection(Method $method): void
     {
         $method->addIfStart('$cycleDetector === null');
         $method->addCodeLine('$cycleDetector = new SaveCycleDetector();');
@@ -98,7 +101,7 @@ class SavePlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateReferenceSave(Method $method)
+    protected function generateReferenceSave(Method $method): void
     {
         foreach ($this->entity->getReferenceList() as $reference) {
             $memberName = '$this->' . $reference->getName();
@@ -112,7 +115,7 @@ class SavePlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateEntitySave(Method $method)
+    protected function generateEntitySave(Method $method): void
     {
         $method->addCodeLine('$call = $this->' . self::METHOD_CREATE_SP_CALL_STATEMENT . '($connectionName);');
         $method->addCodeLine('$connection->execute($call);');
@@ -128,7 +131,7 @@ class SavePlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateCollectionSave(Method $method)
+    protected function generateCollectionSave(Method $method): void
     {
         foreach ($this->entity->getCollectionList() as $collection) {
             $method->addIfStart('$this->' . $collection->getName() . ' !== null');
@@ -143,7 +146,7 @@ class SavePlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateCollectionManySave(Method $method)
+    protected function generateCollectionManySave(Method $method): void
     {
         foreach ($this->entity->getCollectionManyList() as $collectionMany) {
             $method->addForeachStart('$this->' . $collectionMany->getName() . 'Mapping as $mapping');
@@ -155,7 +158,7 @@ class SavePlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateDynamicCollectionSave(Method $method)
+    protected function generateDynamicCollectionSave(Method $method): void
     {
         foreach ($this->entity->getDynamicCollectionList() as $dynamicCollection) {
             $method->addIfStart('$this->' . $dynamicCollection->getName() . ' !== null');
@@ -170,7 +173,7 @@ class SavePlugin extends BasePlugin
     /**
      * @throws ReflectionException
      */
-    protected function generateCreateSPCall()
+    protected function generateCreateSPCall(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_CREATE_SP_CALL_STATEMENT);
         $helper = new GeneratorHelper($method);
@@ -196,7 +199,7 @@ class SavePlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function createPrimaryKeyLookup(Method $method)
+    protected function createPrimaryKeyLookup(Method $method): void
     {
         foreach ($this->entity->getPrimaryKeyAttributeList() as $attribute) {
             $method->addCodeLine('$this->get' . $attribute->getMethodName() . '(true, $connectionName);');

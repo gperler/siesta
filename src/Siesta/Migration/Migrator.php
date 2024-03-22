@@ -22,27 +22,27 @@ class Migrator implements LoggerAwareInterface
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var DatabaseMetaData
      */
-    protected $databaseMetaData;
+    protected DatabaseMetaData $databaseMetaData;
 
     /**
      * @var DatabaseMigrator
      */
-    protected $databaseMigrator;
+    protected DatabaseMigrator $databaseMigrator;
 
     /**
      * @var Connection
      */
-    protected $connection;
+    protected Connection $connection;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    protected LoggerInterface $logger;
 
 
     /**
@@ -67,7 +67,7 @@ class Migrator implements LoggerAwareInterface
      * @param DataModel $dataModel
      * @param Connection $connection
      */
-    protected function setup(DataModel $dataModel, Connection $connection)
+    protected function setup(DataModel $dataModel, Connection $connection): void
     {
         $this->connection = $connection;
 
@@ -117,7 +117,7 @@ class Migrator implements LoggerAwareInterface
      * @param File $targetFile
      * @param bool $dropUnusedTables
      */
-    public function migrateToSQLFile(DataModel $dataModel, Connection $connection, File $targetFile, bool $dropUnusedTables = true)
+    public function migrateToSQLFile(DataModel $dataModel, Connection $connection, File $targetFile, bool $dropUnusedTables = true): void
     {
         $targetFile->createDirForFile();
         $this->setup($dataModel, $connection);

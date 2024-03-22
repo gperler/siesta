@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -13,32 +13,32 @@ class ReferenceMapping
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $localAttributeName;
+    protected ?string $localAttributeName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignAttributeName;
+    protected ?string $foreignAttributeName;
 
     /**
-     * @var Attribute
+     * @var Attribute|null
      */
-    protected $localAttribute;
+    protected ?Attribute $localAttribute;
 
     /**
-     * @var Attribute
+     * @var Attribute|null
      */
-    protected $foreignAttribute;
+    protected ?Attribute $foreignAttribute;
 
     /**
      * ReferenceMapping constructor.
@@ -50,12 +50,16 @@ class ReferenceMapping
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
+        $this->localAttributeName = null;
+        $this->foreignAttributeName = null;
+        $this->localAttribute = null;
+        $this->foreignAttribute = null;
     }
 
     /**
      * @param Entity $foreignEntity
      */
-    public function update(Entity $foreignEntity)
+    public function update(Entity $foreignEntity): void
     {
         $this->localAttribute = $this->entity->getAttributeByName($this->getLocalAttributeName());
         $this->foreignAttribute = $foreignEntity->getAttributeByName($this->getForeignAttributeName());
@@ -68,7 +72,7 @@ class ReferenceMapping
     /**
      * @return string
      */
-    public function getLocalAttributeName()
+    public function getLocalAttributeName(): ?string
     {
         return $this->localAttributeName;
     }
@@ -76,15 +80,15 @@ class ReferenceMapping
     /**
      * @return string
      */
-    public function getLocalColumnName()
+    public function getLocalColumnName(): string
     {
         return $this->localAttribute->getDBName();
     }
 
     /**
-     * @param string $localAttributeName
+     * @param string|null $localAttributeName
      */
-    public function setLocalAttributeName(string $localAttributeName = null)
+    public function setLocalAttributeName(string $localAttributeName = null): void
     {
         $this->localAttributeName = $localAttributeName;
     }
@@ -92,7 +96,7 @@ class ReferenceMapping
     /**
      * @return string
      */
-    public function getForeignAttributeName()
+    public function getForeignAttributeName(): ?string
     {
         return $this->foreignAttributeName;
     }
@@ -100,15 +104,15 @@ class ReferenceMapping
     /**
      * @return string
      */
-    public function getForeignColumnName()
+    public function getForeignColumnName(): string
     {
         return $this->foreignAttribute->getDBName();
     }
 
     /**
-     * @param string $foreignAttributeName
+     * @param string|null $foreignAttributeName
      */
-    public function setForeignAttributeName(string $foreignAttributeName = null)
+    public function setForeignAttributeName(string $foreignAttributeName = null): void
     {
         $this->foreignAttributeName = $foreignAttributeName;
     }
@@ -116,7 +120,7 @@ class ReferenceMapping
     /**
      * @return Attribute|null
      */
-    public function getLocalAttribute()
+    public function getLocalAttribute(): ?Attribute
     {
         return $this->localAttribute;
     }
@@ -124,7 +128,7 @@ class ReferenceMapping
     /**
      * @return Attribute|null
      */
-    public function getForeignAttribute()
+    public function getForeignAttribute(): ?Attribute
     {
         return $this->foreignAttribute;
     }
