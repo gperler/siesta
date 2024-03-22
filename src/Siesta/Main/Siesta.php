@@ -102,6 +102,8 @@ class Siesta implements LoggerAwareInterface
         $this->migrator = new Migrator();
 
         $this->dataModelUpdater = new NoUpdate();
+
+        $this->lastGenerationTime = null;
     }
 
 
