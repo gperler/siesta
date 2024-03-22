@@ -75,9 +75,9 @@ class Siesta implements LoggerAwareInterface
     /**
      * time when the last time was generated
      *
-     * @var int
+     * @var int|null
      */
-    protected int $lastGenerationTime;
+    protected ?int $lastGenerationTime;
 
 
     /**
