@@ -27,7 +27,7 @@ class StringUtil
      */
     public static function endsWith($haystack, $needle): bool
     {
-        return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+        return $needle === "" || mb_substr($haystack, -strlen($needle)) === $needle;
     }
 
     /**
@@ -85,6 +85,6 @@ class StringUtil
     {
         $end = self::getEndAfterLast($haystack, $needle);
         $length = -1 * (strlen($end) + strlen($needle));
-        return substr($haystack, 0, $length);
+        return mb_substr($haystack, 0, $length);
     }
 }

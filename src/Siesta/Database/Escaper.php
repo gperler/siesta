@@ -121,7 +121,7 @@ class Escaper
         }
 
         if ($maxLength !== 0 && $maxLength !== null) {
-            $value = substr($value, 0, $maxLength);
+            $value = mb_substr($value, 0, $maxLength);
         }
 
         return "'" . $connection->escape($value) . "'";

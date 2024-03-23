@@ -294,7 +294,7 @@ class StoredProcedureNaming
      */
     private function createUniqueShortName(string $original): string
     {
-        $newName = substr($original, 0, 48);
+        $newName = mb_substr($original, 0, 48);
         if ($this->isUnique($newName)) {
             $this->addName($original, $newName);
             return $newName;

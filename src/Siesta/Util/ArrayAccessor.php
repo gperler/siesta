@@ -89,7 +89,7 @@ class ArrayAccessor
         if ($value === null) {
             return null;
         }
-        return ($maxlength === null) ? $value : substr($value, 0, $maxlength);
+        return ($maxlength === null) ? $value : mb_substr($value, 0, $maxlength);
     }
 
     /**
