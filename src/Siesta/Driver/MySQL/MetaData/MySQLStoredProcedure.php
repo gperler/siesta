@@ -17,17 +17,17 @@ class MySQLStoredProcedure implements StoredProcedureDefinition
     /**
      * @var string
      */
-    private $procedureName;
+    private string $procedureName;
 
     /**
      * @var string
      */
-    private $createProcedureStatement;
+    private string $createProcedureStatement;
 
     /**
      * @var string
      */
-    private $dropProcedureStatement;
+    private string $dropProcedureStatement;
 
 
     /**
@@ -43,7 +43,7 @@ class MySQLStoredProcedure implements StoredProcedureDefinition
     /**
      * @param Connection $connection
      */
-    public function load(Connection $connection)
+    public function load(Connection $connection): void
     {
         $query = sprintf(self::SHOW_CREATE_PROCEDURE, $this->procedureName);
         $resultSet = $connection->query($query);
@@ -62,17 +62,17 @@ class MySQLStoredProcedure implements StoredProcedureDefinition
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDropProcedureStatement()
+    public function getDropProcedureStatement(): ?string
     {
         return $this->dropProcedureStatement;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreateProcedureStatement()
+    public function getCreateProcedureStatement(): ?string
     {
         return preg_replace('/\s+/', ' ', $this->createProcedureStatement);
     }
@@ -88,7 +88,7 @@ class MySQLStoredProcedure implements StoredProcedureDefinition
     /**
      * @param string $createProcedureStatement
      */
-    public function setCreateProcedureStatement(string $createProcedureStatement)
+    public function setCreateProcedureStatement(string $createProcedureStatement): void
     {
         $this->createProcedureStatement = $createProcedureStatement;
     }
@@ -96,7 +96,7 @@ class MySQLStoredProcedure implements StoredProcedureDefinition
     /**
      * @param string $dropProcedureStatement
      */
-    public function setDropProcedureStatement(string $dropProcedureStatement)
+    public function setDropProcedureStatement(string $dropProcedureStatement): void
     {
         $this->dropProcedureStatement = $dropProcedureStatement;
     }

@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use Siesta\Database\StoredProcedureNaming;
@@ -16,7 +17,7 @@ class MySQLSelectByReferenceStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @var Reference
      */
-    protected $reference;
+    protected Reference $reference;
 
     /**
      * SelectReferenceStoredProcedure constructor.
@@ -37,11 +38,11 @@ class MySQLSelectByReferenceStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
         $this->modifies = false;
 
-        $this->name = StoredProcedureNaming::getSelectByReferenceName($this->entity, $this->reference);;
+        $this->name = StoredProcedureNaming::getSelectByReferenceName($this->entity, $this->reference);
 
         $this->determineTableNames();
 
@@ -53,7 +54,7 @@ class MySQLSelectByReferenceStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildSignature()
+    protected function buildSignature(): void
     {
         $signatureList = [];
         foreach ($this->reference->getReferenceMappingList() as $referenceMapping) {
@@ -67,7 +68,7 @@ class MySQLSelectByReferenceStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $whereList = [];
         foreach ($this->reference->getReferenceMappingList() as $referenceMapping) {

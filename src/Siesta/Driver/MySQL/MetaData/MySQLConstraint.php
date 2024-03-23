@@ -28,29 +28,29 @@ class MySQLConstraint implements ConstraintMetaData
     const UPDATE_RULE = "UPDATE_RULE";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $constraintName;
+    protected ?string $constraintName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignTable;
+    protected ?string $foreignTable;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $onUpdate;
+    protected ?string $onUpdate;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $onDelete;
+    protected ?string $onDelete;
 
     /**
-     * @var
+     * @var MySQLConstraintMapping[]
      */
-    protected $constraintMappingList;
+    protected array $constraintMappingList;
 
 
     /**
@@ -65,7 +65,7 @@ class MySQLConstraint implements ConstraintMetaData
     /**
      * @param ResultSet $resultSet
      */
-    public function fromResultSet(ResultSet $resultSet)
+    public function fromResultSet(ResultSet $resultSet): void
     {
         $this->constraintName = $resultSet->getStringValue(self::CONSTRAINT_NAME);
         $this->foreignTable = $resultSet->getStringValue(self::REFERENCED_TABLE_NAME);
@@ -77,7 +77,7 @@ class MySQLConstraint implements ConstraintMetaData
     /**
      * @param ResultSet $resultSet
      */
-    public function addConstraint(ResultSet $resultSet)
+    public function addConstraint(ResultSet $resultSet): void
     {
         $constraintMapping = new MySQLConstraintMapping();
         $constraintMapping->fromResultSet($resultSet);
@@ -88,7 +88,7 @@ class MySQLConstraint implements ConstraintMetaData
     /**
      * @param ResultSet $resultSet
      */
-    public function addUpdateAndDeleteRule(ResultSet $resultSet)
+    public function addUpdateAndDeleteRule(ResultSet $resultSet): void
     {
         $this->onUpdate = $resultSet->getStringValue(self::UPDATE_RULE);
         $this->onDelete = $resultSet->getStringValue(self::DELETE_RULE);

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Database;
 
@@ -13,9 +13,9 @@ use Siesta\Exception\InvalidConfigurationException;
 class ConnectionFactory
 {
     /**
-     * @var ConnectionPool
+     * @var ConnectionPool|null
      */
-    private static $connectionPool;
+    private static ?ConnectionPool $connectionPool = null;
 
     /**
      * @param ConnectionData $connectionData
@@ -23,18 +23,17 @@ class ConnectionFactory
      * @throws ConnectException
      * @throws InvalidConfigurationException
      */
-    public static function addConnection(ConnectionData $connectionData)
+    public static function addConnection(ConnectionData $connectionData): void
     {
         self::getInstance()->addConnection($connectionData);
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
      * @return Connection
-     * @throws InvalidConfigurationException
      */
-    public static function getConnection(string $name = null) : Connection
+    public static function getConnection(string $name = null): Connection
     {
         return self::getInstance()->getConnection($name);
     }
@@ -42,10 +41,9 @@ class ConnectionFactory
     /**
      * @return ConnectionPool
      */
-    public static function getInstance() : ConnectionPool
+    public static function getInstance(): ConnectionPool
     {
-        if (!self::$connectionPool) {
-
+        if (self::$connectionPool === null) {
             self::$connectionPool = new ConnectionPool();
         }
         return self::$connectionPool;
@@ -54,7 +52,7 @@ class ConnectionFactory
     /**
      *
      */
-    public static function closeAll()
+    public static function closeAll(): void
     {
         self::getInstance()->closeAll();
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Database\Exception;
 
@@ -15,7 +15,7 @@ class ConnectException extends SQLException
     /**
      * @var ConnectionData
      */
-    protected $connectionData;
+    protected ConnectionData $connectionData;
 
     /**
      * @param ConnectionData $connectionData
@@ -31,7 +31,7 @@ class ConnectException extends SQLException
     /**
      * @return ConnectionData
      */
-    public function getConnectionData()
+    public function getConnectionData(): ConnectionData
     {
         return $this->connectionData;
     }
@@ -39,7 +39,7 @@ class ConnectException extends SQLException
     /**
      * @param ConnectionData $connectionData
      */
-    public function setConnectionData($connectionData)
+    public function setConnectionData(ConnectionData $connectionData): void
     {
         $this->connectionData = $connectionData;
     }

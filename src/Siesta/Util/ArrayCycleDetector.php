@@ -15,7 +15,7 @@ class ArrayCycleDetector implements CycleDetector
     /**
      * @var boolean[]
      */
-    private $visitedList;
+    private array $visitedList;
 
     /**
      *
@@ -26,8 +26,8 @@ class ArrayCycleDetector implements CycleDetector
     }
 
     /**
-     * @param $tableName
-     * @param $visitor
+     * @param string $tableName
+     * @param Comparable $visitor
      *
      * @return bool
      */

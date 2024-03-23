@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Database;
 
@@ -33,54 +33,54 @@ class ConnectionData
     const POST_CONNECT_STATEMENT_LIST = "postConnectStatementList";
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $name;
+    public ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $driver;
+    public ?string $driver;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $host;
+    public ?string $host;
 
     /**
-     * @var int
+     * @var int|null
      */
-    public $port;
+    public ?int $port;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $database;
+    public ?string $database;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $user;
+    public ?string $user;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $password;
+    public ?string $password;
 
     /**
      * @var string[]
      */
-    public $postConnectStatementList;
+    public array $postConnectStatementList;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $charSet;
+    public ?string $charSet;
 
     /**
-     * @var bool
+     * @var bool|null
      */
-    public $isDefault;
+    public ?bool $isDefault;
 
     /**
      * ConnectionData constructor.
@@ -97,7 +97,7 @@ class ConnectionData
      */
     public function __construct(string $name = null, string $driver = null, string $host = null, int $port = null, string $database = null, string $user = null, string $password = null, string $charSet = null, array $postConnectStatements = null)
     {
-        $this->postConnectStatementList = $postConnectStatements ? $postConnectStatements : [];
+        $this->postConnectStatementList = $postConnectStatements ?? [];
         $this->name = $name;
         $this->driver = $driver;
         $this->host = $host;
@@ -111,7 +111,7 @@ class ConnectionData
     /**
      * @param array $values
      */
-    public function fromArray(array $values)
+    public function fromArray(array $values): void
     {
         $this->name = ArrayUtil::getFromArray($values, self::NAME);
         $this->driver = ArrayUtil::getFromArray($values, self::DRIVER);
@@ -128,7 +128,7 @@ class ConnectionData
     /**
      * @return array
      */
-    public function toArray() : array
+    public function toArray(): array
     {
         return [
             self::NAME => $this->name,
@@ -147,7 +147,7 @@ class ConnectionData
     /**
      * @param string $statement
      */
-    public function addPostConnectStatement(string $statement)
+    public function addPostConnectStatement(string $statement): void
     {
         $this->postConnectStatementList[] = $statement;
     }
@@ -155,7 +155,7 @@ class ConnectionData
     /**
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return implode(PHP_EOL, [
             "Name " . $this->name,

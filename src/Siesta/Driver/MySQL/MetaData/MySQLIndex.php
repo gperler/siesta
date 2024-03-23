@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\MetaData;
 
 use Siesta\Database\MetaData\IndexMetaData;
@@ -29,22 +30,22 @@ class MySQLIndex implements IndexMetaData
     /**
      * @var IndexPartMetaData[]
      */
-    protected $indexPartList;
+    protected array $indexPartList;
 
     /**
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @var bool
      */
-    protected $unique;
+    protected bool $unique;
 
     /**
      * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * MySQLIndex constructor.
@@ -57,7 +58,7 @@ class MySQLIndex implements IndexMetaData
     /**
      * @param ResultSet $resultSet
      */
-    public function fromResultSet(ResultSet $resultSet)
+    public function fromResultSet(ResultSet $resultSet): void
     {
         $this->name = $resultSet->getStringValue(self::INDEX_NAME);
         $this->unique = $resultSet->getIntegerValue(self::NON_UNIQUE) === 0;
@@ -68,7 +69,7 @@ class MySQLIndex implements IndexMetaData
     /**
      * @param ResultSet $resultSet
      */
-    public function addIndexPart(ResultSet $resultSet)
+    public function addIndexPart(ResultSet $resultSet): void
     {
         $indexPart = new MySQLIndexPart();
         $indexPart->fromResultSet($resultSet);
@@ -78,7 +79,7 @@ class MySQLIndex implements IndexMetaData
     /**
      * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -86,7 +87,7 @@ class MySQLIndex implements IndexMetaData
     /**
      * @return string
      */
-    public function getType() : string
+    public function getType(): string
     {
         return strtolower($this->type);
     }
@@ -94,7 +95,7 @@ class MySQLIndex implements IndexMetaData
     /**
      * @return bool
      */
-    public function getIsUnique() : bool
+    public function getIsUnique(): bool
     {
         return $this->unique;
     }
@@ -102,7 +103,7 @@ class MySQLIndex implements IndexMetaData
     /**
      * @return IndexPartMetaData[]
      */
-    public function getIndexPartList() : array
+    public function getIndexPartList(): array
     {
         return $this->indexPartList;
     }

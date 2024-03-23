@@ -9,24 +9,24 @@ class NamingStrategyRegistry
 {
 
     /**
-     * @var NamingStrategy
+     * @var NamingStrategy|null
      */
-    protected static $attributeNamingStrategy;
+    protected static ?NamingStrategy $attributeNamingStrategy = null;
 
     /**
-     * @var NamingStrategy
+     * @var NamingStrategy|null
      */
-    protected static $columnNamingStrategy;
+    protected static ?NamingStrategy $columnNamingStrategy = null;
 
     /**
-     * @var NamingStrategy
+     * @var NamingStrategy|null
      */
-    protected static $tableNamingStrategy;
+    protected static ?NamingStrategy $tableNamingStrategy = null;
 
     /**
-     * @var NamingStrategy
+     * @var NamingStrategy|null
      */
-    protected static $classNamingStrategy;
+    protected static ?NamingStrategy $classNamingStrategy = null;
 
     /**
      * @return NamingStrategy
@@ -43,7 +43,7 @@ class NamingStrategyRegistry
     /**
      * @param NamingStrategy $classNamingStrategy
      */
-    public static function setClassNamingStrategy(NamingStrategy $classNamingStrategy)
+    public static function setClassNamingStrategy(NamingStrategy $classNamingStrategy): void
     {
         self::$classNamingStrategy = $classNamingStrategy;
     }
@@ -63,7 +63,7 @@ class NamingStrategyRegistry
     /**
      * @param NamingStrategy $attributeNamingStrategy
      */
-    public static function setAttributeNamingStrategy(NamingStrategy $attributeNamingStrategy)
+    public static function setAttributeNamingStrategy(NamingStrategy $attributeNamingStrategy): void
     {
         self::$attributeNamingStrategy = $attributeNamingStrategy;
     }
@@ -84,7 +84,7 @@ class NamingStrategyRegistry
     /**
      * @param NamingStrategy $tableNamingStrategy
      */
-    public static function setTableNamingStrategy(NamingStrategy $tableNamingStrategy)
+    public static function setTableNamingStrategy(NamingStrategy $tableNamingStrategy): void
     {
         self::$tableNamingStrategy = $tableNamingStrategy;
     }
@@ -104,7 +104,7 @@ class NamingStrategyRegistry
     /**
      * @param NamingStrategy $columnNamingStrategy
      */
-    public static function setColumnNamingStrategy(NamingStrategy $columnNamingStrategy)
+    public static function setColumnNamingStrategy(NamingStrategy $columnNamingStrategy): void
     {
         self::$columnNamingStrategy = $columnNamingStrategy;
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Database;
 
@@ -19,22 +19,22 @@ class ConnectionPool
     /**
      * @var Driver[]
      */
-    protected $driverList;
+    protected array $driverList;
 
     /**
      * @var Connection[]
      */
-    protected $connectionList;
+    protected array $connectionList;
 
     /**
-     * @var Connection
+     * @var Connection|null
      */
-    protected $defaultConnection;
+    protected ?Connection $defaultConnection;
 
     /**
      * @var ConnectionData[]
      */
-    protected $connectionDataList;
+    protected array $connectionDataList;
 
     /**
      * ConnectionPool constructor.
@@ -50,7 +50,7 @@ class ConnectionPool
     /**
      * @param ConnectionData $connectionData
      */
-    public function addConnection(ConnectionData $connectionData)
+    public function addConnection(ConnectionData $connectionData): void
     {
         $connection = ArrayUtil::getFromArray($this->connectionList, $connectionData->name);
         if ($connection !== null) {
@@ -72,7 +72,7 @@ class ConnectionPool
      * @return Connection
      * @throws InvalidConfigurationException
      */
-    public function getConnection($name = null) : Connection
+    public function getConnection($name = null): Connection
     {
         if ($name === null) {
             return $this->getDefaultConnection();
@@ -90,7 +90,7 @@ class ConnectionPool
      * @return Connection
      * @throws InvalidConfigurationException
      */
-    public function getDefaultConnection() : Connection
+    public function getDefaultConnection(): Connection
     {
         if ($this->defaultConnection === null) {
             throw new InvalidConfigurationException(self::EXCEPTION_NO_DEFAULT);
@@ -101,13 +101,13 @@ class ConnectionPool
     /**
      *
      */
-    public function closeAll()
+    public function closeAll(): void
     {
         if ($this->defaultConnection !== null) {
             $this->defaultConnection->close();
         }
 
-        foreach ($this->connectionList as $name => $connection) {
+        foreach ($this->connectionList as $connection) {
             $connection->close();
         }
     }
@@ -118,7 +118,7 @@ class ConnectionPool
      * @return Driver
      * @throws InvalidConfigurationException
      */
-    protected function getDriver(ConnectionData $connectionData) : Driver
+    protected function getDriver(ConnectionData $connectionData): Driver
     {
         $driver = ArrayUtil::getFromArray($this->driverList, $connectionData->database);
 
@@ -135,7 +135,7 @@ class ConnectionPool
      * @return Driver
      * @throws InvalidConfigurationException
      */
-    protected function instantiateDriver(ConnectionData $connectionData) : Driver
+    protected function instantiateDriver(ConnectionData $connectionData): Driver
     {
         $class = $connectionData->driver;
 

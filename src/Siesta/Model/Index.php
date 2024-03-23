@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -13,27 +13,27 @@ class Index
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
      * @var bool
      */
-    protected $isUnique;
+    protected bool $isUnique;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $indexType;
+    protected ?string $indexType;
 
     /**
      * @var IndexPart[]
      */
-    protected $indexPartList;
+    protected array $indexPartList;
 
     /**
      * Index constructor.
@@ -43,13 +43,16 @@ class Index
     public function __construct(Entity $entity)
     {
         $this->entity = $entity;
+        $this->name = null;
+        $this->isUnique = false;
+        $this->indexType = null;
         $this->indexPartList = [];
     }
 
     /**
      * @return IndexPart
      */
-    public function newIndexPart() : IndexPart
+    public function newIndexPart(): IndexPart
     {
         $indexPart = new IndexPart($this->entity);
         $this->indexPartList[] = $indexPart;
@@ -59,7 +62,7 @@ class Index
     /**
      *
      */
-    public function update()
+    public function update(): void
     {
         foreach ($this->indexPartList as $indexPart) {
             $indexPart->update();
@@ -67,17 +70,17 @@ class Index
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName(string $name = null)
+    public function setName(string $name = null): void
     {
         $this->name = $name;
     }
@@ -85,7 +88,7 @@ class Index
     /**
      * @return bool
      */
-    public function getIsUnique()
+    public function getIsUnique(): bool
     {
         return $this->isUnique;
     }
@@ -93,7 +96,7 @@ class Index
     /**
      * @param bool $isUnique
      */
-    public function setIsUnique(bool $isUnique = null)
+    public function setIsUnique(bool $isUnique = null): void
     {
         $this->isUnique = $isUnique;
     }
@@ -101,15 +104,15 @@ class Index
     /**
      * @return string
      */
-    public function getIndexType()
+    public function getIndexType(): string
     {
         return $this->indexType ? strtolower($this->indexType) : 'btree';
     }
 
     /**
-     * @param string $indexType
+     * @param string|null $indexType
      */
-    public function setIndexType(string $indexType = null)
+    public function setIndexType(string $indexType = null): void
     {
         $this->indexType = $indexType;
     }
@@ -117,7 +120,7 @@ class Index
     /**
      * @return IndexPart[]
      */
-    public function getIndexPartList()
+    public function getIndexPartList(): array
     {
         return $this->indexPartList;
     }

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -22,7 +22,7 @@ class CollectionManyAccess extends BasePlugin
      *
      * @return string
      */
-    public static function getGetterName(CollectionMany $collectionMany) : string
+    public static function getGetterName(CollectionMany $collectionMany): string
     {
         return 'get' . $collectionMany->getMethodName();
     }
@@ -32,7 +32,7 @@ class CollectionManyAccess extends BasePlugin
      *
      * @return string
      */
-    public static function getAddToCollectionName(CollectionMany $collectionMany) : string
+    public static function getAddToCollectionName(CollectionMany $collectionMany): string
     {
         return 'addTo' . $collectionMany->getMethodName();
     }
@@ -42,7 +42,7 @@ class CollectionManyAccess extends BasePlugin
      *
      * @return string
      */
-    public static function getDeleteFromCollectionName(CollectionMany $collectionMany) : string
+    public static function getDeleteFromCollectionName(CollectionMany $collectionMany): string
     {
         return 'deleteFrom' . $collectionMany->getMethodName();
     }
@@ -52,7 +52,7 @@ class CollectionManyAccess extends BasePlugin
      *
      * @return string
      */
-    public static function getDeleteFromAssigned(CollectionMany $collectionMany) : string
+    public static function getDeleteFromAssigned(CollectionMany $collectionMany): string
     {
         $foreignEntity = $collectionMany->getForeignEntity();
         return 'deleteAssigned' . $foreignEntity->getClassShortName();
@@ -63,7 +63,7 @@ class CollectionManyAccess extends BasePlugin
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         $useList = [];
         foreach ($entity->getCollectionManyList() as $collectionMany) {
@@ -102,7 +102,7 @@ class CollectionManyAccess extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 
@@ -117,7 +117,7 @@ class CollectionManyAccess extends BasePlugin
     /**
      * @param CollectionMany $collectionMany
      */
-    protected function generateCollectionManyGetter(CollectionMany $collectionMany)
+    protected function generateCollectionManyGetter(CollectionMany $collectionMany): void
     {
         $methodName = self::getGetterName($collectionMany);
         $foreignEntity = $collectionMany->getForeignEntity();
@@ -142,7 +142,7 @@ class CollectionManyAccess extends BasePlugin
      *
      * @return string
      */
-    protected function generateCollectionManyGetterSPCall(CollectionMany $collectionMany) : string
+    protected function generateCollectionManyGetterSPCall(CollectionMany $collectionMany): string
     {
         $foreignEntity = $collectionMany->getForeignEntity();
         $pkAttributeList = $this->entity->getPrimaryKeyAttributeList();
@@ -163,7 +163,7 @@ class CollectionManyAccess extends BasePlugin
     /**
      * @param CollectionMany $collectionMany
      */
-    protected function generateAddToCollection(CollectionMany $collectionMany)
+    protected function generateAddToCollection(CollectionMany $collectionMany): void
     {
         $methodName = self::getAddToCollectionName($collectionMany);
 
@@ -194,7 +194,7 @@ class CollectionManyAccess extends BasePlugin
     /**
      * @param CollectionMany $collectionMany
      */
-    public function generateDeleteFromCollection(CollectionMany $collectionMany)
+    public function generateDeleteFromCollection(CollectionMany $collectionMany): void
     {
 
         $foreignEntity = $collectionMany->getForeignEntity();
@@ -221,7 +221,7 @@ class CollectionManyAccess extends BasePlugin
     /**
      * @param CollectionMany $collectionMany
      */
-    public function generateDeleteAssigned(CollectionMany $collectionMany)
+    public function generateDeleteAssigned(CollectionMany $collectionMany): void
     {
         $foreignEntity = $collectionMany->getForeignEntity();
         $methodName = self::getDeleteFromAssigned($collectionMany);
@@ -247,7 +247,7 @@ class CollectionManyAccess extends BasePlugin
      * @param Method $method
      * @param CollectionMany $collectionMany
      */
-    protected function generateArraySlice(Method $method, CollectionMany $collectionMany)
+    protected function generateArraySlice(Method $method, CollectionMany $collectionMany): void
     {
         $foreignEntity = $collectionMany->getForeignEntity();
 
@@ -288,7 +288,7 @@ class CollectionManyAccess extends BasePlugin
      *
      * @return string
      */
-    protected function getMappingCompareForeignKey(CollectionMany $collectionMany) : string
+    protected function getMappingCompareForeignKey(CollectionMany $collectionMany): string
     {
         $foreignReference = $collectionMany->getForeignReference();
 
@@ -306,7 +306,7 @@ class CollectionManyAccess extends BasePlugin
      *
      * @return string
      */
-    protected function getEntityComparePrimaryKeyStatement(Entity $foreignEntity) : string
+    protected function getEntityComparePrimaryKeyStatement(Entity $foreignEntity): string
     {
         $compareList = [];
         foreach ($foreignEntity->getPrimaryKeyAttributeList() as $attribute) {
@@ -318,7 +318,11 @@ class CollectionManyAccess extends BasePlugin
         return implode(" && ", $compareList);
     }
 
-    protected function getIdNullCondition(Entity $foreignEntity) : string
+    /**
+     * @param Entity $foreignEntity
+     * @return string
+     */
+    protected function getIdNullCondition(Entity $foreignEntity): string
     {
         $nullCheck = [];
         foreach ($foreignEntity->getPrimaryKeyAttributeList() as $attribute) {
@@ -332,7 +336,7 @@ class CollectionManyAccess extends BasePlugin
      * @param GeneratorHelper $helper
      * @param CollectionMany $collectionMany
      */
-    protected function quoteParameter(Method $method, GeneratorHelper $helper, CollectionMany $collectionMany)
+    protected function quoteParameter(Method $method, GeneratorHelper $helper, CollectionMany $collectionMany): void
     {
         $foreignEntity = $collectionMany->getForeignEntity();
         $foreignPKList = $foreignEntity->getPrimaryKeyAttributeList();
@@ -355,7 +359,7 @@ class CollectionManyAccess extends BasePlugin
      *
      * @return string
      */
-    protected function getInvocationSignature(Entity $foreignEntity)
+    protected function getInvocationSignature(Entity $foreignEntity): string
     {
         $signaturePart = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
@@ -374,7 +378,7 @@ class CollectionManyAccess extends BasePlugin
      *
      * @return string
      */
-    protected function geVariableName(string $prefix, Entity $foreignEntity, Attribute $attribute)
+    protected function geVariableName(string $prefix, Entity $foreignEntity, Attribute $attribute): string
     {
         return '$' . $prefix . $foreignEntity->getTableName() . $attribute->getMethodName();
     }

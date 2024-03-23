@@ -9,7 +9,12 @@ use Siesta\Model\Entity;
 
 class DTOGenerator extends AbstractGenerator
 {
-    public function generate(Entity $entity, string $baseDir)
+    /**
+     * @param Entity $entity
+     * @param string $baseDir
+     * @return void
+     */
+    public function generate(Entity $entity, string $baseDir): void
     {
         $classGenerator = new ClassGenerator($entity->getClassName() . "DTO");
 

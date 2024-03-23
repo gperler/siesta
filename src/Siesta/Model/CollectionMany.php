@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -12,47 +12,47 @@ class CollectionMany
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignTable;
+    protected ?string $foreignTable;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $mappingTable;
+    protected ?string $mappingTable;
 
     /**
-     * @var Entity
+     * @var Entity|null
      */
-    protected $foreignEntity;
+    protected ?Entity $foreignEntity;
 
     /**
-     * @var Reference
+     * @var Reference|null
      */
-    protected $foreignReference;
+    protected ?Reference $foreignReference;
 
     /**
-     * @var Entity
+     * @var Entity|null
      */
-    protected $mappingEntity;
+    protected ?Entity $mappingEntity;
 
     /**
-     * @var Reference
+     * @var Reference|null
      */
-    protected $mappingReference;
+    protected ?Reference $mappingReference;
 
     /**
      * CollectionMany constructor.
@@ -64,12 +64,19 @@ class CollectionMany
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
+        $this->name = null;
+        $this->foreignTable = null;
+        $this->mappingTable = null;
+        $this->foreignEntity = null;
+        $this->foreignReference = null;
+        $this->mappingEntity = null;
+        $this->mappingReference = null;
     }
 
     /**
      *
      */
-    public function update()
+    public function update(): void
     {
         $this->updateForeignEntity();
 
@@ -81,7 +88,7 @@ class CollectionMany
     /**
      *
      */
-    protected function updateForeignEntity()
+    protected function updateForeignEntity(): void
     {
         $this->foreignEntity = $this->dataModel->getEntityByTableName($this->getForeignTable());
         if ($this->foreignEntity === null) {
@@ -93,7 +100,7 @@ class CollectionMany
     /**
      *
      */
-    protected function updateMappingEntity()
+    protected function updateMappingEntity(): void
     {
         $this->mappingEntity = $this->dataModel->getEntityByTableName($this->getMappingTable());
     }
@@ -101,7 +108,7 @@ class CollectionMany
     /**
      *
      */
-    protected function updateReferences()
+    protected function updateReferences(): void
     {
         if ($this->mappingEntity === null || $this->foreignEntity === null) {
             return;
@@ -122,9 +129,9 @@ class CollectionMany
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -132,47 +139,47 @@ class CollectionMany
     /**
      * @return string
      */
-    public function getMethodName()
+    public function getMethodName(): string
     {
         return ucfirst($this->getName());
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getForeignTable()
+    public function getForeignTable(): ?string
     {
         return $this->foreignTable;
     }
 
     /**
-     * @param string $foreignTable
+     * @param string|null $foreignTable
      */
-    public function setForeignTable($foreignTable)
+    public function setForeignTable(?string $foreignTable): void
     {
         $this->foreignTable = $foreignTable;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMappingTable()
+    public function getMappingTable(): ?string
     {
         return $this->mappingTable;
     }
 
     /**
-     * @param string $mappingTable
+     * @param string|null $mappingTable
      */
-    public function setMappingTable($mappingTable)
+    public function setMappingTable(?string $mappingTable): void
     {
         $this->mappingTable = $mappingTable;
     }
@@ -180,7 +187,7 @@ class CollectionMany
     /**
      * @return Entity|null
      */
-    public function getForeignEntity()
+    public function getForeignEntity(): ?Entity
     {
         return $this->foreignEntity;
     }
@@ -188,7 +195,7 @@ class CollectionMany
     /**
      * @return Reference|null
      */
-    public function getForeignReference()
+    public function getForeignReference(): ?Reference
     {
         return $this->foreignReference;
     }
@@ -196,7 +203,7 @@ class CollectionMany
     /**
      * @return Entity|null
      */
-    public function getMappingEntity()
+    public function getMappingEntity(): ?Entity
     {
         return $this->mappingEntity;
     }
@@ -210,9 +217,9 @@ class CollectionMany
     }
 
     /**
-     * @return Reference
+     * @return Reference|null
      */
-    public function getMappingReference()
+    public function getMappingReference(): ?Reference
     {
         return $this->mappingReference;
     }

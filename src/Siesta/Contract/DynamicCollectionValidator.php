@@ -21,6 +21,6 @@ interface DynamicCollectionValidator
      *
      * @return void
      */
-    public function validate(DataModel $dataModel, Entity $entity, DynamicCollection $dynamicCollection, ValidationLogger $logger);
+    public function validate(DataModel $dataModel, Entity $entity, DynamicCollection $dynamicCollection, ValidationLogger $logger): void;
 
 }

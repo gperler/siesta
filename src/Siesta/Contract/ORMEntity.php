@@ -4,5 +4,9 @@ namespace Siesta\Contract;
 
 interface ORMEntity
 {
-    public function arePrimaryKeyIdentical(ORMEntity $entity = null);
+    /**
+     * @param ORMEntity|null $entity
+     * @return bool
+     */
+    public function arePrimaryKeyIdentical(ORMEntity $entity = null) : bool;
 }

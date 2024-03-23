@@ -18,6 +18,6 @@ interface EntityValidator
      *
      * @return void
      */
-    public function validate(DataModel $dataModel, Entity $entity, ValidationLogger $logger);
+    public function validate(DataModel $dataModel, Entity $entity, ValidationLogger $logger): void;
 
 }

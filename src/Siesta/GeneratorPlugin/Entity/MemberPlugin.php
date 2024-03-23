@@ -18,7 +18,7 @@ class MemberPlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
         $this->generateStandardMember();
@@ -31,7 +31,7 @@ class MemberPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateStandardMember()
+    protected function generateStandardMember(): void
     {
         $this->classGenerator->addProtectedProperty("_existing", "bool", 'null');
     }
@@ -39,7 +39,7 @@ class MemberPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateAttributeMember()
+    protected function generateAttributeMember(): void
     {
         foreach ($this->entity->getAttributeList() as $attribute) {
             $this->classGenerator->addProtectedProperty($attribute->getPhpName(), $attribute->getFullyQualifiedTypeName(), 'null');
@@ -49,7 +49,7 @@ class MemberPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateReferenceMember()
+    protected function generateReferenceMember(): void
     {
         foreach ($this->entity->getReferenceList() as $reference) {
             $foreignEntity = $reference->getForeignEntity();
@@ -60,7 +60,7 @@ class MemberPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateCollectionMember()
+    protected function generateCollectionMember(): void
     {
         foreach ($this->entity->getCollectionList() as $collection) {
             $foreignEntity = $collection->getForeignEntity();
@@ -71,7 +71,7 @@ class MemberPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateCollectionManyMember()
+    protected function generateCollectionManyMember(): void
     {
         foreach ($this->entity->getCollectionManyList() as $collectionMany) {
             $foreignEntity = $collectionMany->getForeignEntity();

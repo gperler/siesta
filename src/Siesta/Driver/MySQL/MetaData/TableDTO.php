@@ -23,22 +23,22 @@ class TableDTO
     /**
      * @var string|null
      */
-    public $name;
+    public ?string $name;
 
     /**
      * @var string|null
      */
-    public $engine;
+    public ?string $engine;
 
     /**
      * @var string|null
      */
-    public $collation;
+    public ?string $collation;
 
     /**
      * @var bool|null
      */
-    public $autoincrement;
+    public ?bool $autoincrement;
 
 
     /**

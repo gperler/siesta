@@ -20,6 +20,6 @@ interface ValueObjectValidator
      *
      * @return void
      */
-    public function validate(DataModel $dataModel, Entity $entity, ValueObject $valueObject, ValidationLogger $logger);
+    public function validate(DataModel $dataModel, Entity $entity, ValueObject $valueObject, ValidationLogger $logger): void;
 
 }

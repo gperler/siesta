@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -20,59 +20,59 @@ class Reference
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $constraintName;
+    protected ?string $constraintName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignTable;
+    protected ?string $foreignTable;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $onDelete;
+    protected ?string $onDelete;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $onUpdate;
-
-    /**
-     * @var bool
-     */
-    protected $noConstraint;
+    protected ?string $onUpdate;
 
     /**
      * @var bool
      */
-    protected $collectionRefersTo;
+    protected bool $noConstraint;
+
+    /**
+     * @var bool
+     */
+    protected bool $collectionRefersTo;
 
     /**
      * @var ReferenceMapping[]
      */
-    protected $referenceMappingList;
+    protected array $referenceMappingList;
 
     // from here derived
 
     /**
-     * @var Entity
+     * @var Entity|null
      */
-    protected $foreignEntity;
+    protected ?Entity $foreignEntity;
 
     /**
      * Reference constructor.
@@ -84,13 +84,21 @@ class Reference
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
+        $this->name = null;
+        $this->constraintName = null;
+        $this->foreignTable = null;
+        $this->onDelete = null;
+        $this->onUpdate = null;
+        $this->noConstraint = false;
+        $this->collectionRefersTo = false;
         $this->referenceMappingList = [];
+        $this->foreignEntity = null;
     }
 
     /**
      * @return ReferenceMapping
      */
-    public function newReferenceMapping() : ReferenceMapping
+    public function newReferenceMapping(): ReferenceMapping
     {
         $referenceMapping = new ReferenceMapping($this->dataModel, $this->entity);
         $this->referenceMappingList[] = $referenceMapping;
@@ -100,7 +108,7 @@ class Reference
     /**
      *
      */
-    public function update()
+    public function update(): void
     {
         $this->foreignEntity = $this->dataModel->getEntityByTableName($this->getForeignTable());
         if ($this->foreignEntity === null) {
@@ -116,7 +124,7 @@ class Reference
     /**
      * @return string
      */
-    public function getConstraintName() : string
+    public function getConstraintName(): string
     {
         if ($this->constraintName !== null) {
             return $this->constraintName;
@@ -125,25 +133,25 @@ class Reference
     }
 
     /**
-     * @param string $constraintName
+     * @param string|null $constraintName
      */
-    public function setConstraintName(string $constraintName = null)
+    public function setConstraintName(string $constraintName = null): void
     {
         $this->constraintName = $constraintName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName(string $name = null)
+    public function setName(string $name = null): void
     {
         $this->name = $name;
     }
@@ -151,55 +159,55 @@ class Reference
     /**
      * @return string
      */
-    public function getMethodName()
+    public function getMethodName(): string
     {
         return ucfirst($this->getName());
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getForeignTable()
+    public function getForeignTable(): ?string
     {
         return $this->foreignTable;
     }
 
     /**
-     * @param string $foreignTable
+     * @param string|null $foreignTable
      */
-    public function setForeignTable(string $foreignTable = null)
+    public function setForeignTable(string $foreignTable = null): void
     {
         $this->foreignTable = $foreignTable;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOnDelete()
+    public function getOnDelete(): ?string
     {
         return $this->onDelete !== null ? $this->onDelete : "restrict";
     }
 
     /**
-     * @param string $onDelete
+     * @param string|null $onDelete
      */
-    public function setOnDelete(string $onDelete = null)
+    public function setOnDelete(string $onDelete = null): void
     {
         $this->onDelete = $onDelete;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOnUpdate()
+    public function getOnUpdate(): ?string
     {
         return $this->onUpdate !== null ? $this->onUpdate : "restrict";
     }
 
     /**
-     * @param string $onUpdate
+     * @param string|null $onUpdate
      */
-    public function setOnUpdate(string $onUpdate = null)
+    public function setOnUpdate(string $onUpdate = null): void
     {
         $this->onUpdate = $onUpdate;
     }
@@ -215,7 +223,7 @@ class Reference
     /**
      * @param boolean $noConstraint
      */
-    public function setNoConstraint(bool $noConstraint)
+    public function setNoConstraint(bool $noConstraint): void
     {
         $this->noConstraint = $noConstraint;
     }
@@ -223,15 +231,15 @@ class Reference
     /**
      * @return ReferenceMapping[]
      */
-    public function getReferenceMappingList()
+    public function getReferenceMappingList(): array
     {
         return $this->referenceMappingList;
     }
 
     /**
-     * @return Entity
+     * @return Entity|null
      */
-    public function getForeignEntity()
+    public function getForeignEntity(): ?Entity
     {
         return $this->foreignEntity;
     }
@@ -239,7 +247,7 @@ class Reference
     /**
      * @return bool
      */
-    public function doesCollectionRefersTo()
+    public function doesCollectionRefersTo(): bool
     {
         return $this->collectionRefersTo;
     }
@@ -247,7 +255,7 @@ class Reference
     /**
      *
      */
-    public function setCollectionRefersTo()
+    public function setCollectionRefersTo(): void
     {
         $this->collectionRefersTo = true;
     }

@@ -10,25 +10,25 @@ class TestStoredProcedureDefinition implements StoredProcedureDefinition
     /**
      * @var string
      */
-    private $name;
+    private ?string $name;
 
     /**
-     * @var
+     * @var string|null
      */
-    private $dropStatement;
+    private ?string $dropStatement;
 
     /**
-     * @var
+     * @var string|null
      */
-    private $createStatement;
+    private ?string $createStatement;
 
     /**
      * TestStoredProcedureDefinition constructor.
-     * @param null $name
-     * @param null $dropStatement
-     * @param null $createStatement
+     * @param string $name
+     * @param string|null $dropStatement
+     * @param string|null $createStatement
      */
-    public function __construct($name = "", $dropStatement = null, $createStatement = null)
+    public function __construct(string $name = "", string $dropStatement = null, string $createStatement = null)
     {
         $this->name = $name;
         $this->dropStatement = $dropStatement;
@@ -38,7 +38,7 @@ class TestStoredProcedureDefinition implements StoredProcedureDefinition
     /**
      * @return null|string
      */
-    public function getDropProcedureStatement()
+    public function getDropProcedureStatement(): ?string
     {
         return $this->dropStatement;
     }
@@ -46,7 +46,7 @@ class TestStoredProcedureDefinition implements StoredProcedureDefinition
     /**
      * @return null|string
      */
-    public function getCreateProcedureStatement()
+    public function getCreateProcedureStatement(): ?string
     {
         return $this->createStatement;
     }

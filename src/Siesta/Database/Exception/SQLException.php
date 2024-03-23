@@ -12,14 +12,14 @@ class SQLException extends RuntimeException implements SiestaException
 {
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $sqlStatement;
+    protected ?string $sqlStatement;
 
     /**
-     * @param string $message
-     * @param int $code
-     * @param string $sqlStatement
+     * @param string|null $message
+     * @param int|null $code
+     * @param string|null $sqlStatement
      */
     public function __construct(string $message = null, int $code = null, string $sqlStatement = null)
     {
@@ -28,9 +28,9 @@ class SQLException extends RuntimeException implements SiestaException
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSQL()
+    public function getSQL(): ?string
     {
         return $this->sqlStatement;
     }

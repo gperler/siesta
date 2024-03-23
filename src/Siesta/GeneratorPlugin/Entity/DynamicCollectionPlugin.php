@@ -17,14 +17,22 @@ class DynamicCollectionPlugin extends BasePlugin
 {
 
 
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    /**
+     * @param Entity $entity
+     * @param ClassGenerator $classGenerator
+     * @return void
+     */
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
         $this->generateDynamicCollectionList();
         $this->addUseStatement();
     }
 
-    private function addUseStatement()
+    /**
+     * @return void
+     */
+    private function addUseStatement(): void
     {
         $constructor = $this->entity->getConstructor();
         if ($constructor !== null) {
@@ -42,7 +50,10 @@ class DynamicCollectionPlugin extends BasePlugin
         }
     }
 
-    protected function generateDynamicCollectionList()
+    /**
+     * @return void
+     */
+    protected function generateDynamicCollectionList(): void
     {
         foreach ($this->entity->getDynamicCollectionList() as $dynamicCollection) {
             $this->generateDynamicCollection($dynamicCollection);
@@ -51,29 +62,42 @@ class DynamicCollectionPlugin extends BasePlugin
 
     /**
      * @param DynamicCollection $dynamicCollection
+     * @return void
      */
-    protected function generateDynamicCollection(DynamicCollection $dynamicCollection)
+    protected function generateDynamicCollection(DynamicCollection $dynamicCollection): void
     {
 
         $this->addAttribute($dynamicCollection);
         $this->handleMany($dynamicCollection);
     }
 
-    protected function addAttribute(DynamicCollection $dynamicCollection)
+    /**
+     * @param DynamicCollection $dynamicCollection
+     * @return void
+     */
+    protected function addAttribute(DynamicCollection $dynamicCollection): void
     {
         $foreignEntity = $dynamicCollection->getForeignEntity();
         $type = $foreignEntity->getInstantiationClassName() . '[]';
         $this->classGenerator->addProtectedProperty($dynamicCollection->getName(), $type, 'null');
     }
 
-    protected function handleMany(DynamicCollection $dynamicCollection)
+    /**
+     * @param DynamicCollection $dynamicCollection
+     * @return void
+     */
+    protected function handleMany(DynamicCollection $dynamicCollection): void
     {
         $this->generateAddToCollection($dynamicCollection);
         $this->generateGetCollection($dynamicCollection);
         $this->generateDeleteFromCollection($dynamicCollection);
     }
 
-    protected function generateAddToCollection(DynamicCollection $dynamicCollection)
+    /**
+     * @param DynamicCollection $dynamicCollection
+     * @return void
+     */
+    protected function generateAddToCollection(DynamicCollection $dynamicCollection): void
     {
         $foreignEntity = $dynamicCollection->getForeignEntity();
         $foreignClass = $foreignEntity->getInstantiationClassName();
@@ -97,7 +121,11 @@ class DynamicCollectionPlugin extends BasePlugin
         $method->addCodeLine($member . '[] = $entity;');
     }
 
-    protected function generateGetCollection(DynamicCollection $dynamicCollection)
+    /**
+     * @param DynamicCollection $dynamicCollection
+     * @return void
+     */
+    protected function generateGetCollection(DynamicCollection $dynamicCollection): void
     {
         $methodName = 'get' . $dynamicCollection->getMethodName();
         $name = $dynamicCollection->getName();
@@ -125,7 +153,7 @@ class DynamicCollectionPlugin extends BasePlugin
      *
      * @return string
      */
-    protected function generateLoadCall(DynamicCollection $collection)
+    protected function generateLoadCall(DynamicCollection $collection): string
     {
         $foreignEntity = $collection->getForeignEntity();
         $serviceAccess = $foreignEntity->getServiceAccess();
@@ -139,7 +167,11 @@ class DynamicCollectionPlugin extends BasePlugin
 
     }
 
-    protected function generateDeleteFromCollection(DynamicCollection $dynamicCollection)
+    /**
+     * @param DynamicCollection $dynamicCollection
+     * @return void
+     */
+    protected function generateDeleteFromCollection(DynamicCollection $dynamicCollection): void
     {
         $foreignEntity = $dynamicCollection->getForeignEntity();
 
@@ -169,21 +201,26 @@ class DynamicCollectionPlugin extends BasePlugin
         $this->generateSliceCollectionElement($method, $dynamicCollection);
     }
 
-    protected function generateParameterNullCheck(DynamicCollection $dynamicCollection)
+    /**
+     * @param DynamicCollection $dynamicCollection
+     * @return string
+     */
+    protected function generateParameterNullCheck(DynamicCollection $dynamicCollection): string
     {
         $foreignEntity = $dynamicCollection->getForeignEntity();
         $checkList = [];
         foreach ($foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
             $checkList[] = '$' . $pkAttribute->getPhpName() . ' === null';
         }
-        return '($this->' . $dynamicCollection->getName() . ' === null) OR (' . implode(' AND ', $checkList, ) . ')';
+        return '($this->' . $dynamicCollection->getName() . ' === null) OR (' . implode(' AND ', $checkList) . ')';
     }
 
     /**
      * @param Method $method
      * @param DynamicCollection $dynamicCollection
+     * @return void
      */
-    protected function generateSliceCollectionElement(Method $method, DynamicCollection $dynamicCollection)
+    protected function generateSliceCollectionElement(Method $method, DynamicCollection $dynamicCollection): void
     {
         $collectionMember = '$this->' . $dynamicCollection->getName();
 
@@ -217,12 +254,19 @@ class DynamicCollectionPlugin extends BasePlugin
         return implode(" && ", $compareList);
     }
 
-    protected function getInvocationSignature(DynamicCollection $dynamicCollection)
+    /**
+     * @param DynamicCollection $dynamicCollection
+     * @return string
+     */
+    protected function getInvocationSignature(DynamicCollection $dynamicCollection): string
     {
         return 'self::TABLE_NAME, "' . $dynamicCollection->getName() . '", ' . $this->generatePKAccess();
     }
 
-    protected function generatePKAccess()
+    /**
+     * @return string
+     */
+    protected function generatePKAccess(): string
     {
         // TODO: Add to validation dynamic collection only for UUID and single PK Entities
         $attributeList = $this->entity->getPrimaryKeyAttributeList();

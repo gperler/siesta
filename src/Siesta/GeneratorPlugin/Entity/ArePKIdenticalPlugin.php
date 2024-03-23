@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siesta\GeneratorPlugin\Entity;
 
 use Nitria\ClassGenerator;
+use Siesta\Contract\Comparable;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\Model\Entity;
 
@@ -18,7 +19,9 @@ class ArePKIdenticalPlugin extends BasePlugin
      */
     public function getInterfaceList(): array
     {
-        return ['Siesta\Contract\Comparable'];
+        return [
+            Comparable::class
+        ];
     }
 
 
@@ -26,7 +29,7 @@ class ArePKIdenticalPlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
         $this->generateArePKIdentical();
@@ -35,7 +38,7 @@ class ArePKIdenticalPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateArePKIdentical()
+    protected function generateArePKIdentical(): void
     {
 
         $method = $this->classGenerator->addPublicMethod(self::METHOD_ARE_PK_IDENTICAL);

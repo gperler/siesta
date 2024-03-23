@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -19,16 +19,11 @@ class DeletePlugin extends BasePlugin
     const METHOD_DELETE = "delete";
 
     /**
-     * @var Entity
-     */
-    protected $entity;
-
-    /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      * @throws ReflectionException
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 
@@ -38,7 +33,7 @@ class DeletePlugin extends BasePlugin
     /**
      * @throws ReflectionException
      */
-    protected function generateDeleteMethod()
+    protected function generateDeleteMethod(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_DELETE);
         $helper = new GeneratorHelper($method);

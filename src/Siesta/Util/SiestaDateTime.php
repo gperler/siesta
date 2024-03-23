@@ -19,7 +19,7 @@ class SiestaDateTime extends DateTime
      * @param string $time
      * @param DateTimeZone|null $timezone
      */
-    public function __construct($time = 'now', DateTimeZone $timezone = null)
+    public function __construct(string $time = 'now', DateTimeZone $timezone = null)
     {
         try {
             parent::__construct($time, $timezone);
@@ -67,7 +67,7 @@ class SiestaDateTime extends DateTime
      *
      * @return void
      */
-    public function stringToTime(string $dateString)
+    public function stringToTime(string $dateString): void
     {
         $this->setTimestamp(strtotime($dateString));
     }
@@ -77,7 +77,7 @@ class SiestaDateTime extends DateTime
      *
      * @return bool
      */
-    public function equals(SiestaDateTime $dateTime)
+    public function equals(SiestaDateTime $dateTime): bool
     {
         return ($this->getTimestamp() === $dateTime->getTimestamp());
     }

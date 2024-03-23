@@ -16,5 +16,5 @@ interface DataModelValidator
      *
      * @return void
      */
-    public function validate(DataModel $dataModel, ValidationLogger $logger);
+    public function validate(DataModel $dataModel, ValidationLogger $logger): void;
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -14,16 +14,29 @@ class XMLValueObject
     const MEMBER_NAME = "memberName";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $className;
+    protected ?string $className;
 
-    protected $memberName;
+    /**
+     * @var string|null
+     */
+    protected ?string $memberName;
+
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->className = null;
+        $this->memberName = null;
+    }
 
     /**
      * @param XMLAccess $xmlAccess
      */
-    public function fromXML(XMLAccess $xmlAccess)
+    public function fromXML(XMLAccess $xmlAccess): void
     {
         $this->setClassName($xmlAccess->getAttribute(self::CLASS_NAME));
         $this->setMemberName($xmlAccess->getAttribute(self::MEMBER_NAME));
@@ -31,35 +44,36 @@ class XMLValueObject
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClassName()
+    public function getClassName(): ?string
     {
         return $this->className;
     }
 
     /**
-     * @param string $className
+     * @param string|null $className
      */
-    public function setClassName(string $className = null)
+    public function setClassName(?string $className): void
     {
         $this->className = $className;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMemberName()
+    public function getMemberName(): ?string
     {
         return $this->memberName;
     }
 
     /**
-     * @param string $memberName
+     * @param string|null $memberName
      */
-    public function setMemberName(string $memberName = null)
+    public function setMemberName(?string $memberName): void
     {
         $this->memberName = $memberName;
     }
+
 
 }

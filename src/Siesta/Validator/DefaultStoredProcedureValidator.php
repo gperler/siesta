@@ -18,22 +18,22 @@ class DefaultStoredProcedureValidator implements StoredProcedureValidator
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var StoredProcedure
      */
-    protected $storedProcedure;
+    protected StoredProcedure $storedProcedure;
 
     /**
      * @var ValidationLogger
      */
-    protected $logger;
+    protected ValidationLogger $logger;
 
     /**
      * @param DataModel $dataModel
@@ -41,7 +41,7 @@ class DefaultStoredProcedureValidator implements StoredProcedureValidator
      * @param StoredProcedure $storedProcedure
      * @param ValidationLogger $logger
      */
-    public function validate(DataModel $dataModel, Entity $entity, StoredProcedure $storedProcedure, ValidationLogger $logger)
+    public function validate(DataModel $dataModel, Entity $entity, StoredProcedure $storedProcedure, ValidationLogger $logger): void
     {
         $this->logger = $logger;
         $this->dataModel = $dataModel;
@@ -52,17 +52,17 @@ class DefaultStoredProcedureValidator implements StoredProcedureValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getEntityName()
+    protected function getEntityName(): ?string
     {
         return $this->entity->getClassShortName();
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getStoredProcedureName()
+    protected function getStoredProcedureName(): ?string
     {
         return $this->storedProcedure->getName();
     }
@@ -71,7 +71,7 @@ class DefaultStoredProcedureValidator implements StoredProcedureValidator
      * @param string $text
      * @param int $code
      */
-    protected function error(string $text, int $code)
+    protected function error(string $text, int $code): void
     {
         $this->logger->error($text, $code);
     }
@@ -79,7 +79,7 @@ class DefaultStoredProcedureValidator implements StoredProcedureValidator
     /**
      *
      */
-    protected function validateReturnType()
+    protected function validateReturnType(): void
     {
         $resultType = $this->storedProcedure->getResultType();
 

@@ -16,9 +16,9 @@ class UUIDSequencer implements Sequencer
     /**
      * @param string $tableName
      * @param string|null $connectionName
-     * @return string
+     * @return mixed
      */
-    public function getNextSequence(string $tableName, string $connectionName = null)
+    public function getNextSequence(string $tableName, string $connectionName = null): mixed
     {
         $microTime = dechex(intval(microtime(true) * 10000));
         if (strlen($microTime) === 11) {

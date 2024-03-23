@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Contract;
 
@@ -18,22 +18,22 @@ interface Plugin
      *
      * @return array
      */
-    public function getUseClassNameList(Entity $entity) : array;
+    public function getUseClassNameList(Entity $entity): array;
 
     /**
      * @return string[]
      */
-    public function getDependantPluginList() : array;
+    public function getDependantPluginList(): array;
 
     /**
      * @return array
      */
-    public function getInterfaceList() : array;
+    public function getInterfaceList(): array;
 
     /**
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator);
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void;
 
 }

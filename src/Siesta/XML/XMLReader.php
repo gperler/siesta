@@ -17,27 +17,27 @@ class XMLReader
     /**
      * @var bool
      */
-    protected $hasChangedSinceLastGeneration;
+    protected bool $hasChangedSinceLastGeneration;
 
     /**
      * @var DomDocument
      */
-    protected $xmlDocument;
+    protected DomDocument $xmlDocument;
 
     /**
      * @var string
      */
-    protected $fileName;
+    protected string $fileName;
 
     /**
      * @var XMLEntity[]
      */
-    protected $xmlEntityList;
+    protected array $xmlEntityList;
 
     /**
      * @var XMLEntityExtension[]
      */
-    protected $xmlEntityExtensionList;
+    protected array $xmlEntityExtensionList;
 
 
     /**
@@ -49,7 +49,6 @@ class XMLReader
     public function __construct(File $file, int $lastGenerationTime = null)
     {
         $this->hasChangedSinceLastGeneration = $this->hasChanged($file, $lastGenerationTime);
-
         $this->fileName = $file->getAbsoluteFileName();
         $this->xmlDocument = $file->loadAsXML();
         $this->xmlEntityList = [];
@@ -92,7 +91,7 @@ class XMLReader
     /**
      * @param DOMElement $entityElement
      */
-    protected function handleEntityElement(DOMElement $entityElement)
+    protected function handleEntityElement(DOMElement $entityElement): void
     {
         $entityReader = new XMLEntity();
         $entityReader->setHasChangedSinceLastGeneration($this->hasChangedSinceLastGeneration);
@@ -121,7 +120,7 @@ class XMLReader
     /**
      * @param DOMElement $entityExtensionElement
      */
-    protected function handleEntityExtension(DOMElement $entityExtensionElement)
+    protected function handleEntityExtension(DOMElement $entityExtensionElement): void
     {
         $entityExtension = new XMLEntityExtension();
         $entityExtension->setHasChangedSinceLastGeneration($this->hasChangedSinceLastGeneration);

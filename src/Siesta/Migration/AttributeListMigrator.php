@@ -17,32 +17,32 @@ class AttributeListMigrator
     /**
      * @var ColumnMetaData[]
      */
-    protected $columnList;
+    protected array $columnList;
 
     /**
      * @var Attribute[]
      */
-    protected $attributeList;
+    protected array $attributeList;
 
     /**
      * @var MigrationStatementFactory
      */
-    protected $migrationStatementFactory;
+    protected MigrationStatementFactory $migrationStatementFactory;
 
     /**
      * @var string[]
      */
-    protected $addStatementList;
+    protected array $addStatementList;
 
     /**
      * @var string[]
      */
-    protected $modifyStatementList;
+    protected array $modifyStatementList;
 
     /**
      * @var string[]
      */
-    protected $dropStatementList;
+    protected array $dropStatementList;
 
 
     /**
@@ -68,7 +68,7 @@ class AttributeListMigrator
      *
      * @return void
      */
-    public function createAlterStatementList()
+    public function createAlterStatementList(): void
     {
         $processedDatabaseList = [];
 
@@ -103,10 +103,10 @@ class AttributeListMigrator
      *
      * @return null|ColumnMetaData
      */
-    protected function getColumnByAttribute(Attribute $attribute)
+    protected function getColumnByAttribute(Attribute $attribute): ?ColumnMetaData
     {
         $databaseName = $attribute->getDBName();
-        return isset($this->columnList[$databaseName]) ? $this->columnList[$databaseName] : null;
+        return $this->columnList[$databaseName] ?? null;
     }
 
 
@@ -114,7 +114,7 @@ class AttributeListMigrator
      * @param ColumnMetaData|null $column
      * @param Attribute|null $attribute
      */
-    protected function createAlterStatement(ColumnMetaData $column = null, Attribute $attribute = null)
+    protected function createAlterStatement(ColumnMetaData $column = null, Attribute $attribute = null): void
     {
         // no column create it
         if ($column === null) {
@@ -165,7 +165,7 @@ class AttributeListMigrator
     /**
      * @param array $statementList
      */
-    protected function addModifyStatementList(array $statementList)
+    protected function addModifyStatementList(array $statementList): void
     {
         $this->modifyStatementList = array_merge($this->modifyStatementList, $statementList);
     }
@@ -174,7 +174,7 @@ class AttributeListMigrator
     /**
      * @param array $statementList
      */
-    protected function addAddStatementList(array $statementList)
+    protected function addAddStatementList(array $statementList): void
     {
         $this->addStatementList = array_merge($this->addStatementList, $statementList);
     }
@@ -183,7 +183,7 @@ class AttributeListMigrator
     /**
      * @param array $statementList
      */
-    protected function addDropStatementList(array $statementList)
+    protected function addDropStatementList(array $statementList): void
     {
         $this->dropStatementList = array_merge($this->dropStatementList, $statementList);
     }
@@ -192,7 +192,7 @@ class AttributeListMigrator
     /**
      * @return string[]
      */
-    public function getAddColumnStatementList()
+    public function getAddColumnStatementList(): array
     {
         return $this->addStatementList;
     }
@@ -201,7 +201,7 @@ class AttributeListMigrator
     /**
      * @return string[]
      */
-    public function getModifyColumnStatementList()
+    public function getModifyColumnStatementList(): array
     {
         return $this->modifyStatementList;
     }
@@ -210,7 +210,7 @@ class AttributeListMigrator
     /**
      * @return string[]
      */
-    public function getDropColumnStatementList()
+    public function getDropColumnStatementList(): array
     {
         return $this->dropStatementList;
     }

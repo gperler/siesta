@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Siesta\Exception;
 
 use RuntimeException;
@@ -16,7 +17,7 @@ class XMLNotValidException extends RuntimeException implements SiestaException
     /**
      * @var array
      */
-    protected $errorList;
+    protected array $errorList;
 
     /**
      * XMLNotValidException constructor.
@@ -31,7 +32,7 @@ class XMLNotValidException extends RuntimeException implements SiestaException
     /**
      * @return string[]
      */
-    public function getErrorList() : array
+    public function getErrorList(): array
     {
         $errorMessageList = [];
         foreach ($this->errorList as $error) {
@@ -48,7 +49,7 @@ class XMLNotValidException extends RuntimeException implements SiestaException
     /**
      * @return string
      */
-    public function getFileName() : string
+    public function getFileName(): string
     {
         $firstError = ArrayUtil::getFromArray($this->errorList, 0);
         if ($firstError === null) {

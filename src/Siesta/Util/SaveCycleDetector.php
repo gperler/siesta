@@ -12,7 +12,7 @@ class SaveCycleDetector implements CycleDetector
     /**
      * @var array
      */
-    private $visitedList;
+    private array $visitedList;
 
     /**
      *
@@ -23,12 +23,12 @@ class SaveCycleDetector implements CycleDetector
     }
 
     /**
-     * @param $tableName
-     * @param $visitor
+     * @param string $tableName
+     * @param Comparable $visitor
      *
      * @return bool
      */
-    public function canProceed(string $tableName, Comparable $visitor) : bool
+    public function canProceed(string $tableName, Comparable $visitor): bool
     {
         $entityList = ArrayUtil::getFromArray($this->visitedList, $tableName);
 
@@ -53,7 +53,7 @@ class SaveCycleDetector implements CycleDetector
      * @param $technicalName
      * @param $visitor
      */
-    private function addVisit($technicalName, $visitor)
+    private function addVisit($technicalName, $visitor): void
     {
         $this->visitedList [$technicalName] [] = $visitor;
     }

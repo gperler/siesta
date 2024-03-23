@@ -42,24 +42,24 @@ class DefaultEntityValidator implements EntityValidator
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var ValidationLogger
      */
-    protected $logger;
+    protected ValidationLogger $logger;
 
     /**
      * @param DataModel $dataModel
      * @param Entity $entity
      * @param ValidationLogger $logger
      */
-    public function validate(DataModel $dataModel, Entity $entity, ValidationLogger $logger)
+    public function validate(DataModel $dataModel, Entity $entity, ValidationLogger $logger): void
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
@@ -75,9 +75,9 @@ class DefaultEntityValidator implements EntityValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getEntityName()
+    protected function getEntityName(): ?string
     {
         return $this->entity->getClassShortName();
     }
@@ -86,7 +86,7 @@ class DefaultEntityValidator implements EntityValidator
      * @param string $text
      * @param int $code
      */
-    protected function error(string $text, int $code)
+    protected function error(string $text, int $code): void
     {
         $this->logger->error($text, $code);
     }
@@ -94,7 +94,7 @@ class DefaultEntityValidator implements EntityValidator
     /**
      *
      */
-    protected function validateClassname()
+    protected function validateClassname(): void
     {
         $className = $this->getEntityName();
         if (preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $className)) {
@@ -108,7 +108,7 @@ class DefaultEntityValidator implements EntityValidator
     /**
      *
      */
-    protected function validateNamespace()
+    protected function validateNamespace(): void
     {
         $namespace = $this->entity->getNamespaceName();
         if (preg_match('/^((?:\\\\{0,1}\\w+|\\w+\\\\{1,2})(?:\\w+\\\\{0,2})+)$/', $namespace) === 1) {
@@ -121,7 +121,7 @@ class DefaultEntityValidator implements EntityValidator
     /**
      *
      */
-    protected function validateTable()
+    protected function validateTable(): void
     {
         $tableName = $this->entity->getTableName();
         if ($tableName !== null) {
@@ -132,7 +132,7 @@ class DefaultEntityValidator implements EntityValidator
 
     }
 
-    protected function validateAttributeReferenceCollectionUnique()
+    protected function validateAttributeReferenceCollectionUnique(): void
     {
         $duplicateNameList = [];
         $nameList = [];
@@ -162,7 +162,7 @@ class DefaultEntityValidator implements EntityValidator
     /**
      *
      */
-    protected function validateAttributeDBNamesUnique()
+    protected function validateAttributeDBNamesUnique(): void
     {
 
         $duplicateNameList = [];
@@ -181,7 +181,7 @@ class DefaultEntityValidator implements EntityValidator
     /**
      *
      */
-    protected function validateIndexNameUnique()
+    protected function validateIndexNameUnique(): void
     {
         $duplicateNameList = [];
         $nameList = [];
@@ -199,7 +199,7 @@ class DefaultEntityValidator implements EntityValidator
      * @param array $duplicateNameList
      * @param $name
      */
-    protected function checkDuplicate(array &$nameList, array &$duplicateNameList, $name)
+    protected function checkDuplicate(array &$nameList, array &$duplicateNameList, $name): void
     {
         $existing = ArrayUtil::getFromArray($nameList, $name);
         if ($existing) {

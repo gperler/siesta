@@ -21,6 +21,6 @@ interface IndexPartMetaData
     /**
      * @return int|null
      */
-    public function getLength();
+    public function getLength(): ?int;
 }
 

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -16,27 +16,27 @@ class ValidationLogger implements LoggerAwareInterface
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    protected LoggerInterface $logger;
 
     /**
      * @var int
      */
-    protected $errorCount;
+    protected int $errorCount;
 
     /**
      * @var int[]
      */
-    protected $errorCodeList;
+    protected array $errorCodeList;
 
     /**
      * @var int
      */
-    protected $warningCount;
+    protected int $warningCount;
 
     /**
      * @var int[]
      */
-    protected $warningCodeList;
+    protected array $warningCodeList;
 
     /**
      * ValidationLogger constructor.
@@ -56,7 +56,7 @@ class ValidationLogger implements LoggerAwareInterface
      * @param LoggerInterface $logger
      *
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
@@ -64,7 +64,7 @@ class ValidationLogger implements LoggerAwareInterface
     /**
      * @return bool
      */
-    public function hasError() : bool
+    public function hasError(): bool
     {
         return $this->errorCount !== 0;
     }
@@ -72,7 +72,7 @@ class ValidationLogger implements LoggerAwareInterface
     /**
      * @return int
      */
-    public function getErrorCount() : int
+    public function getErrorCount(): int
     {
         return $this->errorCount;
     }
@@ -80,7 +80,7 @@ class ValidationLogger implements LoggerAwareInterface
     /**
      * @return int[]
      */
-    public function getErrorCodeList() : array
+    public function getErrorCodeList(): array
     {
         return $this->errorCodeList;
     }
@@ -90,7 +90,7 @@ class ValidationLogger implements LoggerAwareInterface
      *
      * @return bool
      */
-    public function hasErrorCode(int $code) : bool
+    public function hasErrorCode(int $code): bool
     {
         return in_array($code, $this->errorCodeList);
     }
@@ -98,7 +98,7 @@ class ValidationLogger implements LoggerAwareInterface
     /**
      * @return bool
      */
-    public function hasWarning() : bool
+    public function hasWarning(): bool
     {
         return $this->warningCount !== 0;
     }
@@ -106,7 +106,7 @@ class ValidationLogger implements LoggerAwareInterface
     /**
      * @return int
      */
-    public function getWarningCount() : int
+    public function getWarningCount(): int
     {
         return $this->warningCount;
     }
@@ -114,7 +114,7 @@ class ValidationLogger implements LoggerAwareInterface
     /**
      * @return array
      */
-    public function getWarningCodeList() : array
+    public function getWarningCodeList(): array
     {
         return $this->warningCodeList;
     }
@@ -124,7 +124,7 @@ class ValidationLogger implements LoggerAwareInterface
      *
      * @return bool
      */
-    public function hasWarningCode(int $code) : bool
+    public function hasWarningCode(int $code): bool
     {
         return in_array($code, $this->warningCodeList);
     }
@@ -132,7 +132,7 @@ class ValidationLogger implements LoggerAwareInterface
     /**
      * @return void
      */
-    public function printValidationSummary()
+    public function printValidationSummary(): void
     {
         $this->info($this->errorCount . " error(s)");
         $this->info($this->warningCount . " warning(s)");
@@ -143,7 +143,7 @@ class ValidationLogger implements LoggerAwareInterface
      *
      * @return void
      */
-    public function info(string $text)
+    public function info(string $text): void
     {
         $this->logger->info($text);
     }
@@ -152,7 +152,7 @@ class ValidationLogger implements LoggerAwareInterface
      * @param string $text
      * @param int $warningCode
      */
-    public function warn(string $text, int $warningCode)
+    public function warn(string $text, int $warningCode): void
     {
         $this->warningCodeList[] = $warningCode;
         $this->warningCount++;
@@ -165,7 +165,7 @@ class ValidationLogger implements LoggerAwareInterface
      *
      * @return void
      */
-    public function error(string $text, int $errorCode)
+    public function error(string $text, int $errorCode): void
     {
         $this->errorCodeList[] = $errorCode;
         $this->errorCount++;

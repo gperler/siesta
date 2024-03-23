@@ -53,8 +53,7 @@ class MySQLCreateStatementFactory implements CreateStatementFactory
     {
         $statementList = [];
         $tableBuilder = new MySQLTableCreator($entity);
-        $statementList = array_merge($tableBuilder->buildCreateTable(), $statementList);
-        return $statementList;
+        return array_merge($tableBuilder->buildCreateTable(), $statementList);
     }
 
     /**

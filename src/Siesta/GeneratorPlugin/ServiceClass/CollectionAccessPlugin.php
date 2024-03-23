@@ -65,7 +65,7 @@ class CollectionAccessPlugin extends BasePlugin
      * @param ClassGenerator $classGenerator
      * @throws ReflectionException
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 
@@ -82,7 +82,7 @@ class CollectionAccessPlugin extends BasePlugin
      * @param Reference $reference
      * @throws ReflectionException
      */
-    protected function generateSelectByReference(Reference $reference)
+    protected function generateSelectByReference(Reference $reference): void
     {
 
         $foreignEntity = $reference->getForeignEntity();
@@ -109,7 +109,7 @@ class CollectionAccessPlugin extends BasePlugin
      * @param Reference $reference
      * @throws ReflectionException
      */
-    protected function generateDeleteByReference(Reference $reference)
+    protected function generateDeleteByReference(Reference $reference): void
     {
 
         $methodName = self::getDeleteByReferenceName($reference);

@@ -20,5 +20,5 @@ interface AttributeValidator
      *
      * @return void
      */
-    public function validate(DataModel $dataModel, Entity $entity, Attribute $attribute, ValidationLogger $logger);
+    public function validate(DataModel $dataModel, Entity $entity, Attribute $attribute, ValidationLogger $logger): void;
 }

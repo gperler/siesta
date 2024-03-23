@@ -15,17 +15,17 @@ class MySQLSimpleResultSet implements ResultSet
     /**
      * @var array
      */
-    protected $next;
+    protected ?array $next;
 
     /**
      * @var mysqli_result
      */
-    protected $resultSet;
+    protected mysqli_result $resultSet;
 
     /**
      * MySQLSimpleResultSet constructor.
      *
-     * @param $resultSet
+     * @param mysqli_result $resultSet
      */
     public function __construct(mysqli_result $resultSet)
     {
@@ -37,9 +37,6 @@ class MySQLSimpleResultSet implements ResultSet
      */
     public function hasNext() : bool
     {
-        if (!$this->resultSet) {
-            return false;
-        }
         $this->next = $this->resultSet->fetch_assoc();
 
         return ($this->next !== null);
@@ -53,19 +50,17 @@ class MySQLSimpleResultSet implements ResultSet
         return $this->next;
     }
 
-    public function close()
+    public function close(): void
     {
-        if ($this->resultSet != null) {
-            $this->resultSet->free();
-        }
+        $this->resultSet->free();
     }
 
     /**
      * @param string $key
      *
-     * @return bool
+     * @return bool|null
      */
-    public function getBooleanValue(string $key)
+    public function getBooleanValue(string $key): ?bool
     {
         $value = ArrayUtil::getFromArray($this->next, $key);
         if (is_null($value)) {
@@ -80,7 +75,7 @@ class MySQLSimpleResultSet implements ResultSet
      *
      * @return int|null
      */
-    public function getIntegerValue(string $key)
+    public function getIntegerValue(string $key): ?int
     {
         $value = ArrayUtil::getFromArray($this->next, $key);
         if (is_null($value)) {
@@ -90,11 +85,11 @@ class MySQLSimpleResultSet implements ResultSet
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return float|null
      */
-    public function getFloatValue(string $key)
+    public function getFloatValue(string $key): ?float
     {
         $value = ArrayUtil::getFromArray($this->next, $key);
         if (is_null($value)) {
@@ -104,21 +99,21 @@ class MySQLSimpleResultSet implements ResultSet
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return null|string
      */
-    public function getStringValue(string $key)
+    public function getStringValue(string $key): ?string
     {
         return ArrayUtil::getFromArray($this->next, $key);
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return null|SiestaDateTime
      */
-    public function getDateTime(string $key)
+    public function getDateTime(string $key): ?SiestaDateTime
     {
         $value = ArrayUtil::getFromArray($this->next, $key);
         if (is_null($value)) {
@@ -133,7 +128,7 @@ class MySQLSimpleResultSet implements ResultSet
      *
      * @return mixed|null
      */
-    public function getObject(string $key)
+    public function getObject(string $key): mixed
     {
         $value = $this->getStringValue($key);
         if ($value === null) {
@@ -147,7 +142,7 @@ class MySQLSimpleResultSet implements ResultSet
      *
      * @return array|null
      */
-    public function getArray(string $key)
+    public function getArray(string $key): ?array
     {
         $value = $this->getStringValue($key);
         if ($value === null) {

@@ -7,14 +7,14 @@ namespace Siesta\Contract;
 interface ArraySerializable
 {
     /**
-     * @param array|null $data
+     * @param array $data
      *
      * @return void
      */
-    public function fromArray(array $data);
+    public function fromArray(array $data): void;
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function toArray();
+    public function toArray(): ?array;
 }

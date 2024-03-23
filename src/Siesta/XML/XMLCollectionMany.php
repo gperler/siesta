@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -18,28 +18,31 @@ class XMLCollectionMany
     const MAPPING_TABLE = "mappingTable";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignTable;
+    protected ?string $foreignTable;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $mappingTable;
+    protected ?string $mappingTable;
 
     /**
      * XMLCollectionMany constructor.
      */
     public function __construct()
     {
+        $this->name = null;
+        $this->foreignTable = null;
+        $this->mappingTable = null;
     }
 
-    public function fromXML(XMLAccess $xmlAccess)
+    public function fromXML(XMLAccess $xmlAccess): void
     {
         $this->setName($xmlAccess->getAttribute(self::NAME));
         $this->setForeignTable($xmlAccess->getAttribute(self::FOREIGN_TABLE));
@@ -47,49 +50,49 @@ class XMLCollectionMany
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getForeignTable()
+    public function getForeignTable(): ?string
     {
         return $this->foreignTable;
     }
 
     /**
-     * @param string $foreignTable
+     * @param string|null $foreignTable
      */
-    public function setForeignTable($foreignTable)
+    public function setForeignTable(?string $foreignTable): void
     {
         $this->foreignTable = $foreignTable;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMappingTable()
+    public function getMappingTable(): ?string
     {
         return $this->mappingTable;
     }
 
     /**
-     * @param string $mappingTable
+     * @param string|null $mappingTable
      */
-    public function setMappingTable($mappingTable)
+    public function setMappingTable(?string $mappingTable): void
     {
         $this->mappingTable = $mappingTable;
     }

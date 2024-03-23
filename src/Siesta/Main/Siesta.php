@@ -30,54 +30,54 @@ class Siesta implements LoggerAwareInterface
     /**
      * @var ValidationLogger
      */
-    protected $validationLogger;
+    protected ValidationLogger $validationLogger;
 
     /**
      * @var XMLDirectoryScanner
      */
-    protected $directoryScanner;
+    protected XMLDirectoryScanner $directoryScanner;
 
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var GenericConfigLoader
      */
-    protected $genericConfigLoader;
+    protected GenericConfigLoader $genericConfigLoader;
 
     /**
      * @var Validator
      */
-    protected $validator;
+    protected Validator $validator;
 
     /**
      * @var MainGenerator
      */
-    protected $mainGenerator;
+    protected MainGenerator $mainGenerator;
 
     /**
      * @var Migrator
      */
-    protected $migrator;
+    protected Migrator $migrator;
 
     /**
-     * @var Connection
+     * @var Connection|null
      */
-    protected $connection;
+    protected ?Connection $connection;
 
     /**
      * @var DataModelUpdater
      */
-    protected $dataModelUpdater;
+    protected DataModelUpdater $dataModelUpdater;
 
     /**
      * time when the last time was generated
      *
-     * @var int
+     * @var int|null
      */
-    protected $lastGenerationTime;
+    protected ?int $lastGenerationTime;
 
 
     /**
@@ -85,6 +85,8 @@ class Siesta implements LoggerAwareInterface
      */
     public function __construct()
     {
+        $this->connection = null;
+
         $this->validationLogger = new ValidationLogger();
 
         $this->directoryScanner = new XMLDirectoryScanner($this->validationLogger);
@@ -100,13 +102,15 @@ class Siesta implements LoggerAwareInterface
         $this->migrator = new Migrator();
 
         $this->dataModelUpdater = new NoUpdate();
+
+        $this->lastGenerationTime = null;
     }
 
 
     /**
      * @param LoggerInterface $logger
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->validationLogger->setLogger($logger);
         $this->migrator->setLogger($logger);
@@ -116,7 +120,7 @@ class Siesta implements LoggerAwareInterface
     /**
      * @param File $file
      */
-    public function addFile(File $file)
+    public function addFile(File $file): void
     {
         $this->directoryScanner->addFile($file);
     }
@@ -126,7 +130,7 @@ class Siesta implements LoggerAwareInterface
      * @param string $extension
      * @param string|null $baseDir
      */
-    public function addFileType(string $extension, string $baseDir = null)
+    public function addFileType(string $extension, string $baseDir = null): void
     {
         $this->directoryScanner->addFileExtension($extension, $baseDir, $this->lastGenerationTime);
     }
@@ -135,7 +139,7 @@ class Siesta implements LoggerAwareInterface
     /**
      * @param File $file
      */
-    public function setGenericGeneratorConfig(File $file)
+    public function setGenericGeneratorConfig(File $file): void
     {
         $this->genericConfigLoader->setConfigFile($file);
     }
@@ -144,7 +148,7 @@ class Siesta implements LoggerAwareInterface
     /**
      * @return Connection
      */
-    public function getConnection()
+    public function getConnection(): Connection
     {
         if ($this->connection !== null) {
             return $this->connection;
@@ -156,7 +160,7 @@ class Siesta implements LoggerAwareInterface
     /**
      * @param Connection $connection
      */
-    public function setConnection(Connection $connection)
+    public function setConnection(Connection $connection): void
     {
         $this->connection = $connection;
     }
@@ -166,7 +170,7 @@ class Siesta implements LoggerAwareInterface
      * @throws InvalidConfigurationException
      * @throws ReflectionException
      */
-    protected function setup()
+    protected function setup(): void
     {
         $genericConfig = $this->genericConfigLoader->loadAndValidate($this->validationLogger);
         $this->checkValidationError();
@@ -179,7 +183,7 @@ class Siesta implements LoggerAwareInterface
      * @throws InvalidConfigurationException
      * @throws ReflectionException
      */
-    protected function prepareModel()
+    protected function prepareModel(): void
     {
         $xmlEntityList = $this->directoryScanner->getXmlEntityList();
         $this->dataModel->addXMLEntityList($xmlEntityList);
@@ -199,7 +203,7 @@ class Siesta implements LoggerAwareInterface
      * @throws InvalidConfigurationException
      * @throws ReflectionException
      */
-    protected function generateClasses(string $baseDir)
+    protected function generateClasses(string $baseDir): void
     {
         $this->setup();
         $this->prepareModel();
@@ -229,7 +233,7 @@ class Siesta implements LoggerAwareInterface
      * @throws InvalidConfigurationException
      * @throws ReflectionException
      */
-    public function migrateToFile(string $baseDir, File $targetFile, bool $dropUnusedTables = true)
+    public function migrateToFile(string $baseDir, File $targetFile, bool $dropUnusedTables = true): void
     {
         $this->generateClasses($baseDir);
         $this->migrator->migrateToSQLFile($this->dataModel, $this->getConnection(), $targetFile, $dropUnusedTables);
@@ -239,7 +243,7 @@ class Siesta implements LoggerAwareInterface
     /**
      * @throws InvalidConfigurationException
      */
-    protected function checkValidationError()
+    protected function checkValidationError(): void
     {
         if (!$this->validationLogger->hasError()) {
             return;
@@ -251,7 +255,7 @@ class Siesta implements LoggerAwareInterface
     /**
      * @param NamingStrategy $strategy
      */
-    public function setTableNamingStrategy(NamingStrategy $strategy)
+    public function setTableNamingStrategy(NamingStrategy $strategy): void
     {
         NamingStrategyRegistry::setTableNamingStrategy($strategy);
     }
@@ -260,7 +264,7 @@ class Siesta implements LoggerAwareInterface
     /**
      * @param NamingStrategy $strategy
      */
-    public function setColumnNamingStrategy(NamingStrategy $strategy)
+    public function setColumnNamingStrategy(NamingStrategy $strategy): void
     {
         NamingStrategyRegistry::setColumnNamingStrategy($strategy);
     }
@@ -269,7 +273,7 @@ class Siesta implements LoggerAwareInterface
     /**
      * @param string|null $fileName
      */
-    public function setGenericConfigFileName(string $fileName = null)
+    public function setGenericConfigFileName(string $fileName = null): void
     {
         $this->genericConfigLoader->setConfigFileName($fileName);
     }
@@ -278,7 +282,7 @@ class Siesta implements LoggerAwareInterface
     /**
      * @param DataModelUpdater $dataModelUpdater
      */
-    public function setDataModelUpdater(DataModelUpdater $dataModelUpdater)
+    public function setDataModelUpdater(DataModelUpdater $dataModelUpdater): void
     {
         $this->dataModelUpdater = $dataModelUpdater;
     }

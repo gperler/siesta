@@ -30,24 +30,31 @@ class DefaultCollectionValidator implements CollectionValidator
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var Collection
      */
-    protected $collection;
+    protected Collection $collection;
 
     /**
      * @var ValidationLogger
      */
-    protected $logger;
+    protected ValidationLogger $logger;
 
-    public function validate(DataModel $dataModel, Entity $entity, Collection $collection, ValidationLogger $logger)
+    /**
+     * @param DataModel $dataModel
+     * @param Entity $entity
+     * @param Collection $collection
+     * @param ValidationLogger $logger
+     * @return void
+     */
+    public function validate(DataModel $dataModel, Entity $entity, Collection $collection, ValidationLogger $logger): void
     {
         $this->logger = $logger;
         $this->dataModel = $dataModel;
@@ -60,17 +67,17 @@ class DefaultCollectionValidator implements CollectionValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getEntityName()
+    protected function getEntityName(): ?string
     {
         return $this->entity->getClassShortName();
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getCollectionName()
+    protected function getCollectionName(): ?string
     {
         return $this->collection->getName();
     }
@@ -79,7 +86,7 @@ class DefaultCollectionValidator implements CollectionValidator
      * @param string $text
      * @param int $code
      */
-    protected function error(string $text, int $code)
+    protected function error(string $text, int $code): void
     {
         $this->logger->error($text, $code);
     }
@@ -87,7 +94,7 @@ class DefaultCollectionValidator implements CollectionValidator
     /**
      *
      */
-    protected function validateCollectionName()
+    protected function validateCollectionName(): void
     {
         $collectionName = $this->getCollectionName();
         if ($collectionName !== null) {
@@ -100,7 +107,7 @@ class DefaultCollectionValidator implements CollectionValidator
     /**
      *
      */
-    protected function validateForeignEntity()
+    protected function validateForeignEntity(): void
     {
         $foreignEntity = $this->collection->getForeignEntity();
         if ($foreignEntity !== null) {
@@ -113,7 +120,7 @@ class DefaultCollectionValidator implements CollectionValidator
     /**
      *
      */
-    protected function validateForeignReference()
+    protected function validateForeignReference(): void
     {
         $foreignReference = $this->collection->getForeignReference();
         if ($foreignReference !== null) {

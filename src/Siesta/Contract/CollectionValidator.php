@@ -21,6 +21,6 @@ interface CollectionValidator
      *
      * @return void
      */
-    public function validate(DataModel $dataModel, Entity $entity, Collection $collection, ValidationLogger $logger);
+    public function validate(DataModel $dataModel, Entity $entity, Collection $collection, ValidationLogger $logger): void;
 
 }

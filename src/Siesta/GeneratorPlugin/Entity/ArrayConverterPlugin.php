@@ -8,6 +8,7 @@ use Civis\Common\ArrayUtil;
 use Nitria\ClassGenerator;
 use Nitria\Method;
 use ReflectionException;
+use Siesta\Contract\ArraySerializable;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\GeneratorPlugin\ServiceClass\NewInstancePlugin;
 use Siesta\Model\Attribute;
@@ -17,6 +18,8 @@ use Siesta\Model\DynamicCollection;
 use Siesta\Model\Entity;
 use Siesta\Model\PHPType;
 use Siesta\Model\Reference;
+use Siesta\Util\ArrayAccessor;
+use Siesta\Util\ArrayCycleDetector;
 
 /**
  * @author Gregor Müller
@@ -45,9 +48,8 @@ class ArrayConverterPlugin extends BasePlugin
     public function getUseClassNameList(Entity $entity): array
     {
         $useClassList = [
-            'Siesta\Util\ArrayAccessor',
-            'Siesta\Util\ArrayCycleDetector'
-
+            ArrayAccessor::class,
+            ArrayCycleDetector::class,
         ];
         foreach ($entity->getReferenceList() as $reference) {
             $foreignEntity = $reference->getForeignEntity();
@@ -64,7 +66,9 @@ class ArrayConverterPlugin extends BasePlugin
      */
     public function getInterfaceList(): array
     {
-        return ['Siesta\Contract\ArraySerializable'];
+        return [
+            ArraySerializable::class,
+        ];
     }
 
     /**
@@ -72,7 +76,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param ClassGenerator $classGenerator
      * @throws ReflectionException
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
         $this->generateProperties();
@@ -83,7 +87,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      *
      */
-    protected function generateProperties()
+    protected function generateProperties(): void
     {
         $this->classGenerator->addProtectedProperty("_initialArray", "array", 'null');
     }
@@ -91,10 +95,11 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @throws ReflectionException
      */
-    protected function generateFromArray()
+    protected function generateFromArray(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_FROM_ARRAY);
         $method->addParameter("array", "data");
+        $method->setReturnType('void', false);
 
         $this->generateAttributeListFromArray($method);
 
@@ -112,7 +117,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param Method $method
      * @throws ReflectionException
      */
-    protected function generateAttributeListFromArray(Method $method)
+    protected function generateAttributeListFromArray(Method $method): void
     {
         $method->addCodeLine('$this->_initialArray = $data;');
         $method->addCodeLine('$arrayAccessor = new ArrayAccessor($data);');
@@ -127,7 +132,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param Method $method
      * @param Attribute $attribute
      */
-    protected function generateAttributeFromArray(Method $method, Attribute $attribute)
+    protected function generateAttributeFromArray(Method $method, Attribute $attribute): void
     {
         $name = $attribute->getPhpName();
 
@@ -144,7 +149,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param Attribute $attribute
      * @throws ReflectionException
      */
-    protected function generateObjectAttributeFromArray(Method $method, Attribute $attribute)
+    protected function generateObjectAttributeFromArray(Method $method, Attribute $attribute): void
     {
         if (!$attribute->getIsObject() || !$attribute->implementsArraySerializable()) {
             return;
@@ -171,7 +176,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateReferenceListFromArray(Method $method)
+    protected function generateReferenceListFromArray(Method $method): void
     {
         foreach ($this->entity->getReferenceList() as $reference) {
             $this->generateReferenceFromArray($method, $reference);
@@ -182,7 +187,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param Method $method
      * @param Reference $reference
      */
-    protected function generateReferenceFromArray(Method $method, Reference $reference)
+    protected function generateReferenceFromArray(Method $method, Reference $reference): void
     {
         $foreignEntity = $reference->getForeignEntity();
         $name = $reference->getName();
@@ -204,7 +209,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateCollectionListFromArray(Method $method)
+    protected function generateCollectionListFromArray(Method $method): void
     {
         foreach ($this->entity->getCollectionList() as $collection) {
             $this->generateCollectionFromArray($method, $collection);
@@ -215,7 +220,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param Method $method
      * @param Collection $collection
      */
-    protected function generateCollectionFromArray(Method $method, Collection $collection)
+    protected function generateCollectionFromArray(Method $method, Collection $collection): void
     {
         $foreignEntity = $collection->getForeignEntity();
         $name = $collection->getName();
@@ -241,7 +246,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateDynamicCollectionListFromArray(Method $method)
+    protected function generateDynamicCollectionListFromArray(Method $method): void
     {
         foreach ($this->entity->getDynamicCollectionList() as $dynamicCollection) {
             $this->generateDynamicCollectionFromArray($method, $dynamicCollection);
@@ -252,7 +257,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param Method $method
      * @param DynamicCollection $dynamicCollection
      */
-    protected function generateDynamicCollectionFromArray(Method $method, DynamicCollection $dynamicCollection)
+    protected function generateDynamicCollectionFromArray(Method $method, DynamicCollection $dynamicCollection): void
     {
         $foreignEntity = $dynamicCollection->getForeignEntity();
         $name = $dynamicCollection->getName();
@@ -278,7 +283,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function addCheckExisting(Method $method)
+    protected function addCheckExisting(Method $method): void
     {
         if (!$this->entity->hasPrimaryKey()) {
             return;
@@ -297,7 +302,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @throws ReflectionException
      */
-    protected function generateToArray()
+    protected function generateToArray(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_TO_ARRAY);
         $method->addParameter('Siesta\Contract\CycleDetector', 'cycleDetector', 'null');
@@ -319,7 +324,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateCycleDetection(Method $method)
+    protected function generateCycleDetection(Method $method): void
     {
         $method->addIfStart('$cycleDetector === null');
         $method->addCodeLine('$cycleDetector = new ArrayCycleDetector();');
@@ -337,7 +342,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param Method $method
      * @throws ReflectionException
      */
-    protected function generateAttributeListToArray(Method $method)
+    protected function generateAttributeListToArray(Method $method): void
     {
 
         $method->addCodeLine('$result = [');
@@ -358,7 +363,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @return string
      * @throws ReflectionException
      */
-    protected function generateAttributeToArray(Attribute $attribute)
+    protected function generateAttributeToArray(Attribute $attribute): string
     {
         $name = $attribute->getPhpName();
         $type = $attribute->getPhpType();
@@ -388,7 +393,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateReferenceListToArray(Method $method)
+    protected function generateReferenceListToArray(Method $method): void
     {
         foreach ($this->entity->getReferenceList() as $reference) {
             $this->generateReferenceToArray($method, $reference);
@@ -399,7 +404,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param Method $method
      * @param Reference $reference
      */
-    protected function generateReferenceToArray(Method $method, Reference $reference)
+    protected function generateReferenceToArray(Method $method, Reference $reference): void
     {
         $name = $reference->getName();
         $method->addIfStart('$this->' . $name . ' !== null');
@@ -410,7 +415,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateCollectionListToArray(Method $method)
+    protected function generateCollectionListToArray(Method $method): void
     {
         foreach ($this->entity->getCollectionList() as $collection) {
             $this->generateCollectionToArray($method, $collection);
@@ -421,7 +426,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param Method $method
      * @param Collection $collection
      */
-    protected function generateCollectionToArray(Method $method, Collection $collection)
+    protected function generateCollectionToArray(Method $method, Collection $collection): void
     {
         $name = $collection->getName();
         $method->addCodeLine('$result["' . $name . '"] = [];');
@@ -436,7 +441,7 @@ class ArrayConverterPlugin extends BasePlugin
     /**
      * @param Method $method
      */
-    protected function generateDynamicCollectionListToArray(Method $method)
+    protected function generateDynamicCollectionListToArray(Method $method): void
     {
         foreach ($this->entity->getDynamicCollectionList() as $dynamicCollection) {
             $this->generateDynamicCollectionToArray($method, $dynamicCollection);
@@ -447,7 +452,7 @@ class ArrayConverterPlugin extends BasePlugin
      * @param Method $method
      * @param DynamicCollection $dynamicCollection
      */
-    protected function generateDynamicCollectionToArray(Method $method, DynamicCollection $dynamicCollection)
+    protected function generateDynamicCollectionToArray(Method $method, DynamicCollection $dynamicCollection): void
     {
         $name = $dynamicCollection->getName();
         $method->addCodeLine('$result["' . $name . '"] = [];');

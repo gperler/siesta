@@ -18,67 +18,67 @@ class XMLEntityExtension
     /**
      * @var bool
      */
-    protected $hasChangedSinceLastGeneration;
+    protected bool $hasChangedSinceLastGeneration;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $tableName;
+    protected ?string $tableName;
 
     /**
-     * @var XMLConstructor
+     * @var XMLConstructor|null
      */
-    protected $xmlConstructor;
+    protected ?XMLConstructor $xmlConstructor;
 
     /**
-     * @var XMLServiceClass
+     * @var XMLServiceClass|null
      */
-    protected $xmlServiceClass;
+    protected ?XMLServiceClass $xmlServiceClass;
 
     /**
      * @var XMLAttribute[]
      */
-    protected $xmlAttributeList;
+    protected array $xmlAttributeList;
 
     /**
      * @var XMLReference[]
      */
-    protected $xmlReferenceList;
+    protected array $xmlReferenceList;
 
     /**
      * @var XMLIndex[]
      */
-    protected $xmlIndexList;
+    protected array $xmlIndexList;
 
     /**
      * @var XMLCollection[]
      */
-    protected $xmlCollectionList;
+    protected array $xmlCollectionList;
 
     /**
      * @var XMLCollectionMany[]
      */
-    protected $xmlCollectionManyList;
+    protected array $xmlCollectionManyList;
 
     /**
      * @var XMLDynamicCollection[]
      */
-    protected $xmlDynamicCollectionList;
+    protected array $xmlDynamicCollectionList;
 
     /**
      * @var XMLStoredProcedure[]
      */
-    protected $xmlStoredProcedureList;
+    protected array $xmlStoredProcedureList;
 
     /**
      * @var XMLValueObject[]
      */
-    protected $xmlValueObjectList;
+    protected array $xmlValueObjectList;
 
     /**
-     * @var XMLAccess
+     * @var XMLAccess|null
      */
-    protected $xmlAccess;
+    protected ?XMLAccess $xmlAccess;
 
 
     /**
@@ -86,6 +86,10 @@ class XMLEntityExtension
      */
     public function __construct()
     {
+        $this->hasChangedSinceLastGeneration = true;
+        $this->tableName = null;
+        $this->xmlConstructor = null;
+        $this->xmlServiceClass = null;
         $this->xmlAttributeList = [];
         $this->xmlReferenceList = [];
         $this->xmlIndexList = [];
@@ -94,14 +98,15 @@ class XMLEntityExtension
         $this->xmlDynamicCollectionList = [];
         $this->xmlStoredProcedureList = [];
         $this->xmlValueObjectList = [];
-        $this->hasChangedSinceLastGeneration = true;
+        $this->xmlAccess = null;
+
     }
 
 
     /**
      * @param XMLAccess $xmlAccess
      */
-    public function fromXML(XMLAccess $xmlAccess)
+    public function fromXML(XMLAccess $xmlAccess): void
     {
         $this->xmlAccess = $xmlAccess;
         $this->readXMLConstructor($xmlAccess);
@@ -121,7 +126,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readXMLConstructor(XMLAccess $xmlAccess)
+    protected function readXMLConstructor(XMLAccess $xmlAccess): void
     {
         $xmlConstructorAccess = $xmlAccess->getFirstChildByName(XMLConstructor::ELEMENT_CONSTRUCTOR_NAME);
         if ($xmlConstructorAccess === null) {
@@ -135,7 +140,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readXMLServiceClass(XMLAccess $xmlAccess)
+    protected function readXMLServiceClass(XMLAccess $xmlAccess): void
     {
         $xmlServiceClass = $xmlAccess->getFirstChildByName(XMLServiceClass::ELEMENT_SERVICE_CLASS_NAME);
         if ($xmlServiceClass === null) {
@@ -149,7 +154,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readEntityDataFromXML(XMLAccess $xmlAccess)
+    protected function readEntityDataFromXML(XMLAccess $xmlAccess): void
     {
         $this->setTableName($xmlAccess->getAttribute(self::TABLE_NAME));
     }
@@ -158,7 +163,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readAttributeDataFromXML(XMLAccess $xmlAccess)
+    protected function readAttributeDataFromXML(XMLAccess $xmlAccess): void
     {
         foreach ($xmlAccess->getXMLChildElementListByName(XMLAttribute::ELEMENT_ATTRIBUTE_NAME) as $xmlAttributeAccess) {
             $xmlAttribute = new XMLAttribute();
@@ -171,7 +176,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readReferenceDataFromXML(XMLAccess $xmlAccess)
+    protected function readReferenceDataFromXML(XMLAccess $xmlAccess): void
     {
         foreach ($xmlAccess->getXMLChildElementListByName(XMLReference::ELEMENT_REFERENCE_NAME) as $xmlReferenceAccess) {
             $xmlReference = new XMLReference();
@@ -184,7 +189,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readIndexDataFromXML(XMLAccess $xmlAccess)
+    protected function readIndexDataFromXML(XMLAccess $xmlAccess): void
     {
         foreach ($xmlAccess->getXMLChildElementListByName(XMLIndex::ELEMENT_INDEX_NAME) as $xmlIndexAccess) {
             $xmlIndex = new XMLIndex();
@@ -197,7 +202,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readCollectionFromXML(XMLAccess $xmlAccess)
+    protected function readCollectionFromXML(XMLAccess $xmlAccess): void
     {
         foreach ($xmlAccess->getXMLChildElementListByName(XMLCollection::ELEMENT_COLLECTION_NAME) as $xmlCollectionAccess) {
             $xmlCollection = new XMLCollection();
@@ -210,7 +215,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readDynamicCollection(XMLAccess $xmlAccess)
+    protected function readDynamicCollection(XMLAccess $xmlAccess): void
     {
         foreach ($xmlAccess->getXMLChildElementListByName(XMLDynamicCollection::ELEMENT_DYNAMIC_COLLECTION_NAME) as $xmlDynamicCollectionAccess) {
             $xmlDynamicCollection = new XMLDynamicCollection();
@@ -223,7 +228,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readCollectionManyFromXML(XMLAccess $xmlAccess)
+    protected function readCollectionManyFromXML(XMLAccess $xmlAccess): void
     {
         foreach ($xmlAccess->getXMLChildElementListByName(XMLCollectionMany::ELEMENT_COLLECTION_MANY_NAME) as $xmlCollectionManyAccess) {
             $xmlCollectionMany = new XMLCollectionMany();
@@ -236,7 +241,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readStoredProcedureDataFromXML(XMLAccess $xmlAccess)
+    protected function readStoredProcedureDataFromXML(XMLAccess $xmlAccess): void
     {
         foreach ($xmlAccess->getXMLChildElementListByName(XMLStoredProcedure::ELEMENT_SP_NAME) as $xmlSPAccess) {
             $xmlSP = new XMLStoredProcedure();
@@ -249,7 +254,7 @@ class XMLEntityExtension
     /**
      * @param XMLAccess $xmlAccess
      */
-    protected function readValueObjectFromXML(XMLAccess $xmlAccess)
+    protected function readValueObjectFromXML(XMLAccess $xmlAccess): void
     {
         foreach ($xmlAccess->getXMLChildElementListByName(XMLValueObject::ELEMENT_VALUE_OBJECT) as $xmlValueObjectAccess) {
             $xmlValueObject = new XMLValueObject();
@@ -273,7 +278,7 @@ class XMLEntityExtension
      *
      * @return XMLAccess[]
      */
-    public function getXMLChildElementListByName(string $childName)
+    public function getXMLChildElementListByName(string $childName): array
     {
         return $this->xmlAccess->getXMLChildElementListByName($childName);
     }
@@ -347,7 +352,7 @@ class XMLEntityExtension
      *
      * @return null|string
      */
-    public function getCustomAttribute(string $name)
+    public function getCustomAttribute(string $name): ?string
     {
         if ($this->xmlAccess === null) {
             return null;
@@ -366,36 +371,36 @@ class XMLEntityExtension
 
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTableName()
+    public function getTableName(): ?string
     {
         return $this->tableName;
     }
 
 
     /**
-     * @param string $tableName
+     * @param string|null $tableName
      */
-    public function setTableName(string $tableName = null)
+    public function setTableName(string $tableName = null): void
     {
         $this->tableName = $tableName;
     }
 
 
     /**
-     * @return XMLAccess
+     * @return XMLAccess|null
      */
-    public function getXmlAccess()
+    public function getXmlAccess(): ?XMLAccess
     {
         return $this->xmlAccess;
     }
 
 
     /**
-     * @param XMLAccess $xmlAccess
+     * @param XMLAccess|null $xmlAccess
      */
-    public function setXmlAccess($xmlAccess)
+    public function setXmlAccess(?XMLAccess $xmlAccess): void
     {
         $this->xmlAccess = $xmlAccess;
     }
@@ -420,7 +425,7 @@ class XMLEntityExtension
 
 
     /**
-     * @return bool
+     * @return bool|null
      */
     public function hasChangedSinceLastGeneration(): ?bool
     {

@@ -51,7 +51,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
      *
      * @return string
      */
-    protected function quote(string $name)
+    protected function quote(string $name): string
     {
         return MySQLDriver::quote($name);
     }

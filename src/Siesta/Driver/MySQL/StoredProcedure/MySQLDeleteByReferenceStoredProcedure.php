@@ -17,7 +17,7 @@ class MySQLDeleteByReferenceStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @var Reference
      */
-    protected $reference;
+    protected Reference $reference;
 
     /**
      * SelectReferenceStoredProcedure constructor.
@@ -38,7 +38,7 @@ class MySQLDeleteByReferenceStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
         $this->modifies = true;
 
@@ -54,7 +54,7 @@ class MySQLDeleteByReferenceStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildSignature()
+    protected function buildSignature(): void
     {
         $signatureList = [];
         foreach ($this->reference->getReferenceMappingList() as $referenceMapping) {
@@ -72,7 +72,7 @@ class MySQLDeleteByReferenceStoredProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $whereList = [];
         foreach ($this->reference->getReferenceMappingList() as $referenceMapping) {

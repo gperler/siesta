@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use RuntimeException;
@@ -18,33 +19,34 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
     /**
      * @var CollectionMany
      */
-    protected $collectionMany;
+    protected CollectionMany $collectionMany;
 
     /**
-     * @var Entity
+     * @var Entity|null
      */
-    protected $foreignEntity;
+    protected ?Entity $foreignEntity;
+
+    /**
+     * @var Reference|null
+     */
+    protected ?Reference $foreignReference;
+
+    /**
+     * @var Entity|null
+     */
+    protected ?Entity $mappingEntity;
 
     /**
      * @var Reference
      */
-    protected $foreignReference;
+    protected Reference $mappingReference;
+
 
     /**
-     * @var Entity
+     * @param DataModel $dataModel
+     * @param Entity $entity
+     * @param CollectionMany $collectionMany
      */
-    protected $mappingEntity;
-
-    /**
-     * @var Reference
-     */
-    protected $mappingReference;
-
-    /**
-     *
-     */
-    protected $reference;
-
     public function __construct(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany)
     {
         parent::__construct($dataModel, $entity);
@@ -60,7 +62,7 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
     /**
      *
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
 
         $this->modifies = false;
@@ -77,7 +79,7 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
     /**
      * @return void
      */
-    protected function buildSignature()
+    protected function buildSignature(): void
     {
         $signaturePart = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {
@@ -96,7 +98,7 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
     /**
      *
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $mappingTable = $this->quote($this->mappingEntity->getTableName());
         $whereStatement = $this->getWhereCondition();
@@ -106,7 +108,7 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
     /**
      * @return string
      */
-    protected function getWhereCondition() : string
+    protected function getWhereCondition(): string
     {
         $mappingTable = $this->mappingEntity->getTableName();
 
@@ -131,7 +133,7 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
      *
      * @return string
      */
-    protected function getCorrespondingColumnForPKAttribute(Reference $reference, Attribute $pkAttribute) : string
+    protected function getCorrespondingColumnForPKAttribute(Reference $reference, Attribute $pkAttribute): string
     {
         foreach ($reference->getReferenceMappingList() as $referenceMapping) {
             if ($referenceMapping->getForeignColumnName() === $pkAttribute->getDBName()) {
@@ -147,7 +149,7 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
      *
      * @return string
      */
-    protected function buildTableColumn(string $tableName, string $columnName) : string
+    protected function buildTableColumn(string $tableName, string $columnName): string
     {
         return $this->quote($tableName) . '.' . $this->quote($columnName);
     }
@@ -159,7 +161,7 @@ class MySQLDeleteCollectionManyAssignmentStoredProcedure extends MySQLStoredProc
      *
      * @return string
      */
-    protected function buildParameterName(string $prefix, Entity $entity, Attribute $attribute)
+    protected function buildParameterName(string $prefix, Entity $entity, Attribute $attribute): string
     {
         return 'P_' . $prefix . '_' . $entity->getTableName() . '_' . $attribute->getDBName();
     }

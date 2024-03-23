@@ -12,7 +12,7 @@ class DynamicCollectionAttributeList
      *
      * @return Attribute[]
      */
-    public static function getDynamicCollectionAttributeList(Entity $entity) : array
+    public static function getDynamicCollectionAttributeList(Entity $entity): array
     {
         $attributeList = [];
 

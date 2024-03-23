@@ -30,7 +30,7 @@ class MySQLSelectByDynamicCollectionProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
         $this->modifies = false;
 
@@ -46,7 +46,7 @@ class MySQLSelectByDynamicCollectionProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildSignature()
+    protected function buildSignature(): void
     {
         $signatureList = [];
         foreach (DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this->entity) as $attribute) {
@@ -58,7 +58,7 @@ class MySQLSelectByDynamicCollectionProcedure extends MySQLStoredProcedureBase
     /**
      * @return void
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $whereList = [];
         foreach (DynamicCollectionAttributeList::getDynamicCollectionAttributeList($this->entity) as $attribute) {

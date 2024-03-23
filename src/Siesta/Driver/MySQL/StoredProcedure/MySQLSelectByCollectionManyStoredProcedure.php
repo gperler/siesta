@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use RuntimeException;
@@ -18,33 +19,34 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      * @var CollectionMany
      */
-    protected $collectionMany;
+    protected CollectionMany $collectionMany;
 
     /**
-     * @var Entity
+     * @var Entity|null
      */
-    protected $foreignEntity;
+    protected ?Entity $foreignEntity;
+
+    /**
+     * @var Reference|null
+     */
+    protected ?Reference $foreignReference;
+
+    /**
+     * @var Entity|null
+     */
+    protected ?Entity $mappingEntity;
 
     /**
      * @var Reference
      */
-    protected $foreignReference;
+    protected Reference $mappingReference;
+
 
     /**
-     * @var Entity
+     * @param DataModel $dataModel
+     * @param Entity $entity
+     * @param CollectionMany $collectionMany
      */
-    protected $mappingEntity;
-
-    /**
-     * @var Reference
-     */
-    protected $mappingReference;
-
-    /**
-     *
-     */
-    protected $reference;
-
     public function __construct(DataModel $dataModel, Entity $entity, CollectionMany $collectionMany)
     {
         parent::__construct($dataModel, $entity);
@@ -59,7 +61,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      *
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
 
         $this->modifies = false;
@@ -76,7 +78,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      * @return void
      */
-    protected function buildSignature()
+    protected function buildSignature(): void
     {
         $parameterList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $attribute) {
@@ -88,7 +90,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      *
      */
-    protected function buildStatement()
+    protected function buildStatement(): void
     {
         $foreignTable = $this->quote($this->foreignEntity->getTableName());
         $mappingTable = $this->quote($this->mappingEntity->getTableName());
@@ -101,7 +103,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      *
      */
-    protected function getJoinCondition() : string
+    protected function getJoinCondition(): string
     {
         $foreignTable = $this->foreignEntity->getTableName();
         $mappingTable = $this->mappingEntity->getTableName();
@@ -118,7 +120,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     /**
      * @return string
      */
-    protected function getWhereCondition() : string
+    protected function getWhereCondition(): string
     {
         $mappingTable = $this->mappingEntity->getTableName();
         $whereList = [];
@@ -135,7 +137,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
      *
      * @return string
      */
-    protected function getCorrespondingColumnForPKAttribute(Reference $reference, Attribute $pkAttribute) : string
+    protected function getCorrespondingColumnForPKAttribute(Reference $reference, Attribute $pkAttribute): string
     {
         foreach ($reference->getReferenceMappingList() as $referenceMapping) {
             if ($referenceMapping->getForeignColumnName() === $pkAttribute->getDBName()) {
@@ -146,14 +148,13 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
     }
 
 
-
     /**
      * @param string $tableName
      * @param string $columnName
      *
      * @return string
      */
-    protected function buildTableColumn(string $tableName, string $columnName) : string
+    protected function buildTableColumn(string $tableName, string $columnName): string
     {
         return $this->quote($tableName) . '.' . $this->quote($columnName);
     }
@@ -166,7 +167,7 @@ class MySQLSelectByCollectionManyStoredProcedure extends MySQLStoredProcedureBas
      *
      * @return string
      */
-    protected function buildComparision(string $table1, string $column1, string $table2, string $column2) : string
+    protected function buildComparision(string $table1, string $column1, string $table2, string $column2): string
     {
         return $this->buildTableColumn($table1, $column1) . ' = ' . $this->buildTableColumn($table2, $column2);
     }

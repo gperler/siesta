@@ -17,18 +17,23 @@ class MainGenerator
     /**
      * @var GenericGenerator[]
      */
-    protected $genericGeneratorList;
+    protected array $genericGeneratorList;
 
     /**
      * @var GenericGeneratorConfig[]
      */
-    protected $genericGeneratorConfigList;
+    protected array $genericGeneratorConfigList;
 
+    public function __construct()
+    {
+        $this->genericGeneratorList = [];
+        $this->genericGeneratorConfigList = [];
+    }
 
     /**
      * @param array $genericGeneratorConfigList
      */
-    public function setup(array $genericGeneratorConfigList)
+    public function setup(array $genericGeneratorConfigList): void
     {
         $this->genericGeneratorConfigList = $genericGeneratorConfigList;
         foreach ($this->genericGeneratorConfigList as $genericGeneratorConfig) {
@@ -42,7 +47,7 @@ class MainGenerator
      * @param DataModel $dataModel
      * @param string $baseDir
      */
-    public function generate(DataModel $dataModel, string $baseDir)
+    public function generate(DataModel $dataModel, string $baseDir): void
     {
         foreach ($dataModel->getEntityList() as $entity) {
             if (!$entity->hasChangedSinceLastGeneration()) {
@@ -57,7 +62,7 @@ class MainGenerator
      * @param Entity $entity
      * @param string $baseDir
      */
-    public function generateEntity(Entity $entity, string $baseDir)
+    public function generateEntity(Entity $entity, string $baseDir): void
     {
         foreach ($this->genericGeneratorList as $genericGenerator) {
             $genericGenerator->generate($entity, $baseDir);

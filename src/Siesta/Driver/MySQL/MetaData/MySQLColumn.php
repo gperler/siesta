@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\MetaData;
 
 use Siesta\Database\MetaData\ColumnMetaData;
@@ -57,40 +58,39 @@ class MySQLColumn implements ColumnMetaData
     ];
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $autoValue;
+    protected ?string $autoValue;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $columnType;
+    protected ?string $columnType;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $dataType;
+    protected ?string $dataType;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $default;
+    protected ?string $default;
 
     /**
-     * @var bool
+     * @var bool|null
      */
-    protected $isPrimaryKey;
+    protected ?bool $isPrimaryKey;
 
     /**
-     * @var bool
+     * @var bool|null
      */
-    protected $isNullAble;
-
+    protected ?bool $isNullAble;
 
 
     /**
@@ -104,7 +104,7 @@ class MySQLColumn implements ColumnMetaData
      * @param ResultSet $resultSet
      * @param bool|null $tableHasAutoincrement
      */
-    public function fromResultSet(ResultSet $resultSet, bool $tableHasAutoincrement = null)
+    public function fromResultSet(ResultSet $resultSet, bool $tableHasAutoincrement = null): void
     {
         $this->name = $resultSet->getStringValue(self::COLUMN_NAME);
         $this->columnType = strtoupper($resultSet->getStringValue(self::COLUMN_TYPE));
@@ -118,7 +118,7 @@ class MySQLColumn implements ColumnMetaData
     /**
      * @return string
      */
-    public function getDBType() : string
+    public function getDBType(): string
     {
         $dbType = ArrayUtil::getFromArray(self::DB_TYPE_MAPPING, $this->columnType);
         if ($dbType !== null) {
@@ -131,7 +131,7 @@ class MySQLColumn implements ColumnMetaData
     /**
      * @return string
      */
-    public function getDBName() : string
+    public function getDBName(): string
     {
         return $this->name;
     }
@@ -139,7 +139,7 @@ class MySQLColumn implements ColumnMetaData
     /**
      * @param string $dbName
      */
-    public function setDBName(string $dbName)
+    public function setDBName(string $dbName): void
     {
         $this->name = $dbName;
     }
@@ -147,7 +147,7 @@ class MySQLColumn implements ColumnMetaData
     /**
      * @return string
      */
-    public function getPHPType() : string
+    public function getPHPType(): string
     {
         $phpType = ArrayUtil::getFromArray(self::PHP_TYPE_MAPPING, $this->dataType);
         if ($phpType !== null) {
@@ -159,7 +159,7 @@ class MySQLColumn implements ColumnMetaData
     /**
      * @return bool
      */
-    public function getIsRequired() : bool
+    public function getIsRequired(): bool
     {
         return !$this->isNullAble;
     }
@@ -167,15 +167,15 @@ class MySQLColumn implements ColumnMetaData
     /**
      * @return bool
      */
-    public function getIsPrimaryKey() : bool
+    public function getIsPrimaryKey(): bool
     {
         return $this->isPrimaryKey;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAutoValue()
+    public function getAutoValue(): ?string
     {
         return $this->autoValue;
     }

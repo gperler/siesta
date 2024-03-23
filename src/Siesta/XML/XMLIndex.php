@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -20,37 +20,40 @@ class XMLIndex
     const INDEX_TYPE = "type";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
      * @var bool
      */
-    protected $isUnique;
+    protected bool $isUnique;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $indexType;
+    protected ?string $indexType;
 
     /**
      * @var XMLIndexPart[]
      */
-    protected $indexPartList;
+    protected array $indexPartList;
 
     /**
      * XMLIndex constructor.
      */
     public function __construct()
     {
+        $this->name = null;
+        $this->isUnique = false;
+        $this->indexType = null;
         $this->indexPartList = [];
     }
 
     /**
      * @param XMLAccess $xmlAccess
      */
-    public function fromXML(XMLAccess $xmlAccess)
+    public function fromXML(XMLAccess $xmlAccess): void
     {
         $this->setName($xmlAccess->getAttribute(self::INDEX_NAME));
         $this->setIndexType($xmlAccess->getAttribute(self::INDEX_TYPE));
@@ -66,7 +69,7 @@ class XMLIndex
     /**
      * @param XMLWrite $parent
      */
-    public function toXML(XMLWrite $parent)
+    public function toXML(XMLWrite $parent): void
     {
         $xmlWrite = $parent->appendChild(self::ELEMENT_INDEX_NAME);
         $xmlWrite->setAttribute(self::INDEX_NAME, $this->getName());
@@ -80,7 +83,7 @@ class XMLIndex
     /**
      * @param IndexMetaData $indexMetaData
      */
-    public function fromIndexMetaData(IndexMetaData $indexMetaData)
+    public function fromIndexMetaData(IndexMetaData $indexMetaData): void
     {
         $this->setName($indexMetaData->getName());
         $this->setIndexType($indexMetaData->getType());
@@ -93,17 +96,17 @@ class XMLIndex
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
@@ -111,7 +114,7 @@ class XMLIndex
     /**
      * @return bool
      */
-    public function getIsUnique()
+    public function getIsUnique(): bool
     {
         return $this->isUnique;
     }
@@ -119,23 +122,23 @@ class XMLIndex
     /**
      * @param bool $isUnique
      */
-    public function setIsUnique($isUnique)
+    public function setIsUnique(bool $isUnique): void
     {
         $this->isUnique = $isUnique;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getIndexType()
+    public function getIndexType(): ?string
     {
         return $this->indexType;
     }
 
     /**
-     * @param string $indexType
+     * @param string|null $indexType
      */
-    public function setIndexType($indexType)
+    public function setIndexType(?string $indexType): void
     {
         $this->indexType = $indexType;
     }
@@ -143,7 +146,7 @@ class XMLIndex
     /**
      * @return XMLIndexPart[]
      */
-    public function getIndexPartList()
+    public function getIndexPartList(): array
     {
         return $this->indexPartList;
     }

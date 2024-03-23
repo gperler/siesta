@@ -40,7 +40,7 @@ class TestColumnMetaData implements ColumnMetaData
     /**
      * @return string
      */
-    public function getDBType() : string
+    public function getDBType(): string
     {
         return ArrayUtil::getFromArray($this->valueList, self::DB_TYPE);
     }
@@ -48,7 +48,7 @@ class TestColumnMetaData implements ColumnMetaData
     /**
      * @return string
      */
-    public function getDBName() : string
+    public function getDBName(): string
     {
         return $this->dbName = ArrayUtil::getFromArray($this->valueList, self::DB_NAME);
     }
@@ -56,7 +56,7 @@ class TestColumnMetaData implements ColumnMetaData
     /**
      * @return string
      */
-    public function getPHPType() : string
+    public function getPHPType(): string
     {
         return ArrayUtil::getFromArray($this->valueList, self::PHP_TYPE);
     }
@@ -64,7 +64,7 @@ class TestColumnMetaData implements ColumnMetaData
     /**
      * @return bool
      */
-    public function getIsRequired() : bool
+    public function getIsRequired(): bool
     {
         return ArrayUtil::getFromArray($this->valueList, self::IS_REQUIRED) === true;
     }
@@ -72,7 +72,7 @@ class TestColumnMetaData implements ColumnMetaData
     /**
      * @return bool
      */
-    public function getIsPrimaryKey() : bool
+    public function getIsPrimaryKey(): bool
     {
         return ArrayUtil::getFromArray($this->valueList, self::IS_PRIMARY_KEY) === true;
     }
@@ -80,7 +80,7 @@ class TestColumnMetaData implements ColumnMetaData
     /**
      * @return null|string
      */
-    public function getAutoValue()
+    public function getAutoValue(): ?string
     {
         return ArrayUtil::getFromArray($this->valueList, self::AUTOVALUE);
     }

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Sequencer;
 
@@ -19,7 +19,7 @@ class AutoincrementSequencer implements Sequencer
      *
      * @return int
      */
-    public function getNextSequence(string $tableName, string $connectionName = null)
+    public function getNextSequence(string $tableName, string $connectionName = null): mixed
     {
         $connection = ConnectionFactory::getConnection($connectionName);
         return $connection->getSequence($tableName);

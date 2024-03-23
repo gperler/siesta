@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -11,17 +11,26 @@ use Siesta\Model\Entity;
 class FromHttpRequest extends BasePlugin
 {
 
-    public function getUseClassNameList(Entity $entity) : array
+    /**
+     * @param Entity $entity
+     * @return string[]
+     */
+    public function getUseClassNameList(Entity $entity): array
     {
         return [
             'MyWebFramework\Http\Request'
         ];
     }
 
-    public function generate(Entity $entity, ClassGenerator $codeGenerator)
+    /**
+     * @param Entity $entity
+     * @param ClassGenerator $classGenerator
+     * @return void
+     */
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
 
-        $method = $codeGenerator->addPublicMethod("fromHttpRequest");
+        $method = $classGenerator->addPublicMethod("fromHttpRequest");
         $method->addParameter("Request", "request");
 
         foreach ($entity->getAttributeList() as $attribute) {

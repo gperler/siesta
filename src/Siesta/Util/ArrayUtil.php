@@ -15,7 +15,7 @@ class ArrayUtil
      *
      * @return string|null|mixed
      */
-    public static function getFromArray($object, $key = null)
+    public static function getFromArray($object, $key = null): mixed
     {
         if ($object == null) {
             return null;
@@ -31,7 +31,7 @@ class ArrayUtil
      *
      * @return bool
      */
-    public static function isArray($array)
+    public static function isArray($array): bool
     {
         return ($array !== null) && (is_array($array));
     }

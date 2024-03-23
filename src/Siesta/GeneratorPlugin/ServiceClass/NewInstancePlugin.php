@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
@@ -21,7 +21,7 @@ class NewInstancePlugin extends BasePlugin
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         $useList = [];
         $serviceClass = $entity->getServiceClass();
@@ -49,7 +49,7 @@ class NewInstancePlugin extends BasePlugin
     /**
      * @return string[]
      */
-    public function getDependantPluginList() : array
+    public function getDependantPluginList(): array
     {
         return [];
     }
@@ -58,7 +58,7 @@ class NewInstancePlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 
@@ -68,7 +68,7 @@ class NewInstancePlugin extends BasePlugin
     /**
      *
      */
-    protected function generateNewInstance()
+    protected function generateNewInstance(): void
     {
 
         $instantiationClass = $this->entity->getInstantiationClassName();
@@ -82,7 +82,7 @@ class NewInstancePlugin extends BasePlugin
     /**
      * @return string
      */
-    protected function getConstructCall()
+    protected function getConstructCall(): string
     {
         $constructor = $this->entity->getConstructor();
         if ($constructor !== null && $constructor->getConstructCall() !== null) {

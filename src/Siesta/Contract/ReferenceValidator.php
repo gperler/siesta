@@ -21,6 +21,6 @@ interface ReferenceValidator
      *
      * @return void
      */
-    public function validate(DataModel $dataModel, Entity $entity, Reference $reference, ValidationLogger $logger);
+    public function validate(DataModel $dataModel, Entity $entity, Reference $reference, ValidationLogger $logger): void;
 
 }

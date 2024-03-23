@@ -6,14 +6,14 @@ interface StoredProcedureDefinition
 {
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDropProcedureStatement();
+    public function getDropProcedureStatement(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreateProcedureStatement();
+    public function getCreateProcedureStatement(): ?string;
 
     /**
      * @return string

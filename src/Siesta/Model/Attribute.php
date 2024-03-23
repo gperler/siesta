@@ -21,72 +21,72 @@ class Attribute
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $phpName;
+    protected ?string $phpName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $phpType;
+    protected ?string $phpType;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $dbName;
+    protected ?string $dbName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $dbType;
-
-    /**
-     * @var bool
-     */
-    protected $isPrimaryKey;
-
-    /**
-     * @var string
-     */
-    protected $defaultValue;
-
-    /**
-     * @var string
-     */
-    protected $autoValue;
+    protected ?string $dbType;
 
     /**
      * @var bool
      */
-    protected $isRequired;
+    protected bool $isPrimaryKey;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $defaultValue;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $autoValue;
 
     /**
      * @var bool
      */
-    protected $isTransient;
+    protected bool $isRequired;
 
     /**
      * @var bool
      */
-    protected $isObject;
-
-    /**
-     * @var string
-     */
-    protected $className;
+    protected bool $isTransient;
 
     /**
      * @var bool
      */
-    protected $isForeignKey;
+    protected bool $isObject;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $className;
+
+    /**
+     * @var bool
+     */
+    protected bool $isForeignKey;
 
     /**
      * @var string[]
      */
-    protected $customAttributeList;
+    protected array $customAttributeList;
 
     /**
      * Attribute constructor.
@@ -97,12 +97,21 @@ class Attribute
     {
         $this->entity = $entity;
         $this->isForeignKey = false;
+        $this->isObject = false;
+        $this->isPrimaryKey = false;
+        $this->isRequired = false;
+        $this->isTransient = false;
+        $this->customAttributeList = [];
+        $this->className = null;
+        $this->dbName = null;
+        $this->autoValue = null;
+        $this->defaultValue = null;
     }
 
     /**
      *
      */
-    public function update()
+    public function update(): void
     {
         $this->checkIfTypeIsObject();
     }
@@ -110,7 +119,7 @@ class Attribute
     /**
      *
      */
-    protected function checkIfTypeIsObject()
+    protected function checkIfTypeIsObject(): void
     {
         $phpType = $this->getPhpType();
         if ($phpType === null || in_array($phpType, DefaultAttributeValidator::PHP_TYPE_LIST)) {
@@ -126,7 +135,7 @@ class Attribute
     /**
      * @return int|null
      */
-    public function getLength()
+    public function getLength(): ?int
     {
         if ($this->getDbType() === null) {
             return null;
@@ -140,47 +149,47 @@ class Attribute
     /**
      * @return string
      */
-    public function getMethodName()
+    public function getMethodName(): string
     {
         return ucfirst($this->getPhpName());
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhpName()
+    public function getPhpName(): ?string
     {
         return $this->phpName;
     }
 
     /**
-     * @param string $phpName
+     * @param string|null $phpName
      */
-    public function setPhpName(string $phpName = null)
+    public function setPhpName(string $phpName = null): void
     {
         $this->phpName = $phpName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhpType()
+    public function getPhpType(): ?string
     {
         return $this->phpType;
     }
 
     /**
-     * @param string $phpType
+     * @param string|null $phpType
      */
-    public function setPhpType(string $phpType = null)
+    public function setPhpType(string $phpType = null): void
     {
         $this->phpType = $phpType;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFullyQualifiedTypeName()
+    public function getFullyQualifiedTypeName(): ?string
     {
         if ($this->phpType === PHPType::SIESTA_DATE_TIME) {
             return PHPType::SIESTA_DATE_TIME_CLASS_NAME;
@@ -192,9 +201,9 @@ class Attribute
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDBName()
+    public function getDBName(): ?string
     {
         if ($this->dbName !== null) {
             return $this->dbName;
@@ -212,25 +221,25 @@ class Attribute
     }
 
     /**
-     * @param string $dbName
+     * @param string|null $dbName
      */
-    public function setDbName(string $dbName = null)
+    public function setDbName(string $dbName = null): void
     {
         $this->dbName = $dbName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDbType()
+    public function getDbType(): ?string
     {
         return $this->dbType;
     }
 
     /**
-     * @param string $dbType
+     * @param string|null $dbType
      */
-    public function setDbType(string $dbType = null)
+    public function setDbType(string $dbType = null): void
     {
         $this->dbType = $dbType;
     }
@@ -238,7 +247,7 @@ class Attribute
     /**
      * @return bool
      */
-    public function getIsPrimaryKey()
+    public function getIsPrimaryKey(): bool
     {
         return $this->isPrimaryKey;
     }
@@ -246,39 +255,39 @@ class Attribute
     /**
      * @param bool $isPrimaryKey
      */
-    public function setIsPrimaryKey(bool $isPrimaryKey = false)
+    public function setIsPrimaryKey(bool $isPrimaryKey = false): void
     {
         $this->isPrimaryKey = $isPrimaryKey;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDefaultValue()
+    public function getDefaultValue(): ?string
     {
         return $this->defaultValue;
     }
 
     /**
-     * @param string $defaultValue
+     * @param string|null $defaultValue
      */
-    public function setDefaultValue(string $defaultValue = null)
+    public function setDefaultValue(string $defaultValue = null): void
     {
         $this->defaultValue = $defaultValue;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAutoValue()
+    public function getAutoValue(): ?string
     {
         return $this->autoValue;
     }
 
     /**
-     * @param string $autoValue
+     * @param string|null $autoValue
      */
-    public function setAutoValue(string $autoValue = null)
+    public function setAutoValue(string $autoValue = null): void
     {
         $this->autoValue = $autoValue;
     }
@@ -286,7 +295,7 @@ class Attribute
     /**
      * @return bool
      */
-    public function getIsRequired()
+    public function getIsRequired(): bool
     {
         return $this->isRequired || $this->isPrimaryKey;
     }
@@ -294,7 +303,7 @@ class Attribute
     /**
      * @param bool $isRequired
      */
-    public function setIsRequired(bool $isRequired = false)
+    public function setIsRequired(bool $isRequired = false): void
     {
         $this->isRequired = $isRequired;
     }
@@ -302,7 +311,7 @@ class Attribute
     /**
      * @return bool
      */
-    public function getIsTransient()
+    public function getIsTransient(): bool
     {
         return $this->isTransient;
     }
@@ -310,7 +319,7 @@ class Attribute
     /**
      * @param bool $isTransient
      */
-    public function setIsTransient(bool $isTransient = false)
+    public function setIsTransient(bool $isTransient = false): void
     {
         $this->isTransient = $isTransient;
     }
@@ -318,7 +327,7 @@ class Attribute
     /**
      * @return bool
      */
-    public function getIsObject()
+    public function getIsObject(): bool
     {
         return $this->isObject;
     }
@@ -326,7 +335,7 @@ class Attribute
     /**
      * @param bool $isObject
      */
-    public function setIsObject(bool $isObject = false)
+    public function setIsObject(bool $isObject = false): void
     {
         $this->isObject = $isObject;
     }
@@ -345,17 +354,17 @@ class Attribute
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClassName()
+    public function getClassName(): ?string
     {
         return $this->className;
     }
 
     /**
-     * @param string $className
+     * @param string|null $className
      */
-    public function setClassName(string $className = null)
+    public function setClassName(string $className = null): void
     {
         $this->className = $className;
     }
@@ -371,7 +380,7 @@ class Attribute
     /**
      *
      */
-    public function setIsForeignKey()
+    public function setIsForeignKey(): void
     {
         $this->isForeignKey = true;
     }
@@ -381,7 +390,7 @@ class Attribute
      *
      * @return null|string
      */
-    public function getCustomAttribute(string $name)
+    public function getCustomAttribute(string $name): ?string
     {
         return ArrayUtil::getFromArray($this->customAttributeList, $name);
     }
@@ -397,7 +406,7 @@ class Attribute
     /**
      * @param string[] $customAttributeList
      */
-    public function setCustomAttributeList(array $customAttributeList)
+    public function setCustomAttributeList(array $customAttributeList): void
     {
         $this->customAttributeList = $customAttributeList;
     }

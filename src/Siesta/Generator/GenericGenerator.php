@@ -16,12 +16,12 @@ class GenericGenerator
     /**
      * @var GenericGeneratorConfig
      */
-    protected $config;
+    protected GenericGeneratorConfig $config;
 
     /**
      * @var Generator
      */
-    protected $generator;
+    protected Generator $generator;
 
     /**
      * ModelGenerator constructor.
@@ -36,7 +36,7 @@ class GenericGenerator
 
     /**
      */
-    protected function setup()
+    protected function setup(): void
     {
         $generatorClassName = $this->config->getClassName();
         $this->generator = new $generatorClassName;
@@ -49,7 +49,7 @@ class GenericGenerator
      * @param Entity $entity
      * @param string $baseDir
      */
-    public function generate(Entity $entity, string $baseDir)
+    public function generate(Entity $entity, string $baseDir): void
     {
         $this->generator->generate($entity, $baseDir);
     }

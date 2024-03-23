@@ -16,23 +16,23 @@ class EntityGenerator extends AbstractGenerator
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var ClassGenerator
      */
-    protected $classGenerator;
+    protected ClassGenerator $classGenerator;
 
     /**
      * @var string
      */
-    protected $basePath;
+    protected string $basePath;
 
     /**
      * @param Entity $entity
      * @param string $baseDir
      */
-    public function generate(Entity $entity, string $baseDir)
+    public function generate(Entity $entity, string $baseDir): void
     {
         $this->classGenerator = new ClassGenerator($entity->getClassName());
         $this->entity = $entity;
@@ -45,7 +45,7 @@ class EntityGenerator extends AbstractGenerator
     /**
      *
      */
-    protected function generateEntity()
+    protected function generateEntity(): void
     {
 
         foreach ($this->getUseClassNameList($this->entity) as $useClass) {
@@ -64,7 +64,7 @@ class EntityGenerator extends AbstractGenerator
     /**
      *
      */
-    protected function saveEntity()
+    protected function saveEntity(): void
     {
         $targetFile = $this->getTargetFile($this->entity, $this->entity->getClassShortName());
         $this->classGenerator->writeToFile($targetFile);

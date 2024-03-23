@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Main;
 
@@ -21,29 +21,29 @@ use Siesta\XML\XMLWrite;
 class Reverse
 {
     /**
-     * @var string
+     * @var string|null
      */
-    protected $entityXMLFileSuffix;
+    protected ?string $entityXMLFileSuffix;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $defaultNamespace;
+    protected ?string $defaultNamespace;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $targetPath;
+    protected ?string $targetPath;
 
     /**
-     * @var Connection
+     * @var Connection|null
      */
-    protected $connection;
+    protected ?Connection $connection;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $databaseName;
+    protected ?string $databaseName;
 
     /**
      * Reverse constructor.
@@ -51,12 +51,16 @@ class Reverse
     public function __construct()
     {
         $this->entityXMLFileSuffix = ".reverse.xml";
+        $this->defaultNamespace = null;
+        $this->targetPath = null;
+        $this->connection = null;
+        $this->databaseName = null;
     }
 
     /**
      * @param string $targetFileName
      */
-    public function createSingleXMLFile(string $targetFileName)
+    public function createSingleXMLFile(string $targetFileName): void
     {
         $xmlWrite = $this->getXMLWrite();
         $databaseMetaData = $this->getDatabaseMetaData();
@@ -72,7 +76,7 @@ class Reverse
     /**
      * @param string $targetDirectory
      */
-    public function createXMLFileForEveryTable(string $targetDirectory)
+    public function createXMLFileForEveryTable(string $targetDirectory): void
     {
         $databaseMetaData = $this->getDatabaseMetaData();
         foreach ($databaseMetaData->getTableList() as $tableMetaData) {
@@ -89,7 +93,7 @@ class Reverse
      *
      * @return File
      */
-    protected function getTargetFile(string $targetDirectory, TableMetaData $tableMetaData) : File
+    protected function getTargetFile(string $targetDirectory, TableMetaData $tableMetaData): File
     {
         $filePath = $targetDirectory . "/" . $tableMetaData->getName() . $this->getEntityXMLFileSuffix();
         $targetFile = new File($filePath);
@@ -103,7 +107,7 @@ class Reverse
      *
      * @return XMLEntity
      */
-    protected function createAndInitializeXMLEntity(TableMetaData $tableMetaData, XMLWrite $xmlWrite)
+    protected function createAndInitializeXMLEntity(TableMetaData $tableMetaData, XMLWrite $xmlWrite): XMLEntity
     {
         $xmlEntity = new XMLEntity();
         $xmlEntity->setNamespaceName($this->getDefaultNamespace());
@@ -116,7 +120,7 @@ class Reverse
     /**
      * @return XMLWrite
      */
-    protected function getXMLWrite()
+    protected function getXMLWrite(): XMLWrite
     {
         $document = new DOMDocument("1.0");
         return new XMLWrite($document, null, "entityList");
@@ -125,24 +129,24 @@ class Reverse
     /**
      * @return DatabaseMetaData
      */
-    public function getDatabaseMetaData() : DatabaseMetaData
+    public function getDatabaseMetaData(): DatabaseMetaData
     {
         $connection = $this->getConnection();
         return $connection->getDatabaseMetaData($this->getDatabaseName());
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDefaultNamespace()
+    public function getDefaultNamespace(): ?string
     {
         return $this->defaultNamespace;
     }
 
     /**
-     * @param string $defaultNamespace
+     * @param string|null $defaultNamespace
      */
-    public function setDefaultNamespace(string $defaultNamespace = null)
+    public function setDefaultNamespace(string $defaultNamespace = null): void
     {
         $this->defaultNamespace = $defaultNamespace;
     }
@@ -150,7 +154,7 @@ class Reverse
     /**
      * @return Connection
      */
-    public function getConnection() : Connection
+    public function getConnection(): Connection
     {
         if ($this->connection !== null) {
             return $this->connection;
@@ -159,9 +163,9 @@ class Reverse
     }
 
     /**
-     * @param string $connectionName
+     * @param string|null $connectionName
      */
-    public function setConnectionName(string $connectionName = null)
+    public function setConnectionName(string $connectionName = null): void
     {
         $this->connection = ConnectionFactory::getConnection($connectionName);
     }
@@ -169,7 +173,7 @@ class Reverse
     /**
      * @param Connection $connection
      */
-    public function setConnection($connection)
+    public function setConnection(Connection $connection): void
     {
         $this->connection = $connection;
     }
@@ -177,7 +181,7 @@ class Reverse
     /**
      * @return string
      */
-    public function getDatabaseName()
+    public function getDatabaseName(): ?string
     {
         return $this->databaseName;
     }
@@ -185,7 +189,7 @@ class Reverse
     /**
      * @param string $databaseName
      */
-    public function setDatabaseName($databaseName)
+    public function setDatabaseName(string $databaseName): void
     {
         $this->databaseName = $databaseName;
     }
@@ -193,23 +197,23 @@ class Reverse
     /**
      * @return string
      */
-    public function getEntityXMLFileSuffix()
+    public function getEntityXMLFileSuffix(): string
     {
         return $this->entityXMLFileSuffix;
     }
 
     /**
-     * @param string $entityXMLFileSuffix
+     * @param string|null $entityXMLFileSuffix
      */
-    public function setEntityXMLFileSuffix(string $entityXMLFileSuffix = null)
+    public function setEntityXMLFileSuffix(string $entityXMLFileSuffix = null): void
     {
         $this->entityXMLFileSuffix = $entityXMLFileSuffix;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTargetPath()
+    public function getTargetPath(): ?string
     {
         return $this->targetPath;
     }
@@ -217,7 +221,7 @@ class Reverse
     /**
      * @param string $targetPath
      */
-    public function setTargetPath(string $targetPath)
+    public function setTargetPath(string $targetPath): void
     {
         $this->targetPath = $targetPath;
     }
@@ -225,7 +229,7 @@ class Reverse
     /**
      * @param NamingStrategy $namingStrategy
      */
-    public function setClassNamingStrategy(NamingStrategy $namingStrategy)
+    public function setClassNamingStrategy(NamingStrategy $namingStrategy): void
     {
         NamingStrategyRegistry::setClassNamingStrategy($namingStrategy);
     }
@@ -233,7 +237,7 @@ class Reverse
     /**
      * @param NamingStrategy $attributeNamingStrategy
      */
-    public function setAttributeNamingStrategy(NamingStrategy $attributeNamingStrategy)
+    public function setAttributeNamingStrategy(NamingStrategy $attributeNamingStrategy): void
     {
         NamingStrategyRegistry::setAttributeNamingStrategy($attributeNamingStrategy);
     }

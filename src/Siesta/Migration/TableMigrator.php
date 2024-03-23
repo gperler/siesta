@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Migration;
 
@@ -16,37 +16,37 @@ class TableMigrator
     /**
      * @var MigrationStatementFactory
      */
-    protected $migrationStatementFactory;
+    protected MigrationStatementFactory $migrationStatementFactory;
 
     /**
      * @var TableMetaData
      */
-    protected $tableMetaData;
+    protected TableMetaData $tableMetaData;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var AttributeListMigrator
      */
-    protected $attributeListMigrator;
+    protected AttributeListMigrator $attributeListMigrator;
 
     /**
      * @var ReferenceListMigrator
      */
-    protected $referenceListMigrator;
+    protected ReferenceListMigrator $referenceListMigrator;
 
     /**
      * @var IndexListMigrator
      */
-    protected $indexListMigrator;
+    protected IndexListMigrator $indexListMigrator;
 
     /**
      * @var string[]
      */
-    protected $alterStatementList;
+    protected array $alterStatementList;
 
     /**
      * TableMigrator constructor.
@@ -67,7 +67,7 @@ class TableMigrator
      * returns the list of ALTER statement for the migration of the given database entity to the target model entity
      * @return string[]
      */
-    public function createAlterStatementList()
+    public function createAlterStatementList(): array
     {
         $this->migrateAttributeList();
         $this->migrateReferenceList();
@@ -83,7 +83,7 @@ class TableMigrator
      * columns are dropped and finally indexes and foreign key constraints are added.
      * @return void
      */
-    private function assembleStatementList()
+    private function assembleStatementList(): void
     {
 
         // drop foreign key and index
@@ -110,7 +110,7 @@ class TableMigrator
      * compares the primary key column and generates migrate primary key statements if needed
      * @return array
      */
-    private function getMigratePrimaryKeyStatementList()
+    private function getMigratePrimaryKeyStatementList(): array
     {
         $tablePrimaryKeyList = $this->getTablePrimaryKeyList($this->tableMetaData);
         $entityPrimaryKeyList = $this->getEntityPrimaryKeyColumnList($this->entity);
@@ -130,7 +130,7 @@ class TableMigrator
      *
      * @return array
      */
-    protected function getEntityPrimaryKeyColumnList(Entity $entity)
+    protected function getEntityPrimaryKeyColumnList(Entity $entity): array
     {
         $pkList = [];
         foreach ($entity->getPrimaryKeyAttributeList() as $attribute) {
@@ -145,7 +145,7 @@ class TableMigrator
      *
      * @return array
      */
-    protected function getTablePrimaryKeyList(TableMetaData $tableMetaData)
+    protected function getTablePrimaryKeyList(TableMetaData $tableMetaData): array
     {
         $pkList = [];
         foreach ($tableMetaData->getPrimaryKeyAttributeList() as $columnMetaData) {
@@ -158,7 +158,7 @@ class TableMigrator
      * migrates the attributes of the entity and gathers add modify and drop statements
      * @return void
      */
-    private function migrateAttributeList()
+    private function migrateAttributeList(): void
     {
         $this->attributeListMigrator = new AttributeListMigrator($this->migrationStatementFactory, $this->tableMetaData->getColumnList(), $this->entity->getAttributeList());
         $this->attributeListMigrator->createAlterStatementList();
@@ -170,7 +170,7 @@ class TableMigrator
      * drop constraints statements
      * @return void
      */
-    private function migrateReferenceList()
+    private function migrateReferenceList(): void
     {
         $this->referenceListMigrator = new ReferenceListMigrator($this->migrationStatementFactory, $this->tableMetaData->getConstraintList(), $this->entity->getReferenceList());
         $this->referenceListMigrator->createAlterStatementList();
@@ -180,7 +180,7 @@ class TableMigrator
      * migrates the indexes of the entity and gathers drop and add statements
      * @return void
      */
-    private function migrateIndexList()
+    private function migrateIndexList(): void
     {
         $this->indexListMigrator = new IndexListMigrator($this->migrationStatementFactory, $this->tableMetaData->getIndexList(), $this->entity->getIndexList());
         $this->indexListMigrator->createAlterStatementList();
@@ -194,7 +194,7 @@ class TableMigrator
      *
      * @return void
      */
-    private function addStatementList(array $statementList, $isAttribute = false)
+    private function addStatementList(array $statementList, bool $isAttribute = false): void
     {
         foreach ($statementList as $statement) {
             $this->alterStatementList[] = str_replace(MigrationStatementFactory::TABLE_PLACE_HOLDER, $this->tableMetaData->getName(), $statement);

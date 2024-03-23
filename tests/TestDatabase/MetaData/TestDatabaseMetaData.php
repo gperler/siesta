@@ -3,6 +3,7 @@
 namespace SiestaTest\TestDatabase\MetaData;
 
 use Siesta\Database\MetaData\DatabaseMetaData;
+use Siesta\Database\MetaData\TableMetaData;
 use Siesta\Database\StoredProcedureDefinition;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\File;
@@ -77,10 +78,12 @@ class TestDatabaseMetaData implements DatabaseMetaData
         }
     }
 
-
-    public function refresh()
+    /**
+     * @return void
+     */
+    public function refresh(): void
     {
-        // TODO: Implement refresh() method.
+
     }
 
     /**
@@ -96,7 +99,7 @@ class TestDatabaseMetaData implements DatabaseMetaData
      *
      * @return null|TestTableMetaData
      */
-    public function getTableByName(string $tableName)
+    public function getTableByName(string $tableName): ?TableMetaData
     {
         foreach ($this->tableList as $table) {
             if ($table->getName() === $tableName) {

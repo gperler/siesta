@@ -2,6 +2,9 @@
 
 namespace SiestaTest\TestDatabase\MetaData;
 
+use Siesta\Database\MetaData\ColumnMetaData;
+use Siesta\Database\MetaData\ConstraintMetaData;
+use Siesta\Database\MetaData\IndexMetaData;
 use Siesta\Database\MetaData\TableMetaData;
 use Siesta\Util\ArrayUtil;
 
@@ -84,7 +87,7 @@ class TestTableMetaData implements TableMetaData
      *
      * @return null|TestColumnMetaData
      */
-    public function getColumnByName(string $name)
+    public function getColumnByName(string $name): ?ColumnMetaData
     {
         foreach ($this->columnList as $column) {
             if ($column->getDBName() === $name) {
@@ -107,7 +110,7 @@ class TestTableMetaData implements TableMetaData
      *
      * @return null|TestConstraintMetaData
      */
-    public function getConstraintByName(string $name)
+    public function getConstraintByName(string $name): ?ConstraintMetaData
     {
         foreach ($this->constraintList as $constraintMetaData) {
             if ($constraintMetaData->getName() === $name) {
@@ -126,14 +129,13 @@ class TestTableMetaData implements TableMetaData
     }
 
     /**
-     * @param string $name
-     *
+     * @param string $indexName
      * @return null|TestIndexMetaData
      */
-    public function getIndexByName(string $name)
+    public function getIndexByName(string $indexName): ?IndexMetaData
     {
         foreach ($this->indexList as $indexMetaData) {
-            if ($indexMetaData->getName() === $name) {
+            if ($indexMetaData->getName() === $indexName) {
                 return $indexMetaData;
             }
         }

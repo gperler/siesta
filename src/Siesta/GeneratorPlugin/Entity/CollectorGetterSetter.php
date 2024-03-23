@@ -47,7 +47,7 @@ class CollectorGetterSetter extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
 
@@ -62,7 +62,7 @@ class CollectorGetterSetter extends BasePlugin
     /**
      * @param Collection $collection
      */
-    protected function generateCollectionGetter(Collection $collection)
+    protected function generateCollectionGetter(Collection $collection): void
     {
         $methodName = 'get' . $collection->getMethodName();
         $name = $collection->getName();
@@ -89,7 +89,7 @@ class CollectorGetterSetter extends BasePlugin
      *
      * @return string
      */
-    protected function generateLoadCall(Collection $collection)
+    protected function generateLoadCall(Collection $collection): string
     {
         $foreignEntity = $collection->getForeignEntity();
         $serviceAccess = $foreignEntity->getServiceAccess();
@@ -106,7 +106,7 @@ class CollectorGetterSetter extends BasePlugin
     /**
      * @param Collection $collection
      */
-    protected function generateDeleteFrom(Collection $collection)
+    protected function generateDeleteFrom(Collection $collection): void
     {
         $foreignEntity = $collection->getForeignEntity();
 
@@ -136,7 +136,11 @@ class CollectorGetterSetter extends BasePlugin
         $this->generateSliceCollectionElement($method, $collection);
     }
 
-    protected function generateParameterNullCheck(Collection $collection)
+    /**
+     * @param Collection $collection
+     * @return string
+     */
+    protected function generateParameterNullCheck(Collection $collection): string
     {
         $foreignEntity = $collection->getForeignEntity();
         $checkList = [];
@@ -150,7 +154,7 @@ class CollectorGetterSetter extends BasePlugin
      * @param Method $method
      * @param Collection $collection
      */
-    protected function generateSliceCollectionElement(Method $method, Collection $collection)
+    protected function generateSliceCollectionElement(Method $method, Collection $collection): void
     {
         $collectionMember = '$this->' . $collection->getName();
 
@@ -187,7 +191,7 @@ class CollectorGetterSetter extends BasePlugin
     /**
      * @param Collection $collection
      */
-    protected function generateAddToCollection(Collection $collection)
+    protected function generateAddToCollection(Collection $collection): void
     {
         $foreignEntity = $collection->getForeignEntity();
         $foreignClass = $foreignEntity->getInstantiationClassName();

@@ -116,7 +116,7 @@ class MainGeneratorConfig
     protected $genericGeneratorConfiguration;
 
     /**
-     * @param array $values
+     * @param array|null $values
      * @throws ReflectionException
      */
     public function __construct(array $values = null)
@@ -136,7 +136,7 @@ class MainGeneratorConfig
     /**
      * @return array
      */
-    public function toArray() : array
+    public function toArray(): array
     {
         return [
             self::OPTION_DROP_UNUSED_TABLES => $this->isDropUnusedTables(),
@@ -154,7 +154,7 @@ class MainGeneratorConfig
     /**
      * @return bool
      */
-    public function isDropUnusedTables() : bool
+    public function isDropUnusedTables(): bool
     {
         return $this->dropUnusedTables;
     }
@@ -162,7 +162,7 @@ class MainGeneratorConfig
     /**
      * @param bool $dropUnusedTables
      */
-    public function setDropUnusedTables(bool $dropUnusedTables = null)
+    public function setDropUnusedTables(bool $dropUnusedTables = null): void
     {
         $this->dropUnusedTables = ($dropUnusedTables !== null) ? $dropUnusedTables : self::OPTION_DROP_UNUSED_TABLES_DEFAULT;
     }
@@ -170,15 +170,15 @@ class MainGeneratorConfig
     /**
      * @return string
      */
-    public function getEntityFileSuffix() : string
+    public function getEntityFileSuffix(): string
     {
         return $this->entityFileSuffix;
     }
 
     /**
-     * @param string $entityFileSuffix
+     * @param string|null $entityFileSuffix
      */
-    public function setEntityFileSuffix(string $entityFileSuffix = null)
+    public function setEntityFileSuffix(string $entityFileSuffix = null): void
     {
 
         $this->entityFileSuffix = ($entityFileSuffix !== null) ? $entityFileSuffix : self::OPTION_ENTITY_FILE_SUFFIX_DEFAULT;
@@ -187,7 +187,7 @@ class MainGeneratorConfig
     /**
      * @return File
      */
-    public function getMigrationFile() : File
+    public function getMigrationFile(): File
     {
         $dateTime = new SiestaDateTime();
         $fileName = $this->getMigrationTargetPath() . "/migration_" . $dateTime->getSQLDateTime() . '.sql';
@@ -199,15 +199,15 @@ class MainGeneratorConfig
     /**
      * @return string
      */
-    public function getMigrationTargetPath() : string
+    public function getMigrationTargetPath(): string
     {
         return $this->migrationTargetPath;
     }
 
     /**
-     * @param string $migrationTargetPath
+     * @param string|null $migrationTargetPath
      */
-    public function setMigrationTargetPath(string $migrationTargetPath = null)
+    public function setMigrationTargetPath(string $migrationTargetPath = null): void
     {
         $this->migrationTargetPath = ($migrationTargetPath !== null) ? $migrationTargetPath : self::OPTION_MIGRATION_TARGET_PATH_DEFAULT;
     }
@@ -230,10 +230,10 @@ class MainGeneratorConfig
     }
 
     /**
-     * @param string $tableNamingStrategy
+     * @param string|null $tableNamingStrategy
      * @throws ReflectionException
      */
-    public function setTableNamingStrategy(string $tableNamingStrategy = null)
+    public function setTableNamingStrategy(string $tableNamingStrategy = null): void
     {
         $this->tableNamingStrategy = ($tableNamingStrategy !== null) ? $tableNamingStrategy : self::OPTION_TABLE_NAMING_STRATEGY_DEFAULT;
         $this->checkNamingStrategy($this->tableNamingStrategy, self::OPTION_COLUMN_NAMING_STRATEGY);
@@ -252,19 +252,18 @@ class MainGeneratorConfig
      * @return NamingStrategy
      * @throws InvalidConfigurationException
      */
-    public function getColumnNamingStrategyInstance() : NamingStrategy
+    public function getColumnNamingStrategyInstance(): NamingStrategy
     {
         $className = $this->getColumnNamingStrategy();
         return new $className;
     }
 
     /**
-     * @param string $columnNamingStrategy
+     * @param string|null $columnNamingStrategy
      *
-     * @throws InvalidConfigurationException
      * @throws ReflectionException
      */
-    public function setColumnNamingStrategy(string $columnNamingStrategy = null)
+    public function setColumnNamingStrategy(string $columnNamingStrategy = null): void
     {
         $this->columnNamingStrategy = ($columnNamingStrategy !== null) ? $columnNamingStrategy : self::OPTION_COLUMN_NAMING_STRATEGY_DEFAULT;
         $this->checkNamingStrategy($this->columnNamingStrategy, self::OPTION_COLUMN_NAMING_STRATEGY);
@@ -273,7 +272,7 @@ class MainGeneratorConfig
     /**
      * @return string
      */
-    public function getMigrationMethod() : string
+    public function getMigrationMethod(): string
     {
         return $this->migrationMethod;
     }
@@ -281,7 +280,7 @@ class MainGeneratorConfig
     /**
      * @return bool
      */
-    public function isMigrateDirect() : bool
+    public function isMigrateDirect(): bool
     {
         return $this->getMigrationMethod() === self::MIGRATION_METHOD_DIRECT_EXECUTION;
     }
@@ -289,17 +288,16 @@ class MainGeneratorConfig
     /**
      * @return bool
      */
-    public function isMigrationToFile() : bool
+    public function isMigrationToFile(): bool
     {
         return $this->getMigrationMethod() === self::MIGRATION_METHOD_CREATE_SQL_FILE;
     }
 
     /**
-     * @param string $migrationMethod
+     * @param string|null $migrationMethod
      *
-     * @throws InvalidConfigurationException
      */
-    public function setMigrationMethod(string $migrationMethod = null)
+    public function setMigrationMethod(string $migrationMethod = null): void
     {
         $this->migrationMethod = ($migrationMethod !== null) ? strtolower($migrationMethod) : self::OPTION_MIGRATION_METHOD_DEFAULT;
         if (!in_array($this->migrationMethod, self::ALLOWED_MIGRATION_METHOD)) {
@@ -312,49 +310,48 @@ class MainGeneratorConfig
     /**
      * @return string
      */
-    public function getBaseDir() : string
+    public function getBaseDir(): string
     {
         return $this->baseDir;
     }
 
     /**
-     * @param string $baseDir
+     * @param string|null $baseDir
      */
-    public function setBaseDir(string $baseDir = null)
+    public function setBaseDir(string $baseDir = null): void
     {
         $this->baseDir = ($baseDir !== null) ? $baseDir : self::OPTION_BASE_DIR_DEFAULT;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getConnectionName()
+    public function getConnectionName(): ?string
     {
         return $this->connectionName;
     }
 
     /**
-     * @param string $connectionName
+     * @param string|null $connectionName
      *
-     * @throws InvalidConfigurationException
      */
-    public function setConnectionName(string $connectionName = null)
+    public function setConnectionName(string $connectionName = null): void
     {
         $this->connectionName = $connectionName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getGenericGeneratorConfiguration()
+    public function getGenericGeneratorConfiguration(): ?string
     {
         return $this->genericGeneratorConfiguration;
     }
 
     /**
-     * @param string $genericGeneratorConfiguration
+     * @param string|null $genericGeneratorConfiguration
      */
-    public function setGenericGeneratorConfiguration(string $genericGeneratorConfiguration = null)
+    public function setGenericGeneratorConfiguration(string $genericGeneratorConfiguration = null): void
     {
         $this->genericGeneratorConfiguration = $genericGeneratorConfiguration;
     }
@@ -364,7 +361,7 @@ class MainGeneratorConfig
      * @param string $parameterName
      * @throws ReflectionException
      */
-    protected function checkNamingStrategy(string $className, string $parameterName)
+    protected function checkNamingStrategy(string $className, string $parameterName): void
     {
         if (!ClassUtil::exists($className)) {
             $error = sprintf(self::ERROR_NAMING_CLASS_DOES_NOT_EXIST, $parameterName, $className);

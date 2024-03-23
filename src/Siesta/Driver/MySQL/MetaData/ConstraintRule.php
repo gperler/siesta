@@ -30,7 +30,7 @@ class ConstraintRule
      *
      * @return string|null
      */
-    public static function schemaToMySQL(string $option)
+    public static function schemaToMySQL(string $option): ?string
     {
         $option = strtolower($option);
         return ArrayUtil::getFromArray(self::MAPPING, $option);
@@ -41,7 +41,7 @@ class ConstraintRule
      *
      * @return string|null
      */
-    public static function mySQLToSchema(string $option)
+    public static function mySQLToSchema(string $option): ?string
     {
         foreach (self::MAPPING as $schema => $mySQL) {
             if ($option === $mySQL) {

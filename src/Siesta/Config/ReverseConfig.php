@@ -93,7 +93,7 @@ class ReverseConfig
     protected $connectionName;
 
     /**
-     * @param array $values
+     * @param array|null $values
      * @throws ReflectionException
      */
     public function __construct(array $values = null)
@@ -112,7 +112,7 @@ class ReverseConfig
     /**
      * @return array
      */
-    public function toArray() : array
+    public function toArray(): array
     {
         return [
             self::OPTION_TARGET_PATH => $this->getTargetPath(),
@@ -129,15 +129,15 @@ class ReverseConfig
     /**
      * @return string
      */
-    public function getTargetPath() : string
+    public function getTargetPath(): string
     {
         return $this->targetPath;
     }
 
     /**
-     * @param string $targetPath
+     * @param string|null $targetPath
      */
-    public function setTargetPath(string $targetPath = null)
+    public function setTargetPath(string $targetPath = null): void
     {
         $this->targetPath = ($targetPath !== null) ? $targetPath : self::OPTION_TARGET_PATH_DEFAULT;
     }
@@ -151,9 +151,9 @@ class ReverseConfig
     }
 
     /**
-     * @param string $targetFile
+     * @param string|null $targetFile
      */
-    public function setTargetFile(string $targetFile = null)
+    public function setTargetFile(string $targetFile = null): void
     {
         $this->targetFile = $targetFile !== null ? $targetFile : self::OPTION_TARGET_FILE_DEFAULT;
     }
@@ -167,9 +167,9 @@ class ReverseConfig
     }
 
     /**
-     * @param string $entityXMLFileSuffix
+     * @param string|null $entityXMLFileSuffix
      */
-    public function setEntityXMLFileSuffix(string $entityXMLFileSuffix = null)
+    public function setEntityXMLFileSuffix(string $entityXMLFileSuffix = null): void
     {
         $this->entityXMLFileSuffix = ($entityXMLFileSuffix !== null) ? $entityXMLFileSuffix : self::OPTION_ENTITY_FILE_SUFFIX_DEFAULT;
     }
@@ -185,7 +185,7 @@ class ReverseConfig
     /**
      * @param bool $singleFile
      */
-    public function setSingleFile(bool $singleFile = null)
+    public function setSingleFile(bool $singleFile = null): void
     {
         $this->singleFile = $singleFile !== null ? $singleFile : self::OPTION_SINGLE_FILE_DEFAULT;
     }
@@ -201,17 +201,17 @@ class ReverseConfig
     /**
      * @return NamingStrategy
      */
-    public function getClassNamingInstance() : NamingStrategy
+    public function getClassNamingInstance(): NamingStrategy
     {
         $className = $this->getClassNamingStrategy();
         return new $className;
     }
 
     /**
-     * @param string $classNamingStrategy
+     * @param string|null $classNamingStrategy
      * @throws ReflectionException
      */
-    public function setClassNamingStrategy(string $classNamingStrategy = null)
+    public function setClassNamingStrategy(string $classNamingStrategy = null): void
     {
         $this->classNamingStrategy = ($classNamingStrategy !== null) ? $classNamingStrategy : self::OPTION_CLASS_NAMING_DEFAULT;
         $this->checkNamingStrategy($this->classNamingStrategy, self::OPTION_CLASS_NAMING);
@@ -228,52 +228,51 @@ class ReverseConfig
     /**
      * @return NamingStrategy
      */
-    public function getAttributeNamingInstance() : NamingStrategy
+    public function getAttributeNamingInstance(): NamingStrategy
     {
         $className = $this->getAttributeNamingStrategy();
         return new $className;
     }
 
     /**
-     * @param string $attributeNamingStrategy
+     * @param string|null $attributeNamingStrategy
      *
-     * @throws InvalidConfigurationException
      * @throws ReflectionException
      */
-    public function setAttributeNamingStrategy(string $attributeNamingStrategy = null)
+    public function setAttributeNamingStrategy(string $attributeNamingStrategy = null): void
     {
         $this->attributeNamingStrategy = ($attributeNamingStrategy !== null) ? $attributeNamingStrategy : self::OPTION_ATTRIBUTE_NAMING_DEFAULT;
         $this->checkNamingStrategy($this->attributeNamingStrategy, self::OPTION_ATTRIBUTE_NAMING);
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDefaultNamespace()
+    public function getDefaultNamespace(): ?string
     {
         return $this->defaultNamespace;
     }
 
     /**
-     * @param string $defaultNamespace
+     * @param string|null $defaultNamespace
      */
-    public function setDefaultNamespace(string $defaultNamespace = null)
+    public function setDefaultNamespace(string $defaultNamespace = null): void
     {
         $this->defaultNamespace = $defaultNamespace;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getConnectionName()
+    public function getConnectionName(): ?string
     {
         return $this->connectionName;
     }
 
     /**
-     * @param string $connectionName
+     * @param string|null $connectionName
      */
-    public function setConnectionName(string $connectionName = null)
+    public function setConnectionName(string $connectionName = null): void
     {
         $this->connectionName = $connectionName;
     }
@@ -283,7 +282,7 @@ class ReverseConfig
      * @param string $parameterName
      * @throws ReflectionException
      */
-    protected function checkNamingStrategy(string $className, string $parameterName)
+    protected function checkNamingStrategy(string $className, string $parameterName): void
     {
         if (!ClassUtil::exists($className)) {
             $error = sprintf(self::ERROR_NAMING_CLASS_DOES_NOT_EXIST, $parameterName, $className);

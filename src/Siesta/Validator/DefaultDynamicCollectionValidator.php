@@ -23,27 +23,27 @@ class DefaultDynamicCollectionValidator implements DynamicCollectionValidator
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
      * @var DynamicCollection
      */
-    protected $dynamicCollection;
+    protected DynamicCollection $dynamicCollection;
 
     /**
      * @var ValidationLogger
      */
-    protected $logger;
+    protected ValidationLogger $logger;
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getEntityName()
+    protected function getEntityName(): ?string
     {
         return $this->entity->getClassShortName();
     }
@@ -52,15 +52,15 @@ class DefaultDynamicCollectionValidator implements DynamicCollectionValidator
      * @param string $text
      * @param int $code
      */
-    protected function error(string $text, int $code)
+    protected function error(string $text, int $code): void
     {
         $this->logger->error($text, $code);
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getName()
+    protected function getName(): ?string
     {
         return $this->dynamicCollection->getName();
     }
@@ -71,7 +71,7 @@ class DefaultDynamicCollectionValidator implements DynamicCollectionValidator
      * @param DynamicCollection $dynamicCollection
      * @param ValidationLogger $logger
      */
-    public function validate(DataModel $dataModel, Entity $entity, DynamicCollection $dynamicCollection, ValidationLogger $logger)
+    public function validate(DataModel $dataModel, Entity $entity, DynamicCollection $dynamicCollection, ValidationLogger $logger): void
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
@@ -85,7 +85,7 @@ class DefaultDynamicCollectionValidator implements DynamicCollectionValidator
     /**
      *
      */
-    protected function validateForeignEntity()
+    protected function validateForeignEntity(): void
     {
         if ($this->dynamicCollection->getForeignEntity() !== null) {
             return;
@@ -94,7 +94,10 @@ class DefaultDynamicCollectionValidator implements DynamicCollectionValidator
         $this->error($error, self::ERROR_INVALID_FOREIGN_TABLE_CODE);
     }
 
-    protected function validateName()
+    /**
+     * @return void
+     */
+    protected function validateName(): void
     {
         if ($this->getName() !== null) {
             return;

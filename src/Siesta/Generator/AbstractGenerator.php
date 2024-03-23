@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Generator;
 
@@ -14,12 +14,12 @@ abstract class AbstractGenerator implements Generator
     /**
      * @var Plugin[]
      */
-    protected $pluginList;
+    protected array $pluginList;
 
     /**
      * @var string
      */
-    protected $basePath;
+    protected string $basePath;
 
     /**
      * AbstractGenerator constructor.
@@ -32,15 +32,15 @@ abstract class AbstractGenerator implements Generator
     /**
      * @param Plugin $plugin
      */
-    public function addPlugin(Plugin $plugin)
+    public function addPlugin(Plugin $plugin): void
     {
         $this->pluginList[] = $plugin;
     }
 
     /**
-     * @return null|string
+     * @return array
      */
-    public function getImplementedInterfaceList()
+    public function getImplementedInterfaceList(): array
     {
         $interfaceList = [];
         foreach ($this->pluginList as $plugin) {
@@ -57,7 +57,7 @@ abstract class AbstractGenerator implements Generator
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity)
+    public function getUseClassNameList(Entity $entity): array
     {
         $useClassList = [];
 
@@ -73,7 +73,7 @@ abstract class AbstractGenerator implements Generator
      *
      * @return string
      */
-    protected function getTargetFile(Entity $entity, string $className) : string
+    protected function getTargetFile(Entity $entity, string $className): string
     {
         $basePath = rtrim($this->basePath, DIRECTORY_SEPARATOR);
         return $basePath . DIRECTORY_SEPARATOR . $entity->getTargetPath() . DIRECTORY_SEPARATOR . $className . ".php";

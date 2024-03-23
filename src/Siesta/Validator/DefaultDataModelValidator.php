@@ -24,18 +24,18 @@ class DefaultDataModelValidator implements DataModelValidator
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var ValidationLogger
      */
-    protected $logger;
+    protected ValidationLogger $logger;
 
     /**
      * @param DataModel $dataModel
      * @param ValidationLogger $logger
      */
-    public function validate(DataModel $dataModel, ValidationLogger $logger)
+    public function validate(DataModel $dataModel, ValidationLogger $logger): void
     {
         $this->dataModel = $dataModel;
         $this->logger = $logger;
@@ -47,7 +47,7 @@ class DefaultDataModelValidator implements DataModelValidator
      * @param string $text
      * @param int $code
      */
-    protected function error(string $text, int $code)
+    protected function error(string $text, int $code): void
     {
         $this->logger->error($text, $code);
     }
@@ -55,7 +55,7 @@ class DefaultDataModelValidator implements DataModelValidator
     /**
      *
      */
-    protected function validateTableNamesUnique()
+    protected function validateTableNamesUnique(): void
     {
         $nameList = [];
         $duplicateNameList = [];
@@ -72,7 +72,7 @@ class DefaultDataModelValidator implements DataModelValidator
     /**
      *
      */
-    protected function validateClassNamesUnique()
+    protected function validateClassNamesUnique(): void
     {
         $nameList = [];
         $duplicateNameList = [];
@@ -91,7 +91,7 @@ class DefaultDataModelValidator implements DataModelValidator
      * @param array $duplicateNameList
      * @param $name
      */
-    protected function checkDuplicate(array &$nameList, array &$duplicateNameList, $name)
+    protected function checkDuplicate(array &$nameList, array &$duplicateNameList, $name): void
     {
         $existing = ArrayUtil::getFromArray($nameList, $name);
         if ($existing) {

@@ -17,17 +17,17 @@ class MySQLMultiQueryResultSet implements ResultSet
     /**
      * @var mysqli
      */
-    private $connection;
+    private mysqli $connection;
 
     /**
-     * @var mysqli_result
+     * @var mysqli_result|false
      */
-    private $mysqliResult;
+    private mysqli_result|false $mysqliResult;
 
     /**
-     * @var array
+     * @var array|null
      */
-    protected $next;
+    protected ?array $next;
 
     /**
      * @param mysqli $connection
@@ -72,7 +72,7 @@ class MySQLMultiQueryResultSet implements ResultSet
     /**
      *
      */
-    public function close()
+    public function close(): void
     {
         while ($this->connection->more_results()) {
             $this->connection->next_result();
@@ -86,9 +86,9 @@ class MySQLMultiQueryResultSet implements ResultSet
     /**
      * @param string $key
      *
-     * @return bool
+     * @return bool|null
      */
-    public function getBooleanValue(string $key)
+    public function getBooleanValue(string $key): ?bool
     {
         $value = ArrayUtil::getFromArray($this->next, $key);
         if (is_null($value)) {
@@ -103,7 +103,7 @@ class MySQLMultiQueryResultSet implements ResultSet
      *
      * @return int|null
      */
-    public function getIntegerValue(string $key)
+    public function getIntegerValue(string $key): ?int
     {
         $value = ArrayUtil::getFromArray($this->next, $key);
         if (is_null($value)) {
@@ -113,11 +113,11 @@ class MySQLMultiQueryResultSet implements ResultSet
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return float|null
      */
-    public function getFloatValue(string $key)
+    public function getFloatValue(string $key): ?float
     {
         $value = ArrayUtil::getFromArray($this->next, $key);
         if (is_null($value)) {
@@ -127,21 +127,21 @@ class MySQLMultiQueryResultSet implements ResultSet
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return null|string
      */
-    public function getStringValue(string $key)
+    public function getStringValue(string $key): ?string
     {
         return ArrayUtil::getFromArray($this->next, $key);
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return null|SiestaDateTime
      */
-    public function getDateTime(string $key)
+    public function getDateTime(string $key): ?SiestaDateTime
     {
         $value = ArrayUtil::getFromArray($this->next, $key);
         if (is_null($value)) {
@@ -156,7 +156,7 @@ class MySQLMultiQueryResultSet implements ResultSet
      *
      * @return mixed|null
      */
-    public function getObject(string $key)
+    public function getObject(string $key): mixed
     {
         $value = $this->getStringValue($key);
         if ($value === null) {
@@ -170,7 +170,7 @@ class MySQLMultiQueryResultSet implements ResultSet
      *
      * @return array|null
      */
-    public function getArray(string $key)
+    public function getArray(string $key): ?array
     {
         $value = $this->getStringValue($key);
         if ($value === null) {

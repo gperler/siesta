@@ -1,11 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\ServiceClass;
 
 use Nitria\ClassGenerator;
 use Siesta\CodeGenerator\GeneratorHelper;
+use Siesta\Database\ConnectionFactory;
 use Siesta\GeneratorPlugin\BasePlugin;
 use Siesta\GeneratorPlugin\Entity\FromResultSetPlugin;
 use Siesta\Model\Entity;
@@ -26,17 +27,17 @@ class ExecuteStoredProcedurePlugin extends BasePlugin
      *
      * @return string[]
      */
-    public function getUseClassNameList(Entity $entity) : array
+    public function getUseClassNameList(Entity $entity): array
     {
         return [
-            'Siesta\Database\ConnectionFactory'
+            ConnectionFactory::class,
         ];
     }
 
     /**
      * @return string[]
      */
-    public function getDependantPluginList() : array
+    public function getDependantPluginList(): array
     {
         return [];
     }
@@ -45,7 +46,7 @@ class ExecuteStoredProcedurePlugin extends BasePlugin
      * @param Entity $entity
      * @param ClassGenerator $classGenerator
      */
-    public function generate(Entity $entity, ClassGenerator $classGenerator)
+    public function generate(Entity $entity, ClassGenerator $classGenerator): void
     {
         $this->setup($entity, $classGenerator);
         $this->generateCreateInstanceFromResultSet();
@@ -56,7 +57,7 @@ class ExecuteStoredProcedurePlugin extends BasePlugin
     /**
      *
      */
-    protected function generateCreateInstanceFromResultSet()
+    protected function generateCreateInstanceFromResultSet(): void
     {
         $returnType = $this->entity->getInstantiationClassName();
 
@@ -72,14 +73,14 @@ class ExecuteStoredProcedurePlugin extends BasePlugin
     /**
      *
      */
-    protected function generateExecuteProcedure()
+    protected function generateExecuteProcedure(): void
     {
         $method = $this->classGenerator->addPublicMethod(self::METHOD_EXECUTE_SP);
         $helper = new GeneratorHelper($method);
 
         $method->addParameter(PHPType::STRING, 'spCall');
         $helper->addConnectionNameParameter();
-        $method->setReturnType($this->entity->getInstantiationClassName() . '[]',false);
+        $method->setReturnType($this->entity->getInstantiationClassName() . '[]', false);
 
         $helper->addConnectionLookup();
 

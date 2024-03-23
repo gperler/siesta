@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Model;
 
@@ -11,37 +11,37 @@ class Collection
     /**
      * @var DataModel
      */
-    protected $dataModel;
+    protected DataModel $dataModel;
 
     /**
      * @var Entity
      */
-    protected $entity;
+    protected Entity $entity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignTable;
+    protected ?string $foreignTable;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignReferenceName;
+    protected ?string $foreignReferenceName;
 
     /**
-     * @var Entity
+     * @var Entity|null
      */
-    protected $foreignEntity;
+    protected ?Entity $foreignEntity;
 
     /**
-     * @var Reference
+     * @var Reference|null
      */
-    protected $foreignReference;
+    protected ?Reference $foreignReference;
 
     /**
      * Collection constructor.
@@ -53,12 +53,17 @@ class Collection
     {
         $this->dataModel = $dataModel;
         $this->entity = $entity;
+        $this->name = null;
+        $this->foreignTable = null;
+        $this->foreignReferenceName = null;
+        $this->foreignEntity = null;
+        $this->foreignReference = null;
     }
 
     /**
      *
      */
-    public function update()
+    public function update(): void
     {
         $this->foreignEntity = $this->dataModel->getEntityByTableName($this->getForeignTable());
         if ($this->foreignEntity === null) {
@@ -72,17 +77,17 @@ class Collection
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName(string $name = null)
+    public function setName(string $name = null): void
     {
         $this->name = $name;
     }
@@ -90,39 +95,39 @@ class Collection
     /**
      * @return string
      */
-    public function getMethodName()
+    public function getMethodName(): string
     {
         return ucfirst($this->getName());
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getForeignTable()
+    public function getForeignTable(): ?string
     {
         return $this->foreignTable;
     }
 
     /**
-     * @param string $foreignTable
+     * @param string|null $foreignTable
      */
-    public function setForeignTable(string $foreignTable = null)
+    public function setForeignTable(string $foreignTable = null): void
     {
         $this->foreignTable = $foreignTable;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getForeignReferenceName()
+    public function getForeignReferenceName(): ?string
     {
         return $this->foreignReferenceName;
     }
 
     /**
-     * @param string $foreignReferenceName
+     * @param string|null $foreignReferenceName
      */
-    public function setForeignReferenceName(string $foreignReferenceName = null)
+    public function setForeignReferenceName(string $foreignReferenceName = null): void
     {
         $this->foreignReferenceName = $foreignReferenceName;
     }
@@ -130,7 +135,7 @@ class Collection
     /**
      * @return Entity|null
      */
-    public function getForeignEntity()
+    public function getForeignEntity(): ?Entity
     {
         return $this->foreignEntity;
     }
@@ -138,7 +143,7 @@ class Collection
     /**
      * @return Reference|null
      */
-    public function getForeignReference()
+    public function getForeignReference(): ?Reference
     {
         return $this->foreignReference;
     }

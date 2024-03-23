@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -26,49 +26,58 @@ class XMLReference
     const NO_CONSTRAINT = "noConstraint";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $constraintName;
+    protected ?string $constraintName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignTable;
+    protected ?string $foreignTable;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $onDelete;
+    protected ?string $onDelete;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $onUpdate;
+    protected ?string $onUpdate;
 
     /**
      * @var bool
      */
-    protected $noConstraint;
+    protected bool $noConstraint;
 
     /**
      * @var XMLReferenceMapping[]
      */
-    protected $xmlReferenceMappingList;
+    protected array $xmlReferenceMappingList;
 
+    /**
+     *
+     */
     public function __construct()
     {
+        $this->name = null;
+        $this->constraintName = null;
+        $this->foreignTable = null;
+        $this->onDelete = null;
+        $this->onUpdate = null;
+        $this->noConstraint = false;
         $this->xmlReferenceMappingList = [];
     }
 
     /**
      * @param XMLAccess $xmlAccess
      */
-    public function fromXML(XMLAccess $xmlAccess)
+    public function fromXML(XMLAccess $xmlAccess): void
     {
         $this->setForeignTable($xmlAccess->getAttribute(self::FOREIGN_TABLE));
         $this->setName($xmlAccess->getAttribute(self::NAME));
@@ -88,7 +97,7 @@ class XMLReference
     /**
      * @param XMLWrite $parent
      */
-    public function toXML(XMLWrite $parent)
+    public function toXML(XMLWrite $parent): void
     {
         $xmlWrite = $parent->appendChild(self::ELEMENT_REFERENCE_NAME);
         $xmlWrite->setAttribute(self::FOREIGN_TABLE, $this->getForeignTable());
@@ -102,7 +111,11 @@ class XMLReference
         }
     }
 
-    public function fromConstraintMetaData(ConstraintMetaData $constraintMetaData)
+    /**
+     * @param ConstraintMetaData $constraintMetaData
+     * @return void
+     */
+    public function fromConstraintMetaData(ConstraintMetaData $constraintMetaData): void
     {
         $this->setName($constraintMetaData->getName());
         $this->setConstraintName($constraintMetaData->getConstraintName());
@@ -119,65 +132,65 @@ class XMLReference
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getForeignTable()
+    public function getForeignTable(): ?string
     {
         return $this->foreignTable;
     }
 
     /**
-     * @param string $foreignTable
+     * @param string|null $foreignTable
      */
-    public function setForeignTable($foreignTable)
+    public function setForeignTable(?string $foreignTable): void
     {
         $this->foreignTable = $foreignTable;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOnDelete()
+    public function getOnDelete(): ?string
     {
         return $this->onDelete;
     }
 
     /**
-     * @param string $onDelete
+     * @param string|null $onDelete
      */
-    public function setOnDelete($onDelete)
+    public function setOnDelete(?string $onDelete): void
     {
         $this->onDelete = $onDelete;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOnUpdate()
+    public function getOnUpdate(): ?string
     {
         return $this->onUpdate;
     }
 
     /**
-     * @param string $onUpdate
+     * @param string|null $onUpdate
      */
-    public function setOnUpdate($onUpdate)
+    public function setOnUpdate(?string $onUpdate): void
     {
         $this->onUpdate = $onUpdate;
     }
@@ -193,23 +206,23 @@ class XMLReference
     /**
      * @param boolean $noConstraint
      */
-    public function setNoConstraint(bool $noConstraint)
+    public function setNoConstraint(bool $noConstraint): void
     {
         $this->noConstraint = $noConstraint;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getConstraintName()
+    public function getConstraintName(): ?string
     {
         return $this->constraintName;
     }
 
     /**
-     * @param string $constraintName
+     * @param string|null $constraintName
      */
-    public function setConstraintName($constraintName)
+    public function setConstraintName(?string $constraintName): void
     {
         $this->constraintName = $constraintName;
     }
@@ -217,7 +230,7 @@ class XMLReference
     /**
      * @return XMLReferenceMapping[]
      */
-    public function getXmlReferenceMappingList()
+    public function getXmlReferenceMappingList(): array
     {
         return $this->xmlReferenceMappingList;
     }
