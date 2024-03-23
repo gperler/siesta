@@ -101,7 +101,7 @@ class Collection
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getForeignTable(): ?string
     {

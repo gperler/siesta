@@ -102,7 +102,7 @@ class DefaultReferenceValidator implements ReferenceValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function getReferenceName(): ?string
     {

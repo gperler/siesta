@@ -75,7 +75,7 @@ class AttributeGetterSetterPlugin extends BasePlugin
     /**
      * @param Attribute $attribute
      */
-    protected function generateGetter(Attribute $attribute)
+    protected function generateGetter(Attribute $attribute): void
     {
         $methodName = "get" . $attribute->getMethodName();
         $method = $this->classGenerator->addPublicMethod($methodName);
@@ -87,7 +87,7 @@ class AttributeGetterSetterPlugin extends BasePlugin
     /**
      * @param Attribute $attribute
      */
-    protected function generatePrimaryKeyGetter(Attribute $attribute)
+    protected function generatePrimaryKeyGetter(Attribute $attribute): void
     {
         $methodName = "get" . $attribute->getMethodName();
         $method = $this->classGenerator->addPublicMethod($methodName);
@@ -109,7 +109,7 @@ class AttributeGetterSetterPlugin extends BasePlugin
     /**
      * @param Attribute $attribute
      */
-    protected function generateSetter(Attribute $attribute)
+    protected function generateSetter(Attribute $attribute): void
     {
         $name = $attribute->getPhpName();
         $type = $attribute->getPhpType();
@@ -130,7 +130,7 @@ class AttributeGetterSetterPlugin extends BasePlugin
     /**
      * @param Attribute $attribute
      */
-    protected function generateAddToArrayType(Attribute $attribute)
+    protected function generateAddToArrayType(Attribute $attribute): void
     {
         $methodName = "addTo" . $attribute->getMethodName();
         $method = $this->classGenerator->addPublicMethod($methodName);
@@ -146,7 +146,11 @@ class AttributeGetterSetterPlugin extends BasePlugin
         $method->addCodeLine($memberName . '[$key] = $value;');
     }
 
-    protected function generateGetFromArrayType(Attribute $attribute)
+    /**
+     * @param Attribute $attribute
+     * @return void
+     */
+    protected function generateGetFromArrayType(Attribute $attribute): void
     {
         $methodName = "getFrom" . $attribute->getMethodName();
         $method = $this->classGenerator->addPublicMethod($methodName);

@@ -13,17 +13,17 @@ class XMLDirectoryScanner
     /**
      * @var ValidationLogger
      */
-    protected $validationLogger;
+    protected ValidationLogger $validationLogger;
 
     /**
      * @var XMLEntity[]
      */
-    protected $xmlEntityList;
+    protected array $xmlEntityList;
 
     /**
      * @var XMLEntityExtension[]
      */
-    protected $xmlEntityExtensionList;
+    protected array $xmlEntityExtensionList;
 
     /**
      * DirectoryScanner constructor.
@@ -42,7 +42,7 @@ class XMLDirectoryScanner
      * @param File $file
      * @param int|null $lastGenerationTime
      */
-    public function addFile(File $file, int $lastGenerationTime = null)
+    public function addFile(File $file, int $lastGenerationTime = null): void
     {
         if (!$file->exists()) {
             $warn = sprintf(self::ERROR_FILE_DOES_NOT_EXIST, $file->getAbsoluteFileName());
@@ -58,7 +58,7 @@ class XMLDirectoryScanner
      * @param string|null $baseDir
      * @param int|null $lastGenerationTime
      */
-    public function addFileExtension(string $fileExtension, string $baseDir = null, int $lastGenerationTime = null)
+    public function addFileExtension(string $fileExtension, string $baseDir = null, int $lastGenerationTime = null): void
     {
         $baseDir = $baseDir ? $baseDir : getcwd();
 
@@ -80,7 +80,7 @@ class XMLDirectoryScanner
      * @param File $file
      * @param int|null $lastGenerationTime
      */
-    protected function processFile(File $file, int $lastGenerationTime = null)
+    protected function processFile(File $file, int $lastGenerationTime = null): void
     {
         $xmlReader = new XMLReader($file, $lastGenerationTime);
         $this->xmlEntityList = array_merge($this->xmlEntityList, $xmlReader->getEntityList());
@@ -90,7 +90,7 @@ class XMLDirectoryScanner
     /**
      * @return XMLEntity[]
      */
-    public function getXmlEntityList()
+    public function getXmlEntityList(): array
     {
         $this->mergeExtensionToEntity();
         return $this->xmlEntityList;
@@ -99,7 +99,7 @@ class XMLDirectoryScanner
     /**
      *
      */
-    protected function mergeExtensionToEntity()
+    protected function mergeExtensionToEntity(): void
     {
         foreach ($this->xmlEntityExtensionList as $xmlEntityExtension) {
             $tableName = $xmlEntityExtension->getTableName();
@@ -122,7 +122,7 @@ class XMLDirectoryScanner
      *
      * @return null|XMLEntity
      */
-    protected function getXMLEntityByTableName(string $tableName)
+    protected function getXMLEntityByTableName(string $tableName): ?XMLEntity
     {
         foreach ($this->xmlEntityList as $xmlEntity) {
             if ($xmlEntity->getTableName() === $tableName) {

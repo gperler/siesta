@@ -93,9 +93,9 @@ class StoredProcedure
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName($name): void
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
@@ -141,7 +141,7 @@ class StoredProcedure
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getStatement(): ?string
     {

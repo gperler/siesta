@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -15,24 +15,35 @@ class XMLServiceClass
     const CONSTRUCT_FACTORY_CLASS_NAME = "constructFactoryClassName";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $className;
+    protected ?string $className;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $constructCall;
+    protected ?string $constructCall;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $constructFactoryClassName;
+    protected ?string $constructFactoryClassName;
+
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->className = null;
+        $this->constructCall = null;
+        $this->constructFactoryClassName = null;
+    }
 
     /**
      * @param XMLAccess $xmlAccess
      */
-    public function fromXMLAccess(XMLAccess $xmlAccess)
+    public function fromXMLAccess(XMLAccess $xmlAccess): void
     {
         $this->setClassName($xmlAccess->getAttribute(self::CLASS_NAME));
         $this->setConstructCall($xmlAccess->getAttribute(self::CONSTRUCT_CALL));
@@ -40,49 +51,49 @@ class XMLServiceClass
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClassName()
+    public function getClassName(): ?string
     {
         return $this->className;
     }
 
     /**
-     * @param string $className
+     * @param string|null $className
      */
-    public function setClassName($className)
+    public function setClassName(?string $className): void
     {
         $this->className = trim($className, "\\");
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getConstructCall()
+    public function getConstructCall(): ?string
     {
         return $this->constructCall;
     }
 
     /**
-     * @param string $constructCall
+     * @param string|null $constructCall
      */
-    public function setConstructCall($constructCall)
+    public function setConstructCall(?string $constructCall): void
     {
         $this->constructCall = $constructCall;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getConstructFactoryClassName()
+    public function getConstructFactoryClassName(): ?string
     {
         return $this->constructFactoryClassName;
     }
 
     /**
-     * @param string $constructFactoryClassName
+     * @param string|null $constructFactoryClassName
      */
-    public function setConstructFactoryClassName($constructFactoryClassName)
+    public function setConstructFactoryClassName(?string $constructFactoryClassName): void
     {
         $this->constructFactoryClassName = $constructFactoryClassName;
     }

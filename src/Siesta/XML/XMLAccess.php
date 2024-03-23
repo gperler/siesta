@@ -50,7 +50,7 @@ class XMLAccess
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return int
      */

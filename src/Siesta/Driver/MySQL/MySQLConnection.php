@@ -176,7 +176,7 @@ class MySQLConnection implements Connection
 
 
     /**
-     * @param $query
+     * @param string $query
      *
      * @return ResultSet
      * @throws ForeignKeyConstraintFailedException

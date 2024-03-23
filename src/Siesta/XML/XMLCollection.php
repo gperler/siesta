@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -18,32 +18,34 @@ class XMLCollection
     const FOREIGN_REFERENCE_NAME = "foreignReferenceName";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignTable;
+    protected ?string $foreignTable;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignReferenceName;
+    protected ?string $foreignReferenceName;
 
     /**
      * XMLCollection constructor.
      */
     public function __construct()
     {
-
+        $this->name = null;
+        $this->foreignTable = null;
+        $this->foreignReferenceName = null;
     }
 
     /**
      * @param XMLAccess $xmlAccess
      */
-    public function fromXML(XMLAccess $xmlAccess)
+    public function fromXML(XMLAccess $xmlAccess): void
     {
         $this->setName($xmlAccess->getAttribute(self::NAME));
         $this->setForeignReferenceName($xmlAccess->getAttribute(self::FOREIGN_REFERENCE_NAME));
@@ -51,49 +53,49 @@ class XMLCollection
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getForeignTable()
+    public function getForeignTable(): ?string
     {
         return $this->foreignTable;
     }
 
     /**
-     * @param string $foreignTable
+     * @param string|null $foreignTable
      */
-    public function setForeignTable($foreignTable)
+    public function setForeignTable(?string $foreignTable): void
     {
         $this->foreignTable = $foreignTable;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getForeignReferenceName()
+    public function getForeignReferenceName(): ?string
     {
         return $this->foreignReferenceName;
     }
 
     /**
-     * @param string $foreignReferenceName
+     * @param string|null $foreignReferenceName
      */
-    public function setForeignReferenceName($foreignReferenceName)
+    public function setForeignReferenceName(?string $foreignReferenceName): void
     {
         $this->foreignReferenceName = $foreignReferenceName;
     }

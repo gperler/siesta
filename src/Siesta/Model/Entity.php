@@ -593,7 +593,7 @@ class Entity
 
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getClassShortName(): ?string
     {
@@ -673,7 +673,7 @@ class Entity
 
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getNamespaceName(): ?string
     {
@@ -693,7 +693,7 @@ class Entity
 
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTableName(): ?string
     {

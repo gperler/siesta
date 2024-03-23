@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Util;
 
@@ -32,11 +32,11 @@ class StringUtil
 
     /**
      * @param $value
-     * @param int $maxLength
+     * @param int|null $maxLength
      *
-     * @return bool|int|null|string
+     * @return string|null
      */
-    public static function trimToNull($value, $maxLength = null)
+    public static function trimToNull($value, int $maxLength = null): ?string
     {
         if ($value === null) {
             return null;
@@ -66,7 +66,7 @@ class StringUtil
      *
      * @return string
      */
-    public static function getEndAfterLast(string $haystack, string $needle) : string
+    public static function getEndAfterLast(string $haystack, string $needle): string
     {
         $lastOccurrence = strrchr($haystack, $needle);
         if ($lastOccurrence === false) {
@@ -81,7 +81,7 @@ class StringUtil
      *
      * @return string
      */
-    public static function getStartBeforeLast($haystack, $needle)
+    public static function getStartBeforeLast(string $haystack, string $needle): string
     {
         $end = self::getEndAfterLast($haystack, $needle);
         $length = -1 * (strlen($end) + strlen($needle));

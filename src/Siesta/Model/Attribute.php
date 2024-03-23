@@ -155,7 +155,7 @@ class Attribute
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPhpName(): ?string
     {
@@ -229,7 +229,7 @@ class Attribute
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDbType(): ?string
     {
@@ -261,7 +261,7 @@ class Attribute
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDefaultValue(): ?string
     {
@@ -277,7 +277,7 @@ class Attribute
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getAutoValue(): ?string
     {
@@ -354,7 +354,7 @@ class Attribute
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getClassName(): ?string
     {

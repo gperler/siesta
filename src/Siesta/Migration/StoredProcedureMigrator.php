@@ -231,7 +231,7 @@ class StoredProcedureMigrator
 
     /**
      * @param string $procedureName
-     * @return StoredProcedureDefinition
+     * @return StoredProcedureDefinition|null
      */
     private function getActiveStoredProcedureByName(string $procedureName): ?StoredProcedureDefinition
     {

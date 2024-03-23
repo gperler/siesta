@@ -86,9 +86,9 @@ class Constructor
     }
 
     /**
-     * @param string $constructFactoryClassName
+     * @param string|null $constructFactoryClassName
      */
-    public function setConstructFactoryClassName($constructFactoryClassName): void
+    public function setConstructFactoryClassName(?string $constructFactoryClassName): void
     {
         $this->constructFactoryClassName = $constructFactoryClassName;
     }

@@ -51,7 +51,7 @@ class ReverseCommand extends Command
      */
     protected $reverse;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName("reverse");
         $this->setDescription("Build the Siesta XML schema for a database.");
@@ -66,7 +66,7 @@ class ReverseCommand extends Command
      * @return int
      * @throws ReflectionException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = $output;
         $this->input = $input;
@@ -103,7 +103,7 @@ class ReverseCommand extends Command
      * @return void
      * @throws ReflectionException
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): void
     {
         $configFileName = $this->input->getOption(GeneratorCommand::OPTION_CONFIG_FILE);
         $this->config = Config::getInstance($configFileName);
@@ -117,7 +117,7 @@ class ReverseCommand extends Command
     /**
      *
      */
-    protected function configureReverse()
+    protected function configureReverse(): void
     {
         $this->reverse->setConnectionName($this->reverseConfig->getConnectionName());
         $this->reverse->setEntityXMLFileSuffix($this->reverseConfig->getEntityXMLFileSuffix());

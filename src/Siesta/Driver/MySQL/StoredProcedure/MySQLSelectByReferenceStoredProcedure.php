@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use Siesta\Database\StoredProcedureNaming;
@@ -41,7 +42,7 @@ class MySQLSelectByReferenceStoredProcedure extends MySQLStoredProcedureBase
     {
         $this->modifies = false;
 
-        $this->name = StoredProcedureNaming::getSelectByReferenceName($this->entity, $this->reference);;
+        $this->name = StoredProcedureNaming::getSelectByReferenceName($this->entity, $this->reference);
 
         $this->determineTableNames();
 

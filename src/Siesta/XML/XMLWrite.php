@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -14,12 +14,12 @@ class XMLWrite
     /**
      * @var DOMDocument
      */
-    protected $document;
+    protected DOMDocument $document;
 
     /**
-     * @var DOMElement
+     * @var DOMElement|null
      */
-    protected $element;
+    protected ?DOMElement $element;
 
     /**
      * XMLWrite constructor.
@@ -28,7 +28,7 @@ class XMLWrite
      * @param DOMElement|null $element
      * @param string|null $tagName
      */
-    public function __construct(DOMDocument $document, DOMElement $element = null, string $tagName = null)
+    public function __construct(DOMDocument $document, ?DOMElement $element, string $tagName = null)
     {
         $this->document = $document;
         if ($element !== null) {
@@ -41,9 +41,9 @@ class XMLWrite
 
     /**
      * @param string $key
-     * @param string $value
+     * @param string|null $value
      */
-    public function setAttribute(string $key, string $value = null)
+    public function setAttribute(string $key, string $value = null): void
     {
         if ($value !== null) {
             $this->element->setAttribute($key, $value);
@@ -53,9 +53,9 @@ class XMLWrite
 
     /**
      * @param string $key
-     * @param int $value
+     * @param int|null $value
      */
-    public function setIntAttribute(string $key, int $value = null)
+    public function setIntAttribute(string $key, int $value = null): void
     {
         $this->element->setAttribute($key, (string)$value);
     }
@@ -64,7 +64,7 @@ class XMLWrite
      * @param string $key
      * @param bool $value
      */
-    public function setBoolAttribute(string $key, bool $value = null)
+    public function setBoolAttribute(string $key, bool $value = null): void
     {
         $value = ($value === true) ? 'true' : 'false';
         $this->setAttribute($key, $value);
@@ -74,7 +74,7 @@ class XMLWrite
      * @param string $key
      * @param bool $value
      */
-    public function setBoolAttributeIfTrue(string $key, bool $value = null)
+    public function setBoolAttributeIfTrue(string $key, bool $value = null): void
     {
         if ($value === null || $value === false) {
             return;
@@ -87,7 +87,7 @@ class XMLWrite
      *
      * @return XMLWrite
      */
-    public function appendChild(string $name)
+    public function appendChild(string $name): XMLWrite
     {
         $element = $this->document->createElement($name);
         $this->element->appendChild($element);
@@ -98,7 +98,7 @@ class XMLWrite
     /**
      * @param File $file
      */
-    public function saveToFile(File $file)
+    public function saveToFile(File $file): void
     {
         $this->document->preserveWhiteSpace = false;
         $this->document->formatOutput = true;

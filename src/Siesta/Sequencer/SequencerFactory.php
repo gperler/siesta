@@ -51,7 +51,7 @@ class SequencerFactory
     /**
      * @var Sequencer[]
      */
-    protected $sequencerList;
+    protected array $sequencerList;
 
     /**
      * SequenceFactory constructor.

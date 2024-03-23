@@ -67,7 +67,7 @@ class DefaultCollectionValidator implements CollectionValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function getEntityName(): ?string
     {
@@ -75,7 +75,7 @@ class DefaultCollectionValidator implements CollectionValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function getCollectionName(): ?string
     {

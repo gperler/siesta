@@ -52,7 +52,7 @@ class DefaultStoredProcedureValidator implements StoredProcedureValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function getEntityName(): ?string
     {
@@ -60,7 +60,7 @@ class DefaultStoredProcedureValidator implements StoredProcedureValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function getStoredProcedureName(): ?string
     {

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Database;
 
@@ -72,7 +72,7 @@ class ConnectionPool
      * @return Connection
      * @throws InvalidConfigurationException
      */
-    public function getConnection($name = null) : Connection
+    public function getConnection($name = null): Connection
     {
         if ($name === null) {
             return $this->getDefaultConnection();
@@ -90,7 +90,7 @@ class ConnectionPool
      * @return Connection
      * @throws InvalidConfigurationException
      */
-    public function getDefaultConnection() : Connection
+    public function getDefaultConnection(): Connection
     {
         if ($this->defaultConnection === null) {
             throw new InvalidConfigurationException(self::EXCEPTION_NO_DEFAULT);
@@ -107,7 +107,7 @@ class ConnectionPool
             $this->defaultConnection->close();
         }
 
-        foreach ($this->connectionList as $name => $connection) {
+        foreach ($this->connectionList as $connection) {
             $connection->close();
         }
     }
@@ -118,7 +118,7 @@ class ConnectionPool
      * @return Driver
      * @throws InvalidConfigurationException
      */
-    protected function getDriver(ConnectionData $connectionData) : Driver
+    protected function getDriver(ConnectionData $connectionData): Driver
     {
         $driver = ArrayUtil::getFromArray($this->driverList, $connectionData->database);
 
@@ -135,7 +135,7 @@ class ConnectionPool
      * @return Driver
      * @throws InvalidConfigurationException
      */
-    protected function instantiateDriver(ConnectionData $connectionData) : Driver
+    protected function instantiateDriver(ConnectionData $connectionData): Driver
     {
         $class = $connectionData->driver;
 

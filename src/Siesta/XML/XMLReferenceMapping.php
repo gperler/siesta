@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -19,26 +19,28 @@ class XMLReferenceMapping
     const FOREIGN_ATTRIBUTE = "foreignAttribute";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $localAttribute;
+    protected ?string $localAttribute;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $foreignAttribute;
+    protected ?string $foreignAttribute;
 
     /**
      * XMLReferenceMapping constructor.
      */
     public function __construct()
     {
+        $this->localAttribute = null;
+        $this->foreignAttribute = null;
     }
 
     /**
      * @param XMLAccess $xmlAccess
      */
-    public function fromXML(XMLAccess $xmlAccess)
+    public function fromXML(XMLAccess $xmlAccess): void
     {
         $this->setLocalAttribute($xmlAccess->getAttribute(self::LOCAL_ATTRIBUTE));
         $this->setForeignAttribute($xmlAccess->getAttribute(self::FOREIGN_ATTRIBUTE));
@@ -47,7 +49,7 @@ class XMLReferenceMapping
     /**
      * @param XMLWrite $parent
      */
-    public function toXML(XMLWrite $parent)
+    public function toXML(XMLWrite $parent): void
     {
         $xmlWrite = $parent->appendChild(self::ELEMENT_REFERENCE_MAPPING_NAME);
         $xmlWrite->setAttribute(self::LOCAL_ATTRIBUTE, $this->getLocalAttribute());
@@ -57,7 +59,7 @@ class XMLReferenceMapping
     /**
      * @param ConstraintMappingMetaData $constraintMappingMetaData
      */
-    public function fromConstraintMappingMetaData(ConstraintMappingMetaData $constraintMappingMetaData)
+    public function fromConstraintMappingMetaData(ConstraintMappingMetaData $constraintMappingMetaData): void
     {
         $namingStrategy = NamingStrategyRegistry::getAttributeNamingStrategy();
 
@@ -69,33 +71,33 @@ class XMLReferenceMapping
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getLocalAttribute()
+    public function getLocalAttribute(): ?string
     {
         return $this->localAttribute;
     }
 
     /**
-     * @param string $localAttribute
+     * @param string|null $localAttribute
      */
-    public function setLocalAttribute($localAttribute)
+    public function setLocalAttribute(?string $localAttribute): void
     {
         $this->localAttribute = $localAttribute;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getForeignAttribute()
+    public function getForeignAttribute(): ?string
     {
         return $this->foreignAttribute;
     }
 
     /**
-     * @param string $foreignAttribute
+     * @param string|null $foreignAttribute
      */
-    public function setForeignAttribute($foreignAttribute)
+    public function setForeignAttribute(?string $foreignAttribute): void
     {
         $this->foreignAttribute = $foreignAttribute;
     }

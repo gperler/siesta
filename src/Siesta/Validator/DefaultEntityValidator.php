@@ -75,7 +75,7 @@ class DefaultEntityValidator implements EntityValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function getEntityName(): ?string
     {

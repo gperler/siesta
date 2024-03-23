@@ -78,6 +78,11 @@ class ConnectionData
     public ?string $charSet;
 
     /**
+     * @var bool|null
+     */
+    public ?bool $isDefault;
+
+    /**
      * ConnectionData constructor.
      *
      * @param string|null $name

@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL\StoredProcedure;
 
 use Siesta\Database\StoredProcedureNaming;
@@ -28,7 +29,7 @@ class MySQLCopyToReplicationStoredProcedure extends MySQLStoredProcedureBase
     /**
      *
      */
-    protected function buildElements()
+    protected function buildElements(): void
     {
 
         $this->modifies = true;

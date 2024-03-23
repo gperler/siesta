@@ -212,7 +212,7 @@ class DynamicCollectionPlugin extends BasePlugin
         foreach ($foreignEntity->getPrimaryKeyAttributeList() as $pkAttribute) {
             $checkList[] = '$' . $pkAttribute->getPhpName() . ' === null';
         }
-        return '($this->' . $dynamicCollection->getName() . ' === null) OR (' . implode(' AND ', $checkList,) . ')';
+        return '($this->' . $dynamicCollection->getName() . ' === null) OR (' . implode(' AND ', $checkList) . ')';
     }
 
     /**

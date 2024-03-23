@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\XML;
 
@@ -21,24 +21,34 @@ class XMLIndexPart
     const LENGTH = "length";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $attributeName;
+    protected ?string $attributeName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $sortOrder;
+    protected ?string $sortOrder;
 
     /**
-     * @var int
+     * @var int|null
      */
-    protected $length;
+    protected ?int $length;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->attributeName = null;
+        $this->sortOrder = null;
+        $this->length = null;
+    }
 
     /**
      * @param XMLAccess $xmlAccess
      */
-    public function fromXML(XMLAccess $xmlAccess)
+    public function fromXML(XMLAccess $xmlAccess): void
     {
         $this->setAttributeName($xmlAccess->getAttribute(self::ATTRIBUTE_NAME));
         $this->setLength($xmlAccess->getAttributeAsInt(self::LENGTH));
@@ -48,7 +58,7 @@ class XMLIndexPart
     /**
      * @param XMLWrite $parent
      */
-    public function toXML(XMLWrite $parent)
+    public function toXML(XMLWrite $parent): void
     {
         $xmlWrite = $parent->appendChild(self::ELEMENT_INDEX_PART_NAME);
         $xmlWrite->setAttribute(self::ATTRIBUTE_NAME, $this->getAttributeName());
@@ -59,7 +69,7 @@ class XMLIndexPart
     /**
      * @param IndexPartMetaData $indexPartMetaData
      */
-    public function fromIndexPartMetaData(IndexPartMetaData $indexPartMetaData)
+    public function fromIndexPartMetaData(IndexPartMetaData $indexPartMetaData): void
     {
         $namingStrategy = NamingStrategyRegistry::getAttributeNamingStrategy();
         $attributeName = $namingStrategy->transform($indexPartMetaData->getColumnName());
@@ -69,49 +79,49 @@ class XMLIndexPart
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAttributeName()
+    public function getAttributeName(): ?string
     {
         return $this->attributeName;
     }
 
     /**
-     * @param string $attributeName
+     * @param string|null $attributeName
      */
-    public function setAttributeName($attributeName)
+    public function setAttributeName(?string $attributeName): void
     {
         $this->attributeName = $attributeName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSortOrder()
+    public function getSortOrder(): ?string
     {
         return $this->sortOrder;
     }
 
     /**
-     * @param string $sortOrder
+     * @param string|null $sortOrder
      */
-    public function setSortOrder($sortOrder)
+    public function setSortOrder(?string $sortOrder): void
     {
         $this->sortOrder = $sortOrder;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getLength()
+    public function getLength(): ?int
     {
         return $this->length;
     }
 
     /**
-     * @param int $length
+     * @param int|null $length
      */
-    public function setLength($length)
+    public function setLength(?int $length): void
     {
         $this->length = $length;
     }

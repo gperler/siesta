@@ -89,7 +89,7 @@ class StoredProcedureParameter
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDbType(): ?string
     {

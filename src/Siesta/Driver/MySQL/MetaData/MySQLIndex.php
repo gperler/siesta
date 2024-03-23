@@ -69,7 +69,7 @@ class MySQLIndex implements IndexMetaData
     /**
      * @param ResultSet $resultSet
      */
-    public function addIndexPart(ResultSet $resultSet)
+    public function addIndexPart(ResultSet $resultSet): void
     {
         $indexPart = new MySQLIndexPart();
         $indexPart->fromResultSet($resultSet);

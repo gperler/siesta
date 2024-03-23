@@ -22,34 +22,34 @@ class XMLStoredProcedure
     const RESULT_TYPE = "resultType";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
      * @var bool
      */
-    protected $modifies;
+    protected bool $modifies;
 
     /**
      * @var bool
      */
-    protected $deterministic;
+    protected bool $deterministic;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $resultType;
+    protected ?string $resultType;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $statement;
+    protected ?string $statement;
 
     /**
      * @var XMLStoredProcedureParameter[]
      */
-    protected $xmlParameterList;
+    protected array $xmlParameterList;
 
 
     /**
@@ -57,13 +57,18 @@ class XMLStoredProcedure
      */
     public function __construct()
     {
+        $this->name = null;
+        $this->modifies = false;
+        $this->deterministic = false;
+        $this->resultType = null;
+        $this->statement = null;
         $this->xmlParameterList = [];
     }
 
     /**
      * @param XMLAccess $xmlAccess
      */
-    public function fromXML(XMLAccess $xmlAccess)
+    public function fromXML(XMLAccess $xmlAccess): void
     {
         $this->setName($xmlAccess->getAttribute(self::NAME));
         $this->setModifies($xmlAccess->getAttributeAsBool(self::MODIFIES));
@@ -72,7 +77,7 @@ class XMLStoredProcedure
         $this->setStatement($xmlAccess->getFirstChildByNameContent(self::ELEMENT_SQL_NAME));
 
 
-        foreach ($xmlAccess->getXMLChildElementListByName(XMLStoredProcedureParameter::ELEMENT_PARAMETER_NAME) as $key => $xmlParameterAccess) {
+        foreach ($xmlAccess->getXMLChildElementListByName(XMLStoredProcedureParameter::ELEMENT_PARAMETER_NAME) as $xmlParameterAccess) {
             $xmlParameter = new XMLStoredProcedureParameter();
             $xmlParameter->fromXML($xmlParameterAccess);
             $this->xmlParameterList[] = $xmlParameter;
@@ -80,17 +85,17 @@ class XMLStoredProcedure
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
@@ -98,7 +103,7 @@ class XMLStoredProcedure
     /**
      * @return bool
      */
-    public function getModifies()
+    public function getModifies(): bool
     {
         return $this->modifies;
     }
@@ -106,7 +111,7 @@ class XMLStoredProcedure
     /**
      * @param bool $modifies
      */
-    public function setModifies($modifies)
+    public function setModifies(bool $modifies): void
     {
         $this->modifies = $modifies;
     }
@@ -114,7 +119,7 @@ class XMLStoredProcedure
     /**
      * @return bool
      */
-    public function isDeterministic(): bool
+    public function getDeterministic(): bool
     {
         return $this->deterministic;
     }
@@ -122,50 +127,51 @@ class XMLStoredProcedure
     /**
      * @param bool $deterministic
      */
-    public function setDeterministic(bool $deterministic)
+    public function setDeterministic(bool $deterministic): void
     {
         $this->deterministic = $deterministic;
     }
 
-
     /**
-     * @return string
+     * @return string|null
      */
-    public function getResultType()
+    public function getResultType(): ?string
     {
         return $this->resultType;
     }
 
     /**
-     * @param string $resultType
+     * @param string|null $resultType
      */
-    public function setResultType($resultType)
+    public function setResultType(?string $resultType): void
     {
         $this->resultType = $resultType;
     }
 
     /**
-     * @return XMLStoredProcedureParameter[]
+     * @return string|null
      */
-    public function getXmlParameterList()
-    {
-        return $this->xmlParameterList;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatement()
+    public function getStatement(): ?string
     {
         return $this->statement;
     }
 
     /**
-     * @param string $statement
+     * @param string|null $statement
      */
-    public function setStatement($statement)
+    public function setStatement(?string $statement): void
     {
         $this->statement = $statement;
     }
+
+
+    /**
+     * @return XMLStoredProcedureParameter[]
+     */
+    public function getXmlParameterList(): array
+    {
+        return $this->xmlParameterList;
+    }
+
 
 }

@@ -113,7 +113,7 @@ class MySQLMultiQueryResultSet implements ResultSet
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return float|null
      */
@@ -127,7 +127,7 @@ class MySQLMultiQueryResultSet implements ResultSet
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return null|string
      */
@@ -137,7 +137,7 @@ class MySQLMultiQueryResultSet implements ResultSet
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return null|SiestaDateTime
      */

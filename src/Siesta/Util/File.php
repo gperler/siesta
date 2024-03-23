@@ -168,7 +168,7 @@ class File
      *
      * @return null|File
      */
-    public function findFile($fileName)
+    public function findFile(string $fileName): ?File
     {
         // only possible in directories
         if (!$this->isDir()) {
@@ -192,7 +192,7 @@ class File
     }
 
     /**
-     * @param $fileSuffix
+     * @param string $fileSuffix
      *
      * @return File[]
      */
@@ -221,7 +221,7 @@ class File
      * @return DomDocument
      * @throws XMLNotValidException
      */
-    public function loadAsXML()
+    public function loadAsXML(): DomDocument
     {
         $xml = new DomDocument ();
         libxml_use_internal_errors(true);
@@ -235,9 +235,9 @@ class File
     }
 
     /**
-     * @return array
+     * @return mixed
      */
-    public function loadAsJSONArray()
+    public function loadAsJSONArray(): mixed
     {
         return json_decode($this->getContents(), true);
     }
@@ -245,7 +245,7 @@ class File
     /**
      * @return string
      */
-    public function getContents()
+    public function getContents(): string
     {
         return file_get_contents($this->absoluteFileName);
     }
@@ -255,7 +255,7 @@ class File
      *
      * @return void
      */
-    public function putContents($data)
+    public function putContents($data): void
     {
         file_put_contents($this->absoluteFileName, $data);
     }

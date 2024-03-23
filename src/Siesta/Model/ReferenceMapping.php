@@ -70,7 +70,7 @@ class ReferenceMapping
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getLocalAttributeName(): ?string
     {
@@ -94,7 +94,7 @@ class ReferenceMapping
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getForeignAttributeName(): ?string
     {

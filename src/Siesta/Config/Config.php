@@ -27,9 +27,9 @@ class Config
     const EXCEPTION_MISSING_CONNECTION = "found no %s array";
 
     /**
-     * @var Config
+     * @var Config|null
      */
-    private static $instance;
+    private static ?Config $instance = null;
 
     /**
      * @param string|null $configFileName

@@ -211,13 +211,13 @@ class StoredProcedureNaming
     /**
      * @param string $tableName
      * @param string $referenceName
-     * @param string $filerName
+     * @param string $fileName
      *
      * @return string
      */
-    public static function getCollectorFilterName($tableName, $referenceName, $filerName): string
+    public static function getCollectorFilterName(string $tableName, string $referenceName, string $fileName): string
     {
-        return self::getInstance()->getUniqueName($tableName . self::FIND_BY_COLLECTOR . $referenceName . $filerName);
+        return self::getInstance()->getUniqueName($tableName . self::FIND_BY_COLLECTOR . $referenceName . $fileName);
     }
 
     /**
@@ -238,7 +238,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    public function getUniqueName($original): string
+    public function getUniqueName(string $original): string
     {
         // check if the name is already available
         $mappedName = $this->getMappedName($original);
@@ -277,7 +277,7 @@ class StoredProcedureNaming
      *
      * @return bool
      */
-    private function isUnique($original): bool
+    private function isUnique(string $original): bool
     {
         foreach ($this->mappingList as $mapping) {
             if ($mapping->shortenedName === $original) {
@@ -292,7 +292,7 @@ class StoredProcedureNaming
      *
      * @return string
      */
-    private function createUniqueShortName($original): string
+    private function createUniqueShortName(string $original): string
     {
         $newName = substr($original, 0, 48);
         if ($this->isUnique($newName)) {
@@ -318,7 +318,7 @@ class StoredProcedureNaming
      *
      * @return bool
      */
-    private function isShortEnough($original): bool
+    private function isShortEnough(string $original): bool
     {
         return strlen($original) < 50;
     }

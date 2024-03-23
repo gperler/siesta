@@ -146,7 +146,7 @@ class IndexListMigrator
      *
      * @return bool
      */
-    private function needsRecreationOfIndex($databaseIndexPart, $modelIndexPartList): bool
+    private function needsRecreationOfIndex(array $databaseIndexPart, array $modelIndexPartList): bool
     {
         foreach ($modelIndexPartList as $modelIndexPart) {
             $databaseIndex = $this->getIndexPartByColumnName($databaseIndexPart, $modelIndexPart->getColumnName());

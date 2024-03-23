@@ -60,12 +60,12 @@ class GenericGeneratorConfig
     const VALIDATOR_LIST = "validatorList";
 
     /**
-     * @var string
+     * @var string|null
      */
     protected ?string $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected ?string $className;
 
@@ -241,33 +241,33 @@ class GenericGeneratorConfig
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClassName()
+    public function getClassName(): ?string
     {
         return $this->className;
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
-    public function getPluginList()
+    public function getPluginList(): ?array
     {
         return $this->pluginList;
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
-    public function getValidatorList()
+    public function getValidatorList(): ?array
     {
         return $this->validatorList;
     }

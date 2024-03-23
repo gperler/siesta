@@ -2,7 +2,6 @@
 
 namespace Siesta\Console;
 
-use ReflectionException;
 use Siesta\Config\Config;
 use Siesta\Database\ConnectionData;
 use Siesta\Database\ConnectionFactory;
@@ -41,7 +40,7 @@ class InitCommand extends Command
     /**
      *
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('init');
         $this->setDescription('Creates a config file for siesta');
@@ -52,9 +51,8 @@ class InitCommand extends Command
      * @param OutputInterface $output
      *
      * @return int
-     * @throws ReflectionException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
@@ -74,9 +72,8 @@ class InitCommand extends Command
     /**
      * @param ConnectionData $connectionData
      * @param string $targetPath
-     * @throws ReflectionException
      */
-    private function generateConfiguration(ConnectionData $connectionData, $targetPath)
+    private function generateConfiguration(ConnectionData $connectionData, string $targetPath): void
     {
 
         $file = new File($targetPath . '/' . Config::CONFIG_FILE_NAME);
@@ -92,7 +89,7 @@ class InitCommand extends Command
     /**
      * @return string
      */
-    private function askConfigTargetPath()
+    private function askConfigTargetPath(): string
     {
 
         $directoryList = [];
@@ -107,7 +104,7 @@ class InitCommand extends Command
     /**
      * @return bool
      */
-    private function continueWithInvalidData()
+    private function continueWithInvalidData(): bool
     {
         $question = new ConfirmationQuestion('<question>Connection not possible, use connection data anyway? (y/n)</question>', false);
         return $this->questionHelper->ask($this->input, $this->output, $question);
@@ -116,7 +113,7 @@ class InitCommand extends Command
     /**
      * @return ConnectionData
      */
-    private function askConnectionDetails()
+    private function askConnectionDetails(): ConnectionData
     {
         $cd = new ConnectionData();
 
@@ -137,40 +134,37 @@ class InitCommand extends Command
      *
      * @return bool
      */
-    private function isConnectionValid(ConnectionData $cd) : bool
+    private function isConnectionValid(ConnectionData $cd): bool
     {
         try {
             ConnectionFactory::addConnection($cd);
             $this->output->writeln("Connection successful");
             return true;
-        } catch (InvalidConfigurationException $e) {
-            $this->output->writeln("Error " . $e->getMessage());
-            return false;
-        } catch (ConnectException $e) {
+        } catch (InvalidConfigurationException|ConnectException $e) {
             $this->output->writeln("Error " . $e->getMessage());
             return false;
         }
     }
 
     /**
-     * @param $question
-     * @param $default
+     * @param string $question
+     * @param string $default
      *
      * @return string
      */
-    private function askQuestion(string $question, string $default) : string
+    private function askQuestion(string $question, string $default): string
     {
         $q = new Question("<question>$question ($default)</question> ", $default);
         return $this->questionHelper->ask($this->input, $this->output, $q);
     }
 
     /**
-     * @param $question
-     * @param $default
+     * @param string $question
+     * @param int $default
      *
      * @return int
      */
-    private function askIntegerQuestion(string $question, int $default) : int
+    private function askIntegerQuestion(string $question, int $default): int
     {
         $q = new Question("<question>$question ($default)</question> ", $default);
         $stringValue = $this->questionHelper->ask($this->input, $this->output, $q);
@@ -180,7 +174,7 @@ class InitCommand extends Command
     /**
      * @return QuestionHelper
      */
-    private function getQuestionHelper()
+    private function getQuestionHelper(): QuestionHelper
     {
         return $this->getHelper('question');
     }
@@ -189,7 +183,7 @@ class InitCommand extends Command
      * @param array $directoryList
      * @param string $currentDirectory
      */
-    private function compileDirectoryList(&$directoryList, $currentDirectory)
+    private function compileDirectoryList(array &$directoryList, string $currentDirectory): void
     {
         $dir = new File($currentDirectory);
         $fileList = $dir->scanDir();

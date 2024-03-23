@@ -33,54 +33,68 @@ class XMLAttribute
     const TRANSIENT = "transient";
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $phpName;
+    protected ?string $phpName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $phpType;
+    protected ?string $phpType;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $dbName;
+    protected ?string $dbName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $dbType;
-
-    /**
-     * @var bool
-     */
-    protected $isPrimaryKey;
-
-    /**
-     * @var string
-     */
-    protected $defaultValue;
-
-    /**
-     * @var string
-     */
-    protected $autoValue;
+    protected ?string $dbType;
 
     /**
      * @var bool
      */
-    protected $isRequired;
+    protected bool $isPrimaryKey;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $defaultValue;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $autoValue;
 
     /**
      * @var bool
      */
-    protected $isTransient;
+    protected bool $isRequired;
+
+    /**
+     * @var bool
+     */
+    protected bool $isTransient;
 
     /**
      * @var string[]
      */
-    protected $customAttributeList;
+    protected array $customAttributeList;
+
+    public function __construct()
+    {
+        $this->phpName = null;
+        $this->phpType = null;
+        $this->dbName = null;
+        $this->dbType = null;
+        $this->isPrimaryKey = false;
+        $this->defaultValue = null;
+        $this->autoValue = null;
+        $this->isRequired = false;
+        $this->isTransient = false;
+        $this->customAttributeList = [];
+    }
 
     /**
      * @param XMLAccess $xmlAccess
@@ -102,7 +116,7 @@ class XMLAttribute
     /**
      * @param XMLWrite $parent
      */
-    public function toXML(XMLWrite $parent)
+    public function toXML(XMLWrite $parent): void
     {
         $xmlWrite = $parent->appendChild(self::ELEMENT_ATTRIBUTE_NAME);
         $xmlWrite->setAttribute(self::PHP_NAME, $this->getPhpName());
@@ -120,7 +134,7 @@ class XMLAttribute
     /**
      * @param ColumnMetaData $columnMetaData
      */
-    public function fromColumnMetaData(ColumnMetaData $columnMetaData)
+    public function fromColumnMetaData(ColumnMetaData $columnMetaData): void
     {
         $namingStrategy = NamingStrategyRegistry::getAttributeNamingStrategy();
         $phpName = $namingStrategy->transform($columnMetaData->getDBName());
@@ -135,65 +149,65 @@ class XMLAttribute
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhpName()
+    public function getPhpName(): ?string
     {
         return $this->phpName;
     }
 
     /**
-     * @param string $phpName
+     * @param string|null $phpName
      */
-    public function setPhpName($phpName)
+    public function setPhpName(?string $phpName): void
     {
         $this->phpName = $phpName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhpType()
+    public function getPhpType(): ?string
     {
         return $this->phpType;
     }
 
     /**
-     * @param string $phpType
+     * @param string|null $phpType
      */
-    public function setPhpType($phpType)
+    public function setPhpType(?string $phpType): void
     {
         $this->phpType = $phpType;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDbName()
+    public function getDbName(): ?string
     {
         return $this->dbName;
     }
 
     /**
-     * @param string $dbName
+     * @param string|null $dbName
      */
-    public function setDbName($dbName)
+    public function setDbName(?string $dbName): void
     {
         $this->dbName = $dbName;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDbType()
+    public function getDbType(): ?string
     {
         return $this->dbType;
     }
 
     /**
-     * @param string $dbType
+     * @param string|null $dbType
      */
-    public function setDbType($dbType)
+    public function setDbType(?string $dbType): void
     {
         $this->dbType = $dbType;
     }
@@ -201,7 +215,7 @@ class XMLAttribute
     /**
      * @return bool
      */
-    public function getIsPrimaryKey()
+    public function getIsPrimaryKey(): bool
     {
         return $this->isPrimaryKey;
     }
@@ -209,39 +223,39 @@ class XMLAttribute
     /**
      * @param bool $isPrimaryKey
      */
-    public function setIsPrimaryKey($isPrimaryKey)
+    public function setIsPrimaryKey(bool $isPrimaryKey): void
     {
         $this->isPrimaryKey = $isPrimaryKey;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDefaultValue()
+    public function getDefaultValue(): ?string
     {
         return $this->defaultValue;
     }
 
     /**
-     * @param string $defaultValue
+     * @param string|null $defaultValue
      */
-    public function setDefaultValue($defaultValue)
+    public function setDefaultValue(?string $defaultValue): void
     {
         $this->defaultValue = $defaultValue;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAutoValue()
+    public function getAutoValue(): ?string
     {
         return $this->autoValue;
     }
 
     /**
-     * @param string $autoValue
+     * @param string|null $autoValue
      */
-    public function setAutoValue($autoValue)
+    public function setAutoValue(?string $autoValue): void
     {
         $this->autoValue = $autoValue;
     }
@@ -249,7 +263,7 @@ class XMLAttribute
     /**
      * @return bool
      */
-    public function getIsRequired()
+    public function getIsRequired(): bool
     {
         return $this->isRequired;
     }
@@ -257,7 +271,7 @@ class XMLAttribute
     /**
      * @param bool $isRequired
      */
-    public function setIsRequired($isRequired)
+    public function setIsRequired(bool $isRequired): void
     {
         $this->isRequired = $isRequired;
     }
@@ -265,7 +279,7 @@ class XMLAttribute
     /**
      * @return bool
      */
-    public function getIsTransient()
+    public function getIsTransient(): bool
     {
         return $this->isTransient;
     }
@@ -273,7 +287,7 @@ class XMLAttribute
     /**
      * @param bool $isTransient
      */
-    public function setIsTransient($isTransient)
+    public function setIsTransient(bool $isTransient): void
     {
         $this->isTransient = $isTransient;
     }
@@ -289,7 +303,7 @@ class XMLAttribute
     /**
      * @param string[] $customAttributeList
      */
-    public function setCustomAttributeList(array $customAttributeList)
+    public function setCustomAttributeList(array $customAttributeList): void
     {
         $this->customAttributeList = $customAttributeList;
     }

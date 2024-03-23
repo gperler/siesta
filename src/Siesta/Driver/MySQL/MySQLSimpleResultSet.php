@@ -85,7 +85,7 @@ class MySQLSimpleResultSet implements ResultSet
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return float|null
      */
@@ -99,7 +99,7 @@ class MySQLSimpleResultSet implements ResultSet
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return null|string
      */
@@ -109,7 +109,7 @@ class MySQLSimpleResultSet implements ResultSet
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return null|SiestaDateTime
      */

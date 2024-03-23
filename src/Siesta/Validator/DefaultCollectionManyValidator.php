@@ -75,7 +75,7 @@ class DefaultCollectionManyValidator implements CollectionManyValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function getEntityName(): ?string
     {

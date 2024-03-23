@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\Validator;
 
@@ -65,17 +65,17 @@ class DefaultIndexValidator implements IndexValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getEntityName()
+    protected function getEntityName(): ?string
     {
         return $this->entity->getClassShortName();
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getIndexName()
+    protected function getIndexName(): ?string
     {
         return $this->index->getName();
     }
@@ -84,7 +84,7 @@ class DefaultIndexValidator implements IndexValidator
      * @param string $text
      * @param int $code
      */
-    protected function error(string $text, int $code)
+    protected function error(string $text, int $code): void
     {
         $this->logger->error($text, $code);
     }
@@ -92,7 +92,7 @@ class DefaultIndexValidator implements IndexValidator
     /**
      *
      */
-    protected function validateIndexName()
+    protected function validateIndexName(): void
     {
         $indexName = $this->getIndexName();
         if ($indexName !== null) {
@@ -103,7 +103,10 @@ class DefaultIndexValidator implements IndexValidator
         $this->error($error, self::ERROR_INVALID_INDEX_NAME_CODE);
     }
 
-    protected function validateIndexPartList()
+    /**
+     * @return void
+     */
+    protected function validateIndexPartList(): void
     {
         $indexPartList = $this->index->getIndexPartList();
         if (sizeof($indexPartList) === 0) {
@@ -119,7 +122,7 @@ class DefaultIndexValidator implements IndexValidator
     /**
      * @param IndexPart $indexPart
      */
-    protected function validateIndexPart(IndexPart $indexPart)
+    protected function validateIndexPart(IndexPart $indexPart): void
     {
         if ($indexPart->getAttribute() !== null) {
             return;

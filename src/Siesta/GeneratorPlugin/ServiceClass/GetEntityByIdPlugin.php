@@ -58,7 +58,7 @@ class GetEntityByIdPlugin extends BasePlugin
     /**
      * @throws ReflectionException
      */
-    protected function generateEntityByPK()
+    protected function generateEntityByPK(): void
     {
         $pkAttributeList = $this->entity->getPrimaryKeyAttributeList();
 
@@ -83,7 +83,7 @@ class GetEntityByIdPlugin extends BasePlugin
     /**
      * @param Method $generator
      */
-    protected function generateCheckPrimaryKey(Method $generator)
+    protected function generateCheckPrimaryKey(Method $generator): void
     {
         $pkCheckList = [];
         foreach ($this->entity->getPrimaryKeyAttributeList() as $pkAttribute) {

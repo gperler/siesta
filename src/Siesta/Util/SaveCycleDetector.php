@@ -23,12 +23,12 @@ class SaveCycleDetector implements CycleDetector
     }
 
     /**
-     * @param $tableName
-     * @param $visitor
+     * @param string $tableName
+     * @param Comparable $visitor
      *
      * @return bool
      */
-    public function canProceed(string $tableName, Comparable $visitor) : bool
+    public function canProceed(string $tableName, Comparable $visitor): bool
     {
         $entityList = ArrayUtil::getFromArray($this->visitedList, $tableName);
 

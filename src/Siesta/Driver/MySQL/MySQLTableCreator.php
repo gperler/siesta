@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL;
 
 use Siesta\Driver\MySQL\MetaData\ConstraintRule;
@@ -95,7 +96,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    public function buildCreateTableForTable($tableName, $replication): string
+    public function buildCreateTableForTable(string $tableName, bool $replication = false): string
     {
 
         $sql = self::CREATE_TABLE_SNIPPET . $this->quote($tableName);
@@ -145,7 +146,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildColumnSQL(array $additionalColumns = []) : string
+    private function buildColumnSQL(array $additionalColumns = []): string
     {
         $columnList = [];
 
@@ -171,7 +172,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildColumnSQLSnippet(Attribute $attribute) : string
+    private function buildColumnSQLSnippet(Attribute $attribute): string
     {
         $not = ($attribute->getIsRequired()) ? "NOT NULL" : "NULL";
         $attributeName = $this->quote($attribute->getDBName());
@@ -182,7 +183,7 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    private function buildPrimaryKey() : string
+    private function buildPrimaryKey(): string
     {
         $pkColumnList = [];
         foreach ($this->entity->getAttributeList() as $attribute) {
@@ -221,7 +222,7 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    private function buildIndexList() : string
+    private function buildIndexList(): string
     {
 
         $sql = "";
@@ -284,7 +285,7 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    private function buildForeignConstraintList() : string
+    private function buildForeignConstraintList(): string
     {
         $sql = "";
         foreach ($this->entity->getReferenceList() as $reference) {
@@ -301,7 +302,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildForeignKeyConstraint(Reference $reference) : string
+    private function buildForeignKeyConstraint(Reference $reference): string
     {
         $columnList = [];
         $foreignColumnList = [];
@@ -331,7 +332,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildEngineDefinition($replication = false): string
+    private function buildEngineDefinition(bool $replication = false): string
     {
         if ($replication) {
             return self::ENGINE_SNIPPET . "MEMORY";
@@ -359,7 +360,7 @@ class MySQLTableCreator
     /**
      * @return string
      */
-    private function buildCharsetDefinition() : string
+    private function buildCharsetDefinition(): string
     {
         $charset = $this->getDatabaseSpecific(self::MYSQL_CHARSET_ATTRIBUTE);
         if ($charset !== null) {
@@ -384,7 +385,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function quote($name): string
+    private function quote(string $name): string
     {
         return MySQLDriver::quote($name);
     }

@@ -154,8 +154,6 @@ class GeneratorCommand extends Command
         $this->siesta->setConnection($connection);
 
         $this->siesta->setGenericConfigFileName($this->generatorConfig->getGenericGeneratorConfiguration());
-
-        $this->generatorConfig->getGenericGeneratorConfiguration();
     }
 
 }

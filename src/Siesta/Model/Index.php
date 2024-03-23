@@ -70,7 +70,7 @@ class Index
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string
     {

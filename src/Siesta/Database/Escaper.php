@@ -145,7 +145,7 @@ class Escaper
      * @param Connection $connection
      * @param array|null $array
      *
-     * @return null|string
+     * @return string
      */
     public static function quoteArray(Connection $connection, array $array = null): string
     {

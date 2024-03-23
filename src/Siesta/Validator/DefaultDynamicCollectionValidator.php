@@ -58,7 +58,7 @@ class DefaultDynamicCollectionValidator implements DynamicCollectionValidator
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function getName(): ?string
     {
