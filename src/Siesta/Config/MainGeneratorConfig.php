@@ -324,9 +324,9 @@ class MainGeneratorConfig
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getConnectionName(): string
+    public function getConnectionName(): ?string
     {
         return $this->connectionName;
     }
