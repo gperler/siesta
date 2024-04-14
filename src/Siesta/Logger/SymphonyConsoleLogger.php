@@ -30,10 +30,9 @@ class SymphonyConsoleLogger implements LoggerInterface
      *
      * @return null
      */
-    public function emergency($message, array $context = [])
+    public function emergency($message, array $context = []): void
     {
         $this->outputInterface->writeln('<error>' . $message . '</error>');
-        return null;
     }
 
     /**
@@ -46,10 +45,9 @@ class SymphonyConsoleLogger implements LoggerInterface
      *
      * @return null
      */
-    public function alert($message, array $context = [])
+    public function alert($message, array $context = []): void
     {
         $this->outputInterface->writeln('<error>' . $message . '</error>');
-        return null;
     }
 
     /**
@@ -61,10 +59,9 @@ class SymphonyConsoleLogger implements LoggerInterface
      *
      * @return null
      */
-    public function critical($message, array $context = [])
+    public function critical($message, array $context = []): void
     {
         $this->outputInterface->writeln('<error>' . $message . '</error>');
-        return null;
     }
 
     /**
@@ -76,10 +73,9 @@ class SymphonyConsoleLogger implements LoggerInterface
      *
      * @return null
      */
-    public function error($message, array $context = [])
+    public function error($message, array $context = []): void
     {
         $this->outputInterface->writeln('<error>' . $message . '</error>');
-        return null;
     }
 
     /**
@@ -92,10 +88,9 @@ class SymphonyConsoleLogger implements LoggerInterface
      *
      * @return null
      */
-    public function warning($message, array $context = [])
+    public function warning($message, array $context = []): void
     {
         $this->outputInterface->writeln('<bg=yellow>' . $message . '</>');
-        return null;
     }
 
     /**
@@ -106,13 +101,12 @@ class SymphonyConsoleLogger implements LoggerInterface
      *
      * @return null
      */
-    public function notice($message, array $context = [])
+    public function notice($message, array $context = []): void
     {
         if ($this->outputInterface->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
             return;
         }
         $this->outputInterface->writeln($message);
-        return null;
     }
 
     /**
@@ -124,13 +118,12 @@ class SymphonyConsoleLogger implements LoggerInterface
      *
      * @return null
      */
-    public function info($message, array $context = [])
+    public function info($message, array $context = []): void
     {
         if ($this->outputInterface->getVerbosity() < OutputInterface::VERBOSITY_DEBUG) {
             return;
         }
         $this->outputInterface->writeln($message);
-        return null;
     }
 
     /**
@@ -141,13 +134,12 @@ class SymphonyConsoleLogger implements LoggerInterface
      *
      * @return null
      */
-    public function debug($message, array $context = [])
+    public function debug($message, array $context = []): void
     {
         if ($this->outputInterface->getVerbosity() < OutputInterface::VERBOSITY_DEBUG) {
             return;
         }
         $this->outputInterface->writeln($message);
-        return null;
     }
 
     /**
@@ -159,7 +151,7 @@ class SymphonyConsoleLogger implements LoggerInterface
      *
      * @return null
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         switch ($level) {
             case LogLevel::EMERGENCY:
@@ -187,7 +179,6 @@ class SymphonyConsoleLogger implements LoggerInterface
                 $this->warning($message, $context);
                 break;
         }
-        return null;
     }
 
 }
