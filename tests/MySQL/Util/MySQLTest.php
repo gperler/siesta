@@ -2,13 +2,14 @@
 
 namespace SiestaTest\MySQL\Util;
 
+use Codeception\Test\Unit;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Main\Siesta;
 use Siesta\Util\File;
 use SiestaTest\TestUtil\CodeceptionLogger;
 
-class MySQLTest extends \PHPUnit_Framework_TestCase
+class MySQLTest extends Unit
 {
 
     /**
@@ -50,7 +51,7 @@ class MySQLTest extends \PHPUnit_Framework_TestCase
     /**
      * @return Connection
      */
-    protected function getConnection() : Connection
+    protected function getConnection(): Connection
     {
         return ConnectionFactory::getConnection();
     }

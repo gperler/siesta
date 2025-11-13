@@ -2,6 +2,7 @@
 
 namespace SiestaTest\Functional\Migration;
 
+use Codeception\Test\Unit;
 use Siesta\Migration\DatabaseMigrator;
 use Siesta\Util\File;
 use SiestaTest\TestDatabase\TestConnection;
@@ -11,7 +12,7 @@ use SiestaTest\TestUtil\DataModelHelper;
 /**
  * @author Gregor Müller
  */
-class MigrateDatabaseTest extends \PHPUnit_Framework_TestCase
+class MigrateDatabaseTest extends Unit
 {
 
     public function testDatabase()

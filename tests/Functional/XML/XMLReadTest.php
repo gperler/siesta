@@ -2,10 +2,11 @@
 
 namespace SiestaTest\Functional\XML;
 
+use Codeception\Test\Unit;
 use Siesta\Util\File;
 use Siesta\XML\XMLReader;
 
-class XMLReadTest extends \PHPUnit_Framework_TestCase
+class XMLReadTest extends Unit
 {
 
     const ENTITY_COUNT = 6;

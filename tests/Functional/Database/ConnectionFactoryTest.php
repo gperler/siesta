@@ -2,9 +2,10 @@
 
 namespace SiestaTest\Functional\Database;
 
+use Codeception\Test\Unit;
 use Siesta\Database\ConnectionFactory;
 
-class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
+class ConnectionFactoryTest extends Unit
 {
 
     public function testConnectionFactory() {

@@ -11,3 +11,4 @@ test.php
 provision
 Vagrantfile
 .idea
+.idea/*

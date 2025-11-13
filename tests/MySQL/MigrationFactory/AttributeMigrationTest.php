@@ -2,6 +2,7 @@
 
 namespace SiestaTest\Functional\MySQL\MigrationFactory;
 
+use Codeception\Test\Unit;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Database\MigrationStatementFactory;
 use Siesta\Driver\MySQL\MetaData\MySQLColumn;
@@ -10,7 +11,7 @@ use Siesta\Model\DataModel;
 use Siesta\Model\Entity;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class AttributeMigrationTest extends \PHPUnit_Framework_TestCase
+class AttributeMigrationTest extends Unit
 {
 
     protected function setUp(): void
@@ -88,7 +89,7 @@ class AttributeMigrationTest extends \PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    public function postProcessStatement(array $statementList, string $tableName) : string
+    public function postProcessStatement(array $statementList, string $tableName): string
     {
         return str_replace(MigrationStatementFactory::TABLE_PLACE_HOLDER, $tableName, $statementList[0]);
     }

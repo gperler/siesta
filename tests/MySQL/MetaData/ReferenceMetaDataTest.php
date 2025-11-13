@@ -2,12 +2,11 @@
 
 namespace SiestaTest\Functional\MySQL\MetaData;
 
-use Codeception\Util\Debug;
-use Siesta\Config\Config;
+use Codeception\Test\Unit;
 use Siesta\Database\ConnectionFactory;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class ReferenceMetaDataTest extends \PHPUnit_Framework_TestCase
+class ReferenceMetaDataTest extends Unit
 {
 
     protected function setUp(): void

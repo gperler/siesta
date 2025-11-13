@@ -2,6 +2,7 @@
 
 namespace SiestaTest\Functional\MySQL\CreateTable;
 
+use Codeception\Test\Unit;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Model\DataModel;
 use Siesta\Model\Entity;
@@ -9,7 +10,7 @@ use Siesta\Util\File;
 use Siesta\XML\XMLReader;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class CreateTableTest extends \PHPUnit_Framework_TestCase
+class CreateTableTest extends Unit
 {
 
     protected function setUp(): void

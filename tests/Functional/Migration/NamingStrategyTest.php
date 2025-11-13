@@ -2,21 +2,17 @@
 
 namespace SiestaTest\Functional\Migration;
 
-use Codeception\Util\Debug;
-use Siesta\Migration\DatabaseMigrator;
-use Siesta\NamingStrategy\ToCamelCaseStrategy;
-use Siesta\NamingStrategy\ColumnNamingIdenticalStrategy;
-use Siesta\NamingStrategy\ToUnderScoreStrategy;
+use Codeception\Test\Unit;
 use Siesta\NamingStrategy\NamingStrategyRegistry;
+use Siesta\NamingStrategy\ToCamelCaseStrategy;
 use Siesta\Util\File;
 use Siesta\XML\XMLEntity;
 use SiestaTest\TestDatabase\TestConnection;
-use SiestaTest\TestUtil\DataModelHelper;
 
 /**
  * @author Gregor Müller
  */
-class NamingStrategyTest extends \PHPUnit_Framework_TestCase
+class NamingStrategyTest extends Unit
 {
 
     public function testDatabase()
@@ -43,7 +39,7 @@ class NamingStrategyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(2, sizeof($attributeList));
 
-        foreach($attributeList as $attribute) {
+        foreach ($attributeList as $attribute) {
             $this->assertTrue(in_array($attribute->getPhpName(), $camelCaseList));
         }
         NamingStrategyRegistry::setAttributeNamingStrategy(new ToCamelCaseStrategy());

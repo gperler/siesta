@@ -2,12 +2,13 @@
 
 namespace SiestaTest\Functional\GenericConfig;
 
+use Codeception\Test\Unit;
 use Siesta\Config\GenericConfigLoader;
 use Siesta\Model\ValidationLogger;
 use Siesta\Util\File;
 use SiestaTest\TestUtil\CodeceptionLogger;
 
-class GenericConfigLoaderTest extends \PHPUnit_Framework_TestCase
+class GenericConfigLoaderTest extends Unit
 {
 
     public function testDefaultConfig()

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Siesta\GeneratorPlugin\Entity;
 
@@ -27,7 +27,6 @@ class ConstantPlugin extends BasePlugin
         }
         foreach ($entity->getAttributeList() as $attribute) {
             $constantName = strtoupper("COLUMN_" . $attribute->getPhpName());
-
             $classGenerator->addConstant($constantName, '"' . $attribute->getDBName() . '"');
         }
     }

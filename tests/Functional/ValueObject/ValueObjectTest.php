@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace SiestaTest\Functional\ValueObject;
 
 
+use Codeception\Test\Unit;
 use Siesta\Main\Siesta;
 use Siesta\Util\File;
 use SiestaTest\Functional\ValueObject\Generated\ValueObject;
 use SiestaTest\TestUtil\CodeceptionLogger;
 
-class ValueObjectTest extends \PHPUnit_Framework_TestCase
+class ValueObjectTest extends Unit
 {
 
 

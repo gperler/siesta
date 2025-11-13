@@ -2,6 +2,7 @@
 
 namespace SiestaTest\End2End\Util;
 
+use Codeception\Test\Unit;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Main\Siesta;
@@ -10,7 +11,7 @@ use Siesta\Util\File;
 use Siesta\XML\XMLReader;
 use SiestaTest\TestUtil\CodeceptionLogger;
 
-class End2EndTest extends \PHPUnit_Framework_TestCase
+class End2EndTest extends Unit
 {
 
     /**

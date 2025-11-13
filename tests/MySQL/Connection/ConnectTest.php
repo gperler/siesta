@@ -2,15 +2,15 @@
 
 namespace SiestaTest\Functional\MySQL\Connection;
 
-use Siesta\Config\Config;
+use Codeception\Test\Unit;
 use Siesta\Database\ConnectionFactory;
 
-class MySQLConnectTest extends \PHPUnit_Framework_TestCase
+class MySQLConnectTest extends Unit
 {
 
     public function testConnection()
     {
-        
+
         $connection = ConnectionFactory::getInstance()->getConnection();
         $this->assertNotNull($connection);
 

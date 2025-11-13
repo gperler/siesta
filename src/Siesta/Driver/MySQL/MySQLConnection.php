@@ -11,6 +11,7 @@ use Siesta\Database\CreateStatementFactory;
 use Siesta\Database\Exception\CannotBeNullException;
 use Siesta\Database\Exception\ConnectException;
 use Siesta\Database\Exception\ForeignKeyConstraintFailedException;
+use Siesta\Database\Exception\LockWaitTimeoutExceededException;
 use Siesta\Database\Exception\SQLException;
 use Siesta\Database\Exception\TableAlreadyExistsException;
 use Siesta\Database\Exception\TableDoesNotExistException;
@@ -221,6 +222,8 @@ class MySQLConnection implements Connection
                 throw new UniqueConstraintViolationException($error, $errorNumber, $sql);
             case 1146:
                 throw new TableDoesNotExistException($error, $errorNumber, $sql);
+            case 1205:
+                throw new LockWaitTimeoutExceededException($error, $errorNumber, $sql);
             case 1451:
                 throw new ForeignKeyConstraintFailedException($error, $errorNumber, $sql);
             default:

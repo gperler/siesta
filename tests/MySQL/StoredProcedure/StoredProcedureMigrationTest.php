@@ -2,13 +2,13 @@
 
 namespace SiestaTest\Functional\MySQL\Connection;
 
-use Codeception\Util\Debug;
+use Codeception\Test\Unit;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Migration\DatabaseMigrator;
 use Siesta\Migration\Migrator;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class StoredProcedureMigrationTest extends \PHPUnit_Framework_TestCase
+class StoredProcedureMigrationTest extends Unit
 {
 
     protected function setUp(): void

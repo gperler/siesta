@@ -2,12 +2,13 @@
 
 namespace SiestaTest\Functional\MySQL\MigrationFactory;
 
+use Codeception\Test\Unit;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Database\MetaData\ConstraintMappingMetaData;
 use Siesta\Database\MigrationStatementFactory;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class ReferenceMigrationTest extends \PHPUnit_Framework_TestCase
+class ReferenceMigrationTest extends Unit
 {
 
     protected function setUp(): void
@@ -108,7 +109,7 @@ class ReferenceMigrationTest extends \PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    public function postProcessStatement(array $statementList, string $tableName) : string
+    public function postProcessStatement(array $statementList, string $tableName): string
     {
         return str_replace(MigrationStatementFactory::TABLE_PLACE_HOLDER, $tableName, $statementList[0]);
     }

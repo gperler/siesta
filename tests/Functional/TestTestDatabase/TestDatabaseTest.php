@@ -2,13 +2,14 @@
 
 namespace SiestaTest\Functional\TestTestDatabase;
 
+use Codeception\Test\Unit;
 use Siesta\Util\File;
 use SiestaTest\TestDatabase\MetaData\TestDatabaseMetaData;
 
 /**
  * @author Gregor Müller
  */
-class TestDatabaseTest extends \PHPUnit_Framework_TestCase
+class TestDatabaseTest extends Unit
 {
 
     /**

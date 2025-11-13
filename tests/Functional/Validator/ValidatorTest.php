@@ -2,6 +2,7 @@
 
 namespace SiestaTest\Functional\Validator;
 
+use Codeception\Test\Unit;
 use Siesta\Config\GenericConfigLoader;
 use Siesta\Model\DataModel;
 use Siesta\Model\ValidationLogger;
@@ -18,7 +19,7 @@ use Siesta\Validator\Validator;
 use Siesta\XML\XMLReader;
 use SiestaTest\TestUtil\CodeceptionLogger;
 
-class ValidatorTest extends \PHPUnit_Framework_TestCase
+class ValidatorTest extends Unit
 {
 
     protected function getValidationLogger(bool $silent)

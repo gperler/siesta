@@ -2,13 +2,13 @@
 
 namespace SiestaTest\Functional\MySQL\MetaData;
 
-use Siesta\Config\Config;
+use Codeception\Test\Unit;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Database\MetaData\IndexMetaData;
 use Siesta\Database\MetaData\IndexPartMetaData;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class IndexMetaDataTest extends \PHPUnit_Framework_TestCase
+class IndexMetaDataTest extends Unit
 {
 
     protected function setUp(): void
@@ -81,10 +81,8 @@ class IndexMetaDataTest extends \PHPUnit_Framework_TestCase
     /**
      * @param IndexPartMetaData[] $indexPartList
      * @param string $columnName
-     
-      
-*
-*@return IndexPartMetaData|null
+     *
+     * @return IndexPartMetaData|null
      */
     protected function getIndexPartByColumn(array $indexPartList, string $columnName)
     {
@@ -99,10 +97,8 @@ class IndexMetaDataTest extends \PHPUnit_Framework_TestCase
     /**
      * @param IndexMetaData[] $indexList
      * @param string $indexName
-     
-      
-*
-*@return IndexMetaData|null
+     *
+     * @return IndexMetaData|null
      */
     protected function getIndexByName(array $indexList, string $indexName)
     {

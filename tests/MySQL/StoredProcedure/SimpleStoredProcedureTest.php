@@ -2,12 +2,14 @@
 
 namespace SiestaTest\Functional\MySQL\Connection;
 
+use Codeception\Test\Unit;
+use Codeception\Util\Debug;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Database\StoredProcedureNaming;
 use Siesta\Model\DataModel;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
+class SimpleStoredProcedureTest extends Unit
 {
 
     protected function setUp(): void
@@ -23,7 +25,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
      *
      * @return DataModel
      */
-    protected function readModelAndCreateTable($schemaFile) : DataModel
+    protected function readModelAndCreateTable($schemaFile): DataModel
     {
         $connection = ConnectionFactory::getInstance()->getConnection();
         $this->assertNotNull($connection);
@@ -86,11 +88,12 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         // invoke the sp
         $connection->executeStoredProcedure("CALL `Artist_insert`(7, 'test', '2006-04-29 21:00:00', 123, 12.4);");
 
+
         $resultSet = $connection->query("SELECT * FROM Artist");
         $this->assertTrue($resultSet->hasNext());
 
         $dateTime = $resultSet->getDateTime("column2");
-        $this->assertSame(1146337200, $dateTime->getTimestamp());
+        $this->assertSame('2006-04-29 21:00:00', $dateTime->getSQLDateTime());
         $this->assertSame(7, $resultSet->getIntegerValue("id"));
         $this->assertSame("test", $resultSet->getStringValue("column1"));
         $this->assertSame(123, $resultSet->getIntegerValue("column3"));
@@ -126,7 +129,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($resultSet->hasNext());
 
         $dateTime = $resultSet->getDateTime("column2");
-        $this->assertSame(1461956400, $dateTime->getTimestamp());
+        $this->assertSame('2016-04-29 21:00:00', $dateTime->getSQLDateTime());
         $this->assertSame(7, $resultSet->getIntegerValue("id"));
         $this->assertSame("test-u", $resultSet->getStringValue("column1"));
         $this->assertSame(42, $resultSet->getIntegerValue("column3"));
@@ -191,7 +194,7 @@ class SimpleStoredProcedureTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($resultSet->hasNext());
 
         $dateTime = $resultSet->getDateTime("column2");
-        $this->assertSame(1146337200, $dateTime->getTimestamp());
+        $this->assertSame('2006-04-29 21:00:00', $dateTime->getSQLDateTime());
         $this->assertSame(7, $resultSet->getIntegerValue("id"));
         $this->assertSame("test", $resultSet->getStringValue("column1"));
         $this->assertSame(123, $resultSet->getIntegerValue("column3"));

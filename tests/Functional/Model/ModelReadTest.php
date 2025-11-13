@@ -2,13 +2,14 @@
 
 namespace SiestaTest\Functional\Model;
 
+use Codeception\Test\Unit;
 use Siesta\Model\DataModel;
 use Siesta\Model\Entity;
 use Siesta\Model\XMLEntityReader;
 use Siesta\Util\File;
 use Siesta\XML\XMLReader;
 
-class ModelReadTest extends \PHPUnit_Framework_TestCase
+class ModelReadTest extends Unit
 {
 
     const ENTITY_COUNT = 6;

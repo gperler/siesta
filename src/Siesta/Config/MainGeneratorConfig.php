@@ -50,6 +50,8 @@ class MainGeneratorConfig
     /* migrationMethod */
     const OPTION_MIGRATION_METHOD = "migrationMethod";
 
+    const OPTION_USE_PHP_ENUM = "usePhpEnum";
+
     const MIGRATION_METHOD_DIRECT_EXECUTION = "direct";
 
     const MIGRATION_METHOD_CREATE_SQL_FILE = "sql";
@@ -116,6 +118,11 @@ class MainGeneratorConfig
     protected $genericGeneratorConfiguration;
 
     /**
+     * @var bool
+     */
+    protected bool $usePhpEnum;
+
+    /**
      * @param array|null $values
      * @throws ReflectionException
      */
@@ -131,6 +138,7 @@ class MainGeneratorConfig
         $this->setBaseDir(ArrayUtil::getFromArray($values, self::OPTION_BASE_DIR));
         $this->setConnectionName(ArrayUtil::getFromArray($values, self::OPTION_CONNECTION_NAME));
         $this->setGenericGeneratorConfiguration(ArrayUtil::getFromArray($values, self::OPTION_GENERIC_GENERATOR_CONFIG_FILE));
+        $this->setUsePhpEnum(boolval(ArrayUtil::getFromArray($values, self::OPTION_USE_PHP_ENUM)));
     }
 
     /**
@@ -147,7 +155,8 @@ class MainGeneratorConfig
             self::OPTION_MIGRATION_METHOD => $this->getMigrationMethod(),
             self::OPTION_BASE_DIR => $this->getBaseDir(),
             self::OPTION_CONNECTION_NAME => $this->getConnectionName(),
-            self::OPTION_GENERIC_GENERATOR_CONFIG_FILE => $this->getGenericGeneratorConfiguration()
+            self::OPTION_GENERIC_GENERATOR_CONFIG_FILE => $this->getGenericGeneratorConfiguration(),
+            self::OPTION_USE_PHP_ENUM => $this->isUsePhpEnum(),
         ];
     }
 
@@ -355,6 +364,24 @@ class MainGeneratorConfig
     {
         $this->genericGeneratorConfiguration = $genericGeneratorConfiguration;
     }
+
+    /**
+     * @return bool
+     */
+    public function isUsePhpEnum(): bool
+    {
+        return $this->usePhpEnum;
+    }
+
+    /**
+     * @param bool $usePhpEnum
+     * @return void
+     */
+    public function setUsePhpEnum(bool $usePhpEnum): void
+    {
+        $this->usePhpEnum = $usePhpEnum;
+    }
+
 
     /**
      * @param string $className

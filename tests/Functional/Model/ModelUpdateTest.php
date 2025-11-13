@@ -2,14 +2,15 @@
 
 namespace SiestaTest\Functional\Model;
 
+use Codeception\Test\Unit;
 use Siesta\Model\DataModel;
+use Siesta\NamingStrategy\NamingStrategyRegistry;
 use Siesta\NamingStrategy\NoTransformStrategy;
 use Siesta\NamingStrategy\ToUnderScoreStrategy;
-use Siesta\NamingStrategy\NamingStrategyRegistry;
 use Siesta\Util\File;
 use Siesta\XML\XMLReader;
 
-class ModelUpdateTest extends \PHPUnit_Framework_TestCase
+class ModelUpdateTest extends Unit
 {
 
     protected function readSchema(string $fileName)
