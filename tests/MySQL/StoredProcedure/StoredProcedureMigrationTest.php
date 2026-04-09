@@ -8,7 +8,7 @@ use Siesta\Migration\DatabaseMigrator;
 use Siesta\Migration\Migrator;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class StoredProcedureMigrationTest extends \PHPUnit_Framework_TestCase
+class StoredProcedureMigrationTest extends \PHPUnit\Framework\TestCase
 {
 
     protected function setUp(): void

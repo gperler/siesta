@@ -10,7 +10,7 @@ use Siesta\Model\DataModel;
 use Siesta\Model\Entity;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class AttributeMigrationTest extends \PHPUnit_Framework_TestCase
+class AttributeMigrationTest extends \PHPUnit\Framework\TestCase
 {
 
     protected function setUp(): void

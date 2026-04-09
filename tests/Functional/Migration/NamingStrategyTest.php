@@ -16,7 +16,7 @@ use SiestaTest\TestUtil\DataModelHelper;
 /**
  * @author Gregor Müller
  */
-class NamingStrategyTest extends \PHPUnit_Framework_TestCase
+class NamingStrategyTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testDatabase()

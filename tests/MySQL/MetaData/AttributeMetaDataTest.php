@@ -1,13 +1,13 @@
 <?php
 
-namespace SiestaTest\Functional\MySQL\MetaData;
+namespace SiestaTest\MySQL\MetaData;
 
 use Siesta\Database\ConnectionFactory;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\File;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class AttributeMetaDataTest extends \PHPUnit_Framework_TestCase
+class AttributeMetaDataTest extends \PHPUnit\Framework\TestCase
 {
 
     protected function setUp(): void

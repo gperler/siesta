@@ -12,7 +12,7 @@ use SiestaTest\TestUtil\DataModelHelper;
 /**
  * @author Gregor Müller
  */
-class MigrateAttributeTest extends \PHPUnit_Framework_TestCase
+class MigrateAttributeTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testDatabase()

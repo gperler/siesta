@@ -9,7 +9,7 @@ use Siesta\NamingStrategy\NamingStrategyRegistry;
 use Siesta\Util\File;
 use Siesta\XML\XMLReader;
 
-class ModelUpdateTest extends \PHPUnit_Framework_TestCase
+class ModelUpdateTest extends \PHPUnit\Framework\TestCase
 {
 
     protected function readSchema(string $fileName)

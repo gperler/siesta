@@ -8,7 +8,7 @@ use Siesta\Model\XMLEntityReader;
 use Siesta\Util\File;
 use Siesta\XML\XMLReader;
 
-class ModelReadTest extends \PHPUnit_Framework_TestCase
+class ModelReadTest extends \PHPUnit\Framework\TestCase
 {
 
     const ENTITY_COUNT = 6;

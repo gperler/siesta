@@ -25,6 +25,11 @@
             <indexPart attributeName="datetime" sortOrder="ASC"/>
             <indexPart attributeName="date" sortOrder="ASC"/>
        </index>
+
+        <index name="fulltextIndex" unique="false" type="btree">
+            <indexPart attributeName="string" sortOrder="ASC"/>
+        </index>
+
     </entity>
 
     <entity name="Person" namespace="Person" table="Person">

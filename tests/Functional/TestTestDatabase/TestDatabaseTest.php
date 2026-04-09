@@ -8,7 +8,7 @@ use SiestaTest\TestDatabase\MetaData\TestDatabaseMetaData;
 /**
  * @author Gregor Müller
  */
-class TestDatabaseTest extends \PHPUnit_Framework_TestCase
+class TestDatabaseTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

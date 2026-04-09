@@ -7,7 +7,7 @@ use Siesta\Model\ValidationLogger;
 use Siesta\Util\File;
 use SiestaTest\TestUtil\CodeceptionLogger;
 
-class GenericConfigLoaderTest extends \PHPUnit_Framework_TestCase
+class GenericConfigLoaderTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testDefaultConfig()

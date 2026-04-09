@@ -7,7 +7,7 @@ use Siesta\Database\MetaData\ConstraintMappingMetaData;
 use Siesta\Database\MigrationStatementFactory;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class ReferenceMigrationTest extends \PHPUnit_Framework_TestCase
+class ReferenceMigrationTest extends \PHPUnit\Framework\TestCase
 {
 
     protected function setUp(): void

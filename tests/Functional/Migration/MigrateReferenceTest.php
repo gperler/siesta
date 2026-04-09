@@ -11,7 +11,7 @@ use SiestaTest\TestUtil\DataModelHelper;
 /**
  * @author Gregor Müller
  */
-class MigrateReferenceTest extends \PHPUnit_Framework_TestCase
+class MigrateReferenceTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testDatabase()

@@ -16,6 +16,12 @@
             <indexPart attributeName="string" sortOrder="ASC" length="20"/>
             <indexPart attributeName="int" sortOrder="ASC"/>
        </index>
+
+
+        <index name="full_text_index_new" unique="false" type="fulltext">
+            <indexPart attributeName="string" sortOrder="ASC"/>
+        </index>
+
     </entity>
 
 </entityList>

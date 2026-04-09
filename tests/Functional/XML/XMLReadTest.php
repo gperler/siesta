@@ -5,7 +5,7 @@ namespace SiestaTest\Functional\XML;
 use Siesta\Util\File;
 use Siesta\XML\XMLReader;
 
-class XMLReadTest extends \PHPUnit_Framework_TestCase
+class XMLReadTest extends \PHPUnit\Framework\TestCase
 {
 
     const ENTITY_COUNT = 6;

@@ -10,7 +10,7 @@ use Siesta\Util\File;
 use SiestaTest\Functional\ValueObject\Generated\ValueObject;
 use SiestaTest\TestUtil\CodeceptionLogger;
 
-class ValueObjectTest extends \PHPUnit_Framework_TestCase
+class ValueObjectTest extends \PHPUnit\Framework\TestCase
 {
 
 

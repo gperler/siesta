@@ -6,7 +6,7 @@ use Siesta\Config\MainGeneratorConfig;
 use Siesta\Exception\InvalidConfigurationException;
 use Siesta\Util\ArrayUtil;
 
-class MainGeneratorConfigTest extends \PHPUnit_Framework_TestCase
+class MainGeneratorConfigTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testDefaultValues()

@@ -10,7 +10,7 @@ use Siesta\Util\File;
 use Siesta\XML\XMLReader;
 use SiestaTest\TestUtil\CodeceptionLogger;
 
-class End2EndTest extends \PHPUnit_Framework_TestCase
+class End2EndTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

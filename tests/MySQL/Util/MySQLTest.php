@@ -8,7 +8,7 @@ use Siesta\Main\Siesta;
 use Siesta\Util\File;
 use SiestaTest\TestUtil\CodeceptionLogger;
 
-class MySQLTest extends \PHPUnit_Framework_TestCase
+class MySQLTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

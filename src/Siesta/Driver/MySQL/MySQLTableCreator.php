@@ -11,6 +11,8 @@ use Siesta\Model\Index;
 use Siesta\Model\IndexPart;
 use Siesta\Model\Reference;
 use Siesta\Util\ArrayUtil;
+use function implode;
+use function strtolower;
 
 /**
  * @author Gregor Müller
@@ -233,12 +235,25 @@ class MySQLTableCreator
         return $sql;
     }
 
+
+    /**
+     * @param Index $index
+     * @return string
+     */
+    private function buildIndex(Index $index): string
+    {
+        if (strtolower($index->getIndexType()) === MySQLIndexType::FULLTEXT) {
+            return $this->buildFullTextIndex($index);
+        }
+        return $this->buildDefaultIndex($index);
+    }
+
     /**
      * @param Index $index
      *
      * @return string
      */
-    private function buildIndex(Index $index): string
+    private function buildDefaultIndex(Index $index): string
     {
         // check if unique index or index
         $sql = $index->getIsUnique() ? " UNIQUE INDEX " : " INDEX ";
@@ -256,7 +271,31 @@ class MySQLTableCreator
 
         $indexPartList = [];
         foreach ($index->getIndexPartList() as $indexPart) {
-            $indexPartList[] = $this->buildIndexPart($indexPart);
+            $indexPartList[] = $this->buildIndexPart($indexPart, false);
+        }
+
+        $sql .= " (" . implode(", ", $indexPartList) . ")";
+
+        return $sql;
+    }
+
+    /**
+     * @param Index $index
+     * @return string
+     */
+    private function buildFullTextIndex(Index $index): string
+    {
+        // check if unique index or index
+        $sql = "FULLTEXT INDEX ";
+
+        // add index name
+        $sql .= $this->quote($index->getName());
+
+        // open columns
+
+        $indexPartList = [];
+        foreach ($index->getIndexPartList() as $indexPart) {
+            $indexPartList[] = $this->buildIndexPart($indexPart, true);
         }
 
         $sql .= " (" . implode(", ", $indexPartList) . ")";
@@ -269,7 +308,7 @@ class MySQLTableCreator
      *
      * @return string
      */
-    private function buildIndexPart(IndexPart $indexPart): string
+    private function buildIndexPart(IndexPart $indexPart, bool $skipSortOrder): string
     {
         $sql = $this->quote($indexPart->getColumnName());
 
@@ -277,7 +316,9 @@ class MySQLTableCreator
             $sql .= " (" . $indexPart->getLength() . ")";
         }
 
-        $sql .= " " . $indexPart->getSortOrder();
+        if (!$skipSortOrder) {
+            $sql .= " " . $indexPart->getSortOrder();
+        }
 
         return $sql;
     }

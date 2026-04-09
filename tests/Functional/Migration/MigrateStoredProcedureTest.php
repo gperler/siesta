@@ -10,7 +10,7 @@ use SiestaTest\TestUtil\DataModelHelper;
 /**
  * @author Gregor Müller
  */
-class MigrateStoredProcedureTest extends \PHPUnit_Framework_TestCase
+class MigrateStoredProcedureTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testDatabase()

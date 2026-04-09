@@ -9,7 +9,7 @@ use Siesta\Util\File;
 use Siesta\XML\XMLReader;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class CreateTableTest extends \PHPUnit_Framework_TestCase
+class CreateTableTest extends \PHPUnit\Framework\TestCase
 {
 
     protected function setUp(): void

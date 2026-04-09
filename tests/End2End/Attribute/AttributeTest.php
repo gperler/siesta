@@ -2,6 +2,7 @@
 
 namespace SiestaTest\End2End\Attribute;
 
+use Codeception\Util\Debug;
 use Siesta\Util\ArrayUtil;
 use Siesta\Util\File;
 use SiestaTest\End2End\Attribute\Generated\E2EAttribute;
@@ -33,10 +34,10 @@ class AttributeTest extends End2EndTest
         $this->assertSame("Discovery", $attribute->getString());
 
         $this->assertNotNull($attribute->getDateTime());
-        $this->assertSame(240829810, $attribute->getDateTime()->getTimestamp());
+        $this->assertSame('1977-08-19 10:10:10', $attribute->getDateTime()->getSQLDateTime());
 
         $this->assertNotNull($attribute->getPDate());
-        $this->assertSame(240793200, $attribute->getPDate()->getTimestamp());
+        $this->assertSame('1977-08-19 00:00:00', $attribute->getPDate()->getSQLDateTime());
 
         $this->assertNotNull($attribute->getPTime());
         $this->assertSame("10:11:12", $attribute->getPTime()->getSQLTime());
@@ -81,11 +82,11 @@ class AttributeTest extends End2EndTest
 
         $dateTime = $resultSet->getDateTime("D_DATETIME");
         $this->assertNotNull($dateTime);
-        $this->assertSame(240829810, $dateTime->getTimestamp());
+        $this->assertSame('1977-08-19 10:10:10', $dateTime->getSQLDateTime());
 
         $date = $resultSet->getDateTime("D_DATE");
         $this->assertNotNull($date);
-        $this->assertSame(240793200, $date->getTimestamp());
+        $this->assertSame('1977-08-19', $date->getSQLDate());
 
         $time = $resultSet->getDateTime("D_TIME");
         $this->assertNotNull($time);
@@ -178,10 +179,10 @@ class AttributeTest extends End2EndTest
         $this->assertSame("Discovery", $attribute->getString());
 
         $this->assertNotNull($attributeReloaded->getDateTime());
-        $this->assertSame(240829810, $attributeReloaded->getDateTime()->getTimestamp());
+        $this->assertSame('1977-08-19 10:10:10', $attributeReloaded->getDateTime()->getSQLDateTime());
 
         $this->assertNotNull($attributeReloaded->getPDate());
-        $this->assertSame(240793200, $attributeReloaded->getPDate()->getTimestamp());
+        $this->assertSame('1977-08-19', $attributeReloaded->getPDate()->getSQLDate());
 
         $this->assertNotNull($attributeReloaded->getPTime());
         $this->assertSame("10:11:12", $attributeReloaded->getPTime()->getSQLTime());

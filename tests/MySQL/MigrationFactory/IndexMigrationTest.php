@@ -1,13 +1,14 @@
 <?php
 
-namespace SiestaTest\Functional\MySQL\MigrationFactory;
+namespace SiestaTest\MySQL\MigrationFactory;
 
+use Codeception\Util\Debug;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Database\MetaData\IndexPartMetaData;
 use Siesta\Database\MigrationStatementFactory;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class IndexMigrationTest extends \PHPUnit_Framework_TestCase
+class IndexMigrationTest extends \PHPUnit\Framework\TestCase
 {
 
     protected function setUp(): void
@@ -30,10 +31,28 @@ class IndexMigrationTest extends \PHPUnit_Framework_TestCase
         $indexTable = $metadata->getTableByName("IndexTest");
         $this->assertNotNull($indexTable);
 
+        $factory = $connection->getMigrationStatementFactory();
+
+        // fulltext index
+
+        $fulltextIndex = $indexTable->getIndexByName("full_text_index");
+        $this->assertNotNull($fulltextIndex);
+
+        $statementList = $factory->createDropIndexStatement($fulltextIndex);
+        $statement = $this->postProcessStatement($statementList, "IndexTest");
+        $this->assertSame("ALTER TABLE `IndexTest` DROP INDEX `full_text_index`", $statement);
+        $connection->execute($statement);
+
+        $metadata->refresh();
+        $indexTable = $metadata->getTableByName("IndexTest");
+        $this->assertNotNull($indexTable);
+        $index = $indexTable->getIndexByName("full_text_index");
+        $this->assertNull($index);
+
+        //
         $index = $indexTable->getIndexByName("index");
         $this->assertNotNull($index);
 
-        $factory = $connection->getMigrationStatementFactory();
 
         // drop foreign key
         $statementList = $factory->createDropIndexStatement($index);
@@ -91,7 +110,7 @@ class IndexMigrationTest extends \PHPUnit_Framework_TestCase
      *
      * @return IndexPartMetaData|null
      */
-    protected function getIndexByColumnName(array $indexPartList, string $columnName)
+    protected function getIndexByColumnName(array $indexPartList, string $columnName): ?IndexPartMetaData
     {
         foreach ($indexPartList as $indexPart) {
             if ($indexPart->getColumnName() === $columnName) {
