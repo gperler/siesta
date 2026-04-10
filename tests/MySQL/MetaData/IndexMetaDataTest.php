@@ -5,6 +5,7 @@ namespace SiestaTest\MySQL\MetaData;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Database\MetaData\IndexMetaData;
 use Siesta\Database\MetaData\IndexPartMetaData;
+use Siesta\Driver\MySQL\MySQLIndexType;
 use SiestaTest\TestUtil\DataModelHelper;
 
 class IndexMetaDataTest extends \PHPUnit\Framework\TestCase
@@ -79,7 +80,13 @@ class IndexMetaDataTest extends \PHPUnit\Framework\TestCase
         $this->assertNotNull($index3);
 
 
+        //
+        // fulltext index
+        //
 
+        // fulltextIndex
+        $fulltextIndex = $this->getIndexByName($indexList, "fulltextIndex");
+        $this->assertSame(MySQLIndexType::FULLTEXT, $fulltextIndex->getType());
 
     }
 

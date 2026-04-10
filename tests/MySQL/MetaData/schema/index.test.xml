@@ -26,7 +26,7 @@
             <indexPart attributeName="date" sortOrder="ASC"/>
        </index>
 
-        <index name="fulltextIndex" unique="false" type="btree">
+        <index name="fulltextIndex" unique="false" type="fulltext">
             <indexPart attributeName="string" sortOrder="ASC"/>
         </index>
 

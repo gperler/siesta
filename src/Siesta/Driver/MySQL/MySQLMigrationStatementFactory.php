@@ -202,7 +202,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
             self::ADD_FULLTEXT_INDEX,
             $this->tableName,
             $this->quote($index->getName()),
-            $this->buildIndexPartList($index)
+            $this->buildIndexPartList($index, true)
         );
     }
 
@@ -218,7 +218,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
             $index->getIsUnique() ? "UNIQUE" : "",
             $this->quote($index->getName()),
             $index->getIndexType() ? "USING " . $index->getIndexType() : "",
-            $this->buildIndexPartList($index)
+            $this->buildIndexPartList($index, false)
         );
     }
 
@@ -228,11 +228,11 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
      * @param Index $index
      * @return string
      */
-    private function buildIndexPartList(Index $index): string
+    private function buildIndexPartList(Index $index, bool $skipSortOrder): string
     {
         $indexPartList = [];
         foreach ($index->getIndexPartList() as $indexPart) {
-            $indexPartList[] = $this->buildIndexPart($indexPart);
+            $indexPartList[] = $this->buildIndexPart($indexPart, $skipSortOrder);
         }
         return implode(", ", $indexPartList);
     }
@@ -243,13 +243,15 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
      *
      * @return string
      */
-    private function buildIndexPart(IndexPart $indexPart): string
+    private function buildIndexPart(IndexPart $indexPart, bool $skipSortOrder): string
     {
         $sql = $this->quote($indexPart->getColumnName());
         if ($indexPart->getLength()) {
             $sql .= " (" . $indexPart->getLength() . ")";
         }
-        $sql .= " " . $indexPart->getSortOrder();
+        if (!$skipSortOrder) {
+            $sql .= " " . $indexPart->getSortOrder();
+        }
         return $sql;
     }
 

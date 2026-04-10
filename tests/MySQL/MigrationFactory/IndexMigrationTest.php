@@ -72,10 +72,22 @@ class IndexMigrationTest extends \PHPUnit\Framework\TestCase
         $datamodel = $dmr->readModel(__DIR__ . "/schema/index.add.test.xml");
         $indexTable = $datamodel->getEntityByTableName("IndexTest");
         $this->assertNotNull($indexTable);
+
+
+        // add fulltext index
+        $newIndex = $indexTable->getIndexByName("full_text_index_new");
+        $this->assertNotNull($newIndex);
+
+        $statementList = $factory->createAddIndexStatement($newIndex);
+        $statement = $this->postProcessStatement($statementList, "IndexTest");
+        $this->assertSame("ALTER TABLE `IndexTest` ADD FULLTEXT INDEX `full_text_index_new` (`string`)", $statement);
+        $connection->execute($statement);
+
+
         $newIndex = $indexTable->getIndexByName("indexNew");
         $this->assertNotNull($newIndex);
 
-        // add reference
+        // add index
         $statementList = $factory->createAddIndexStatement($newIndex);
         $statement = $this->postProcessStatement($statementList, "IndexTest");
         $this->assertSame("ALTER TABLE `IndexTest` ADD UNIQUE INDEX `indexNew` USING btree (`string` (20) ASC, `int` ASC)", $statement);
