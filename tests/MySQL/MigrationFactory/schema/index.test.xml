@@ -16,6 +16,12 @@
             <indexPart attributeName="datetime" sortOrder="ASC"/>
             <indexPart attributeName="date" sortOrder="ASC"/>
        </index>
+
+        <index name="full_text_index" unique="false" type="fulltext">
+            <indexPart attributeName="string" sortOrder="ASC"/>
+        </index>
+
+
     </entity>
 
 </entityList>

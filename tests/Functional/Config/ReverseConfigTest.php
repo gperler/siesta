@@ -6,7 +6,7 @@ use Siesta\Config\ReverseConfig;
 use Siesta\Exception\InvalidConfigurationException;
 use Siesta\Util\ArrayUtil;
 
-class ReverseConfigTest extends \PHPUnit_Framework_TestCase
+class ReverseConfigTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testDefaultValues()

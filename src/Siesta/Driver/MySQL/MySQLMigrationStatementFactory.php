@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace Siesta\Driver\MySQL;
 
 use Siesta\Database\MetaData\ColumnMetaData;
@@ -12,6 +13,9 @@ use Siesta\Model\Entity;
 use Siesta\Model\Index;
 use Siesta\Model\IndexPart;
 use Siesta\Model\Reference;
+use function implode;
+use function sprintf;
+use function strtolower;
 
 /**
  * @author Gregor Müller
@@ -35,6 +39,11 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
     const ADD_FOREIGN_KEY = "ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s";
 
     const DROP_FOREIGN_KEY = "ALTER TABLE %s DROP FOREIGN KEY %s";
+
+    const ADD_DEFAULT_INDEX = "ALTER TABLE %s ADD %s INDEX %s %s (%s)";
+
+    const ADD_FULLTEXT_INDEX = "ALTER TABLE %s ADD FULLTEXT INDEX %s (%s)";
+
 
     protected $tableName;
 
@@ -62,7 +71,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
      *
      * @return string[]
      */
-    public function getModifyPrimaryKeyStatement(TableMetaData $table, Entity $entity) : array
+    public function getModifyPrimaryKeyStatement(TableMetaData $table, Entity $entity): array
     {
         $pkList = [];
 
@@ -87,7 +96,7 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
      *
      * @return string[]
      */
-    public function getDropTableStatement(TableMetaData $table) : array
+    public function getDropTableStatement(TableMetaData $table): array
     {
         $statement = sprintf(self::DROP_TABLE, $this->tableName);
         return [$statement];
@@ -165,7 +174,6 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
         return [$statement];
     }
 
-    const ADD_INDEX = "ALTER TABLE %s ADD %s INDEX %s %s (%s)";
 
     /**
      * @param Index $index
@@ -174,37 +182,76 @@ class MySQLMigrationStatementFactory implements MigrationStatementFactory
      */
     public function createAddIndexStatement(Index $index): array
     {
+        if (strtolower($index->getIndexType()) === MySQLIndexType::FULLTEXT) {
+            return [
+                $this->buildFullTextIndex($index)
+            ];
+        }
+        return [
+            $this->buildDefaultIndex($index)
+        ];
+    }
 
-        $unique = $index->getIsUnique() ? "UNIQUE" : "";
-        $using = $index->getIndexType() ? "USING " . $index->getIndexType() : "";
-        $indexName = $this->quote($index->getName());
+    /**
+     * @param Index $index
+     * @return string
+     */
+    private function buildFullTextIndex(Index $index): string
+    {
+        return sprintf(
+            self::ADD_FULLTEXT_INDEX,
+            $this->tableName,
+            $this->quote($index->getName()),
+            $this->buildIndexPartList($index, true)
+        );
+    }
 
+    /**
+     * @param Index $index
+     * @return string
+     */
+    private function buildDefaultIndex(Index $index): string
+    {
+        return sprintf(
+            self::ADD_DEFAULT_INDEX,
+            $this->tableName,
+            $index->getIsUnique() ? "UNIQUE" : "",
+            $this->quote($index->getName()),
+            $index->getIndexType() ? "USING " . $index->getIndexType() : "",
+            $this->buildIndexPartList($index, false)
+        );
+    }
+
+
+
+    /**
+     * @param Index $index
+     * @return string
+     */
+    private function buildIndexPartList(Index $index, bool $skipSortOrder): string
+    {
         $indexPartList = [];
         foreach ($index->getIndexPartList() as $indexPart) {
-            $indexPartList[] = $this->buildIndexPart($indexPart);
+            $indexPartList[] = $this->buildIndexPart($indexPart, $skipSortOrder);
         }
-        $indexPart = implode(", ", $indexPartList);
-
-        $statement = sprintf(self::ADD_INDEX, $this->tableName, $unique, $indexName, $using, $indexPart);
-
-        return [$statement];
+        return implode(", ", $indexPartList);
     }
+
 
     /**
      * @param IndexPart $indexPart
      *
      * @return string
      */
-    private function buildIndexPart(IndexPart $indexPart) : string
+    private function buildIndexPart(IndexPart $indexPart, bool $skipSortOrder): string
     {
-
         $sql = $this->quote($indexPart->getColumnName());
         if ($indexPart->getLength()) {
             $sql .= " (" . $indexPart->getLength() . ")";
         }
-
-        $sql .= " " . $indexPart->getSortOrder();
-
+        if (!$skipSortOrder) {
+            $sql .= " " . $indexPart->getSortOrder();
+        }
         return $sql;
     }
 

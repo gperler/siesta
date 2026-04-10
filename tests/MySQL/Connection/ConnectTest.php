@@ -5,7 +5,7 @@ namespace SiestaTest\Functional\MySQL\Connection;
 use Siesta\Config\Config;
 use Siesta\Database\ConnectionFactory;
 
-class MySQLConnectTest extends \PHPUnit_Framework_TestCase
+class MySQLConnectTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testConnection()

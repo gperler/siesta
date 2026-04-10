@@ -18,7 +18,7 @@ use Siesta\Validator\Validator;
 use Siesta\XML\XMLReader;
 use SiestaTest\TestUtil\CodeceptionLogger;
 
-class ValidatorTest extends \PHPUnit_Framework_TestCase
+class ValidatorTest extends \PHPUnit\Framework\TestCase
 {
 
     protected function getValidationLogger(bool $silent)

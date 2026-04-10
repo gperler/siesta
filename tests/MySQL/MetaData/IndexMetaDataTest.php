@@ -1,14 +1,14 @@
 <?php
 
-namespace SiestaTest\Functional\MySQL\MetaData;
+namespace SiestaTest\MySQL\MetaData;
 
-use Siesta\Config\Config;
 use Siesta\Database\ConnectionFactory;
 use Siesta\Database\MetaData\IndexMetaData;
 use Siesta\Database\MetaData\IndexPartMetaData;
+use Siesta\Driver\MySQL\MySQLIndexType;
 use SiestaTest\TestUtil\DataModelHelper;
 
-class IndexMetaDataTest extends \PHPUnit_Framework_TestCase
+class IndexMetaDataTest extends \PHPUnit\Framework\TestCase
 {
 
     protected function setUp(): void
@@ -47,7 +47,7 @@ class IndexMetaDataTest extends \PHPUnit_Framework_TestCase
         $indexTest = $metadata->getTableByName("IndexTest");
 
         $indexList = $indexTest->getIndexList();
-        $this->assertSame(2, sizeof($indexList));
+        $this->assertSame(3, sizeof($indexList));
 
         $index1 = $this->getIndexByName($indexList, "index1");
         $this->assertSame("btree", $index1->getType());
@@ -76,15 +76,25 @@ class IndexMetaDataTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($indexPart2->getLength());
 
 
+        $index3 = $this->getIndexByName($indexList, "fulltextIndex");
+        $this->assertNotNull($index3);
+
+
+        //
+        // fulltext index
+        //
+
+        // fulltextIndex
+        $fulltextIndex = $this->getIndexByName($indexList, "fulltextIndex");
+        $this->assertSame(MySQLIndexType::FULLTEXT, $fulltextIndex->getType());
+
     }
 
     /**
      * @param IndexPartMetaData[] $indexPartList
      * @param string $columnName
-     
-      
-*
-*@return IndexPartMetaData|null
+     *
+     * @return IndexPartMetaData|null
      */
     protected function getIndexPartByColumn(array $indexPartList, string $columnName)
     {
@@ -99,10 +109,8 @@ class IndexMetaDataTest extends \PHPUnit_Framework_TestCase
     /**
      * @param IndexMetaData[] $indexList
      * @param string $indexName
-     
-      
-*
-*@return IndexMetaData|null
+     *
+     * @return IndexMetaData|null
      */
     protected function getIndexByName(array $indexList, string $indexName)
     {
