@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Siesta\Driver\MySQL;
 
-use Codeception\Util\Debug;
 use mysqli;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionData;
@@ -225,7 +224,6 @@ class MySQLConnection implements Connection
             case 1451:
                 throw new ForeignKeyConstraintFailedException($error, $errorNumber, $sql);
             default:
-                Debug::debug($sql);
                 throw new SQLException($error, $errorNumber, $sql);
         }
     }
