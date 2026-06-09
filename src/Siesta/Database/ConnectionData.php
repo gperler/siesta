@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Siesta\Database;
 
 use Siesta\Util\ArrayUtil;
+use function boolval;
+use function getenv;
+use function intval;
 
 /**
  * @author Gregor Müller
@@ -115,15 +118,33 @@ class ConnectionData
     {
         $this->name = ArrayUtil::getFromArray($values, self::NAME);
         $this->driver = ArrayUtil::getFromArray($values, self::DRIVER);
-        $this->host = ArrayUtil::getFromArray($values, self::HOST);
-        $this->port = ArrayUtil::getFromArray($values, self::PORT);
-        $this->database = ArrayUtil::getFromArray($values, self::DATABASE);
-        $this->user = ArrayUtil::getFromArray($values, self::USER);
-        $this->password = ArrayUtil::getFromArray($values, self::PASSWORD);
         $this->charSet = ArrayUtil::getFromArray($values, self::CHARSET);
         $this->isDefault = ArrayUtil::getFromArray($values, self::IS_DEFAULT);
         $this->postConnectStatementList = ArrayUtil::getFromArray($values, self::POST_CONNECT_STATEMENT_LIST);
+
+        $this->database = $this->getConfigValue($values, self::DATABASE);
+        $this->host = $this->getConfigValue($values, self::HOST);
+        $this->port = intval($this->getConfigValue($values, self::PORT));
+        $this->user = $this->getConfigValue($values, self::USER);
+        $this->password = $this->getConfigValue($values, self::PASSWORD);
     }
+
+
+    /**
+     * @param array $values
+     * @param string $key
+     * @return mixed|null
+     */
+    private function getConfigValue(array $values, string $key): mixed
+    {
+        $isEnvParameter = boolval($values['useEnv'] ?? false);
+        $configValue = $values[$key] ?? null;
+        if ($isEnvParameter && $configValue !== null) {
+            return getenv($configValue);
+        }
+        return $configValue;
+    }
+
 
     /**
      * @return array
