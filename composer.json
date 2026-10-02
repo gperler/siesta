@@ -2,7 +2,7 @@
   "name": "gm314/siesta",
   "description": "PHP 7 ORM Library",
   "require": {
-    "php": ">=8.1.0",
+    "php": ">=8.3.0",
     "symfony/console": "*",
     "psr/log": "*",
     "gm314/nitria": "*",
