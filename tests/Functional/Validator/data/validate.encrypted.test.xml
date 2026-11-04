@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="EncAttribute" namespace="SiestaTest\Functional\Validator\Generated" table="EncAttribute" targetPath="Generated">
+        <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="encInt" type="int" dbName="encInt" dbType="INT" encrypted="true"/>
+        <attribute name="encVarchar" type="string" dbName="encVarchar" dbType="VARCHAR(50)" encrypted="true"/>
+    </entity>
+    <entity name="EncKey" namespace="SiestaTest\Functional\Validator\Generated" table="EncKey" targetPath="Generated">
+        <attribute name="code" type="string" dbName="code" dbType="VARCHAR(36)" primaryKey="true" encrypted="true"/>
+    </entity>
+</entityList>

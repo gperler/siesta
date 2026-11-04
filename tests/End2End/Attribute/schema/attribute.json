@@ -4,6 +4,7 @@
   "int": 7,
   "float": 19.4,
   "string": "json_string",
+  "secret": "json_secret",
   "transient": "not_for_db",
   "array": {
     "x": "y"

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siesta\Database;
 
 use Siesta\Contract\ArraySerializable;
+use Siesta\Util\Encryption;
 use Siesta\Util\SiestaDateTime;
 
 /**
@@ -167,5 +168,21 @@ class Escaper
             return self::NULL;
         }
         return self::quoteArray($connection, $arraySerializable->toArray());
+    }
+
+    /**
+     * Encrypts the value (via Encryption) and returns it as a quoted SQL literal, ready to be
+     * concatenated into a statement. With a null/empty key the value is quoted as plain text, so
+     * this is a safe drop-in for quoteString when encryption is not (yet) configured.
+     *
+     * @param Connection $connection
+     * @param string|null $value
+     * @param string|null $key
+     *
+     * @return string
+     */
+    public static function quoteStringEncrypted(Connection $connection, ?string $value, ?string $key): string
+    {
+        return self::quoteString($connection, Encryption::encrypt($value, $key));
     }
 }

@@ -6,6 +6,7 @@ use mysqli;
 use mysqli_result;
 use Siesta\Database\ResultSet;
 use Siesta\Util\ArrayUtil;
+use Siesta\Util\Encryption;
 use Siesta\Util\SiestaDateTime;
 
 /**
@@ -30,11 +31,18 @@ class MySQLMultiQueryResultSet implements ResultSet
     protected ?array $next;
 
     /**
-     * @param mysqli $connection
+     * @var string|null
      */
-    public function __construct(mysqli $connection)
+    private ?string $encryptionKey;
+
+    /**
+     * @param mysqli $connection
+     * @param string|null $encryptionKey
+     */
+    public function __construct(mysqli $connection, ?string $encryptionKey = null)
     {
         $this->connection = $connection;
+        $this->encryptionKey = $encryptionKey;
         $this->mysqliResult = $this->connection->store_result();
     }
 
@@ -134,6 +142,16 @@ class MySQLMultiQueryResultSet implements ResultSet
     public function getStringValue(string $key): ?string
     {
         return ArrayUtil::getFromArray($this->next, $key);
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return null|string
+     */
+    public function getDecryptedValue(string $key): ?string
+    {
+        return Encryption::decrypt(ArrayUtil::getFromArray($this->next, $key), $this->encryptionKey);
     }
 
     /**

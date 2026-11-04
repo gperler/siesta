@@ -11,6 +11,7 @@
       "user": "root",
       "password": "",
       "charset": "utf8",
+      "encryptionKey": "siesta-test-encryption-key",
       "postConnectStatementList": [
         "SET NAMES UTF8"
       ]

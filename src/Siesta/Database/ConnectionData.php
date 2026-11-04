@@ -35,6 +35,8 @@ class ConnectionData
 
     const POST_CONNECT_STATEMENT_LIST = "postConnectStatementList";
 
+    const ENCRYPTION_KEY = "encryptionKey";
+
     /**
      * @var string|null
      */
@@ -86,6 +88,14 @@ class ConnectionData
     public ?bool $isDefault;
 
     /**
+     * key used to transparently encrypt/decrypt attributes marked encrypted="true".
+     * Honors the connection-wide useEnv flag (same as host/user/password). Null disables encryption.
+     *
+     * @var string|null
+     */
+    public ?string $encryptionKey = null;
+
+    /**
      * ConnectionData constructor.
      *
      * @param string|null $name
@@ -127,6 +137,7 @@ class ConnectionData
         $this->port = intval($this->getConfigValue($values, self::PORT));
         $this->user = $this->getConfigValue($values, self::USER);
         $this->password = $this->getConfigValue($values, self::PASSWORD);
+        $this->encryptionKey = $this->getConfigValue($values, self::ENCRYPTION_KEY);
     }
 
 
@@ -161,6 +172,7 @@ class ConnectionData
             self::PASSWORD => $this->password,
             self::CHARSET => $this->charSet,
             self::IS_DEFAULT => $this->isDefault,
+            self::ENCRYPTION_KEY => $this->encryptionKey,
             self::POST_CONNECT_STATEMENT_LIST => $this->postConnectStatementList !== null ? $this->postConnectStatementList : []
         ];
     }

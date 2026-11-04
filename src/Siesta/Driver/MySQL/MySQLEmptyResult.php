@@ -45,6 +45,11 @@ class MySQLEmptyResult implements ResultSet
         return null;
     }
 
+    public function getDecryptedValue(string $key): ?string
+    {
+        return null;
+    }
+
     public function getDateTime(string $key): ?SiestaDateTime
     {
         return null;

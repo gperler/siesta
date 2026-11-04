@@ -6,6 +6,7 @@
         <attribute name="int" type="int" dbName="D_INTEGER" dbType="INT" defaultValue="42"/>
         <attribute name="float" type="float" dbName="D_FLOAT" dbType="FLOAT" defaultValue="42.42"/>
         <attribute name="string" type="string" dbName="D_STRING" dbType="VARCHAR(100)" defaultValue="'Discovery'"/>
+        <attribute name="secret" type="string" dbName="D_SECRET" dbType="TEXT" encrypted="true"/>
         <attribute name="transient" type="string" transient="true" defaultValue="'Transient'"/>
         <attribute name="array" type="array" dbType="VARCHAR(500)" defaultValue="[ 'x' => 'y' ]"/>
         <attribute name="dateTime" type="SiestaDateTime" dbName="D_DATETIME" dbType="DATETIME" defaultValue="new SiestaDateTime('19-08-1977 10:10:10')"/>

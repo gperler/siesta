@@ -220,7 +220,7 @@ class SavePlugin extends BasePlugin
             }
 
             $memberName = '$this->' . $attribute->getPhpName();
-            $list[] = $helper->generateQuoteCall($attribute->getPhpType(), $attribute->getDbType(), $memberName, $attribute->getIsObject(), null, $attribute->implementsArraySerializable());
+            $list[] = $helper->generateQuoteCall($attribute->getPhpType(), $attribute->getDbType(), $memberName, $attribute->getIsObject(), null, $attribute->implementsArraySerializable(), $attribute->getIsEncrypted());
         }
         return $list;
     }

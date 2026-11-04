@@ -5,6 +5,7 @@ namespace Siesta\Driver\MySQL;
 use mysqli_result;
 use Siesta\Database\ResultSet;
 use Siesta\Util\ArrayUtil;
+use Siesta\Util\Encryption;
 use Siesta\Util\SiestaDateTime;
 
 /**
@@ -23,13 +24,20 @@ class MySQLSimpleResultSet implements ResultSet
     protected mysqli_result $resultSet;
 
     /**
+     * @var string|null
+     */
+    private ?string $encryptionKey;
+
+    /**
      * MySQLSimpleResultSet constructor.
      *
      * @param mysqli_result $resultSet
+     * @param string|null $encryptionKey
      */
-    public function __construct(mysqli_result $resultSet)
+    public function __construct(mysqli_result $resultSet, ?string $encryptionKey = null)
     {
         $this->resultSet = $resultSet;
+        $this->encryptionKey = $encryptionKey;
     }
 
     /**
@@ -106,6 +114,16 @@ class MySQLSimpleResultSet implements ResultSet
     public function getStringValue(string $key): ?string
     {
         return ArrayUtil::getFromArray($this->next, $key);
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return null|string
+     */
+    public function getDecryptedValue(string $key): ?string
+    {
+        return Encryption::decrypt(ArrayUtil::getFromArray($this->next, $key), $this->encryptionKey);
     }
 
     /**

@@ -8,6 +8,7 @@ use mysqli;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionData;
 use Siesta\Database\CreateStatementFactory;
+use Siesta\Database\Escaper;
 use Siesta\Database\Exception\CannotBeNullException;
 use Siesta\Database\Exception\ConnectException;
 use Siesta\Database\Exception\ForeignKeyConstraintFailedException;
@@ -37,6 +38,11 @@ class MySQLConnection implements Connection
      * @var string
      */
     private string $database;
+
+    /**
+     * @var string|null
+     */
+    private ?string $encryptionKey = null;
 
 
     /**
@@ -69,6 +75,7 @@ class MySQLConnection implements Connection
         mysqli_report(MYSQLI_REPORT_OFF);
 
         $this->database = $connectionData->database;
+        $this->encryptionKey = $connectionData->encryptionKey;
         // connect
         $this->connection = @new mysqli ($connectionData->host, $connectionData->user, $connectionData->password, $connectionData->database, $connectionData->port);
 
@@ -125,7 +132,7 @@ class MySQLConnection implements Connection
             return new MySQLEmptyResult();
         }
 
-        return new MySQLSimpleResultSet($result);
+        return new MySQLSimpleResultSet($result, $this->encryptionKey);
     }
 
 
@@ -146,7 +153,7 @@ class MySQLConnection implements Connection
         if (!$result) {
             $this->handleQueryError($this->connection->errno, $this->connection->error, $query);
         }
-        return new MySQLMultiQueryResultSet($this->connection);
+        return new MySQLMultiQueryResultSet($this->connection, $this->encryptionKey);
     }
 
 
@@ -194,7 +201,7 @@ class MySQLConnection implements Connection
             $this->handleQueryError($this->connection->errno, $this->connection->error, $query);
         }
 
-        return new MySQLMultiQueryResultSet($this->connection);
+        return new MySQLMultiQueryResultSet($this->connection, $this->encryptionKey);
     }
 
 
@@ -237,6 +244,26 @@ class MySQLConnection implements Connection
     public function escape(string $value): string
     {
         return $this->connection->real_escape_string($value);
+    }
+
+
+    /**
+     * @param string|null $value
+     *
+     * @return string
+     */
+    public function escapeAndEncrypt(?string $value): string
+    {
+        return Escaper::quoteStringEncrypted($this, $value, $this->encryptionKey);
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function getEncryptionKey(): ?string
+    {
+        return $this->encryptionKey;
     }
 
 

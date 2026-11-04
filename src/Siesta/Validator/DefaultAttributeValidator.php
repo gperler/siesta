@@ -40,6 +40,18 @@ class DefaultAttributeValidator implements AttributeValidator
 
     const WARN_NO_AUTO_VALUE_CODE = 1205;
 
+    const ERROR_ENCRYPTED_NOT_STRING = "Entity '%s' Attribute '%s' is encrypted but has type '%s'. Only 'string' attributes can be encrypted.";
+
+    const ERROR_ENCRYPTED_NOT_STRING_CODE = 1206;
+
+    const ERROR_ENCRYPTED_KEY = "Entity '%s' Attribute '%s' is encrypted but is a primary or foreign key. Encrypted columns cannot be used as keys (ciphertext is non-deterministic, so it cannot be searched or joined).";
+
+    const ERROR_ENCRYPTED_KEY_CODE = 1207;
+
+    const WARN_ENCRYPTED_LENGTH = "Entity '%s' Attribute '%s' is encrypted and uses a bounded type '%s'. Ciphertext is substantially larger than plaintext; use TEXT or a generously sized column to avoid truncation at insert.";
+
+    const WARN_ENCRYPTED_LENGTH_CODE = 1208;
+
     const AUTO_VALUE_UUID = "uuid";
 
     const AUTO_VALUE_AUTOINCREMENT = "autoincrement";
@@ -98,6 +110,7 @@ class DefaultAttributeValidator implements AttributeValidator
         $this->validateObjectType();
         $this->validateNonTransient();
         $this->validateWarnAutoValue();
+        $this->validateEncrypted();
     }
 
     /**
@@ -205,6 +218,32 @@ class DefaultAttributeValidator implements AttributeValidator
 
         $warn = sprintf(self::WARN_NO_AUTO_VALUE, $this->getEntityName(), $this->getAttributeName());
         $this->logger->warn($warn, self::WARN_NO_AUTO_VALUE_CODE);
+    }
+
+    /**
+     * Guards the encrypted flag: only string attributes can be encrypted, encrypted columns must
+     * not be keys (ciphertext is non-deterministic), and bounded column types risk truncation.
+     */
+    protected function validateEncrypted(): void
+    {
+        if (!$this->attribute->getIsEncrypted()) {
+            return;
+        }
+
+        if ($this->attribute->getPhpType() !== PHPType::STRING) {
+            $error = sprintf(self::ERROR_ENCRYPTED_NOT_STRING, $this->getEntityName(), $this->getAttributeName(), $this->attribute->getPhpType());
+            $this->error($error, self::ERROR_ENCRYPTED_NOT_STRING_CODE);
+        }
+
+        if ($this->attribute->getIsPrimaryKey() || $this->attribute->getIsForeignKey()) {
+            $error = sprintf(self::ERROR_ENCRYPTED_KEY, $this->getEntityName(), $this->getAttributeName());
+            $this->error($error, self::ERROR_ENCRYPTED_KEY_CODE);
+        }
+
+        if ($this->attribute->getLength() !== null) {
+            $warn = sprintf(self::WARN_ENCRYPTED_LENGTH, $this->getEntityName(), $this->getAttributeName(), $this->attribute->getDbType());
+            $this->logger->warn($warn, self::WARN_ENCRYPTED_LENGTH_CODE);
+        }
     }
 
 }

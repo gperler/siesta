@@ -71,6 +71,11 @@ class Attribute
     /**
      * @var bool
      */
+    protected bool $isEncrypted;
+
+    /**
+     * @var bool
+     */
     protected bool $isObject;
 
     /**
@@ -101,6 +106,7 @@ class Attribute
         $this->isPrimaryKey = false;
         $this->isRequired = false;
         $this->isTransient = false;
+        $this->isEncrypted = false;
         $this->customAttributeList = [];
         $this->className = null;
         $this->dbName = null;
@@ -322,6 +328,22 @@ class Attribute
     public function setIsTransient(bool $isTransient = false): void
     {
         $this->isTransient = $isTransient;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsEncrypted(): bool
+    {
+        return $this->isEncrypted;
+    }
+
+    /**
+     * @param bool $isEncrypted
+     */
+    public function setIsEncrypted(bool $isEncrypted = false): void
+    {
+        $this->isEncrypted = $isEncrypted;
     }
 
     /**
