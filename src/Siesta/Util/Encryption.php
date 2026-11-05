@@ -55,6 +55,36 @@ class Encryption
     }
 
     /**
+     * Given the character capacity of a column, returns how many bytes of plaintext actually fit
+     * once the value is encrypted and encoded the way self::encrypt stores it. Encryption adds a
+     * fixed nonce + authentication tag and the result is base64 encoded, so the usable length is
+     * considerably smaller than the raw column length (e.g. a VARCHAR(100) holds 29 bytes).
+     *
+     * The returned value is a byte count: for plain ASCII it equals the number of characters, for
+     * multi-byte UTF-8 compare it against strlen(), not mb_strlen(). Returns 0 when the column is
+     * too small to hold even an empty encrypted value.
+     *
+     * @param int $columnLength character capacity of the target column
+     *
+     * @return int usable plaintext length in bytes
+     */
+    public static function maxPlaintextLength(int $columnLength): int
+    {
+        // stored form: ENCRYPTION_PREFIX . ALGO . ":" . base64(nonce . ciphertext . tag)
+        $headerLength = strlen(self::ENCRYPTION_PREFIX) + strlen(self::ALGO_XCHACHA) + 1;
+        $overheadBytes = SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES + SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_ABYTES;
+
+        // characters left for the base64 blob; every 4 base64 chars encode 3 bytes
+        $base64Budget = $columnLength - $headerLength;
+        if ($base64Budget <= 0) {
+            return 0;
+        }
+        $blobBytes = intdiv($base64Budget, 4) * 3;
+
+        return max(0, $blobBytes - $overheadBytes);
+    }
+
+    /**
      * Reverses self::encrypt. A value that does not carry the encryption prefix is returned
      * unchanged - the migration path: legacy plaintext rows read fine and upgrade to ciphertext on
      * their next save.

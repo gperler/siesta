@@ -7,6 +7,7 @@ use ReflectionClass;
 use ReflectionException;
 use Siesta\NamingStrategy\NamingStrategyRegistry;
 use Siesta\Util\ArrayUtil;
+use Siesta\Util\Encryption;
 use Siesta\Util\StringUtil;
 use Siesta\Validator\DefaultAttributeValidator;
 
@@ -150,6 +151,26 @@ class Attribute
             return (int)$regResult [1];
         }
         return null;
+    }
+
+    /**
+     * Returns how many bytes of plaintext actually fit in this attribute's column. For an ordinary
+     * attribute this is simply the column length; for an encrypted attribute the length is reduced
+     * by the encryption + base64 overhead (e.g. a VARCHAR(100) holds 29 bytes). Returns null when
+     * the column has no bounded length (e.g. TEXT) and therefore no meaningful limit.
+     *
+     * @return int|null usable plaintext length in bytes, or null for unbounded columns
+     */
+    public function getNetLength(): ?int
+    {
+        $length = $this->getLength();
+        if ($length === null) {
+            return null;
+        }
+        if (!$this->getIsEncrypted()) {
+            return $length;
+        }
+        return Encryption::maxPlaintextLength($length);
     }
 
     /**

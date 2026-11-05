@@ -86,4 +86,37 @@ class EncryptionTest extends TestCase
         $this->assertNull(Encryption::decrypt(Encryption::ENCRYPTION_PREFIX . "x:tooshort", $this->key()));
     }
 
+    public function testMaxPlaintextLength(): void
+    {
+        $this->assertSame(29, Encryption::maxPlaintextLength(100));
+        // columns too small to hold even the header + overhead yield 0
+        $this->assertSame(0, Encryption::maxPlaintextLength(10));
+        $this->assertSame(0, Encryption::maxPlaintextLength(0));
+    }
+
+    public function testMaxPlaintextLengthMatchesRealEncryption(): void
+    {
+        $key = $this->key();
+
+        foreach ([64, 100, 255, 500, 1000] as $columnLength) {
+            $max = Encryption::maxPlaintextLength($columnLength);
+
+            // a value of exactly the reported length must fit within the column
+            $atLimit = Encryption::encrypt(str_repeat("a", $max), $key);
+            $this->assertLessThanOrEqual(
+                $columnLength,
+                strlen($atLimit),
+                "ciphertext for $max bytes must fit VARCHAR($columnLength)"
+            );
+
+            // one byte more must overflow it - proving the limit is tight, not conservative
+            $overLimit = Encryption::encrypt(str_repeat("a", $max + 1), $key);
+            $this->assertGreaterThan(
+                $columnLength,
+                strlen($overLimit),
+                "ciphertext for " . ($max + 1) . " bytes must overflow VARCHAR($columnLength)"
+            );
+        }
+    }
+
 }
