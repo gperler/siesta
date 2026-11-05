@@ -5,6 +5,7 @@ namespace SiestaTest\TestDatabase;
 use Siesta\Database\Connection;
 use Siesta\Database\ConnectionData;
 use Siesta\Database\CreateStatementFactory;
+use Siesta\Database\Escaper;
 use Siesta\Database\MetaData\DatabaseMetaData;
 use Siesta\Database\MigrationStatementFactory;
 use Siesta\Database\ResultSet;
@@ -20,9 +21,19 @@ class TestConnection implements Connection
      */
     protected $fixtureFile;
 
+    /**
+     * @var string|null
+     */
+    protected ?string $encryptionKey = null;
+
     public function setFixtureFile(File $file)
     {
         $this->fixtureFile = $file;
+    }
+
+    public function setEncryptionKey(?string $encryptionKey): void
+    {
+        $this->encryptionKey = $encryptionKey;
     }
 
     public function useDatabase(string $name): void
@@ -62,7 +73,17 @@ class TestConnection implements Connection
 
     public function escape(string $value):string
     {
-        return '';
+        return $value;
+    }
+
+    public function escapeAndEncrypt(?string $value): string
+    {
+        return Escaper::quoteStringEncrypted($this, $value, $this->encryptionKey);
+    }
+
+    public function getEncryptionKey(): ?string
+    {
+        return $this->encryptionKey;
     }
 
     public function getSequence(string $technicalName):int

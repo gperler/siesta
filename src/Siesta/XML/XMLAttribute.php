@@ -32,6 +32,8 @@ class XMLAttribute
 
     const TRANSIENT = "transient";
 
+    const ENCRYPTED = "encrypted";
+
     /**
      * @var string|null
      */
@@ -78,6 +80,11 @@ class XMLAttribute
     protected bool $isTransient;
 
     /**
+     * @var bool
+     */
+    protected bool $isEncrypted;
+
+    /**
      * @var string[]
      */
     protected array $customAttributeList;
@@ -93,6 +100,7 @@ class XMLAttribute
         $this->autoValue = null;
         $this->isRequired = false;
         $this->isTransient = false;
+        $this->isEncrypted = false;
         $this->customAttributeList = [];
     }
 
@@ -110,6 +118,7 @@ class XMLAttribute
         $this->setIsPrimaryKey($xmlAccess->getAttributeAsBool(self::PRIMARY_KEY));
         $this->setIsRequired($xmlAccess->getAttributeAsBool(self::REQUIRED));
         $this->setIsTransient($xmlAccess->getAttributeAsBool(self::TRANSIENT));
+        $this->setIsEncrypted($xmlAccess->getAttributeAsBool(self::ENCRYPTED));
         $this->setCustomAttributeList($xmlAccess->getAttributeList());
     }
 
@@ -125,6 +134,7 @@ class XMLAttribute
         $xmlWrite->setAttribute(self::DB_TYPE, $this->getDbType());
         $xmlWrite->setBoolAttributeIfTrue(self::PRIMARY_KEY, $this->getIsPrimaryKey());
         $xmlWrite->setBoolAttributeIfTrue(self::REQUIRED, $this->getIsRequired());
+        $xmlWrite->setBoolAttributeIfTrue(self::ENCRYPTED, $this->getIsEncrypted());
 
         if ($this->getAutoValue() !== null) {
             $xmlWrite->setAttribute(self::AUTO_VALUE, $this->getAutoValue());
@@ -290,6 +300,22 @@ class XMLAttribute
     public function setIsTransient(bool $isTransient): void
     {
         $this->isTransient = $isTransient;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsEncrypted(): bool
+    {
+        return $this->isEncrypted;
+    }
+
+    /**
+     * @param bool $isEncrypted
+     */
+    public function setIsEncrypted(bool $isEncrypted): void
+    {
+        $this->isEncrypted = $isEncrypted;
     }
 
     /**

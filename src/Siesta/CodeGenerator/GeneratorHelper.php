@@ -15,6 +15,7 @@ use Siesta\Model\ReferenceMapping;
 class GeneratorHelper
 {
 
+
     const TYPE_ESCAPE_MAPPING = [
         PHPType::BOOL => "quoteBool",
         PHPType::INT => "quoteInt",
@@ -162,10 +163,17 @@ class GeneratorHelper
      * @param bool $isObject
      * @param int|null $maxLength
      * @param bool $arraySerializable
+     * @param bool $encrypted
      * @return string
      */
-    public function generateQuoteCall(string $phpType, ?string $dbType, string $variableName, bool $isObject = false, int $maxLength = null, bool $arraySerializable = false) : string
+    public function generateQuoteCall(string $phpType, ?string $dbType, string $variableName, bool $isObject = false, int $maxLength = null, bool $arraySerializable = false, bool $encrypted = false) : string
     {
+        // encrypted attributes are always strings (enforced by DefaultAttributeValidator). The
+        // connection both encrypts with its configured key and quotes the result as an SQL literal.
+        if ($encrypted) {
+            return '$connection->escapeAndEncrypt(' . $variableName . ')';
+        }
+
         if ($isObject && $arraySerializable) {
             return 'Escaper::quoteArraySerializable($connection, ' . $variableName . ')';
         }

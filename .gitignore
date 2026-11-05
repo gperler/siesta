@@ -11,3 +11,6 @@ test.php
 provision
 Vagrantfile
 .idea
+Dockerfile.claude
+docker-compose-claude.yml
+claude.sh

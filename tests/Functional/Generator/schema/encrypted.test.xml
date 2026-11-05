@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityList>
+    <entity name="Person" namespace="SiestaTest\Functional\Generator\Generated" table="Person" targetPath=".">
+        <attribute name="id" type="int" dbName="id" dbType="INT" primaryKey="true" autoValue="autoincrement"/>
+        <attribute name="name" type="string" dbName="name" dbType="VARCHAR(100)"/>
+        <attribute name="secret" type="string" dbName="secret" dbType="TEXT" encrypted="true"/>
+    </entity>
+</entityList>

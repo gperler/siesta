@@ -10,7 +10,8 @@
     "ext-dom" : "*",
     "ext-libxml" : "*",
     "ext-json" : "*",
-    "ext-mysqli" : "*"
+    "ext-mysqli" : "*",
+    "ext-sodium" : "*"
   },
   "require-dev": {
     "codeception/codeception": "^5.2",

@@ -65,6 +65,22 @@ interface Connection
     public function escape(string $value): string;
 
     /**
+     * Encrypts the value with the connection's configured key (if any) and returns it as a quoted
+     * SQL literal, ready to be concatenated into a statement. Behaves exactly like quoting a plain
+     * string when no key is configured.
+     *
+     * @param string|null $value
+     *
+     * @return string
+     */
+    public function escapeAndEncrypt(?string $value): string;
+
+    /**
+     * @return string|null the connection's configured encryption key, or null if encryption is off
+     */
+    public function getEncryptionKey(): ?string;
+
+    /**
      * returns next sequence for given technical name
      *
      * @param string $technicalName

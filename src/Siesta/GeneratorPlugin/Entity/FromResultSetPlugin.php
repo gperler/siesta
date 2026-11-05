@@ -105,6 +105,12 @@ class FromResultSetPlugin extends BasePlugin
      */
     protected function getAssignment(Attribute $attribute): string
     {
+        // encrypted attributes are read via getDecryptedValue, which transparently decrypts enc:
+        // prefixed values and passes legacy plaintext through unchanged (migration path).
+        if ($attribute->getIsEncrypted()) {
+            return '$this->' . $attribute->getPhpName() . ' = $resultSet->getDecryptedValue("' . $attribute->getDBName() . '");';
+        }
+
         $method = ArrayUtil::getFromArray(self::RESULT_SET_ACCESS_MAPPING, $attribute->getPhpType());
         if ($method === null && $attribute->implementsArraySerializable()) {
             $method = $attribute->implementsArraySerializable() ? "getArray" : "getObject";

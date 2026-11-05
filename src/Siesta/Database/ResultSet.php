@@ -56,6 +56,16 @@ interface ResultSet
     public function getStringValue(string $key): ?string;
 
     /**
+     * Like getStringValue but transparently decrypts the value when it carries the encryption
+     * prefix. Legacy plaintext values (no prefix) are returned unchanged - the migration path.
+     *
+     * @param string $key
+     *
+     * @return string|null
+     */
+    public function getDecryptedValue(string $key): ?string;
+
+    /**
      * @param string $key
      *
      * @return SiestaDateTime|null

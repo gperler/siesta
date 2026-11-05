@@ -211,6 +211,7 @@ class AttributeTest extends End2EndTest
         $this->assertSame(7, $attribute->getInt());
         $this->assertSame(19.4, $attribute->getFloat());
         $this->assertSame("json_string", $attribute->getString());
+        $this->assertSame("json_secret", $attribute->getSecret());
         $this->assertSame("not_for_db", $attribute->getTransient());
 
         $dateTime = $attribute->getDateTime();
@@ -235,5 +236,70 @@ class AttributeTest extends End2EndTest
 
         $fileJSON = json_encode($file->loadAsJSONArray());
         $this->assertSame($fileJSON, $attributeJSON);
+    }
+
+
+    public function testEncryptedAttribute()
+    {
+        $attribute = new E2EAttribute();
+        $attribute->setSecret("my-secret-value");
+        $attribute->save();
+
+        $connection = $this->getConnection();
+
+        // at rest the column holds ciphertext - getStringValue does NOT decrypt
+        $raw = $connection->query("SELECT D_SECRET FROM E2EAttribute");
+        $this->assertTrue($raw->hasNext());
+        $stored = $raw->getStringValue("D_SECRET");
+        $raw->close();
+        $this->assertStringStartsWith("enc:x:", $stored);
+        $this->assertStringNotContainsString("my-secret-value", $stored);
+
+        // reloading through the entity transparently decrypts
+        $resultSet = $connection->query("SELECT * FROM E2EAttribute");
+        $this->assertTrue($resultSet->hasNext());
+        $reloaded = new E2EAttribute();
+        $reloaded->fromResultSet($resultSet);
+        $resultSet->close();
+        $this->assertSame("my-secret-value", $reloaded->getSecret());
+    }
+
+
+    public function testEncryptedAttributeNull()
+    {
+        $attribute = new E2EAttribute();
+        $attribute->setSecret(null);
+        $attribute->save();
+
+        $connection = $this->getConnection();
+        $resultSet = $connection->query("SELECT * FROM E2EAttribute");
+        $this->assertTrue($resultSet->hasNext());
+        $this->assertNull($resultSet->getDecryptedValue("D_SECRET"));
+    }
+
+
+    public function testEncryptedAttributeMigration()
+    {
+        $connection = $this->getConnection();
+
+        // a row written before encryption was enabled: plaintext, no enc: prefix
+        $attribute = new E2EAttribute();
+        $attribute->save();
+        $connection->execute("UPDATE E2EAttribute SET D_SECRET = 'legacy-plain' WHERE ID = 1");
+
+        // legacy plaintext reads back unchanged (migration path)
+        $resultSet = $connection->query("SELECT * FROM E2EAttribute");
+        $this->assertTrue($resultSet->hasNext());
+        $reloaded = new E2EAttribute();
+        $reloaded->fromResultSet($resultSet);
+        $resultSet->close();
+        $this->assertSame("legacy-plain", $reloaded->getSecret());
+
+        // on the next save the value is upgraded to ciphertext
+        $reloaded->save();
+        $raw = $connection->query("SELECT D_SECRET FROM E2EAttribute WHERE ID = 1");
+        $this->assertTrue($raw->hasNext());
+        $this->assertStringStartsWith("enc:x:", $raw->getStringValue("D_SECRET"));
+        $raw->close();
     }
 }

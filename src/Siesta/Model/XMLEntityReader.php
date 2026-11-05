@@ -113,6 +113,7 @@ class XMLEntityReader
         $attribute->setIsPrimaryKey($xmlAttribute->getIsPrimaryKey());
         $attribute->setIsRequired($xmlAttribute->getIsRequired());
         $attribute->setIsTransient($xmlAttribute->getIsTransient());
+        $attribute->setIsEncrypted($xmlAttribute->getIsEncrypted());
         $attribute->setPhpName($xmlAttribute->getPhpName());
         $attribute->setPhpType($xmlAttribute->getPhpType());
         $attribute->setCustomAttributeList($xmlAttribute->getCustomAttributeList());
