@@ -15,6 +15,7 @@ use Siesta\Model\ReferenceMapping;
 class GeneratorHelper
 {
 
+
     const TYPE_ESCAPE_MAPPING = [
         PHPType::BOOL => "quoteBool",
         PHPType::INT => "quoteInt",
