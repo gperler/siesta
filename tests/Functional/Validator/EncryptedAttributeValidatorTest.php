@@ -46,8 +46,6 @@ class EncryptedAttributeValidatorTest extends TestCase
         $this->assertContains(DefaultAttributeValidator::ERROR_ENCRYPTED_NOT_STRING_CODE, $errorCodeList);
         // EncKey.code is encrypted but is a primary key
         $this->assertContains(DefaultAttributeValidator::ERROR_ENCRYPTED_KEY_CODE, $errorCodeList);
-        // encVarchar / code are encrypted on a bounded column -> truncation warning
-        $this->assertTrue($logger->hasWarningCode(DefaultAttributeValidator::WARN_ENCRYPTED_LENGTH_CODE));
     }
 
 }

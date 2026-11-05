@@ -239,11 +239,6 @@ class DefaultAttributeValidator implements AttributeValidator
             $error = sprintf(self::ERROR_ENCRYPTED_KEY, $this->getEntityName(), $this->getAttributeName());
             $this->error($error, self::ERROR_ENCRYPTED_KEY_CODE);
         }
-
-        if ($this->attribute->getLength() !== null) {
-            $warn = sprintf(self::WARN_ENCRYPTED_LENGTH, $this->getEntityName(), $this->getAttributeName(), $this->attribute->getDbType());
-            $this->logger->warn($warn, self::WARN_ENCRYPTED_LENGTH_CODE);
-        }
     }
 
 }

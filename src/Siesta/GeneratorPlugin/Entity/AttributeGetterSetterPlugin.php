@@ -120,7 +120,7 @@ class AttributeGetterSetterPlugin extends BasePlugin
 
         if ($type === PHPType::STRING) {
 
-            $length = $attribute->getLength() !== null ? $attribute->getLength() : 'null';
+            $length = $attribute->getNetLength() !== null ? $attribute->getNetLength() : 'null';
             $method->addCodeLine('$this->' . $name . ' = StringUtil::trimToNull($' . $name . ", " . $length . ");");
         } else {
             $method->addCodeLine('$this->' . $name . ' = $' . $name . ";");
