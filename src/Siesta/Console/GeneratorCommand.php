@@ -29,6 +29,8 @@ class GeneratorCommand extends Command
 
     const OPTION_DATA_MODEL_UPDATER = "dataModelUpdater";
 
+    const OPTION_ONLY_DB_MIGRATION = "only-db-migration";
+
     const NO_CONFIG_FILE = "<error>No config file found. Run 'vendor/bin/siesta init' to generate one. </error>";
 
     /**
@@ -67,6 +69,7 @@ class GeneratorCommand extends Command
         $this->addOption(self::OPTION_CONFIG_FILE, null, InputOption::VALUE_OPTIONAL, "Path to config file to use.");
         $this->addOption(self::OPTION_LAST_GENERATION_TIME, null, InputOption::VALUE_OPTIONAL, "timestamp of the last generation");
         $this->addOption(self::OPTION_DATA_MODEL_UPDATER, null, InputOption::VALUE_OPTIONAL, "data model updater");
+        $this->addOption(self::OPTION_ONLY_DB_MIGRATION, null, InputOption::VALUE_NONE, "skip class generation and only migrate the database");
     }
 
 
@@ -90,14 +93,15 @@ class GeneratorCommand extends Command
 
             $baseDir = $this->generatorConfig->getBaseDir();
             $dropUnusedTables = $this->generatorConfig->isDropUnusedTables();
+            $onlyMigration = (bool)$this->input->getOption(self::OPTION_ONLY_DB_MIGRATION);
 
             if ($this->generatorConfig->isMigrateDirect()) {
-                $this->siesta->migrateDirect($baseDir, $dropUnusedTables);
+                $this->siesta->migrateDirect($baseDir, $dropUnusedTables, $onlyMigration);
             }
 
             if ($this->generatorConfig->isMigrationToFile()) {
                 $targetFile = $this->generatorConfig->getMigrationFile();
-                $this->siesta->migrateToFile($baseDir, $targetFile, $dropUnusedTables);
+                $this->siesta->migrateToFile($baseDir, $targetFile, $dropUnusedTables, $onlyMigration);
             }
             return 0;
         } catch (ConnectException $ce) {

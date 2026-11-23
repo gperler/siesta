@@ -203,24 +203,27 @@ class Siesta implements LoggerAwareInterface
      * @throws InvalidConfigurationException
      * @throws ReflectionException
      */
-    protected function generateClasses(string $baseDir): void
+    protected function generateClasses(string $baseDir, bool $onlyMigration = false): void
     {
         $this->setup();
         $this->prepareModel();
-        $this->mainGenerator->generate($this->dataModel, $baseDir);
+        if (!$onlyMigration) {
+            $this->mainGenerator->generate($this->dataModel, $baseDir);
+        }
     }
 
 
     /**
      * @param string $baseDir
      * @param bool $dropUnusedTables
+     * @param bool $onlyMigration when true the PHP classes are not (re)generated and only the database is migrated
      *
      * @throws InvalidConfigurationException
      * @throws ReflectionException
      */
-    public function migrateDirect(string $baseDir, bool $dropUnusedTables = true): void
+    public function migrateDirect(string $baseDir, bool $dropUnusedTables = true, bool $onlyMigration = false): void
     {
-        $this->generateClasses($baseDir);
+        $this->generateClasses($baseDir, $onlyMigration);
         $this->migrator->migrateDirect($this->dataModel, $this->getConnection(), $dropUnusedTables);
     }
 
@@ -229,13 +232,14 @@ class Siesta implements LoggerAwareInterface
      * @param string $baseDir
      * @param File $targetFile
      * @param bool $dropUnusedTables
+     * @param bool $onlyMigration when true the PHP classes are not (re)generated and only the migration file is written
      *
      * @throws InvalidConfigurationException
      * @throws ReflectionException
      */
-    public function migrateToFile(string $baseDir, File $targetFile, bool $dropUnusedTables = true): void
+    public function migrateToFile(string $baseDir, File $targetFile, bool $dropUnusedTables = true, bool $onlyMigration = false): void
     {
-        $this->generateClasses($baseDir);
+        $this->generateClasses($baseDir, $onlyMigration);
         $this->migrator->migrateToSQLFile($this->dataModel, $this->getConnection(), $targetFile, $dropUnusedTables);
     }
 
